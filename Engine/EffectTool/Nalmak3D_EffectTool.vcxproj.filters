@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.Frame">
+      <UniqueIdentifier>{5897071f-91ee-43d2-87a2-610319f23a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.View">
+      <UniqueIdentifier>{ca16d3ac-b424-47ce-8590-a3f3a44ae9cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Doc">
+      <UniqueIdentifier>{226443be-8933-445e-979f-a662bdb61e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.default">
+      <UniqueIdentifier>{e5c1fbd6-76ed-4594-8fd1-10439b9a225d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="98.PreCompile">
+      <UniqueIdentifier>{4d99943a-ed0c-429a-a71b-fc14f698d7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\00.Define">
+      <UniqueIdentifier>{9a21bd69-1428-4d96-b800-600942e5314a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\01.Enum">
+      <UniqueIdentifier>{6e6b7898-131b-40c7-9cd5-7188c801b10f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\02.Extern">
+      <UniqueIdentifier>{bde20492-a5bb-4d83-86fc-cea855e7900d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\03.Struct">
+      <UniqueIdentifier>{e28a0066-bc87-4c6b-a0ad-728860707fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scene">
+      <UniqueIdentifier>{814e8586-36a1-47fc-b4ef-5a76a36a7079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Manager">
+      <UniqueIdentifier>{b9c6cf20-3d5f-4972-8404-f7cc08d211bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component">
+      <UniqueIdentifier>{84394786-98c7-475e-ad0f-d35da6039698}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainFrm.h">
+      <Filter>00.Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_EffectToolView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_EffectToolDoc.h">
+      <Filter>02.Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.default</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>99.default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.default</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_EffectTool.h">
+      <Filter>99.default</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_ControlView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>98.PreCompile\00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>98.PreCompile\01.Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>98.PreCompile\02.Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>98.PreCompile\03.Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleObjectManager.h">
+      <Filter>04.Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00.Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_EffectToolView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_EffectToolDoc.cpp">
+      <Filter>02.Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>99.default</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_EffectTool.cpp">
+      <Filter>99.default</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_ControlView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleObjectManager.cpp">
+      <Filter>04.Manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Nalmak3D_EffectTool.rc">
+      <Filter>99.default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Nalmak3D_EffectTool.rc2">
+      <Filter>99.default\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Nalmak3D_EffectToolDoc.ico">
+      <Filter>99.default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Nalmak3D_EffectTool.ico">
+      <Filter>99.default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>99.default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

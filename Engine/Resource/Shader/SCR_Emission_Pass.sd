@@ -1,0 +1,11 @@
+#########################################################
+## Shader Data Setting (sd)
+#########################################################
+
+inputRT "g_final" "GBuffer_Final"
+inputRT "g_emission" "GBuffer_Emission"
+
+outputRT "GBuffer_Final"
+
+inputLayout "1"
+

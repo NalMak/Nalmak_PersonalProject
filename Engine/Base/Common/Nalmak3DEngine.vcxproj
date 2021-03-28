@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Include\Nalmak_String.cpp" />
+    <ClCompile Include="..\Source\Animator.cpp" />
+    <ClCompile Include="..\Source\AudioClip.cpp" />
+    <ClCompile Include="..\Source\AudioListener.cpp" />
+    <ClCompile Include="..\Source\AudioSource.cpp" />
+    <ClCompile Include="..\Source\Bezier.cpp" />
+    <ClCompile Include="..\Source\BitFlag.cpp" />
+    <ClCompile Include="..\Source\BoxCollider.cpp" />
+    <ClCompile Include="..\Source\Button.cpp" />
+    <ClCompile Include="..\Source\Camera.cpp" />
+    <ClCompile Include="..\Source\CanvasRenderer.cpp" />
+    <ClCompile Include="..\Source\Collider.cpp" />
+    <ClCompile Include="..\Source\Component.cpp" />
+    <ClCompile Include="..\Source\Core.cpp" />
+    <ClCompile Include="..\Source\DebuggingMode.cpp" />
+    <ClCompile Include="..\Source\DebugManager.cpp" />
+    <ClCompile Include="..\Source\DebugObject.cpp" />
+    <ClCompile Include="..\Source\DepthStencil.cpp" />
+    <ClCompile Include="..\Source\DeviceManager.cpp" />
+    <ClCompile Include="..\Source\DirectionalLight.cpp" />
+    <ClCompile Include="..\Source\DirectoryMonitoring.cpp" />
+    <ClCompile Include="..\Source\DrawGizmo.cpp" />
+    <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
+    <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
+    <ClCompile Include="..\Source\Event.cpp" />
+    <ClCompile Include="..\Source\EventHandler.cpp" />
+    <ClCompile Include="..\Source\Exception.cpp" />
+    <ClCompile Include="..\Source\FileIO.cpp" />
+    <ClCompile Include="..\Source\FreeMove.cpp" />
+    <ClCompile Include="..\Source\GameObject.cpp" />
+    <ClCompile Include="..\Source\Grid.cpp" />
+    <ClCompile Include="..\Source\IAnimation.cpp" />
+    <ClCompile Include="..\Source\ICycle.cpp" />
+    <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp" />
+    <ClCompile Include="..\Source\InputManager.cpp" />
+    <ClCompile Include="..\Source\IRenderer.cpp" />
+    <ClCompile Include="..\Source\IResource.cpp" />
+    <ClCompile Include="..\Source\MeshCollider.cpp" />
+    <ClCompile Include="..\Source\NalmakPxEventCallBack.cpp" />
+    <ClCompile Include="..\Source\Nalmak_Function.cpp" />
+    <ClCompile Include="..\Source\IState.cpp" />
+    <ClCompile Include="..\Source\Light.cpp" />
+    <ClCompile Include="..\Source\LightManager.cpp" />
+    <ClCompile Include="..\Source\LineManager.cpp" />
+    <ClCompile Include="..\Source\LineVI.cpp" />
+    <ClCompile Include="..\Source\Material.cpp" />
+    <ClCompile Include="..\Source\Mesh.cpp" />
+    <ClCompile Include="..\Source\MeshPicking.cpp" />
+    <ClCompile Include="..\Source\CanvasPicking.cpp" />
+    <ClCompile Include="..\Source\MeshRenderer.cpp" />
+    <ClCompile Include="..\Source\Nalmak_DirectXMath.cpp" />
+    <ClCompile Include="..\Source\Number.cpp" />
+    <ClCompile Include="..\Source\ObjectManager.cpp" />
+    <ClCompile Include="..\Source\Particle.cpp" />
+    <ClCompile Include="..\Source\ParticleInfo.cpp" />
+    <ClCompile Include="..\Source\ParticleRenderer.cpp" />
+    <ClCompile Include="..\Source\PhysicsManager.cpp" />
+    <ClCompile Include="..\Source\PointLight.cpp" />
+    <ClCompile Include="..\Source\PositionHandle.cpp" />
+    <ClCompile Include="..\Source\PositionHandle_2D.cpp" />
+    <ClCompile Include="..\Source\PrototypeManager.cpp" />
+    <ClCompile Include="..\Source\Quad.cpp" />
+    <ClCompile Include="..\Source\QuadNoneNormal.cpp" />
+    <ClCompile Include="..\Source\RenderManager.cpp" />
+    <ClCompile Include="..\Source\RenderTarget.cpp" />
+    <ClCompile Include="..\Source\ResourceManager.cpp" />
+    <ClCompile Include="..\Source\RigidBody.cpp" />
+    <ClCompile Include="..\Source\ScaleHandle_2D.cpp" />
+    <ClCompile Include="..\Source\Scene.cpp" />
+    <ClCompile Include="..\Source\SceneManager.cpp" />
+    <ClCompile Include="..\Source\ScreenQuad.cpp" />
+    <ClCompile Include="..\Source\Shader.cpp" />
+    <ClCompile Include="..\Source\ShaderCompileInclude.cpp" />
+    <ClCompile Include="..\Source\SingleImage.cpp" />
+    <ClCompile Include="..\Source\SkyBox.cpp" />
+    <ClCompile Include="..\Source\Slider.cpp" />
+    <ClCompile Include="..\Source\SoundManager.cpp" />
+    <ClCompile Include="..\Source\SphereCollider.cpp" />
+    <ClCompile Include="..\Source\SplineCurve.cpp" />
+    <ClCompile Include="..\Source\StateControl.cpp" />
+    <ClCompile Include="..\Source\StaticMesh.cpp" />
+    <ClCompile Include="..\Source\SystemInfo.cpp" />
+    <ClCompile Include="..\Source\SystemManager.cpp" />
+    <ClCompile Include="..\Source\Terrain.cpp" />
+    <ClCompile Include="..\Source\Text.cpp" />
+    <ClCompile Include="..\Source\Texture.cpp" />
+    <ClCompile Include="..\Source\TimeManager.cpp" />
+    <ClCompile Include="..\Source\Toggle.cpp" />
+    <ClCompile Include="..\Source\TrailRenderer.cpp" />
+    <ClCompile Include="..\Source\Transform.cpp" />
+    <ClCompile Include="..\Source\Triangle.cpp" />
+    <ClCompile Include="..\Source\UIInteractor.cpp" />
+    <ClCompile Include="..\Source\UserCollisionFilterFlag.cpp" />
+    <ClCompile Include="..\Source\VIBuffer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\Animator.h" />
+    <ClInclude Include="..\Include\AudioClip.h" />
+    <ClInclude Include="..\Include\AudioListener.h" />
+    <ClInclude Include="..\Include\AudioSource.h" />
+    <ClInclude Include="..\Include\Bezier.h" />
+    <ClInclude Include="..\Include\BitFlag.h" />
+    <ClInclude Include="..\Include\BoxCollider.h" />
+    <ClInclude Include="..\Include\Button.h" />
+    <ClInclude Include="..\Include\Camera.h" />
+    <ClInclude Include="..\Include\CanvasRenderer.h" />
+    <ClInclude Include="..\Include\Collider.h" />
+    <ClInclude Include="..\Include\Component.h" />
+    <ClInclude Include="..\Include\Core.h" />
+    <ClInclude Include="..\Include\DebuggingMode.h" />
+    <ClInclude Include="..\Include\DebugManager.h" />
+    <ClInclude Include="..\Include\DebugObject.h" />
+    <ClInclude Include="..\Include\DepthStencil.h" />
+    <ClInclude Include="..\Include\DeviceManager.h" />
+    <ClInclude Include="..\Include\DirectionalLight.h" />
+    <ClInclude Include="..\Include\DirectoryMonitoring.h" />
+    <ClInclude Include="..\Include\DrawGizmo.h" />
+    <ClInclude Include="..\Include\DrawGizmo_2D.h" />
+    <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
+    <ClInclude Include="..\Include\Event.h" />
+    <ClInclude Include="..\Include\EventHandler.h" />
+    <ClInclude Include="..\Include\Exception.h" />
+    <ClInclude Include="..\Include\FileIO.h" />
+    <ClInclude Include="..\Include\FreeMove.h" />
+    <ClInclude Include="..\Include\GameObject.h" />
+    <ClInclude Include="..\Include\Grid.h" />
+    <ClInclude Include="..\Include\IAnimation.h" />
+    <ClInclude Include="..\Include\ICycle.h" />
+    <ClInclude Include="..\Include\LoadResourcesUsingThread.h" />
+    <ClInclude Include="..\Include\InputManager.h" />
+    <ClInclude Include="..\Include\IRenderer.h" />
+    <ClInclude Include="..\Include\IResource.h" />
+    <ClInclude Include="..\Include\MeshCollider.h" />
+    <ClInclude Include="..\Include\NalmakPxEventCallBack.h" />
+    <ClInclude Include="..\Include\Nalmak_Function.h" />
+    <ClInclude Include="..\Include\IState.h" />
+    <ClInclude Include="..\Include\Light.h" />
+    <ClInclude Include="..\Include\LightManager.h" />
+    <ClInclude Include="..\Include\LineManager.h" />
+    <ClInclude Include="..\Include\LineVI.h" />
+    <ClInclude Include="..\Include\Material.h" />
+    <ClInclude Include="..\Include\Mesh.h" />
+    <ClInclude Include="..\Include\MeshPicking.h" />
+    <ClInclude Include="..\Include\CanvasPicking.h" />
+    <ClInclude Include="..\Include\MeshRenderer.h" />
+    <ClInclude Include="..\Include\Nalmak_Define.h" />
+    <ClInclude Include="..\Include\Nalmak_DirectXMath.h" />
+    <ClInclude Include="..\Include\Nalmak_Enum.h" />
+    <ClInclude Include="..\Include\Nalmak_Extern.h" />
+    <ClInclude Include="..\Include\Nalmak_Include.h" />
+    <ClInclude Include="..\Include\Nalmak_Math.h" />
+    <ClInclude Include="..\Include\Nalmak_String.h" />
+    <ClInclude Include="..\Include\Nalmak_Struct.h" />
+    <ClInclude Include="..\Include\Nalmak_Typedef.h" />
+    <ClInclude Include="..\Include\Number.h" />
+    <ClInclude Include="..\Include\ObjectManager.h" />
+    <ClInclude Include="..\Include\Particle.h" />
+    <ClInclude Include="..\Include\ParticleInfo.h" />
+    <ClInclude Include="..\Include\ParticleRenderer.h" />
+    <ClInclude Include="..\Include\PhysicsManager.h" />
+    <ClInclude Include="..\Include\PointLight.h" />
+    <ClInclude Include="..\Include\PositionHandle.h" />
+    <ClInclude Include="..\Include\PositionHandle_2D.h" />
+    <ClInclude Include="..\Include\PrototypeManager.h" />
+    <ClInclude Include="..\Include\Quad.h" />
+    <ClInclude Include="..\Include\QuadNoneNormal.h" />
+    <ClInclude Include="..\Include\RenderManager.h" />
+    <ClInclude Include="..\Include\RenderTarget.h" />
+    <ClInclude Include="..\Include\ResourceManager.h" />
+    <ClInclude Include="..\Include\RigidBody.h" />
+    <ClInclude Include="..\Include\ScaleHandle_2D.h" />
+    <ClInclude Include="..\Include\Scene.h" />
+    <ClInclude Include="..\Include\SceneManager.h" />
+    <ClInclude Include="..\Include\ScreenQuad.h" />
+    <ClInclude Include="..\Include\Shader.h" />
+    <ClInclude Include="..\Include\ShaderCompileInclude.h" />
+    <ClInclude Include="..\Include\SingleImage.h" />
+    <ClInclude Include="..\Include\SkyBox.h" />
+    <ClInclude Include="..\Include\Slider.h" />
+    <ClInclude Include="..\Include\SoundManager.h" />
+    <ClInclude Include="..\Include\SphereCollider.h" />
+    <ClInclude Include="..\Include\SplineCurve.h" />
+    <ClInclude Include="..\Include\StateControl.h" />
+    <ClInclude Include="..\Include\StaticMesh.h" />
+    <ClInclude Include="..\Include\SystemInfo.h" />
+    <ClInclude Include="..\Include\SystemManager.h" />
+    <ClInclude Include="..\Include\Terrain.h" />
+    <ClInclude Include="..\Include\Text.h" />
+    <ClInclude Include="..\Include\Texture.h" />
+    <ClInclude Include="..\Include\TimeManager.h" />
+    <ClInclude Include="..\Include\Toggle.h" />
+    <ClInclude Include="..\Include\TrailRenderer.h" />
+    <ClInclude Include="..\Include\Transform.h" />
+    <ClInclude Include="..\Include\Triangle.h" />
+    <ClInclude Include="..\Include\UIInteractor.h" />
+    <ClInclude Include="..\Include\UserCollisionFilterFlag.h" />
+    <ClInclude Include="..\Include\VIBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resource\Shader\H_common.fxh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\H_light.fxh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4FD6877-6BA3-4EC9-827C-E402E4199F76}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Nalmak3DEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Nalmak3D_Engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)include;</IncludePath>
+    <OutDir>../Bin/</OutDir>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(DXSDK_DIR)Lib\x86;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)include;..\..\Externals\Include\;</IncludePath>
+    <OutDir>../Bin/</OutDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(DXSDK_DIR)Lib\x64;..\Bin\;..\..\Externals\Lib\Debug\;</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)include;</IncludePath>
+    <OutDir>../Bin/</OutDir>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(DXSDK_DIR)Lib\x86;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)include;..\..\Externals\Include\;</IncludePath>
+    <OutDir>../Bin/</OutDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(DXSDK_DIR)Lib\x64;..\Bin\;..\..\Externals\Lib\Release\;</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NALMAK3DENGINE_EXPORTS;NALMAK_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Include/;../Source/</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <PostBuildEvent>
+      <Command>UpdateEngine.bat</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;NALMAK3DENGINE_EXPORTS;NALMAK_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Include/;../Source/;../Lib/;;../../Externals/Include/;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>../Bin/;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Link>
+    <PostBuildEvent>
+      <Command>UpdateEngine.bat</Command>
+    </PostBuildEvent>
+    <FxCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)../../Resource/Shader/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EntryPointName>main</EntryPointName>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NALMAK3DENGINE_EXPORTS;NALMAK_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Include/;../Source/</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <PostBuildEvent>
+      <Command>UpdateEngine.bat</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;NALMAK3DENGINE_EXPORTS;NALMAK_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Include/;../Source/;../Lib/;;../../Externals/Include/;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>../Lib/x64/release/;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Link>
+    <PostBuildEvent>
+      <Command>UpdateEngine.bat</Command>
+    </PostBuildEvent>
+    <FxCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)../../Resource/Shader/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EntryPointName>main</EntryPointName>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

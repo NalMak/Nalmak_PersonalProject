@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.Frame">
+      <UniqueIdentifier>{542647c6-20bb-411e-84a7-f0ae344a2e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.View">
+      <UniqueIdentifier>{397f0f62-9bc7-494f-984a-652bb7f09984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Doc">
+      <UniqueIdentifier>{971b6919-eaad-4f4d-bcdc-fe1c2653716b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scene">
+      <UniqueIdentifier>{d5196e45-05e9-4bbe-962a-153da16ba66b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{f05d732a-b09f-4192-9a37-a4ef836e243e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile">
+      <UniqueIdentifier>{06b1df8c-c443-4f43-81cc-b23793d32226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Nalmak3D_BoneAnimationTool.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_BoneAnimationToolDoc.h">
+      <Filter>02.Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_BoneAnimationToolView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>00.Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_BoneAnimFormView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Nalmak3D_BoneAnimationTool.cpp">
+      <Filter>99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_BoneAnimationToolDoc.cpp">
+      <Filter>02.Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_BoneAnimationToolView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00.Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>98.PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_BoneAnimFormView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Nalmak3D_BoneAnimationTool.rc">
+      <Filter>99.Default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Nalmak3D_BoneAnimationTool.rc2">
+      <Filter>99.Default\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Nalmak3D_BoneAnimationToolDoc.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Nalmak3D_BoneAnimationTool.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>99.Default</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

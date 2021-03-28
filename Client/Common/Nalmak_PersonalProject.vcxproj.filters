@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.Main">
+      <UniqueIdentifier>{856330b3-1533-498c-af32-cf9d1403b9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene">
+      <UniqueIdentifier>{215898ff-6c65-490b-b3db-655b1d4748b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{cc8a62d9-7051-4ce1-a6ef-d22bddd26d89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile">
+      <UniqueIdentifier>{402ca7c8-2440-42a9-837c-fe492cbae076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\00.Define">
+      <UniqueIdentifier>{a6a71c06-9146-40ea-b8fa-00bb580be3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\01.Enum">
+      <UniqueIdentifier>{c0ba647f-25c2-4e81-bc7e-425b0bd43050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\02.Extern">
+      <UniqueIdentifier>{1928bd35-6e1f-475c-b18e-f6e2d5117aa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\03.Struct">
+      <UniqueIdentifier>{16fad8e5-8c1e-4cf7-a062-60d3d40e9002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Component">
+      <UniqueIdentifier>{370ae4a9-b82c-4c27-9af5-b88580274759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.HomeWork">
+      <UniqueIdentifier>{07d1344e-0293-470d-94e0-54ddf2eb7da8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak_PersonalProject.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>00.Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>98.PreCompile\02.Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>98.PreCompile\03.Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>98.PreCompile\01.Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>98.PreCompile\00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>01.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="homework_enemy.h">
+      <Filter>97.HomeWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Homework_Player.h">
+      <Filter>97.HomeWork</Filter>
+    </ClInclude>
+    <ClInclude Include="homeworkScene.h">
+      <Filter>97.HomeWork</Filter>
+    </ClInclude>
+    <ClInclude Include="PublicData.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>98.PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak_PersonalProject.cpp">
+      <Filter>99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>00.Main</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>01.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="homework_enemy.cpp">
+      <Filter>97.HomeWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Homework_Player.cpp">
+      <Filter>97.HomeWork</Filter>
+    </ClCompile>
+    <ClCompile Include="homeworkScene.cpp">
+      <Filter>97.HomeWork</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Nalmak_PersonalProject.ico">
+      <Filter>99.Default</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>99.Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>99.Default</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Nalmak_PersonalProject.rc">
+      <Filter>99.Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

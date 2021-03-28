@@ -1,0 +1,14 @@
+#########################################################
+## Shader Data Setting (sd)
+#########################################################
+
+inputRT "g_diffuse" "GBuffer_Diffuse"
+inputRT "g_normal" "GBuffer_Normal"
+inputRT "g_depth" "GBuffer_Depth"
+inputRT "g_cookTorrance" "GBuffer_CookTorrance"
+
+outputRT "GBuffer_Emission"
+outputRT "GBuffer_Light"
+
+inputLayout "1"
+

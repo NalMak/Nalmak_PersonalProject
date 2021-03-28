@@ -1,0 +1,60 @@
+#pragma once
+#include "Nalmak_Include.h"
+
+#include "PxPhysicsAPI.h"
+#include "NalmakPxEventCallBack.h"
+#include "MeshRenderer.h"
+
+class RigidBody;
+class Collider;
+class Mesh;
+
+using namespace physx;
+
+class PhysicsManager
+{
+	DECLARE_SINGLETON(PhysicsManager)
+public:
+	PhysicsManager();
+	~PhysicsManager();
+public:
+	void Initialize();
+	void Release();
+	void Update();
+private:
+	void CreatePhysicsEngine();
+	void CreateEventCallBack();
+	void CreateScene();
+	void CreatePVD();
+	void CreateController();
+
+private:
+	PxPhysics*				m_physics = nullptr;
+	PxDefaultAllocator		m_allocator;
+	PxDefaultErrorCallback	m_errorCallback;
+	PxFoundation*			m_foundation = nullptr;
+	PxPvdTransport*			m_port = nullptr;
+	PxDefaultCpuDispatcher*	m_dispatcher = nullptr;
+	PxPvd*					m_PVD = nullptr;
+	PxScene*				m_scene = nullptr;
+	PxCooking*				m_cooking = nullptr;
+	PxControllerManager*	m_controllerManager = nullptr;
+
+	NalmakPxEventCallBack*  m_eventCallback;
+public:
+	void AddActorToScene(PxRigidDynamic* _rigid);
+	void RemoveActorFromScene(PxRigidDynamic* _rigid);
+	const PxRenderBuffer& GetDebugRenderBuffer();
+public:
+	PxRigidDynamic* CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion, unsigned int _gaussLimit);
+	PxRigidStatic* CreateStaticMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion);
+public:
+	PxRigidDynamic* CreateSphereCollider(Collider* _col,RigidBody* _rigid, float _radius);
+	PxRigidDynamic* CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
+
+
+
+public:
+	GameObject* Raycast(const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*>& _renderList);
+};
+

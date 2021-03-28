@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.Frame">
+      <UniqueIdentifier>{250ff90a-47d3-4884-89ea-5306c8d44c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.View">
+      <UniqueIdentifier>{9fe271bf-1c79-4d9f-bb6d-81496fdab6f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Doc">
+      <UniqueIdentifier>{1fe68f24-5c44-4a56-85ff-cc145ee69a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scene">
+      <UniqueIdentifier>{00b58c03-a8cc-4f7d-b29c-4c7c3cf2dab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{c3eddf5d-25a7-4bd4-bf5e-5b663ceebad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile">
+      <UniqueIdentifier>{072f1642-d2fc-463f-917e-d3bfadd7918b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="98.PreCompile\00.Define">
+      <UniqueIdentifier>{3d77efd7-eb78-400b-8356-7dcf2402c6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\02.Extern">
+      <UniqueIdentifier>{cd737eb6-0450-43be-bbe9-e1c30d87821f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\03.Struct">
+      <UniqueIdentifier>{80060bda-cdf2-46e1-8e5e-bf68807cf2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Manager">
+      <UniqueIdentifier>{0467b87f-9b9a-4019-b718-5f06efbaf6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.PreCompile\01.Enum">
+      <UniqueIdentifier>{67ffb35f-bb18-4e07-aec6-ffb5143b16a1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>98.PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>00.Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_MapToolView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_MapToolDoc.h">
+      <Filter>02.Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_MapTool.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>98.PreCompile\03.Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>98.PreCompile\02.Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>98.PreCompile\00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_MapControlView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolManager.h" />
+    <ClInclude Include="Enum.h">
+      <Filter>98.PreCompile\01.Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MFCUtility\MFC_Utility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>98.PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00.Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_MapToolView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_MapToolDoc.cpp">
+      <Filter>02.Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_MapTool.cpp">
+      <Filter>99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_MapControlView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Nalmak3D_MapTool.rc">
+      <Filter>99.Default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Nalmak3D_MapTool.rc2">
+      <Filter>99.Default\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Nalmak3D_MapToolDoc.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Nalmak3D_MapTool.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>99.Default</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
