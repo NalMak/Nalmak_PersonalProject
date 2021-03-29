@@ -18,8 +18,6 @@ public:
 	virtual void LateUpdate() override;
 private:
 	class LineManager* m_line;
-	MeshRenderer* m_pickingObject[3];
-public:
-	bool IsPickingSuccess();
+
 };
 

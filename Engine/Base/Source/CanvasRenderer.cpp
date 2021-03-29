@@ -70,7 +70,7 @@ void CanvasRenderer::Render(Shader * _shader)
 
 	assert("Current Shader is nullptr! " && currentShader);
 
-	currentShader->SetMatrix("g_world", GetTransform()->GetUIWorldMatrix());
+	currentShader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
 	auto images = GetComponents<SingleImage>();
 	for (int i = 0; i < images.size(); ++i)
@@ -122,7 +122,7 @@ void CanvasRenderer::UpdateBoundary()
 {
 	if (m_transform->GetParents())
 	{
-		auto worldMatrix = m_transform->GetUIWorldMatrix();
+		auto worldMatrix = m_transform->GetWorldMatrix();
 		Vector3 position = { worldMatrix.m[3][0], worldMatrix.m[3][1], worldMatrix.m[3][2] };
 
 		float half_wincx = (float)m_renderManager->GetWindowWidth() * 0.5f;

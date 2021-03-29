@@ -364,11 +364,10 @@ PxRigidDynamic * PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * 
 GameObject * PhysicsManager::Raycast(const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)
 {
 	
-
-	
 	vector<MeshRenderer*> raycastRenderers;
 	for (auto& render : _renderList)
 	{
+
 		Vector3 center = render->GetTransform()->GetWorldPosition();
 
 		float rayLength = sqrt(

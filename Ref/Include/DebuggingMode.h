@@ -11,6 +11,14 @@ public:
 	{
 
 	};
+	enum PICKING_TYPE
+	{
+		PICKING_TYPE_NONE = -1,
+		PICKING_TYPE_RIGHT,
+		PICKING_TYPE_UP,
+		PICKING_TYPE_LOOK,
+		PICKING_TYPE_MAX
+	};
 public:
 	DebuggingMode(Desc* _desc);
 	~DebuggingMode();
@@ -33,6 +41,10 @@ private:
 	class Text* m_debugModeDescObject;
 	GameObject* m_pickingObj;
 	MeshRenderer* m_pickingOutLine;
+	class GameObject* m_pickingGizmo[3];
+	class GameObject* m_pickingGizmoBase;
+	PICKING_TYPE m_pickingType;
+
 private:
 	void CheckPicking();
 	void CheckFreeCamera();
@@ -43,5 +55,7 @@ private:
 	void CheckTimeStop();
 	void UpdateMaterial();
 	void UpdateDesc();
+	void PickingObject();
+	DebuggingMode::PICKING_TYPE IsGizmoPicking();
 };
 

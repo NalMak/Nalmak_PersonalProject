@@ -18,5 +18,6 @@ public:
 	virtual void LateUpdate() override;
 private:
 	class LineManager* m_line;
+
 };
 

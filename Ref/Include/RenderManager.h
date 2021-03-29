@@ -162,8 +162,11 @@ private:
 	void ClearDepthStencil(const wstring& _targetName);
 public:
 	void SetDebugRender(bool _render);
+	void SetColliderRender(bool _render);
 private:
 	bool m_isRenderDebug = true;
+	bool m_isRenderCollider = false;
+
 };
 
 END

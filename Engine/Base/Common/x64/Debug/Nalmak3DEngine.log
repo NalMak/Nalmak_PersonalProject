@@ -1,4 +1,57 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_PersonalProject (2)\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Transform.cpp
+  TrailRenderer.cpp
+  Toggle.cpp
+  Text.cpp
+  Terrain.cpp
+  SystemInfo.cpp
+  StateControl.cpp
+  SoundManager.cpp
+  Slider.cpp
+  ScaleHandle_2D.cpp
+  RigidBody.cpp
+  ResourceManager.cpp
+  RenderManager.cpp
+  PositionHandle_2D.cpp
+  PositionHandle.cpp
+  PointLight.cpp
+  PhysicsManager.cpp
+  ParticleRenderer.cpp
+  Particle.cpp
+  ObjectManager.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  MeshRenderer.cpp
+  MeshPicking.cpp
+  LineManager.cpp
+  IState.cpp
+  IRenderer.cpp
+  GameObject.cpp
+  FreeMove.cpp
+  DrawGizmo_2D.cpp
+  DrawGizmo.cpp
+  DirectionalLight.cpp
+  DebugObject.cpp
+  DebugManager.cpp
+  Core.cpp
+  Component.cpp
+  CanvasRenderer.cpp
+  CanvasPicking.cpp
+  Camera.cpp
+  Button.cpp
+  AudioSource.cpp
+  AudioListener.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  DebuggingMode.cpp
+  코드를 생성하고 있습니다...
+     ../Bin/Nalmak3D_Engine.lib 라이브러리 및 ../Bin/Nalmak3D_Engine.exp 개체를 생성하고 있습니다.
+PhysX3ExtensionsDEBUG.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultErrorCallback.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultStreams.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtRigidBodyExt.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtRigidBodyExt.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtSimpleFactory.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtSimpleFactory.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h
@@ -141,33 +194,8 @@
   ..\Bin\fmodex64_vc.lib
   ..\Bin\Nalmak3D_Engine.lib
   2개 파일이 복사되었습니다.
-  ..\Bin\BackGround.cso
-  ..\Bin\brightHorizontalBlur.cso
-  ..\Bin\brightVerticalBlur.cso
-  ..\Bin\default.cso
-  ..\Bin\defaultDebug.cso
-  ..\Bin\defaultEmission.cso
-  ..\Bin\defaultUI.cso
-  ..\Bin\deferred_bright.cso
-  ..\Bin\deferred_emission.cso
-  ..\Bin\deferred_geometry.cso
-  ..\Bin\D_Debug.cso
-  ..\Bin\D_DirectionalLight.cso
-  ..\Bin\D_FullScreen.cso
-  ..\Bin\D_GrabPass.cso
-  ..\Bin\D_PointLight.cso
-  ..\Bin\D_PointLight_Stencil.cso
-  ..\Bin\grid.cso
-  ..\Bin\line.cso
-  ..\Bin\noneNormal.cso
-  ..\Bin\particle.cso
-  ..\Bin\physX_Debug.cso
-  ..\Bin\postprocess_bloom.cso
-  ..\Bin\skyBox.cso
-  ..\Bin\standard.cso
-  ..\Bin\standard_normal.cso
   ..\Bin\SYS_OutLine.cso
-  26개 파일이 복사되었습니다.
+  1개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

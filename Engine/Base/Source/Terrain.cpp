@@ -72,6 +72,7 @@ void Terrain::Render(Shader * _shader)
 {
 	assert("Current Shader is nullptr! " && _shader);
 
+	m_transform->UpdateMatrix();
 	_shader->SetMatrix("g_world", GetTransform()->GetWorldMatrix());
 
 	_shader->CommitChanges();				   // BeginPass 호출시 반드시 그리기 전에 호출

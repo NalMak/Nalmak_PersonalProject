@@ -2,10 +2,11 @@
 #include "LineManager.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
-#include "..\..\..\Ref\Include\PhysicsManager.h"
+#include "PhysicsManager.h"
 
 DebugObject::DebugObject(Desc * _desc)
 {
+
 }
 
 DebugObject::~DebugObject()
@@ -16,16 +17,6 @@ void DebugObject::Initialize()
 {
 	m_line = LineManager::GetInstance();
 
-	auto obj0 = INSTANTIATE()->AddComponent<MeshRenderer>();
-	m_pickingObject[0] = obj0->GetComponent<MeshRenderer>();
-
-
-	auto obj1 = INSTANTIATE()->AddComponent<MeshRenderer>();
-	m_pickingObject[1] = obj1->GetComponent<MeshRenderer>();
-
-
-	auto obj2 = INSTANTIATE()->AddComponent<MeshRenderer>();
-	m_pickingObject[2] = obj2->GetComponent<MeshRenderer>();
 
 }
 
@@ -45,10 +36,6 @@ void DebugObject::LateUpdate()
 	m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._31, world._32, world._33)), DEBUG_COLOR_BLUE);	// forward
 }
 
-bool DebugObject::IsPickingSuccess()
-{
-	PhysicsManager::GetInstance()->Raycast()
 
 
-	return false;
-}
+

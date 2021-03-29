@@ -330,13 +330,14 @@ void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _ligh
 
 void RenderManager::DebugPass(ConstantBuffer & _cBuffer)
 {
-	if (!m_isRenderDebug)
-		return;
+	if(m_isRenderCollider)
+		RenderPhysX(_cBuffer);
 
-	RenderPhysX(_cBuffer);
-
-	UpdateBlendingMode(BLENDING_MODE_DEFAULT);
-	RenderByShaderToScreen(L"SCR_Debug_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+	if (m_isRenderDebug)
+	{
+		UpdateBlendingMode(BLENDING_MODE_DEFAULT);
+		RenderByShaderToScreen(L"SCR_Debug_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+	}
 }
 
 
@@ -969,5 +970,10 @@ void RenderManager::ClearDepthStencil(const wstring & _targetName)
 void RenderManager::SetDebugRender(bool _render)
 {
 	m_isRenderDebug = _render;
+}
+
+void RenderManager::SetColliderRender(bool _render)
+{
+	m_isRenderCollider = _render;
 }
 

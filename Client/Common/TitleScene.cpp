@@ -44,14 +44,21 @@ void TitleScene::Initialize()
 	}
 
 	{
-		MeshRenderer::Desc render;
-		render.meshName = L"Arisha";
-		render.mtrlName = L"Arisha_mtrl";
+		//MeshRenderer::Desc render;
+		//render.meshName = L"Arisha";
+		//render.mtrlName = L"Arisha_mtrl";
+		//RigidBody::Desc rigid;
+		//rigid.isKinematic = true;
+		//auto player = INSTANTIATE()->AddComponent<MeshCollider>()->AddComponent<RigidBody>(&rigid)->SetPosition(0.5f, -20.f, 0)->AddComponent<MeshRenderer>(&render)->SetScale(0.1f,0.1f,0.1f);
+		//player->SetStatic(true);
+		//player->GetComponent<MeshRenderer>()->AddMaterial()
+	}
+	{
+		MeshRenderer::Desc mesh;
+		mesh.meshName = L"plane";
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
-		auto player = INSTANTIATE()->AddComponent<MeshCollider>()->AddComponent<RigidBody>(&rigid)->SetPosition(0.5f, -20.f, 0)->AddComponent<MeshRenderer>(&render)->SetScale(0.1f,0.1f,0.1f);
-		player->SetStatic(true);
-		//player->GetComponent<MeshRenderer>()->AddMaterial()
+		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<RigidBody>(&rigid)->AddComponent<MeshCollider>()->SetScale(10,10,10)->SetPosition(0,-10,0)->SetStatic(true);
 	}
 
 

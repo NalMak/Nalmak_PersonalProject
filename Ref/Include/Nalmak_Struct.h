@@ -227,10 +227,7 @@ struct TextureBuffer
 	Vector2 uvScaling;
 };
 
-struct Line
-{
-	Vector3 start, end;
-};
+
 
 class AudioClip;
 

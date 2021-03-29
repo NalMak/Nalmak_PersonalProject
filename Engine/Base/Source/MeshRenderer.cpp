@@ -43,7 +43,6 @@ void MeshRenderer::Render(Shader* _shader)
 
 	_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
 
-
 	_shader->CommitChanges();		
 
 	m_mesh->Draw();

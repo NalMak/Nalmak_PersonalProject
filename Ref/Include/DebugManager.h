@@ -16,6 +16,8 @@ class NALMAK_DLL DebugManager
 {
 	DECLARE_SINGLETON(DebugManager)
 public:
+
+private:
 	DebugManager();
 	~DebugManager();
 public:
@@ -79,6 +81,9 @@ public:
 	void EraseTheRecord();
 private:
 	wstring m_debugLog;
+
+
+
 };
 
 #endif

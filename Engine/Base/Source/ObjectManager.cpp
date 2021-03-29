@@ -279,6 +279,9 @@ GameObject * ObjectManager::PickObjectByMouse()
 
 			if (!renderer)
 				continue;
+			if(!renderer->IsActive())
+				continue;
+
 			if(!renderer->IsPickingEnable())
 				continue;;
 

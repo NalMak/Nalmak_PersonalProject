@@ -1,8 +1,12 @@
-#include "..\Include\DebugManager.h"
+#include "DebugManager.h"
+#include "MeshRenderer.h"
 
 IMPLEMENT_SINGLETON(DebugManager)
 
 #include "Transform.h"
+#include "Camera.h"
+#include "PhysicsManager.h"
+
 DebugManager::DebugManager()
 {
 }
@@ -11,6 +15,7 @@ DebugManager::DebugManager()
 DebugManager::~DebugManager()
 {
 }
+
 
 void DebugManager::DebugLog(const wstring&  _name, Transform * _trs)
 {
@@ -42,3 +47,4 @@ void DebugManager::EraseTheRecord()
 {
 	m_debugLog = L"";
 }
+

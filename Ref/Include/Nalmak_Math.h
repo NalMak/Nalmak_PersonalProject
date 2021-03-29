@@ -5,6 +5,11 @@
 
 #include "Nalmak_Include.h"
 
+struct Line
+{
+	Vector3 start, end;
+};
+
 class NALMAK_DLL Nalmak_Math
 {
 public:
@@ -105,6 +110,119 @@ public:
 	}
 
 
+	static Vector3 ClampPointToLine(Vector3 pointToClamp, Line lineToClampTo)
+	{
+		Vector3 clampedPoint = { 0,0,0 };
+		float minX, minY, minZ, maxX, maxY, maxZ;
+		if (lineToClampTo.start.x <= lineToClampTo.end.x)
+		{
+			minX = lineToClampTo.start.x;
+			maxX = lineToClampTo.end.x;
+		}
+		else
+		{
+			minX = lineToClampTo.end.x;
+			maxX = lineToClampTo.start.x;
+		}
+		if (lineToClampTo.start.y <= lineToClampTo.end.y)
+		{
+			minY = lineToClampTo.start.y;
+			maxY = lineToClampTo.end.y;
+		}
+		else
+		{
+			minY = lineToClampTo.end.y;
+			maxY = lineToClampTo.start.y;
+		}
+		if (lineToClampTo.start.z <= lineToClampTo.end.z)
+		{
+			minZ = lineToClampTo.start.z;
+			maxZ = lineToClampTo.end.z;
+		}
+		else
+		{
+			minZ = lineToClampTo.end.z;
+			maxZ = lineToClampTo.start.z;
+		}
+		clampedPoint.x = (pointToClamp.x < minX) ? minX : (pointToClamp.x > maxX) ? maxX : pointToClamp.x;
+		clampedPoint.y = (pointToClamp.y < minY) ? minY : (pointToClamp.y > maxY) ? maxY : pointToClamp.y;
+		clampedPoint.z = (pointToClamp.z < minZ) ? minZ : (pointToClamp.z > maxZ) ? maxZ : pointToClamp.z;
+
+		return clampedPoint;
+	}
+
+	static float GetDistance_BetweenLines(Line& resultLine, const Line& l1, const Line& l2)
+	{
+		Vector3 p1, p2, p3, p4, d1, d2;
+		p1 = l1.start;
+		p2 = l1.end;
+		p3 = l2.start;
+		p4 = l2.end;
+		d1 = p2 - p1;
+		d2 = p4 - p3;
+		float eq1nCoeff = (d1.x * d2.x) + (d1.y * d2.y) + (d1.z * d2.z);
+		float eq1mCoeff = (-(pow(d1.x, 2)) - (pow(d1.y, 2)) - (pow(d1.z, 2)));
+		float eq1Const = ((d1.x * p3.x) - (d1.x * p1.x) + (d1.y * p3.y) - (d1.y * p1.y) + (d1.z * p3.z) - (d1.z * p1.z));
+		float eq2nCoeff = ((pow(d2.x, 2)) + (pow(d2.y, 2)) + (pow(d2.z, 2)));
+		float eq2mCoeff = -(d1.x * d2.x) - (d1.y * d2.y) - (d1.z * d2.z);
+		float eq2Const = ((d2.x * p3.x) - (d2.x * p1.x) + (d2.y * p3.y) - (d2.y * p2.y) + (d2.z * p3.z) - (d2.z * p1.z));
+		float M[2][3] = { { eq1nCoeff, eq1mCoeff, -eq1Const },{ eq2nCoeff, eq2mCoeff, -eq2Const } };
+		int rowCount = 2;
+		// pivoting
+		for (int col = 0; col + 1 < rowCount; col++) if (M[col, col] == 0)
+			// check for zero coefficients
+		{
+			// find non-zero coefficient
+			int swapRow = col + 1;
+			for (; swapRow < rowCount; swapRow++) if (M[swapRow][col] != 0) break;
+
+			if (M[swapRow, col] != 0) // found a non-zero coefficient?
+			{
+				// yes, then swap it with the above
+				float tmp[3];
+				for (int i = 0; i < rowCount + 1; i++)
+				{
+					tmp[i] = M[swapRow][i]; M[swapRow][i] = M[col][i]; M[col][i] = tmp[i];
+				}
+			}
+			else return -1; // no, then the matrix has no unique solution
+		}
+
+		// elimination
+		for (int sourceRow = 0; sourceRow + 1 < rowCount; sourceRow++)
+		{
+			for (int destRow = sourceRow + 1; destRow < rowCount; destRow++)
+			{
+				float df = M[sourceRow][sourceRow];
+				float sf = M[destRow][sourceRow];
+				for (int i = 0; i < rowCount + 1; i++)
+					M[destRow][i] = M[destRow][i] * df - M[sourceRow][i] * sf;
+			}
+		}
+
+		// back-insertion
+		for (int row = rowCount - 1; row >= 0; row--)
+		{
+			float f = M[row][row];
+			if (f == 0)
+				return -1;
+
+			for (int i = 0; i < rowCount + 1; i++) M[row][i] /= f;
+			for (int destRow = 0; destRow < row; destRow++)
+			{
+				M[destRow][rowCount] -= M[destRow][row] * M[row][rowCount]; M[destRow][row] = 0;
+			}
+		}
+		float n = M[0][2];
+		float m = M[1][2];
+		Vector3 i1 = Vector3{ p1.x + (m * d1.x), p1.y + (m * d1.y), p1.z + (m * d1.z) };
+		Vector3 i2 = Vector3{ p3.x + (n * d2.x), p3.y + (n * d2.y), p3.z + (n * d2.z) };
+		Vector3 i1Clamped = ClampPointToLine(i1, l1);
+		Vector3 i2Clamped = ClampPointToLine(i2, l2);
+		resultLine.start = i1Clamped;
+		resultLine.end = i2Clamped;
+		return Nalmak_Math::Distance(resultLine.start, resultLine.end);
+	}
 	/*inline static bool GetInterSection2D_LineToLine(const Vector2& _p0, const Vector2& _p1,
 	const Vector2& _q0, const Vector2& _q1)
 	{

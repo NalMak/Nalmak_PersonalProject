@@ -21,6 +21,7 @@ private:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
+	virtual void PreRender() override;
 	virtual void Release() override;
 public:
 	void UpdateMatrix();
@@ -35,14 +36,13 @@ public:
 	bool		fixRotationZ = false;
 private:
 	Matrix		worldMatrix;
-	Matrix		noneScaleWorldMatrix;
 
 
 public: /* For Rendering */
 	const Matrix& GetWorldMatrix();
-	const Matrix& GetUIWorldMatrix();
-	const Matrix& GetNoneScaleWorldMatrix();
-	const Matrix& GetUINoneScaleWorldMatrix();
+	Matrix GetWorldUIMatrix();
+	Matrix GetNoneScaleWorldMatrix();
+	Matrix GetUINoneScaleWorldMatrix();
 	Vector3 GetWorldPosition();
 	Quaternion GetWorldRotation();
 	Vector3 GetForward();
