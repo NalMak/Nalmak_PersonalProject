@@ -66,7 +66,6 @@
     <ClCompile Include="..\Source\LineVI.cpp" />
     <ClCompile Include="..\Source\Material.cpp" />
     <ClCompile Include="..\Source\Mesh.cpp" />
-    <ClCompile Include="..\Source\MeshPicking.cpp" />
     <ClCompile Include="..\Source\CanvasPicking.cpp" />
     <ClCompile Include="..\Source\MeshRenderer.cpp" />
     <ClCompile Include="..\Source\Nalmak_DirectXMath.cpp" />
@@ -161,7 +160,6 @@
     <ClInclude Include="..\Include\LineVI.h" />
     <ClInclude Include="..\Include\Material.h" />
     <ClInclude Include="..\Include\Mesh.h" />
-    <ClInclude Include="..\Include\MeshPicking.h" />
     <ClInclude Include="..\Include\CanvasPicking.h" />
     <ClInclude Include="..\Include\MeshRenderer.h" />
     <ClInclude Include="..\Include\Nalmak_Define.h" />

@@ -102,7 +102,7 @@ void Core::Run()
 	m_sceneManager->PreRender();
 
 	m_sceneManager->Render();
-	m_sceneManager->PostRender();
+	//m_sceneManager->PostRender();
 	m_sceneManager->DeleteObject();
 }
 

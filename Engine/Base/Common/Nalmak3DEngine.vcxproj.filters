@@ -432,9 +432,6 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp">
       <Filter>05.Component\99.Utility\UIPicking\3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\MeshPicking.cpp">
-      <Filter>05.Component\99.Utility\UIPicking\3D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\PositionHandle.cpp">
       <Filter>05.Component\99.Utility\UIPicking\3D</Filter>
     </ClCompile>
@@ -735,9 +732,6 @@
       <Filter>05.Component\08.UI\02.Button</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\DrawGizmo.h">
-      <Filter>05.Component\99.Utility\UIPicking\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\MeshPicking.h">
       <Filter>05.Component\99.Utility\UIPicking\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\PositionHandle.h">

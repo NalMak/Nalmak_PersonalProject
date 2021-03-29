@@ -45,7 +45,6 @@ void ParticleRenderer::Initialize()
 
 	m_secPerEmit = 1 / (float)m_info.emittorCount;
 
-	m_camera = RenderManager::GetInstance()->GetMainCamera();
 }
 
 void ParticleRenderer::Update()
@@ -539,7 +538,7 @@ void ParticleRenderer::ParticleUpdate()
 		return;
 
 
-	Matrix view = m_camera->GetViewMatrix();
+	Matrix view = RenderManager::GetInstance()->GetMainCamera()->GetViewMatrix();
 	Matrix billboard;
 	D3DXMatrixIdentity(&billboard);
 

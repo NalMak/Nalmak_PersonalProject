@@ -85,7 +85,6 @@ private:
 
 	Burst* m_currentBurst;
 	float m_spriteIndexRatio;
-	class Camera* m_camera;
 private:
 	DynamicInstanceBuffer<INPUT_LAYOUT_PARTICLE> * m_instanceBuffer;
 	void ParticleUpdate();

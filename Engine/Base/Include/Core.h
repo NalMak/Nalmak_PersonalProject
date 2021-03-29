@@ -50,7 +50,6 @@
 #include "PointLight.h"
 #include "CanvasRenderer.h"
 #include "SingleImage.h"
-#include "MeshPicking.h"
 #include "CanvasPicking.h"
 #include "DeviceManager.h"
 #include "RenderManager.h"

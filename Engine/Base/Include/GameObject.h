@@ -171,6 +171,7 @@ private:
 	void Update() override;
 	void LateUpdate() override;
 	void PreRender() override;
+	void PostRender() override;
 	void Release() override;
 
 	void OnTriggerEnter(Collisions& _col) override;

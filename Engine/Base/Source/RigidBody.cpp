@@ -22,10 +22,6 @@ void RigidBody::Initialize()
 
 void RigidBody::Update()
 {
-	if (m_gameObject->IsStatic())
-		return;
-
-	SetWorldTransform();
 }
 
 void RigidBody::LateUpdate()
@@ -35,12 +31,23 @@ void RigidBody::LateUpdate()
 
 	m_transform->position = GetWorldPosition();
 	m_transform->rotation = GetWorldRotation();
-
 }
+
+
 
 void RigidBody::Release()
 {
 	PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
+}
+
+void RigidBody::OnEnable()
+{
+	m_rigid->wakeUp();
+}
+
+void RigidBody::OnDisable()
+{
+	m_rigid->putToSleep();
 }
 
 void RigidBody::AddForce(const Vector3 & _force)
@@ -70,6 +77,19 @@ void RigidBody::SetAngularVelocity(const Vector3 & _velocity)
 
 void RigidBody::SetGravity(bool _gravity)
 {
+}
+
+void RigidBody::SetWorldPosition(const Vector3 & _pos)
+{
+	if (!m_rigid)
+		return;
+
+	Quaternion rot = m_transform->GetWorldRotation();
+	PxTransform trs;
+	trs.p = { _pos.x, _pos.y, _pos.z };
+	trs.q = { rot.x,rot.y,rot.z,rot.w };
+	m_rigid->setGlobalPose(trs);
+	
 }
 
 
@@ -104,6 +124,26 @@ void RigidBody::SetWorldTransform()
 {
 	auto pos = m_transform->GetWorldPosition();
 	auto rot = m_transform->GetWorldRotation();
+	PxTransform trs;
+	trs.p = { pos.x, pos.y, pos.z };
+	trs.q = { rot.x,rot.y,rot.z,rot.w };
+	m_rigid->setGlobalPose(trs);
+}
+
+void RigidBody::SetWorldRotation(const Quaternion& _rot)
+{
+	auto pos = m_transform->GetWorldPosition();
+	auto rot = _rot;
+	PxTransform trs;
+	trs.p = { pos.x, pos.y, pos.z };
+	trs.q = { rot.x,rot.y,rot.z,rot.w };
+	m_rigid->setGlobalPose(trs);
+}
+
+void RigidBody::SetWorldPositionAndRotation(const Vector3 & _pos, const Quaternion & _rot)
+{
+	auto pos = _pos;
+	auto rot = _rot;
 	PxTransform trs;
 	trs.p = { pos.x, pos.y, pos.z };
 	trs.q = { rot.x,rot.y,rot.z,rot.w };

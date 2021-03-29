@@ -259,6 +259,17 @@ void GameObject::PreRender()
 	}
 }
 
+void GameObject::PostRender()
+{
+	for (auto& component : m_components)
+	{
+		if (component.second->m_isActive)
+		{
+			component.second->PostRender();
+		}
+	}
+}
+
 
 void GameObject::Release()
 {

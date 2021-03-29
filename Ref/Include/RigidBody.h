@@ -11,7 +11,7 @@ public:
 	struct Desc
 	{
 		float density = 1;
-		float damping = 1;
+		float damping = 0.1f;
 		bool isGravity = true;
 		bool isKinematic = false;
 	};
@@ -24,7 +24,8 @@ public:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
-
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 public:
 	void AddForce(const Vector3& _force);
 	void AddVelocity(const Vector3& _force);
@@ -40,6 +41,10 @@ public:
 	void SetRigidBody(PxRigidDynamic* _rigid);
 	void SetTrigger(bool _trigger);
 	void SetWorldTransform();
+	void SetWorldPosition(const Vector3& _pos);
+	void SetWorldRotation(const Quaternion& _rot);
+	void SetWorldPositionAndRotation(const Vector3& _pos, const Quaternion& _rot);
+
 public:
 	Vector3 GetWorldPosition();
 	Quaternion GetWorldRotation();

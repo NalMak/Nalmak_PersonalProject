@@ -19,6 +19,13 @@ public:
 		PICKING_TYPE_LOOK,
 		PICKING_TYPE_MAX
 	};
+	enum GIZMO_TYPE
+	{
+		GIZMO_TYPE_POSITION,
+		GIZMO_TYPE_ROTATION,
+		GIZMO_TYPE_SCALE,
+		GIZMO_TYPE_MAX
+	};
 public:
 	DebuggingMode(Desc* _desc);
 	~DebuggingMode();
@@ -44,7 +51,7 @@ private:
 	class GameObject* m_pickingGizmo[3];
 	class GameObject* m_pickingGizmoBase;
 	PICKING_TYPE m_pickingType;
-
+	GIZMO_TYPE m_gizmoType;
 private:
 	void CheckPicking();
 	void CheckFreeCamera();
@@ -55,7 +62,10 @@ private:
 	void CheckTimeStop();
 	void UpdateMaterial();
 	void UpdateDesc();
-	void PickingObject();
+	void PickObject();
+	void DeletePicking();
+	void UpdateOutLine();
+	void UpdatePickingObject();
 	DebuggingMode::PICKING_TYPE IsGizmoPicking();
 };
 

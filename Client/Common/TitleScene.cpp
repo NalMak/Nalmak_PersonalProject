@@ -26,7 +26,7 @@ void TitleScene::Initialize()
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"box";
-	INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<BoxCollider>()->AddComponent<MeshRenderer>(&render);
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0);
 
 	for (int i = 0; i < 10; ++i)
 	{

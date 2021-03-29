@@ -26,7 +26,7 @@ private:
 	Material* m_debugMaterial[3];
 
 private:
-	const UINT m_maxLineCount = 0;
+	const UINT m_maxLineCount = 32;
 	UINT m_lineCount;
 	bool m_isLineRender;
 };

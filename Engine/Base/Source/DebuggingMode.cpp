@@ -22,6 +22,8 @@ DebuggingMode::DebuggingMode(Desc * _desc)
 	m_pickingObj = nullptr;
 	m_pickingOutLine = nullptr;
 	m_pickingType = PICKING_TYPE_NONE;
+	m_gizmoType = GIZMO_TYPE_POSITION;
+
 }
 
 DebuggingMode::~DebuggingMode()
@@ -43,14 +45,9 @@ void DebuggingMode::Initialize()
 	auto debugDesc = INSTANTIATE()->AddComponent<Text>(&text)->AddComponent<CanvasRenderer>()->SetPosition(300, 0);
 	m_debugModeDescObject = debugDesc->GetComponent<Text>();
 #pragma endregion Debug Desc
-
-
-
 #pragma region Debug Log
 	m_debugLog = INSTANTIATE()->AddComponent<SystemInfo>();
 #pragma endregion Debug Log
-
-
 #pragma region Grid
 	{
 		MeshRenderer::Desc render;
@@ -63,7 +60,7 @@ void DebuggingMode::Initialize()
 #pragma region Free Camera
 	m_mainCam = RenderManager::GetInstance()->GetMainCamera()->GetGameObject();
 	assert(L"Can't find main Cam" && m_mainCam);
-	m_debugCam = INSTANTIATE(L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>();
+	m_debugCam = INSTANTIATE(L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>()->AddComponent<DebugObject>();
 	m_debugCam->SetActive(false);
 #pragma endregion Free Camera
 #pragma region RenderTarget
@@ -84,23 +81,30 @@ void DebuggingMode::Initialize()
 		++i;
 	}
 #pragma endregion RenderTarget
-	DirectoryMonitoring::Desc directory;
-	directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
-	INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
-
-	MeshRenderer::Desc render;
-	render.mtrlName = L"SYS_OutLine";
-	auto obj = INSTANTIATE(L"OutLine")->AddComponent<MeshRenderer>(&render)->SetScale(0,0,0)->SetPosition(0,0,0)->AddComponent<DebugObject>();
-	m_pickingOutLine = obj->GetComponent<MeshRenderer>();
-	m_pickingOutLine->SetPickingEnable(false);
-
+#pragma region DirectoryMonitoring
+	{
+		DirectoryMonitoring::Desc directory;
+		directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+		INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
+	}
+#pragma endregion DirectoryMonitoring
+#pragma region OutLine
+	{
+		MeshRenderer::Desc render;
+		render.mtrlName = L"SYS_OutLine";
+		auto obj = INSTANTIATE(L"OutLine")->AddComponent<MeshRenderer>(&render)->SetScale(0, 0, 0)->SetPosition(0, 0, 0);
+		m_pickingOutLine = obj->GetComponent<MeshRenderer>();
+		m_pickingOutLine->SetPickingEnable(false);
+	}
+#pragma endregion OutLine
 #pragma region Picking Gizmo
 	{
-		m_pickingGizmoBase = INSTANTIATE();
+		m_pickingGizmoBase = INSTANTIATE()->AddComponent<DrawGizmo>();
 
 		MeshRenderer::Desc render;
+		render.meshName = L"pyramid";
 		render.mtrlName = L"SYS_Picking_Red";
-		m_pickingGizmo[0] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(2, 0, 0)->SetScale(0.3f, 0.3f, 0.3f);
+		m_pickingGizmo[0] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(2, 0, 0)->SetScale(0.3f, 0.3f, 0.3f)->SetRotation(0,0,-90);
 		m_pickingGizmo[0]->SetParents(m_pickingGizmoBase);
 
 		render.mtrlName = L"SYS_Picking_Green";
@@ -108,13 +112,11 @@ void DebuggingMode::Initialize()
 		m_pickingGizmo[1]->SetParents(m_pickingGizmoBase);
 
 		render.mtrlName = L"SYS_Picking_Blue";
-		m_pickingGizmo[2] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 0, 2)->SetScale(0.3f, 0.3f, 0.3f);
+		m_pickingGizmo[2] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 0, 2)->SetScale(0.3f, 0.3f, 0.3f)->SetRotation(90, 0, 0);
 		m_pickingGizmo[2]->SetParents(m_pickingGizmoBase);
 
-		for (int i = 0; i < 3; ++i)
-		{
-			m_pickingGizmo[i]->SetActive(false);
-		}
+		m_pickingGizmoBase->SetActive(false);
+		
 	}
 #pragma endregion Picking Gizmo
 
@@ -155,31 +157,44 @@ void DebuggingMode::Update()
 
 	if (m_debuggingMode.Check(DEBUGGING_MODE_PICKING))
 	{
+		if (m_input->GetKeyDown(KEY_STATE_1))
+		{
+			m_gizmoType = GIZMO_TYPE_POSITION;
+			for (int i = 0; i < 3; ++i)
+			{
+				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"pyramid");
+			}
+		}
+		if (m_input->GetKeyDown(KEY_STATE_2))
+		{
+			m_gizmoType = GIZMO_TYPE_ROTATION;
+			for (int i = 0; i < 3; ++i)
+			{
+				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"sphere");
+			}
+		}
+		if (m_input->GetKeyDown(KEY_STATE_3))
+		{
+			m_gizmoType = GIZMO_TYPE_SCALE;
+			for (int i = 0; i < 3; ++i)
+			{
+				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"box");
+			}
+		}
+
 		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
 		{
-			PickingObject();
+			PickObject();
 		}
 
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 		{
-			if (m_pickingType != PICKING_TYPE_NONE)
+			if (m_pickingObj)
 			{
-				Camera* currentCam;
-				if (m_debuggingMode.Check(DEBUGGING_MODE_FREE_CAMERA))
-					currentCam = m_debugCam->GetComponent<Camera>();
-				else
-					currentCam = m_mainCam->GetComponent<Camera>();
-
-				Vector2 screenCenterPos = currentCam->WorldToScreenPos(m_pickingObj->GetTransform()->GetWorldPosition());
-				Vector2 screenTargetPos = currentCam->WorldToScreenPos(m_pickingGizmo[m_pickingType]->GetTransform()->GetWorldPosition());
-				Line result;
-				Line l1, l2;
-				l1.start = m_pickingObj->GetTransform()->GetWorldPosition();
-				l1.end = l1.start + m_pickingObj->GetTransform()->GetForward() * 100;
-				l2.start = currentCam->GetTransform()->GetWorldPosition();
-				l2.end = l2.start + currentCam->GetCamToMouseWorldDirection() * 100;
-				float distance = Nalmak_Math::GetDistance_BetweenLines(result, l1, l2);
-				DEBUG_LOG(L"°Å¸®", distance);
+				if (m_pickingType != PICKING_TYPE_NONE)
+				{
+					UpdatePickingObject();
+				}
 			}
 		}
 
@@ -248,8 +263,7 @@ void DebuggingMode::CheckPicking()
 	{
 		if (m_pickingObj)
 		{
-			m_pickingObj->DeleteComponent<DebugObject>();
-			m_pickingObj = nullptr;
+			DeletePicking();
 		}
 	}
 }
@@ -330,10 +344,17 @@ void DebuggingMode::UpdateDesc()
 
 	debugDesc += L"F5 -  ";
 	if (m_debuggingMode.Check(DEBUGGING_MODE_PICKING))
+	{
 		debugDesc += L"(On)  ";
+		debugDesc += L"\n 1. Position \n";
+		debugDesc += L" 2. Rotation \n";
+		debugDesc += L" 3. Scale \n";
+	}
 	else
 		debugDesc += L"(Off) ";
 	debugDesc += L"Picking \n";
+	
+
 
 	debugDesc += L"F6 -  ";
 	if (m_debuggingMode.Check(DEBUGGING_MODE_RENDERTARGET))
@@ -364,7 +385,7 @@ void DebuggingMode::UpdateDesc()
 	m_debugModeDescObject->SetText(debugDesc);
 }
 
-void DebuggingMode::PickingObject()
+void DebuggingMode::PickObject()
 {
 	m_pickingType = IsGizmoPicking();
 	if (m_pickingType !=  DebuggingMode::PICKING_TYPE_NONE)
@@ -388,32 +409,132 @@ void DebuggingMode::PickingObject()
 			m_pickingGizmoBase->GetTransform()->SetPosition(0, 0, 0);
 			m_pickingGizmoBase->GetTransform()->rotation = { 0, 0, 0, 1 };
 
-			for (int i = 0; i < 3; ++i)
-			{
-				m_pickingGizmo[i]->SetActive(true);
-			}
+			m_pickingGizmoBase->SetActive(true);
+		
 
 			//m_pickingObj->GetComponent<DebugObject>()->SetEnablePicking();
 			Mesh* mesh = m_pickingObj->GetComponent<MeshRenderer>()->GetMesh();
 			m_pickingOutLine->SetMesh(mesh);
-			m_pickingOutLine->GetTransform()->SetScale(m_pickingObj->GetTransform()->scale);
 			m_pickingOutLine->GetTransform()->SetParents(m_pickingObj);
-			m_pickingOutLine->GetTransform()->SetPosition(0, 0, 0);
-			m_pickingOutLine->GetTransform()->SetRotation(0, 0, 0);
+			UpdateOutLine();
 
 		}
 	}
 	else if (m_pickingObj)
+	{
+		DeletePicking();
+	}
+}
+
+void DebuggingMode::DeletePicking()
+{
+	if (m_pickingObj)
 	{
 		m_pickingObj->DeleteComponent<DebugObject>();
 		m_pickingObj = nullptr;
 		m_pickingOutLine->GetTransform()->SetScale(Vector3(0, 0, 0));
 
 		m_pickingGizmoBase->GetTransform()->DeleteParent();
-		for (int i = 0; i < 3; ++i)
+		m_pickingGizmoBase->SetActive(false);
+	}
+}
+
+void DebuggingMode::UpdateOutLine()
+{
+	if (!m_pickingObj)
+		return;
+
+	m_pickingOutLine->GetTransform()->SetScale(m_pickingObj->GetTransform()->scale);
+	m_pickingOutLine->GetTransform()->SetPosition(0, 0, 0);
+	m_pickingOutLine->GetTransform()->SetRotation(0, 0, 0);
+}
+
+void DebuggingMode::UpdatePickingObject()
+{
+	Camera* currentCam;
+	if (m_debuggingMode.Check(DEBUGGING_MODE_FREE_CAMERA))
+		currentCam = m_debugCam->GetComponent<Camera>();
+	else
+		currentCam = m_mainCam->GetComponent<Camera>();
+
+	Line l1, l2, result;
+	Vector3 objPos = m_pickingObj->GetTransform()->GetWorldPosition();
+	Vector3 dir;
+	if (m_pickingType == PICKING_TYPE_RIGHT)
+		dir = m_pickingObj->GetTransform()->GetRight();
+	else if (m_pickingType == PICKING_TYPE_UP)
+		dir = m_pickingObj->GetTransform()->GetUp();
+	else if (m_pickingType == PICKING_TYPE_LOOK)
+		dir = m_pickingObj->GetTransform()->GetForward();
+	l1.start = objPos - dir * 1000;
+	l1.end = objPos + dir * 1000;
+	l2.start = currentCam->GetTransform()->GetWorldPosition();
+	l2.end = l2.start + currentCam->GetCamToMouseWorldDirection() * 1000;
+	float distance = Nalmak_Math::GetDistance_LineToLine(result, l1, l2);
+	auto rigid = m_pickingObj->GetComponent<RigidBody>();
+
+	switch (m_gizmoType)
+	{
+	case DebuggingMode::GIZMO_TYPE_POSITION:
+	{
+		m_pickingObj->SetPosition(result.start - dir * 2);
+		if (rigid)
 		{
-			m_pickingGizmo[i]->SetActive(false);
+			rigid->SetWorldPositionAndRotation(result.start - dir * 2, m_pickingObj->GetTransform()->GetWorldRotation());
+			rigid->SetAngularVelocity({ 0,0,0 });
+			rigid->SetVelocity({ 0,0,0 });
 		}
+		break;
+	}
+	case DebuggingMode::GIZMO_TYPE_ROTATION:
+	{
+		Vector3 rotDir = result.start - (m_pickingObj->GetTransform()->GetWorldPosition() + dir * 2);
+
+		float ratio = Nalmak_Math::Length(rotDir) / Nalmak_Math::Length(dir) * 3.f;
+		if (rotDir.x * dir.x < 0 || rotDir.y * dir.y < 0 || rotDir.z * dir.z < 0)
+			ratio *= -1.f;
+		Quaternion rot;
+		D3DXQuaternionRotationAxis(&rot, &dir, dTime * ratio);
+		m_pickingObj->GetTransform()->rotation *= rot;
+
+		if (rigid)
+		{
+			rigid->SetWorldPositionAndRotation(m_pickingObj->GetTransform()->GetWorldPosition(), m_pickingObj->GetTransform()->rotation);
+			rigid->SetAngularVelocity({ 0,0,0 });
+			rigid->SetVelocity({ 0,0,0 });
+		}
+		break;
+	}
+	case DebuggingMode::GIZMO_TYPE_SCALE:
+	{
+		Vector3 scaleDir = result.start - (m_pickingObj->GetTransform()->GetWorldPosition() + dir * 2);
+
+		float ratio = Nalmak_Math::Length(scaleDir) / Nalmak_Math::Length(dir) * 0.2f;
+		if (scaleDir.x * dir.x < 0 || scaleDir.y * dir.y < 0 || scaleDir.z * dir.z < 0)
+			ratio *= -1.f;
+
+
+		if (m_pickingType == PICKING_TYPE_RIGHT)
+		{
+			if (m_pickingObj->GetTransform()->scale.x + dTime * ratio > 0)
+				m_pickingObj->GetTransform()->scale.x += dTime * ratio;
+		}
+		else if (m_pickingType == PICKING_TYPE_UP)
+		{
+			if (m_pickingObj->GetTransform()->scale.y + dTime * ratio > 0)
+				m_pickingObj->GetTransform()->scale.y += dTime * ratio;
+		}
+		else if (m_pickingType == PICKING_TYPE_LOOK)
+		{
+			if (m_pickingObj->GetTransform()->scale.z + dTime * ratio > 0)
+				m_pickingObj->GetTransform()->scale.z += dTime * ratio;
+		}
+
+		UpdateOutLine();
+		break;
+	}
+	default:
+		break;
 	}
 }
 
