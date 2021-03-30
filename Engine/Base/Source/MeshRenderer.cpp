@@ -45,8 +45,9 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 
 	for (UINT i = 0; i < m_mesh->GetSubsetCount(); ++i)
 	{
+		
 		Material* currentMaterial;
-		if (m_materials.size() < i)
+		if (m_materials.size() > i)
 			currentMaterial = m_materials[i];
 		else
 			currentMaterial = m_materials.back();
