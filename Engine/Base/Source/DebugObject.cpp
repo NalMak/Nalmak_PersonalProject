@@ -29,11 +29,11 @@ void DebugObject::LateUpdate()
 {
 	DEBUG_LOG(m_gameObject->GetName(), m_transform);
 
-	Matrix world = m_transform->GetWorldMatrix();
-	Vector3 worldPos = { world._41,world._42 ,world._43 };
-	m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._11, world._12, world._13)), DEBUG_COLOR_RED);	// right
-	m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._21, world._22, world._23)), DEBUG_COLOR_GREEN);	// up
-	m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._31, world._32, world._33)), DEBUG_COLOR_BLUE);	// forward
+	//Matrix world = m_transform->GetWorldMatrix();
+	//Vector3 worldPos = { world._41,world._42 ,world._43 };
+	//m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._11, world._12, world._13)), DEBUG_COLOR_RED);	// right
+	//m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._21, world._22, world._23)), DEBUG_COLOR_GREEN);	// up
+	//m_line->DrawLine(worldPos, worldPos + Nalmak_Math::Normalize(Vector3(world._31, world._32, world._33)), DEBUG_COLOR_BLUE);	// forward
 }
 
 

@@ -18,7 +18,7 @@ public:
 private:
 	virtual void Release() override;
 public:
-	virtual void Draw() override;
+	virtual void Draw(UINT subset = 0) override;
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
 
 protected:

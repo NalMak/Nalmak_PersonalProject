@@ -64,21 +64,27 @@ void CanvasRenderer::Release()
 	
 }
 
-void CanvasRenderer::Render(Shader * _shader)
+void CanvasRenderer::Render(ConstantBuffer& _cBuffer)
 {
-	Shader*	currentShader = m_material->GetShader();
+	BindingStreamSource();
 
-	assert("Current Shader is nullptr! " && currentShader);
+	m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	m_renderManager->UpdateRenderTarget();
 
-	currentShader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
+	Shader* shader = m_material->GetShader();
+
+	assert("Current Shader is nullptr! " && shader);
+
+	shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
 	auto images = GetComponents<SingleImage>();
+
 	for (int i = 0; i < images.size(); ++i)
 	{
-		currentShader->SetTexture("g_mainTex", images[i]->GetTexture());
-		currentShader->SetVector("g_mainTexColor", images[i]->GetColor());
+		shader->SetTexture("g_mainTex", images[i]->GetTexture());
+		shader->SetVector("g_mainTexColor", images[i]->GetColor());
 
-		currentShader->CommitChanges();
+		shader->CommitChanges();
 
 		m_mesh->Draw();
 	}

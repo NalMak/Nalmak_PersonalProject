@@ -116,12 +116,9 @@ void StaticMesh::Release()
 	SAFE_RELEASE(m_originMesh);
 }
 
-void StaticMesh::Draw()
+void StaticMesh::Draw(UINT _subset)
 {
-	for (unsigned int i = 0; i < m_subsetCount; ++i)
-	{
-		m_mesh->DrawSubset(i);
-	}
+	m_mesh->DrawSubset(_subset);
 }
 
 void StaticMesh::BindingStreamSource(unsigned int _inputLayoutSize)

@@ -68,14 +68,21 @@ void Terrain::Release()
 	SAFE_DELETE_ARR(m_vertexInfo);
 }
 
-void Terrain::Render(Shader * _shader)
+void Terrain::Render(ConstantBuffer& _cBuffer)
 {
-	assert("Current Shader is nullptr! " && _shader);
+	BindingStreamSource();
+
+	m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	m_renderManager->UpdateRenderTarget();
+
+	Shader* shader = m_material->GetShader();
+
+	assert("Current Shader is nullptr! " && shader);
 
 	m_transform->UpdateMatrix();
-	_shader->SetMatrix("g_world", GetTransform()->GetWorldMatrix());
+	shader->SetMatrix("g_world", GetTransform()->GetWorldMatrix());
 
-	_shader->CommitChanges();				   // BeginPass 호출시 반드시 그리기 전에 호출
+	shader->CommitChanges();				   // BeginPass 호출시 반드시 그리기 전에 호출
 												   ////////////////////////////////////////////////////////////////////////////////////
 												   // DrawPrimitive (index 사용 x)
 												   // Type, 이번에 이용될 인데스, 최소 참조갯수, 호출될 버텍스 수, 인덱스 버퍼내에서 읽기 시작할 인덱스, 그리는 도형 수

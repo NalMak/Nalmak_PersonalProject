@@ -115,8 +115,11 @@ private:
 
 private:
 	Shader* m_screenImageShader;
-private:
+public:
 	void UpdateMaterial(Material* _material, ConstantBuffer& _cBuffer);
+	void UpdateRenderTarget();
+private:
+	void UpdateRenderTarget(Shader* _shader);
 	void UpdateNoneAlphaMaterial(Material* _material, ConstantBuffer& _cBuffer);
 	void UpdateBlendingMode(Material * _material);
 	void UpdateBlendingMode(BLENDING_MODE _blending);
@@ -124,8 +127,6 @@ private:
 	void UpdateFillMode(Material* _material);
 	void UpdateFillMode(FILL_MODE _fillMode);
 
-	void UpdateRenderTarget();
-	void UpdateRenderTarget(Shader* _shader);
 	void EndRenderTarget();
 	void UpdateShader(Shader* _shader, ConstantBuffer& _cBuffer);
 private:

@@ -16,7 +16,7 @@ private:
 	LPD3DXBUFFER		m_adjacency;
 	LPD3DXBUFFER		m_subset;
 public:
-	virtual void Draw() override;
+	virtual void Draw(UINT _subset = 0) override;
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
 
 };

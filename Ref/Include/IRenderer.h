@@ -23,7 +23,7 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override = 0;
 public:
-	virtual void Render(Shader* _shader) = 0;
+	virtual void Render(ConstantBuffer& _cBuffer) = 0;
 	virtual void BindingStreamSource() = 0;
 public:
 	void RenderRequest();
@@ -54,7 +54,8 @@ public:
 	void SetFrustumCulling(bool _culling) { m_isFrustumCulling = _culling; }
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
 
-
+protected:
+	class RenderManager* m_renderManager = nullptr;
 };
 
 END

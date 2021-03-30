@@ -12,7 +12,7 @@ public:
 	virtual void Release() override = 0;
 
 public:
-	virtual void Draw() = 0;
+	virtual void Draw(UINT subset = 0) = 0;
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) = 0;
 protected:
 

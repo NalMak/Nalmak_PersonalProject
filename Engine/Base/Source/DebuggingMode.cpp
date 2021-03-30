@@ -490,7 +490,7 @@ void DebuggingMode::UpdatePickingObject()
 	{
 		Vector3 rotDir = result.start - (m_pickingObj->GetTransform()->GetWorldPosition() + dir * 2);
 
-		float ratio = Nalmak_Math::Length(rotDir) / Nalmak_Math::Length(dir) * 3.f;
+		float ratio = Nalmak_Math::Length(rotDir) / Nalmak_Math::Length(dir) * 1.f;
 		if (rotDir.x * dir.x < 0 || rotDir.y * dir.y < 0 || rotDir.z * dir.z < 0)
 			ratio *= -1.f;
 		Quaternion rot;

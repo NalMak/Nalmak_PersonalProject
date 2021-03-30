@@ -372,12 +372,7 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->BindingStreamSource();
-
-					Material* material = renderer->GetMaterial(0);
-					UpdateMaterial(material, _cBuffer);
-					UpdateRenderTarget();
-					renderer->Render(m_currentShader);
+					renderer->Render(_cBuffer);
 				}
 			}
 		}
@@ -410,12 +405,7 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->BindingStreamSource();
-
-					Material* material = renderer->GetMaterial(0);
-					UpdateMaterial(material, _cBuffer);
-					UpdateRenderTarget();
-					renderer->Render(m_currentShader);
+					renderer->Render(_cBuffer);
 				}
 			}
 		}
@@ -447,12 +437,7 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 		{
 			if (_cam->IsInFrustumCulling(renderer))
 			{
-				renderer->BindingStreamSource();
-
-				Material* material = renderer->GetMaterial();
-				UpdateMaterial(material, _cBuffer);
-				//UpdateRenderTarget();
-				renderer->Render(m_currentShader);
+				renderer->Render(_cBuffer);
 			}
 		}
 	}
@@ -479,12 +464,7 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->BindingStreamSource();
-
-					Material* material = renderer->GetMaterial(0);
-					UpdateMaterial(material, _cBuffer);
-					UpdateRenderTarget();
-					renderer->Render(m_currentShader);
+					renderer->Render(_cBuffer);
 				}
 			}
 		}
@@ -923,6 +903,11 @@ void RenderManager::SetWindowSize(UINT _x, UINT _y)
 
 	m_halfWincx = (UINT)(m_wincx * 0.5f);
 	m_halfWincy = (UINT)(m_wincy * 0.5f);
+
+	for (auto& cam : m_cameraList)
+	{
+		cam->UpdateProjMatrix();
+	}
 }
 
 Camera * RenderManager::GetMainCamera()

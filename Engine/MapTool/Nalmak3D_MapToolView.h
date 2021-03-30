@@ -44,6 +44,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+private:
+	CNalmak3D_MapToolView* m_myView = nullptr;
 };
 
 #ifndef _DEBUG  // Nalmak3D_MapToolView.cpp의 디버그 버전

@@ -19,7 +19,16 @@ public:
 		str.Format(L"%d", _value);
 		_edit->SetWindowTextW(str);
 	}
-	
+	static Vector2 GetMFCWindowSize(CView* _view)
+	{
+		RECT rcView = {};
+		_view->GetWindowRect(&rcView);
+		SetRect(&rcView, 0, 0, rcView.right - rcView.left, rcView.bottom - rcView.top);
+		
+		Vector2 windowSize = { (float)rcView.right, (float)rcView.bottom };
+
+		return windowSize;
+	}
 	 
 };
 

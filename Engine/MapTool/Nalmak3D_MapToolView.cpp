@@ -13,6 +13,7 @@
 #include "Nalmak3D_MapToolView.h"
 #include "MainFrm.h"
 #include "BaseScene.h"
+#include "MFC_Utility.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +61,11 @@ void CNalmak3D_MapToolView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
+	if (m_myView)
+	{
+		Vector2 window = MFC_Utility::GetMFCWindowSize(m_myView);
+		Core::GetInstance()->SetWindowSize(window.x, window.y);
+	}
 	Core::GetInstance()->Run();
 }
 
@@ -134,6 +140,8 @@ void CNalmak3D_MapToolView::OnInitialUpdate()
 	Core::GetInstance()->Initialize(g_hInst, g_hWnd, &core, AfxGetMainWnd()->m_hWnd);
 	Core::GetInstance()->AddScene(L"scene", Scene::Instantiate<BaseScene>());
 	Core::GetInstance()->SetStartScene(L"scene");
+
+	m_myView = this;
 
 	SetTimer(1, 10, NULL);
 

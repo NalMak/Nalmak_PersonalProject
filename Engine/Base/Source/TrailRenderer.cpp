@@ -1,5 +1,6 @@
 #include "TrailRenderer.h"
 #include "Transform.h"
+#include "RenderManager.h"
 
 TrailRenderer::TrailRenderer(Desc * _desc)
 {
@@ -97,13 +98,21 @@ void TrailRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void TrailRenderer::Render(Shader * _shader)
+void TrailRenderer::Render(ConstantBuffer& _cBuffer)
 {
 	if (m_currentTrailCount < 3) 
 		return;
-	assert("Current Shader is nullptr! " && _shader);
 
-	_shader->CommitChanges();
+	BindingStreamSource();
+
+	m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	m_renderManager->UpdateRenderTarget();
+
+	Shader* shader = m_material->GetShader();
+	assert("Current Shader is nullptr! " && shader);
+
+	shader->CommitChanges();
+
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, 2 * m_currentTrailCount * m_catmullrom_divideCount + 2, 0, m_currentTrailCount * m_catmullrom_divideCount * 2));
 
 }

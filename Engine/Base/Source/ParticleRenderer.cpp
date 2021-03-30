@@ -164,14 +164,21 @@ void ParticleRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void ParticleRenderer::Render(Shader * _shader)
+void ParticleRenderer::Render(ConstantBuffer& _cBuffer)
 {
 	if (m_currentCount == 0)
 		return;
 
-	assert("Current Shader is nullptr! " && _shader);
+	BindingStreamSource();
 
-	_shader->CommitChanges();
+	m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	m_renderManager->UpdateRenderTarget();
+
+	Shader* shader = m_material->GetShader();
+	assert("Current Shader is nullptr! " && shader);
+
+	shader->CommitChanges();
+
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_viBuffer->GetPrimitiveType(), 0, 0, 4 * m_currentCount, 0, m_viBuffer->GetFigureCount()));
 
 	ThrowIfFailed(m_device->SetStreamSourceFreq(0, 1));

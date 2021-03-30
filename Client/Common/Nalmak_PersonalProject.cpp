@@ -25,8 +25,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 	//_CrtSetBreakAlloc(48628);
 
-   
-
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_NALMAK_PERSONALPROJECT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);

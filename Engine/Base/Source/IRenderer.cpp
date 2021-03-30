@@ -3,12 +3,14 @@
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "Transform.h"
+#include "MeshRenderer.h"
 
 USING(Nalmak)
 
 IRenderer::IRenderer()
 {
 	m_device = DeviceManager::GetInstance()->GetDevice();
+	m_renderManager = RenderManager::GetInstance();
 }
 
 

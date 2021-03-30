@@ -29,7 +29,7 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 public:
-	virtual void Render(Shader* _shader) override;
+	virtual void Render(ConstantBuffer& _cBuffer) override;
 private:
 	virtual void BindingStreamSource();
 public:

@@ -1,8 +1,10 @@
-#include "..\Include\MeshRenderer.h"
+#include "MeshRenderer.h"
 #include "ResourceManager.h"
 #include "Transform.h"
 #include "Animator.h"
 #include "StaticMesh.h"
+#include "IRenderer.h"
+#include "RenderManager.h"
 
 MeshRenderer::MeshRenderer(Desc * _desc)
 {
@@ -37,15 +39,30 @@ void MeshRenderer::Release()
 {
 }
 
-void MeshRenderer::Render(Shader* _shader)
+void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 {
-	assert("Current Shader is nullptr! " && _shader);
+	BindingStreamSource();
 
-	_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+	for (UINT i = 0; i < m_mesh->GetSubsetCount(); ++i)
+	{
+		Material* currentMaterial;
+		if (m_materials.size() < i)
+			currentMaterial = m_materials[i];
+		else
+			currentMaterial = m_materials.back();
+		m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
+		m_renderManager->UpdateRenderTarget();
 
-	_shader->CommitChanges();		
+		Shader* shader = currentMaterial->GetShader();
+		assert("Current Shader is nullptr! " && shader);
 
-	m_mesh->Draw();
+		shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+
+		shader->CommitChanges();
+
+		m_mesh->Draw(i);
+	}
+	
 }
 
 void MeshRenderer::BindingStreamSource()

@@ -38,7 +38,7 @@ void VIBuffer::Release()
 	SAFE_DELETE_ARR(m_vertexPositionData);
 }
 
-void VIBuffer::Draw()
+void VIBuffer::Draw(UINT subset)
 {
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_primitiveType, 0, 0, GetVertexCount(), 0, GetFigureCount()));
 }
