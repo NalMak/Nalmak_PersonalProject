@@ -14,13 +14,17 @@ private:
 	GameObject* m_selectedObject = nullptr;
 	vector<GameObject*> m_createdOnMapObjectList;
 	Nalmak3D_MapControlView* m_controlView;
+	DebuggingMode* m_debugHelper;
 public:
+	void SetDebuggingMode(DebuggingMode* _debuggingMode);
 	void SetControlView(Nalmak3D_MapControlView* _view);
 	void CreateObject(GameObject* _obj);
 	void DeleteObject(int _num);
 	size_t GetObjectCount();
 	void SelectObject(GameObject* _obj);
 	void SeleteObject(int _index);
+	void UpdateSelectObjectTransform(GameObject* _obj);
 	GameObject* GetSelectedObject();
+	DebuggingMode* GetDebuggingObject();
 };
 

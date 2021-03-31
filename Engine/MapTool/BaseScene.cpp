@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BaseScene.h"
+#include "MapToolManager.h"
 
 
 BaseScene::BaseScene()
@@ -22,7 +23,7 @@ void BaseScene::Initialize()
 
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f);
 
-	INSTANTIATE()->AddComponent<DebuggingMode>();
-
+	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>();
+	MapToolManager::GetInstance()->SetDebuggingMode(debug->GetComponent<DebuggingMode>());
 	
 }

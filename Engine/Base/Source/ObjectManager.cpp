@@ -214,7 +214,7 @@ void ObjectManager::ChangeTag(_OBJECT_TAG _tag, GameObject * _obj)
 			break;
 		}
 		if (iter_begin == m_gameObjectLists[_obj->GetTag()].end())
-			assert("List in Object null" && 0);
+			assert("Can't find object  in List " && 0);
 	}
 
 	m_gameObjectLists[_tag].emplace_back(_obj);

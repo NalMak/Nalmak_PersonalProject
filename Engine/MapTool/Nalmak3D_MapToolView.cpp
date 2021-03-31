@@ -64,7 +64,7 @@ void CNalmak3D_MapToolView::OnDraw(CDC* /*pDC*/)
 	if (m_myView)
 	{
 		Vector2 window = MFC_Utility::GetMFCWindowSize(m_myView);
-		Core::GetInstance()->SetWindowSize(window.x, window.y);
+		Core::GetInstance()->SetWindowSize((UINT)window.x, (UINT)window.y);
 	}
 	Core::GetInstance()->Run();
 }
@@ -135,6 +135,7 @@ void CNalmak3D_MapToolView::OnInitialUpdate()
 	Core::Desc core;
 	core.wincx = WINCX;
 	core.wincy = WINCY;
+	core.OBJECT_TAG_COUNT = OBJECT_TAG_MAX;
 	core.LoadAllResource_OnAwake = true;
 	core.resourceDirectoryPath = L"../../Client/Resource";
 	Core::GetInstance()->Initialize(g_hInst, g_hWnd, &core, AfxGetMainWnd()->m_hWnd);

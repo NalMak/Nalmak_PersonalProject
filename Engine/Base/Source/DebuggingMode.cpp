@@ -24,6 +24,8 @@ DebuggingMode::DebuggingMode(Desc * _desc)
 	m_pickingType = PICKING_TYPE_NONE;
 	m_gizmoType = GIZMO_TYPE_POSITION;
 
+
+
 }
 
 DebuggingMode::~DebuggingMode()
@@ -402,8 +404,14 @@ void DebuggingMode::PickObject()
 				m_pickingObj->DeleteComponent<DebugObject>();
 				m_pickingObj = nullptr;
 			}
+		
+
 			m_pickingObj = pickObj;
 			m_pickingObj->AddComponent<DebugObject>();
+
+			auto handler = m_event.GetHandler(0);
+			if (handler)
+				m_event.DoEvent(0);
 
 			m_pickingGizmoBase->SetParents(pickObj);
 			m_pickingGizmoBase->GetTransform()->SetPosition(0, 0, 0);
@@ -436,6 +444,10 @@ void DebuggingMode::DeletePicking()
 
 		m_pickingGizmoBase->GetTransform()->DeleteParent();
 		m_pickingGizmoBase->SetActive(false);
+
+		auto handler = m_event.GetHandler(0);
+		if (handler)
+			m_event.DoEvent(0);
 	}
 }
 
@@ -451,6 +463,11 @@ void DebuggingMode::UpdateOutLine()
 
 void DebuggingMode::UpdatePickingObject()
 {
+
+	auto handler = m_event.GetHandler(1);
+	if (handler)
+		m_event.DoEvent(1);
+
 	Camera* currentCam;
 	if (m_debuggingMode.Check(DEBUGGING_MODE_FREE_CAMERA))
 		currentCam = m_debugCam->GetComponent<Camera>();
@@ -562,4 +579,14 @@ DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
 	}
 	else
 		return PICKING_TYPE::PICKING_TYPE_NONE;
+}
+
+void DebuggingMode::AddEvent(EventHandler _e)
+{
+	m_event.AddHandler(_e);
+}
+
+GameObject * DebuggingMode::GetPickingObject()
+{
+	return m_pickingObj;
 }

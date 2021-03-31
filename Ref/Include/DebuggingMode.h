@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "Event.h"
+
 class RenderManager;
 class MeshRenderer;
 
@@ -9,7 +11,7 @@ class NALMAK_DLL DebuggingMode :
 public:
 	struct Desc
 	{
-
+	
 	};
 	enum PICKING_TYPE
 	{
@@ -52,6 +54,7 @@ private:
 	class GameObject* m_pickingGizmoBase;
 	PICKING_TYPE m_pickingType;
 	GIZMO_TYPE m_gizmoType;
+	Event m_event;
 private:
 	void CheckPicking();
 	void CheckFreeCamera();
@@ -67,5 +70,8 @@ private:
 	void UpdateOutLine();
 	void UpdatePickingObject();
 	DebuggingMode::PICKING_TYPE IsGizmoPicking();
+public:
+	void AddEvent(EventHandler _e);
+	GameObject* GetPickingObject();
 };
 

@@ -162,6 +162,8 @@ GameObject * Core::PickObjectByMouse()
 	return m_objectManager->PickObjectByMouse();
 }
 
+
+
 list<GameObject*> Core::GetObjectList(_OBJECT_TAG _tag)
 {
 	return m_objectManager->GetObjectList(_tag);

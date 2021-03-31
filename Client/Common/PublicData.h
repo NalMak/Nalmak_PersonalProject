@@ -1,3 +1,7 @@
+
+#ifndef __PUBLIC_DATA_H__
+#define __PUBLIC_DATA_H__
+
 #include <xstring>
 
 using namespace std;
@@ -10,9 +14,14 @@ enum OBJECT_TAG
 	OBJECT_TAG_MAX
 };
 
-wstring g_objectTagName[OBJECT_TAG_MAX]
+const wstring g_objectTagName[OBJECT_TAG_MAX]
 {
 	L"Default",
 	L"Player",
 	L"Environment"
 };
+
+
+
+#endif // !__PUBLIC_DATA_H__
+

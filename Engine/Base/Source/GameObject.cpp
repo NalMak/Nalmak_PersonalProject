@@ -407,6 +407,7 @@ bool GameObject::GetActive()
 void GameObject::SetTag(int _tag)
 {
 	ObjectManager::GetInstance()->ChangeTag(_tag, this);
+	m_tag = _tag;
 }
 
 GameObject* GameObject::SetPosition(const Vector3 & _pos)

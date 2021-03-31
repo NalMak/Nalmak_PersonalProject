@@ -32,6 +32,7 @@ public:
 	void AddMaterial(const wstring& _mtrl);
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) override;
+	virtual void DeleteMaterial(int _index);
 	void SetMesh(const wstring& _meshName);
 	void SetMesh(Mesh* _mesh);
 

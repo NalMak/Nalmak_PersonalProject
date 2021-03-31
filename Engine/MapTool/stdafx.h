@@ -45,6 +45,7 @@
 #include "Enum.h"
 #include "Extern.h"
 #include "Struct.h"
+#include "PublicData.h"
 
 //#include "MFC_Utility.h"
 

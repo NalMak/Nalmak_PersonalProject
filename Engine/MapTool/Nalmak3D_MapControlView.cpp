@@ -5,9 +5,9 @@
 #include "Nalmak3D_MapTool.h"
 #include "Nalmak3D_MapControlView.h"
 #include "MapToolManager.h"
-#include "PublicData.h"
 #include "MFC_Utility.h"
 #include "GameObject.h"
+#include "Material.h"
 
 IMPLEMENT_DYNCREATE(Nalmak3D_MapControlView, CFormView)
 
@@ -38,9 +38,11 @@ void Nalmak3D_MapControlView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT7, m_scaleX);
 	DDX_Control(pDX, IDC_EDIT8, m_scaleY);
 	DDX_Control(pDX, IDC_EDIT9, m_scaleZ);
-	DDX_Control(pDX, IDC_EDIT10, m_materialName);
 	DDX_Control(pDX, IDC_EDIT11, m_meshName);
 	DDX_Control(pDX, IDC_EDIT13, m_shaderName);
+	DDX_Control(pDX, IDC_EDIT14, m_subSetCount);
+	DDX_Control(pDX, IDC_LIST4, m_materialRenderList);
+	DDX_Control(pDX, IDC_EDIT15, m_renderMaterialCount);
 }
 
 BEGIN_MESSAGE_MAP(Nalmak3D_MapControlView, CFormView)
@@ -64,8 +66,18 @@ BEGIN_MESSAGE_MAP(Nalmak3D_MapControlView, CFormView)
 	ON_EN_CHANGE(IDC_EDIT9, &Nalmak3D_MapControlView::OnEnChangeEditScaleZ)
 	ON_EN_CHANGE(IDC_EDIT10, &Nalmak3D_MapControlView::OnEnChangeEditMaterialName)
 	ON_EN_CHANGE(IDC_EDIT11, &Nalmak3D_MapControlView::OnEnChangeEditMeshName)
-	ON_LBN_DBLCLK(IDC_LIST2, &Nalmak3D_MapControlView::OnLbnDblclkListMaterial)
 	ON_LBN_DBLCLK(IDC_LIST3, &Nalmak3D_MapControlView::OnLbnDblclkListMesh)
+	ON_BN_CLICKED(IDC_BUTTON7, &Nalmak3D_MapControlView::OnBnClickedButtonAddRenderMaterial)
+	ON_BN_CLICKED(IDC_BUTTON8, &Nalmak3D_MapControlView::OnBnClickedButtonDeleteRenderMaterial)
+	ON_LBN_SELCHANGE(IDC_LIST2, &Nalmak3D_MapControlView::OnLbnSelchangeListMaterial)
+	ON_BN_CLICKED(IDC_BUTTON9, &Nalmak3D_MapControlView::OnBnClickedButtonMaterialChange)
+	ON_LBN_DBLCLK(IDC_LIST2, &Nalmak3D_MapControlView::OnLbnDblclkListMaterialList)
+	ON_EN_SETFOCUS(IDC_EDIT4, &Nalmak3D_MapControlView::OnEnSetfocusRotX)
+	ON_EN_KILLFOCUS(IDC_EDIT4, &Nalmak3D_MapControlView::OnEnKillfocusRotX)
+	ON_EN_SETFOCUS(IDC_EDIT5, &Nalmak3D_MapControlView::OnEnSetfocusRotY)
+	ON_EN_KILLFOCUS(IDC_EDIT5, &Nalmak3D_MapControlView::OnEnKillfocusRotY)
+	ON_EN_SETFOCUS(IDC_EDIT6, &Nalmak3D_MapControlView::OnEnSetfocusRotZ)
+	ON_EN_KILLFOCUS(IDC_EDIT6, &Nalmak3D_MapControlView::OnEnKillfocusEditRotZ)
 END_MESSAGE_MAP()
 
 
@@ -98,7 +110,16 @@ void Nalmak3D_MapControlView::OnInitialUpdate()
 	{
 		m_meshList.AddString(mesh.first.c_str());
 	}
-
+	EventHandler e1 = [=]()
+	{
+		MapToolManager::GetInstance()->SelectObject(MapToolManager::GetInstance()->GetDebuggingObject()->GetPickingObject());
+	};
+	EventHandler e2 = [=]()
+	{
+		MapToolManager::GetInstance()->UpdateSelectObjectTransform(MapToolManager::GetInstance()->GetDebuggingObject()->GetPickingObject());
+	};
+	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e1);
+	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e2);
 
 	//
 }
@@ -122,14 +143,23 @@ void Nalmak3D_MapControlView::Dump(CDumpContext& dc) const
 // Nalmak3D_MapControlView 메시지 처리기입니다.
 
 
-void Nalmak3D_MapControlView::UpdateObjectInfo(GameObject* _selectedObj)
+void Nalmak3D_MapControlView::UpdateObjectInfo(GameObject* _selectedObj, int _index)
 {
-	Material* mtrl = _selectedObj->GetComponent<MeshRenderer>()->GetMaterial();
-	if (mtrl)
+	m_objectList.SetCurSel(_index);
+
+	auto renderer = _selectedObj->GetComponent<MeshRenderer>();
+	int mtrlCount = renderer->GetMaterialCount();
+
+	m_materialRenderList.ResetContent();
+	for (int i = 0; i < mtrlCount; ++i)
 	{
+		auto mtrl = renderer->GetMaterial(i);
 		CString str;
 		str = mtrl->GetName().c_str();
-		m_materialName.SetWindowTextW(str);
+		m_materialRenderList.AddString(str);
+	}
+	{
+		MFC_Utility::SetEditBoxInt(&m_renderMaterialCount, renderer->GetMaterialCount());
 	}
 	{
 		CString str;
@@ -138,15 +168,36 @@ void Nalmak3D_MapControlView::UpdateObjectInfo(GameObject* _selectedObj)
 	}
 	{
 		CString str;
-		str = _selectedObj->GetComponent<MeshRenderer>()->GetMesh()->GetName().c_str();
+		str = renderer->GetMesh()->GetName().c_str();
 		m_meshName.SetWindowTextW(str);
 	}
 	{
-		CString str;
-		str = _selectedObj->GetComponent<MeshRenderer>()->GetMaterial()->GetShader()->GetName().c_str();
-		m_shaderName.SetWindowTextW(str);
+		unsigned long index = renderer->GetMesh()->GetSubsetCount();
+		MFC_Utility::SetEditBoxInt(&m_subSetCount, index);
 	}
-	Transform* trs = _selectedObj->GetTransform();
+	{
+		m_objectTag.SetCurSel(_selectedObj->GetTag());
+	}
+	{
+		int index = m_materialRenderList.GetCurSel();
+		if (index != -1)
+		{
+			CString str;
+			str = renderer->GetMaterial(index)->GetShader()->GetName().c_str();
+			m_shaderName.SetWindowTextW(str);
+		}
+		else
+		{
+			CString str = L"";
+			m_shaderName.SetWindowTextW(str);
+		}
+	}
+	UpdateObjectTransformInfo(_selectedObj);
+}
+
+void Nalmak3D_MapControlView::UpdateObjectTransformInfo(GameObject * _obj)
+{
+	Transform* trs = _obj->GetTransform();
 	MFC_Utility::SetEditBoxFloat(&m_positionX, trs->position.x);
 	MFC_Utility::SetEditBoxFloat(&m_positionY, trs->position.y);
 	MFC_Utility::SetEditBoxFloat(&m_positionZ, trs->position.z);
@@ -177,9 +228,9 @@ void Nalmak3D_MapControlView::OnBnClickedButtonCreateObject()
 {
 	auto newObj = INSTANTIATE()->AddComponent<MeshRenderer>();
 	m_mapToolManager->CreateObject(newObj);
-	m_objectList.AddString(newObj->GetName().c_str());
-
-
+	m_objectList.InsertString(m_objectList.GetCount(), newObj->GetName().c_str());
+	int count = m_objectList.GetCount();
+	m_objectList.SetCurSel(count - 1);
 	m_mapToolManager->SelectObject(newObj);
 }
 
@@ -199,6 +250,15 @@ void Nalmak3D_MapControlView::OnBnClickedButtonDeleteObject()
 
 void Nalmak3D_MapControlView::OnCbnSelchangeComboObjectTag()
 {
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int index = m_objectTag.GetCurSel();
+
+	if (index != -1)
+		obj->SetTag(index);
+
 }
 
 
@@ -224,7 +284,19 @@ void Nalmak3D_MapControlView::OnBnClickedButtonLoadAll()
 
 void Nalmak3D_MapControlView::OnEnChangeEditObjectName()
 {
-	
+	int index = m_objectList.GetCurSel();
+	if (index == -1)
+		return;
+
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	CString name;
+	m_objectName.GetWindowTextW(name);
+	obj->SetName(name.GetString());
+	m_objectList.DeleteString(index);
+	m_objectList.InsertString(index, name);
+	m_objectList.SetCurSel(index);
 }
 
 
@@ -260,6 +332,9 @@ void Nalmak3D_MapControlView::OnEnChangeEditPositionZ()
 
 void Nalmak3D_MapControlView::OnEnChangeEditRotationX()
 {
+	if (!m_isFocusRotation)
+		return;
+
 	auto obj = m_mapToolManager->GetSelectedObject();
 	if (!obj)
 		return;
@@ -277,6 +352,9 @@ void Nalmak3D_MapControlView::OnEnChangeEditRotationX()
 
 void Nalmak3D_MapControlView::OnEnChangeEditRotationY()
 {
+	if (!m_isFocusRotation)
+		return;
+
 	auto obj = m_mapToolManager->GetSelectedObject();
 	if (!obj)
 		return;
@@ -293,6 +371,9 @@ void Nalmak3D_MapControlView::OnEnChangeEditRotationY()
 
 void Nalmak3D_MapControlView::OnEnChangeEditRotationZ()
 {
+	if (!m_isFocusRotation)
+		return;
+
 	auto obj = m_mapToolManager->GetSelectedObject();
 	if (!obj)
 		return;
@@ -349,25 +430,25 @@ void Nalmak3D_MapControlView::OnEnChangeEditMeshName()
 }
 
 
-
-void Nalmak3D_MapControlView::OnLbnDblclkListMaterial()
-{
-	auto obj = m_mapToolManager->GetSelectedObject();
-	if (!obj)
-		return;
-
-	int index = m_materialList.GetCurSel();
-	if (index == -1)
-		return;
-
-	CString mtrlName;
-	m_materialList.GetText(index, mtrlName);
-
-	obj->GetComponent<MeshRenderer>()->SetMaterial(mtrlName.GetString());
-	m_materialName.SetWindowTextW(mtrlName);
-
-	UpdateObjectInfo(obj);
-}
+//
+//void Nalmak3D_MapControlView::OnLbnDblclkListMaterial()
+//{
+//	auto obj = m_mapToolManager->GetSelectedObject();
+//	if (!obj)
+//		return;
+//
+//	int index = m_materialList.GetCurSel();
+//	if (index == -1)
+//		return;
+//
+//	CString mtrlName;
+//	m_materialList.GetText(index, mtrlName);
+//
+//	obj->GetComponent<MeshRenderer>()->SetMaterial(mtrlName.GetString());
+//	m_materialName.SetWindowTextW(mtrlName);
+//
+//	UpdateObjectInfo(obj);
+//}
 
 
 void Nalmak3D_MapControlView::OnLbnDblclkListMesh()
@@ -385,6 +466,167 @@ void Nalmak3D_MapControlView::OnLbnDblclkListMesh()
 
 	obj->GetComponent<MeshRenderer>()->SetMesh(meshName.GetString());
 	m_meshName.SetWindowTextW(meshName);
+	MFC_Utility::SetEditBoxInt(&m_subSetCount, obj->GetComponent<MeshRenderer>()->GetMesh()->GetSubsetCount());
 
-	UpdateObjectInfo(obj);
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void Nalmak3D_MapControlView::OnBnClickedButtonAddRenderMaterial()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int index = m_materialList.GetCurSel();
+	if (index == -1)
+		return;
+
+	CString mtrlName;
+	m_materialList.GetText(index, mtrlName);
+
+	auto render = obj->GetComponent<MeshRenderer>();
+
+	render->AddMaterial(mtrlName.GetString());
+	m_materialRenderList.InsertString(m_materialRenderList.GetSelCount(),mtrlName);
+	MFC_Utility::SetEditBoxInt(&m_renderMaterialCount, render->GetMaterialCount());
+}
+
+
+void Nalmak3D_MapControlView::OnBnClickedButtonDeleteRenderMaterial()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int index = m_materialRenderList.GetCurSel();
+	if (index == -1)
+		return;
+
+
+	auto render = obj->GetComponent<MeshRenderer>();
+
+	if (render->GetMaterialCount() > 1)
+	{
+		render->DeleteMaterial(index);
+		m_materialRenderList.DeleteString(index);
+		MFC_Utility::SetEditBoxInt(&m_renderMaterialCount, render->GetMaterialCount());
+		
+	}
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnLbnSelchangeListMaterial()
+{
+	int index = m_materialList.GetCurSel();
+	if (index == -1)
+		return;
+
+	CString mtrlName;
+	m_materialList.GetText(index, mtrlName);
+
+	Material* mtrl = ResourceManager::GetInstance()->GetResource<Material>(mtrlName.GetString());
+
+	m_shaderName.SetWindowTextW(mtrl->GetShader()->GetName().c_str());
+
+}
+
+
+void Nalmak3D_MapControlView::OnBnClickedButtonMaterialChange()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int renderIndex = m_materialRenderList.GetCurSel();
+	if (renderIndex == -1)
+		return;
+
+	int mtrlIndex = m_materialList.GetCurSel();
+	if (mtrlIndex == -1)
+		return;
+
+	CString mtrlName;
+	m_materialList.GetText(mtrlIndex, mtrlName);
+
+	auto render = obj->GetComponent<MeshRenderer>();
+	render->SetMaterial(mtrlName.GetString(), renderIndex);
+
+
+	m_materialRenderList.DeleteString(renderIndex);
+	m_materialRenderList.InsertString(renderIndex, mtrlName);
+	m_materialRenderList.SetCurSel(renderIndex);
+}
+
+
+void Nalmak3D_MapControlView::OnLbnDblclkListMaterialList()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int renderIndex = m_materialRenderList.GetCurSel();
+	if (renderIndex == -1)
+		return;
+
+	int mtrlIndex = m_materialList.GetCurSel();
+	if (mtrlIndex == -1)
+		return;
+
+	CString mtrlName;
+	m_materialList.GetText(mtrlIndex, mtrlName);
+
+	auto render = obj->GetComponent<MeshRenderer>();
+	render->SetMaterial(mtrlName.GetString(), renderIndex);
+
+	m_materialRenderList.DeleteString(renderIndex);
+	m_materialRenderList.InsertString(renderIndex, mtrlName);
+	m_materialRenderList.SetCurSel(renderIndex);
+}
+
+
+void Nalmak3D_MapControlView::OnEnSetfocusRotX()
+{
+	m_isFocusRotation = true;
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnEnKillfocusRotX()
+{
+	m_isFocusRotation = false;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnEnSetfocusRotY()
+{
+	m_isFocusRotation = true;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnEnKillfocusRotY()
+{
+	m_isFocusRotation = false;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnEnSetfocusRotZ()
+{
+	m_isFocusRotation = true;
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void Nalmak3D_MapControlView::OnEnKillfocusEditRotZ()
+{
+	m_isFocusRotation = false;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

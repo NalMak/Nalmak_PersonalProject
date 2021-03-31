@@ -29,9 +29,11 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	void UpdateObjectInfo(GameObject* newObj);
+	void UpdateObjectInfo(GameObject* newObj, int _index);
+	void UpdateObjectTransformInfo(GameObject* _obj);
 private:
 	class MapToolManager* m_mapToolManager;
+	bool m_isFocusRotation = false;
 public:
 	afx_msg void OnLbnSelchangeObjectList();
 	CListBox m_objectList;
@@ -55,7 +57,6 @@ public:
 	afx_msg void OnBnClickedButtonLoad();
 	afx_msg void OnBnClickedButtonSaveAll();
 	afx_msg void OnBnClickedButtonLoadAll();
-	CEdit m_materialName;
 	CEdit m_meshName;
 	afx_msg void OnEnChangeEditObjectName();
 	afx_msg void OnEnChangeEditPositionX();
@@ -71,8 +72,23 @@ public:
 	afx_msg void OnEnChangeEditMeshName();
 	virtual void OnInitialUpdate();
 	CEdit m_shaderName;
-	afx_msg void OnLbnDblclkListMaterial();
+	//afx_msg void OnLbnDblclkListMaterial();
 	afx_msg void OnLbnDblclkListMesh();
+	CEdit m_subSetCount;
+	CListBox m_materialRenderList;
+	afx_msg void OnBnClickedButtonAddRenderMaterial();
+	afx_msg void OnBnClickedButtonDeleteRenderMaterial();
+	afx_msg void OnLbnSelchangeListMaterial();
+	afx_msg void OnBnClickedButtonMaterialChange();
+	afx_msg void OnLbnDblclkListMaterialList();
+	CEdit m_renderMaterialCount;
+
+	afx_msg void OnEnSetfocusRotX();
+	afx_msg void OnEnKillfocusRotX();
+	afx_msg void OnEnSetfocusRotY();
+	afx_msg void OnEnKillfocusRotY();
+	afx_msg void OnEnSetfocusRotZ();
+	afx_msg void OnEnKillfocusEditRotZ();
 };
 
 

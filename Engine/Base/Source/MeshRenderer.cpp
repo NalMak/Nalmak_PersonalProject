@@ -131,6 +131,17 @@ void MeshRenderer::SetMaterial(const wstring& _mtrlName, int _index)
 	m_materials[_index] = ResourceManager::GetInstance()->GetResource<Material>(_mtrlName);
 }
 
+void MeshRenderer::DeleteMaterial(int _index)
+{
+	auto iter = m_materials.begin();
+
+	for (int i = 0; i < _index; ++i)
+	{
+		++iter;
+	}
+	m_materials.erase(iter);
+}
+
 void MeshRenderer::SetMesh(const wstring & _meshName)
 {
 	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_meshName);

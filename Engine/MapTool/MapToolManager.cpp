@@ -13,6 +13,11 @@ MapToolManager::~MapToolManager()
 {
 }
 
+void MapToolManager::SetDebuggingMode(DebuggingMode * _debuggingMode)
+{
+	m_debugHelper = _debuggingMode;
+}
+
 void MapToolManager::SetControlView(Nalmak3D_MapControlView * _view)
 {
 	m_controlView = _view;
@@ -43,8 +48,19 @@ size_t MapToolManager::GetObjectCount()
 
 void MapToolManager::SelectObject(GameObject * _obj)
 {
+	if (!_obj)
+		return;
+
 	m_selectedObject = _obj;
-	m_controlView->UpdateObjectInfo(m_selectedObject);
+	for (int i = 0; i < m_createdOnMapObjectList.size(); ++i)
+	{
+		if (m_createdOnMapObjectList[i] == _obj)
+		{
+			m_controlView->UpdateObjectInfo(m_selectedObject,i);
+			return;
+		}
+	}
+
 }
 
 void MapToolManager::SeleteObject(int _index)
@@ -53,9 +69,20 @@ void MapToolManager::SeleteObject(int _index)
 		return;
 
 	m_selectedObject = m_createdOnMapObjectList[_index];
+	m_controlView->UpdateObjectInfo(m_selectedObject, _index);
+}
+
+void MapToolManager::UpdateSelectObjectTransform(GameObject * _obj)
+{
+	m_controlView->UpdateObjectTransformInfo(_obj);
 }
 
 GameObject * MapToolManager::GetSelectedObject()
 {
 	return m_selectedObject;
+}
+
+DebuggingMode * MapToolManager::GetDebuggingObject()
+{
+	return m_debugHelper;
 }
