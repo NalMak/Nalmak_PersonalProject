@@ -266,7 +266,7 @@ GameObject * ObjectManager::FindFirstObjectbyTag(_OBJECT_TAG _tag)
 	return m_gameObjectLists[_tag].front();
 }
 
-GameObject * ObjectManager::PickObjectByMouse()
+GameObject* ObjectManager::PickObjectByMouse(Vector3* _hitPoint)
 {
 	Camera* cam = RenderManager::GetInstance()->GetMainCamera();
 	vector<MeshRenderer*> pickEnableRenderList;
@@ -295,12 +295,14 @@ GameObject * ObjectManager::PickObjectByMouse()
 		}
 	}
 	if (pickEnableRenderList.size() <= 0)
+	{
 		return nullptr;
+	}
 
 	Vector3 camPos = cam->GetTransform()->GetWorldPosition();
 	Vector3 dir = cam->GetCamToMouseWorldDirection();
 
-	return PhysicsManager::GetInstance()->Raycast(camPos, camPos + dir * 1000, pickEnableRenderList);
+	return PhysicsManager::GetInstance()->Raycast(_hitPoint, camPos, camPos + dir * 1000, pickEnableRenderList);
 }
 
 void ObjectManager::MergeObjectList()

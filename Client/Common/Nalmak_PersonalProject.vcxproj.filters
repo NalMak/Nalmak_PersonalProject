@@ -75,6 +75,7 @@
     <ClInclude Include="PublicData.h">
       <Filter>98.PreCompile</Filter>
     </ClInclude>
+    <ClInclude Include="TestPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -98,6 +99,7 @@
     <ClCompile Include="homeworkScene.cpp">
       <Filter>97.HomeWork</Filter>
     </ClCompile>
+    <ClCompile Include="TestPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

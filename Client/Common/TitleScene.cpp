@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TitleScene.h"
+#include "TestPlayer.h"
 
 TitleScene::TitleScene()
 {
@@ -26,7 +27,7 @@ void TitleScene::Initialize()
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"box";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0);
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0)->AddComponent<MeshCollider>();
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -58,11 +59,18 @@ void TitleScene::Initialize()
 		mesh.meshName = L"plane";
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
-		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<RigidBody>(&rigid)->AddComponent<MeshCollider>()->SetScale(10,10,10)->SetPosition(0,-10,0)->SetStatic(true);
+		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, -10, 0);
 	}
 
+	{
+		MeshRenderer::Desc render;
+		render.meshName = L"f15";
+		RigidBody::Desc rigid;
+		rigid.isGravity = false;
+		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
+	}
 
 	
-
+	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<RigidBody>()->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>()->AddComponent<TestPlayer>()->SetPosition(0,3,0);
 
 }

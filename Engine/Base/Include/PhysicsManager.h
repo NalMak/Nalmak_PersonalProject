@@ -46,15 +46,18 @@ public:
 	void RemoveActorFromScene(PxRigidDynamic* _rigid);
 	const PxRenderBuffer& GetDebugRenderBuffer();
 public:
-	PxRigidDynamic* CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion, unsigned int _gaussLimit);
-	PxRigidStatic* CreateStaticMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion);
+	PxRigidDynamic* CreateRigidDynamic(RigidBody* _rigid);
+	void CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion, unsigned int _gaussLimit);
+	void CreateStaticMeshCollider(Collider * _col, Mesh* _mesh, bool _directInsertion);
 public:
-	PxRigidDynamic* CreateSphereCollider(Collider* _col,RigidBody* _rigid, float _radius);
-	PxRigidDynamic* CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
-
+	void CreateSphereCollider(Collider* _col,RigidBody* _rigid, float _radius);
+	void CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
+	void CreateCapsuleCollider(Collider* _col, RigidBody* _rigid, float _radius, float _height);
+private:
+	void AttachShapeToRigidDynamic(RigidBody* _rigid, PxShape* shape);
 
 
 public:
-	GameObject* Raycast(const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*>& _renderList);
+	GameObject* Raycast(Vector3* _hitPoint, const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*>& _renderList);
 };
 

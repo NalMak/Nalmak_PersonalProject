@@ -477,9 +477,6 @@
     <ClCompile Include="..\Source\Nalmak_Function.cpp">
       <Filter>99.PreCompile\10.Function</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\DebuggingMode.cpp">
-      <Filter>05.Component\14.Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\PhysicsManager.cpp">
       <Filter>02.Manager\14.PhyscisManager</Filter>
     </ClCompile>
@@ -525,6 +522,10 @@
     <ClCompile Include="..\Source\DirectoryMonitoring.cpp">
       <Filter>05.Component\13.Thread</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\DebuggingMode.cpp">
+      <Filter>05.Component\14.Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CapsuleCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -785,9 +786,6 @@
     <ClInclude Include="..\Include\Nalmak_Define.h">
       <Filter>99.PreCompile\09.Define</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\DebuggingMode.h">
-      <Filter>05.Component\14.Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\PhysicsManager.h">
       <Filter>02.Manager\14.PhyscisManager</Filter>
     </ClInclude>
@@ -833,6 +831,10 @@
     <ClInclude Include="..\Include\DirectoryMonitoring.h">
       <Filter>05.Component\13.Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\DebuggingMode.h">
+      <Filter>05.Component\14.Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\CapsuleCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

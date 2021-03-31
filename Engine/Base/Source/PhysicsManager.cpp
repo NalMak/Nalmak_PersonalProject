@@ -147,7 +147,31 @@ const PxRenderBuffer& PhysicsManager::GetDebugRenderBuffer()
 	return m_scene->getRenderBuffer();
 }
 
-PxRigidDynamic * PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh * _mesh, bool _directInsertion, unsigned int _gaussLimit)
+PxRigidDynamic* PhysicsManager::CreateRigidDynamic(RigidBody * _rigid)
+{
+	PxRigidDynamic* actor = nullptr;
+	actor = _rigid->GetRigidBody();
+	if (actor)
+		return actor;
+
+	auto pos = _rigid->GetTransform()->GetWorldPosition();
+	auto rot = _rigid->GetTransform()->GetWorldRotation();
+	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
+
+	actor = m_physics->createRigidDynamic(trans);
+	actor->userData = _rigid->GetGameObject();
+	actor->setLinearDamping(_rigid->GetDamping());
+	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
+	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
+
+	m_scene->addActor(*actor);
+
+	_rigid->SetRigidBody(actor);
+
+	return actor;
+}
+
+void PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh * _mesh, bool _directInsertion, unsigned int _gaussLimit)
 {
 	PxCookingParams params = m_cooking->getParams();
 	params.convexMeshCookingType = PxConvexMeshCookingType::eQUICKHULL;
@@ -193,38 +217,34 @@ PxRigidDynamic * PhysicsManager::CreateConvexMeshCollider(Collider * _col, Rigid
 	}
 	
 	Vector3 scale = _rigid->GetTransform()->scale;
-	auto pos = _rigid->GetTransform()->GetWorldPosition();
-	auto rot = _rigid->GetTransform()->GetWorldRotation();
 	PxMeshScale meshScale = PxMeshScale(PxVec3(scale.x, scale.y, scale.z), PxQuat(PxIdentity));
 	PxMaterial* pMat = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
 
-	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
-	PxRigidDynamic* actor = m_physics->createRigidDynamic(trans);
-	actor->setLinearDamping(_rigid->GetDamping());
-	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
-	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
-	actor->userData = _col->GetGameObject();
 
-	PxShape* shape = PxRigidActorExt::createExclusiveShape(*actor, PxConvexMeshGeometry(convexMesh, meshScale), *pMat);
+	PxShape* shape = PxRigidActorExt::createExclusiveShape(*CreateRigidDynamic(_rigid), PxConvexMeshGeometry(convexMesh, meshScale), *pMat);
 	assert(L"Failed to create shape!" && shape);
 
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
 	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
 
+
+	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
+
+	actor->userData = _rigid->GetGameObject();
+	actor->setLinearDamping(_rigid->GetDamping());
+	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
+	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
+	actor->setMass(_rigid->GetMass());
+
 	//pActor->attachShape(*pShape);	// 위에서 자동으로 붙여짐
 	PxQueryFilterData query;
 	query.flags |= PxQueryFlag::eNO_BLOCK;
 
-	m_scene->addActor(*actor);
-
 	convexMesh->release();
-
-	return actor;
 }
 
-PxRigidStatic * PhysicsManager::CreateStaticMeshCollider(Collider * _col, RigidBody * _rigid, Mesh * _mesh, bool _directInsertion)
+void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, bool _directInsertion)
 {
-
 	PxCookingParams params = m_cooking->getParams();
 
 	// 3.4버전
@@ -297,11 +317,10 @@ PxRigidStatic * PhysicsManager::CreateStaticMeshCollider(Collider * _col, RigidB
 	}
 
 	assert(L"Fail to cook static mesh!" && triMesh);
-	
 
-	Vector3 scale = _rigid->GetTransform()->scale;
-	auto pos = _rigid->GetTransform()->GetWorldPosition();
-	auto rot = _rigid->GetTransform()->GetWorldRotation();
+	Vector3 scale = _col->GetTransform()->scale;
+	auto pos = _col->GetTransform()->GetWorldPosition();
+	auto rot = _col->GetTransform()->GetWorldRotation();
 	PxMeshScale meshScale = PxMeshScale(PxVec3(scale.x, scale.y, scale.z), PxQuat(PxIdentity));
 	PxMaterial* pMat = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
 
@@ -309,17 +328,13 @@ PxRigidStatic * PhysicsManager::CreateStaticMeshCollider(Collider * _col, RigidB
 
 	PxRigidStatic* actor = m_physics->createRigidStatic(trans);
 	PxShape* shape = PxRigidActorExt::createExclusiveShape(*actor, PxTriangleMeshGeometry(triMesh, meshScale), *pMat);
-	
-
 	actor->attachShape(*shape);
 	actor->userData = _col->GetGameObject();
 
 	m_scene->addActor(*actor);
-
-	return actor;
 }
 
-PxRigidDynamic * PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody * _rigid, float _radius)
+void PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody * _rigid, float _radius)
 {
 	auto pos = _rigid->GetTransform()->GetWorldPosition();
 	auto rot = _rigid->GetTransform()->GetWorldRotation();
@@ -330,18 +345,10 @@ PxRigidDynamic * PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
 	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
 
-	PxRigidDynamic* actor = PxCreateDynamic(*m_physics, trans, *shape, PxReal(_rigid->GetDensity()));
-	actor->userData = _col->GetGameObject();
-	actor->setLinearDamping(_rigid->GetDamping());
-	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
-	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
-	
-	m_scene->addActor(*actor);
-
-	return actor;
+	AttachShapeToRigidDynamic(_rigid, shape);
 }
 
-PxRigidDynamic * PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * _rigid, float _width, float _height, float _depth)
+void PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * _rigid, float _width, float _height, float _depth)
 {
 	auto pos = _rigid->GetTransform()->GetWorldPosition();
 	auto rot = _rigid->GetTransform()->GetWorldRotation();
@@ -351,17 +358,37 @@ PxRigidDynamic * PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * 
 	PxShape* shape = m_physics->createShape(PxBoxGeometry(_width * 0.5f, _height * 0.5f, _depth * 0.5f), *material, true);
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
 	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
-	PxRigidDynamic* actor = PxCreateDynamic(*m_physics, trans, *shape, PxReal(_rigid->GetDensity()));
-	actor->userData = _col->GetGameObject();
+
+	AttachShapeToRigidDynamic(_rigid, shape);
+}
+
+void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, float _radius, float _height)
+{
+	auto pos = _rigid->GetTransform()->GetWorldPosition();
+	auto rot = _rigid->GetTransform()->GetWorldRotation();
+	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
+	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
+
+	PxShape* shape = m_physics->createShape(PxCapsuleGeometry(_radius,_height), *material, true);
+	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
+	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
+
+	AttachShapeToRigidDynamic(_rigid, shape);
+}
+
+void PhysicsManager::AttachShapeToRigidDynamic(RigidBody * _rigid, PxShape* shape)
+{
+	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
+
+	actor->userData = _rigid->GetGameObject();
 	actor->setLinearDamping(_rigid->GetDamping());
 	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
 	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
-	m_scene->addActor(*actor);
-
-	return actor;
+	actor->setMass(_rigid->GetMass());
+	actor->attachShape(*shape);
 }
 
-GameObject * PhysicsManager::Raycast(const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)
+GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)
 {
 	
 	vector<MeshRenderer*> raycastRenderers;
@@ -401,8 +428,11 @@ GameObject * PhysicsManager::Raycast(const Vector3 & _startLayPos, const Vector3
 	if (raycastRenderers.size() == 0)
 		return nullptr;
 
-	vector<pair<float, GameObject*>> pickingDistanceAndObject;
+	GameObject* pickObject = nullptr;
 	Vector3 rayDirection = Nalmak_Math::Normalize(_endLayPos - _startLayPos);
+	
+	float minDistance = INFINITY;
+
 	for(auto& render : raycastRenderers)
 	{
 		Vector3 rayStartPos = _startLayPos; 
@@ -415,6 +445,7 @@ GameObject * PhysicsManager::Raycast(const Vector3 & _startLayPos, const Vector3
 		float u, v, dist;
 		
 		Mesh* mesh = render->GetMesh();
+	
 		for (unsigned long i = 0; i < mesh->GetFigureCount(); ++i)
 		{
 			Vector3 v0, v1, v2;
@@ -434,21 +465,18 @@ GameObject * PhysicsManager::Raycast(const Vector3 & _startLayPos, const Vector3
 				//// V1 + U(V2-V1) + V(V3-V1)
 				//*pOut = m_pVertices[_1] + u * (m_pVertices[_2] - m_pVertices[_1]) + v * (m_pVertices[_3] - m_pVertices[_1]);
 				//D3DXVec3TransformCoord(pOut, pOut, pWorldMatrix);
-				pickingDistanceAndObject.emplace_back(pair<float, GameObject*>(dist ,render->GetGameObject()));
-				break;
+				if (minDistance > dist)
+				{
+					minDistance = dist;
+					*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
+					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetWorldMatrix());
+					pickObject = render->GetGameObject();
+				}
+
 			}
 		}
 	}
-	if(pickingDistanceAndObject.size() == 0)
-		return nullptr;
-	
-	sort(pickingDistanceAndObject.begin(), pickingDistanceAndObject.end(), [](pair<float, GameObject*> _r1, pair<float, GameObject*> _r2)
-		->bool
-	{
-		return _r1.first < _r2.first;
-	}); // Z 정렬 
-
-	return pickingDistanceAndObject.front().second;
+	return pickObject;
 }
 
 

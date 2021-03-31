@@ -157,9 +157,9 @@ GameObject * Core::FindObjectByName(_OBJECT_TAG _tag, const wstring& name)
 	return m_objectManager->Find(_tag, name);
 }
 
-GameObject * Core::PickObjectByMouse()
+GameObject * Core::PickObjectByMouse(Vector3* _hitPoint)
 {
-	return m_objectManager->PickObjectByMouse();
+	return m_objectManager->PickObjectByMouse(_hitPoint);
 }
 
 

@@ -81,19 +81,19 @@ void FreeMove::ArrowInput()
 {
 	Vector3 dir = Vector3(0.f, 0.f, 0.f);
 
-	if (m_input->GetKeyPress(KEY_STATE_UP_ARROW) || m_input->GetKeyPress(KEY_STATE_W))
+	if (m_input->GetKeyPress(KEY_STATE_W))
 	{
 		dir += Vector3(0.f, 0.f, 1.f);
 	}
-	if (m_input->GetKeyPress(KEY_STATE_DOWN_ARROW) || m_input->GetKeyPress(KEY_STATE_S))
+	if (m_input->GetKeyPress(KEY_STATE_S))
 	{
 		dir -= Vector3(0.f, 0.f, 1.f);
 	}
-	if (m_input->GetKeyPress(KEY_STATE_LEFT_ARROW) || m_input->GetKeyPress(KEY_STATE_A))
+	if (m_input->GetKeyPress(KEY_STATE_A))
 	{
 		dir -= Vector3(1.f, 0.f, 0.f);
 	}
-	if (m_input->GetKeyPress(KEY_STATE_RIGHT_ARROW) || m_input->GetKeyPress(KEY_STATE_D))
+	if (m_input->GetKeyPress(KEY_STATE_D))
 	{
 		dir += Vector3(1.f, 0.f, 0.f);
 	}

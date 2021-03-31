@@ -17,7 +17,7 @@ void MapTool_ObjectState::Initialize()
 
 void MapTool_ObjectState::EnterState()
 {
-	GetComponent<DebuggingMode>()->SetDebuggingMode(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, true);
+	GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, true);
 }
 
 void MapTool_ObjectState::UpdateState()

@@ -14,6 +14,7 @@
 #include "MainFrm.h"
 #include "BaseScene.h"
 #include "MFC_Utility.h"
+#include "MapToolManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,6 +43,7 @@ CNalmak3D_MapToolView::CNalmak3D_MapToolView()
 CNalmak3D_MapToolView::~CNalmak3D_MapToolView()
 {
 	Core::DestroyInstance();
+	MapToolManager::DestroyInstance();
 }
 
 BOOL CNalmak3D_MapToolView::PreCreateWindow(CREATESTRUCT& cs)

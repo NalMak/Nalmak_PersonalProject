@@ -64,6 +64,7 @@
 #include "SphereCollider.h"
 #include "BoxCollider.h"
 #include "MeshCollider.h"
+#include "CapsuleCollider.h"
 #include "RigidBody.h"
 #include "DebugObject.h"
 #pragma endregion
@@ -114,7 +115,7 @@ public:
 	// Search
 	GameObject* FindFirstObject(_OBJECT_TAG _tag);
 	GameObject* FindObjectByName(_OBJECT_TAG _tag, const wstring& name);
-	GameObject* PickObjectByMouse();
+	GameObject* PickObjectByMouse(Vector3* _hitPoint);
 	list<GameObject*> GetObjectList(_OBJECT_TAG _tag);
 	Camera* GetMainCamera();
 public:

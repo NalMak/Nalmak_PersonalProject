@@ -16,8 +16,7 @@ SphereCollider::~SphereCollider()
 void SphereCollider::Initialize()
 {
 	m_rigid = GetComponent<RigidBody>();
-	assert(L"Can't find RigidBody Component!" && m_rigid);
-	m_rigid->SetRigidBody(PhysicsManager::GetInstance()->CreateSphereCollider(this,m_rigid,m_radius));
+	PhysicsManager::GetInstance()->CreateSphereCollider(this,m_rigid,m_radius);
 
 	//MeshRenderer::Desc vi;
 	//vi.mtrlName = L"debug";

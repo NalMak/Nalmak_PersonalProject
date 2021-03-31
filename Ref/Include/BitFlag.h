@@ -9,6 +9,12 @@ template <typename Enum>
 class NALMAK_DLL BitFlag
 {
 public:
+	BitFlag() = default;
+	BitFlag(int _num)
+	{
+		m_flag = _num;
+	}
+
 	void AllOff() // Set bit 0
 	{
 		m_flag = 0;

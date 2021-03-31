@@ -20,7 +20,12 @@ void MeshCollider::Initialize()
 	auto rigid = GetComponent<RigidBody>();
 	assert(L"Mesh Collider Must have MeshRenderer!" && meshRenderer);
 
-	PhysicsManager::GetInstance()->CreateStaticMeshCollider(this,rigid, meshRenderer->GetMesh(), false);
+	if (rigid)
+	{
+		PhysicsManager::GetInstance()->CreateConvexMeshCollider(this, rigid, meshRenderer->GetMesh(), false, 16);
+	}
+	else
+		PhysicsManager::GetInstance()->CreateStaticMeshCollider(this, meshRenderer->GetMesh(), false);
 }
 
 void MeshCollider::Update()

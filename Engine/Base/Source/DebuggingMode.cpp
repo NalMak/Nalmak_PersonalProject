@@ -393,7 +393,7 @@ void DebuggingMode::PickObject()
 	if (m_pickingType !=  DebuggingMode::PICKING_TYPE_NONE)
 		return;
 
-	GameObject* pickObj = Core::GetInstance()->PickObjectByMouse();
+	GameObject* pickObj = Core::GetInstance()->PickObjectByMouse(&Vector3());
 
 	if (pickObj)
 	{
@@ -568,7 +568,7 @@ DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
 	vector<MeshRenderer*> renderList;
 	for (int i = 0; i < 3; ++i)
 		renderList.emplace_back(m_pickingGizmo[i]->GetComponent<MeshRenderer>());
-	auto obj = PhysicsManager::GetInstance()->Raycast(camPos, camPos + dir * 1000, renderList);
+	auto obj = PhysicsManager::GetInstance()->Raycast(&Vector3(),camPos, camPos + dir * 1000, renderList);
 
 	if (obj)
 	{
@@ -594,3 +594,30 @@ GameObject * DebuggingMode::GetPickingObject()
 {
 	return m_pickingObj;
 }
+
+void DebuggingMode::SetDebugModeActive(DEBUGGING_MODE _mode, bool _active)
+{
+	if (_active)
+		m_debuggingMode.On(_mode);
+	else
+		m_debuggingMode.Off(_mode);
+
+	CheckGridRender();
+	CheckRenderTargetRender();
+	CheckFreeCamera();
+	CheckRecordDebugLog();
+	CheckColliderRender();
+	CheckPicking();
+	CheckTimeStop();
+
+	UpdateDesc();
+}
+
+//void SetDebugModeActive(DEBUGGING_MODE _mode, bool _active)
+//{
+//	if(_active)
+//		m_debuggingMode.On(_mode);
+//	else
+//		m_debuggingMode.Off(_mode);
+//}
+//

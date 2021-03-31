@@ -9,7 +9,8 @@ RigidBody::RigidBody(Desc * _desc)
 	m_damping = _desc->damping;
 	m_isGravity = _desc->isGravity;
 	m_isKinematic = _desc->isKinematic;
-
+	m_constraints = _desc->constraints;
+	m_mass = _desc->mass;
 }
 
 RigidBody::~RigidBody()
@@ -18,6 +19,7 @@ RigidBody::~RigidBody()
 
 void RigidBody::Initialize()
 {
+	PhysicsManager::GetInstance()->CreateRigidDynamic(this);
 }
 
 void RigidBody::Update()
@@ -26,7 +28,7 @@ void RigidBody::Update()
 
 void RigidBody::LateUpdate()
 {
-	if (m_gameObject->IsStatic())
+	if (!m_rigid)
 		return;
 
 	m_transform->position = GetWorldPosition();
@@ -148,6 +150,7 @@ void RigidBody::SetWorldPositionAndRotation(const Vector3 & _pos, const Quaterni
 	trs.p = { pos.x, pos.y, pos.z };
 	trs.q = { rot.x,rot.y,rot.z,rot.w };
 	m_rigid->setGlobalPose(trs);
+
 }
 
 Vector3 RigidBody::GetWorldPosition()
@@ -169,14 +172,15 @@ PxRigidDynamic * RigidBody::GetRigidBody()
 	return m_rigid;
 }
 
-float RigidBody::GetDensity()
-{
-	return m_density;
-}
 
 float RigidBody::GetDamping()
 {
 	return m_damping;
+}
+
+float RigidBody::GetMass()
+{
+	return m_mass;
 }
 
 bool RigidBody::IsGravity()

@@ -45,7 +45,7 @@ public:
 	GameObject* Find(const wstring& _name);
 	GameObject* Find(_OBJECT_TAG _tag, const wstring& _name);
 	GameObject* FindFirstObjectbyTag(_OBJECT_TAG _tag);
-	GameObject* PickObjectByMouse();
+	GameObject* PickObjectByMouse(Vector3* _hitPoint);
 public:
 	void MergeObjectList();
 
