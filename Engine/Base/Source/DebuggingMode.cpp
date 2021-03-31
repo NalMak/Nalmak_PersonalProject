@@ -62,7 +62,7 @@ void DebuggingMode::Initialize()
 #pragma region Free Camera
 	m_mainCam = RenderManager::GetInstance()->GetMainCamera()->GetGameObject();
 	assert(L"Can't find main Cam" && m_mainCam);
-	m_debugCam = INSTANTIATE(L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>()->AddComponent<DebugObject>();
+	m_debugCam = INSTANTIATE(L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>()->AddComponent<DebugObject>()->SetPosition(0,1,-5);
 	m_debugCam->SetActive(false);
 #pragma endregion Free Camera
 #pragma region RenderTarget
@@ -557,9 +557,13 @@ void DebuggingMode::UpdatePickingObject()
 
 DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
 {
+	if (!m_pickingObj)
+		return PICKING_TYPE::PICKING_TYPE_NONE;
+
 	Camera* cam = RenderManager::GetInstance()->GetMainCamera();
 	Vector3 camPos = cam->GetTransform()->GetWorldPosition();
 	Vector3 dir = cam->GetCamToMouseWorldDirection();
+
 
 	vector<MeshRenderer*> renderList;
 	for (int i = 0; i < 3; ++i)

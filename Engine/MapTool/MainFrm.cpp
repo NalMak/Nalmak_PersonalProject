@@ -4,12 +4,11 @@
 
 #include "stdafx.h"
 #include "Nalmak3D_MapTool.h"
-
+#include "Nalmak3D_MapToolView.h"
 #include "MainFrm.h"
 
-#include "Nalmak3D_MapToolView.h"
-#include "Nalmak3D_MapControlView.h"
 
+#include "MainTabFormView.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -90,7 +89,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	m_mainSplitter.CreateStatic(this, 1, 2);
 	m_mainSplitter.CreateView(0, 0, RUNTIME_CLASS(CNalmak3D_MapToolView), CSize(WINCX - 400, WINCY), pContext);
-	m_mainSplitter.CreateView(0, 1, RUNTIME_CLASS(Nalmak3D_MapControlView), CSize(400, WINCY), pContext);
+	m_mainSplitter.CreateView(0, 1, RUNTIME_CLASS(MainTabFormView), CSize(400, WINCY), pContext);
 	m_mainSplitter.SetColumnInfo(1, 400, 10);
 
 	return true;

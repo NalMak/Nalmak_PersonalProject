@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h
@@ -141,8 +141,33 @@
   ..\Bin\fmodex64_vc.lib
   ..\Bin\Nalmak3D_Engine.lib
   2개 파일이 복사되었습니다.
+  ..\Bin\BackGround.cso
+  ..\Bin\brightHorizontalBlur.cso
+  ..\Bin\brightVerticalBlur.cso
+  ..\Bin\default.cso
+  ..\Bin\defaultDebug.cso
+  ..\Bin\defaultEmission.cso
+  ..\Bin\defaultUI.cso
+  ..\Bin\deferred_bright.cso
+  ..\Bin\deferred_emission.cso
+  ..\Bin\deferred_geometry.cso
+  ..\Bin\D_Debug.cso
+  ..\Bin\D_DirectionalLight.cso
+  ..\Bin\D_FullScreen.cso
+  ..\Bin\D_GrabPass.cso
+  ..\Bin\D_PointLight.cso
+  ..\Bin\D_PointLight_Stencil.cso
+  ..\Bin\grid.cso
+  ..\Bin\line.cso
+  ..\Bin\noneNormal.cso
+  ..\Bin\particle.cso
+  ..\Bin\physX_Debug.cso
+  ..\Bin\postprocess_bloom.cso
+  ..\Bin\skyBox.cso
+  ..\Bin\standard.cso
+  ..\Bin\standard_normal.cso
   ..\Bin\SYS_OutLine.cso
-  1개 파일이 복사되었습니다.
+  26개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

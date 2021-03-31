@@ -8,8 +8,8 @@
 #include "Nalmak3D_MapTool.h"
 #include "MainFrm.h"
 
-#include "Nalmak3D_MapToolDoc.h"
 #include "Nalmak3D_MapToolView.h"
+#include "Nalmak3D_MapToolDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

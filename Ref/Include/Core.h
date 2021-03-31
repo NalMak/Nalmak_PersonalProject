@@ -29,7 +29,7 @@
 #include "Exception.h"
 #include "FileIO.h"
 #include "SplineCurve.h"
-
+#include "IState.h"
 
 #pragma region Component
 #include "MeshRenderer.h"

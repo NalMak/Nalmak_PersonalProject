@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "BaseScene.h"
 #include "MapToolManager.h"
+#include "MapTool_ObjectState.h"
+#include "MapTool_NavMeshState.h"
 
 
 BaseScene::BaseScene()
@@ -23,7 +25,12 @@ void BaseScene::Initialize()
 
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f);
 
-	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>();
+
+	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>()->AddComponent<StateControl>();
+	debug->GetComponent<StateControl>()->AddState<MapTool_ObjectState>(L"object");
+	debug->GetComponent<StateControl>()->AddState<MapTool_NavMeshState>(L"navMesh");
+	debug->GetComponent<StateControl>()->InitState(L"object");
+
 	MapToolManager::GetInstance()->SetDebuggingMode(debug->GetComponent<DebuggingMode>());
-	
+	MapToolManager::GetInstance()->SetToolStateControl(debug->GetComponent<StateControl>());
 }

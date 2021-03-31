@@ -46,9 +46,6 @@
     <ClInclude Include="MainFrm.h">
       <Filter>00.Frame</Filter>
     </ClInclude>
-    <ClInclude Include="Nalmak3D_MapToolView.h">
-      <Filter>01.View</Filter>
-    </ClInclude>
     <ClInclude Include="Nalmak3D_MapToolDoc.h">
       <Filter>02.Doc</Filter>
     </ClInclude>
@@ -70,9 +67,6 @@
     <ClInclude Include="Define.h">
       <Filter>98.PreCompile\00.Define</Filter>
     </ClInclude>
-    <ClInclude Include="Nalmak3D_MapControlView.h">
-      <Filter>01.View</Filter>
-    </ClInclude>
     <ClInclude Include="BaseScene.h">
       <Filter>03.Scene</Filter>
     </ClInclude>
@@ -81,6 +75,24 @@
       <Filter>98.PreCompile\01.Enum</Filter>
     </ClInclude>
     <ClInclude Include="..\MFCUtility\MFC_Utility.h" />
+    <ClInclude Include="ObjectInstallTool.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="MainTabFormView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="Nalmak3D_MapToolView.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshTool.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool_ObjectState.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool_NavMeshState.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -89,22 +101,34 @@
     <ClCompile Include="MainFrm.cpp">
       <Filter>00.Frame</Filter>
     </ClCompile>
-    <ClCompile Include="Nalmak3D_MapToolView.cpp">
-      <Filter>01.View</Filter>
-    </ClCompile>
     <ClCompile Include="Nalmak3D_MapToolDoc.cpp">
       <Filter>02.Doc</Filter>
     </ClCompile>
     <ClCompile Include="Nalmak3D_MapTool.cpp">
       <Filter>99.Default</Filter>
     </ClCompile>
-    <ClCompile Include="Nalmak3D_MapControlView.cpp">
-      <Filter>01.View</Filter>
-    </ClCompile>
     <ClCompile Include="BaseScene.cpp">
       <Filter>03.Scene</Filter>
     </ClCompile>
     <ClCompile Include="MapToolManager.cpp" />
+    <ClCompile Include="ObjectInstallTool.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTabFormView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="Nalmak3D_MapToolView.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshTool.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool_NavMeshState.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool_ObjectState.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak3D_MapTool.rc">

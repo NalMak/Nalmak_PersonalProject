@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-class Nalmak3D_MapControlView;
+class ObjectInstallTool;
 
 class MapToolManager
 {
@@ -11,13 +11,16 @@ public:
 	~MapToolManager();
 
 private:
+	StateControl* m_toolControl = nullptr;
 	GameObject* m_selectedObject = nullptr;
 	vector<GameObject*> m_createdOnMapObjectList;
-	Nalmak3D_MapControlView* m_controlView;
+	ObjectInstallTool* m_controlView;
 	DebuggingMode* m_debugHelper;
 public:
 	void SetDebuggingMode(DebuggingMode* _debuggingMode);
-	void SetControlView(Nalmak3D_MapControlView* _view);
+	void SetToolStateControl(StateControl* _state);
+	void SetToolState(const wstring& _str);
+	void SetControlView(ObjectInstallTool* _view);
 	void CreateObject(GameObject* _obj);
 	void DeleteObject(int _num);
 	size_t GetObjectCount();

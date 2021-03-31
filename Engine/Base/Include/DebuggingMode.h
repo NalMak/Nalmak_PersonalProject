@@ -73,5 +73,6 @@ private:
 public:
 	void AddEvent(EventHandler _e);
 	GameObject* GetPickingObject();
+	void SetDebuggingMode(DEBUGGING_MODE _mode,bool _active);
 };
 

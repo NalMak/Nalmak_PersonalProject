@@ -199,11 +199,15 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MainTabFormView.h" />
     <ClInclude Include="MapToolManager.h" />
-    <ClInclude Include="Nalmak3D_MapControlView.h" />
+    <ClInclude Include="MapTool_NavMeshState.h" />
+    <ClInclude Include="MapTool_ObjectState.h" />
     <ClInclude Include="Nalmak3D_MapTool.h" />
     <ClInclude Include="Nalmak3D_MapToolDoc.h" />
     <ClInclude Include="Nalmak3D_MapToolView.h" />
+    <ClInclude Include="NavMeshTool.h" />
+    <ClInclude Include="ObjectInstallTool.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
@@ -212,11 +216,15 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MainTabFormView.cpp" />
     <ClCompile Include="MapToolManager.cpp" />
-    <ClCompile Include="Nalmak3D_MapControlView.cpp" />
+    <ClCompile Include="MapTool_NavMeshState.cpp" />
+    <ClCompile Include="MapTool_ObjectState.cpp" />
     <ClCompile Include="Nalmak3D_MapTool.cpp" />
     <ClCompile Include="Nalmak3D_MapToolDoc.cpp" />
     <ClCompile Include="Nalmak3D_MapToolView.cpp" />
+    <ClCompile Include="NavMeshTool.cpp" />
+    <ClCompile Include="ObjectInstallTool.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -38,3 +38,5 @@
 *.exp
 *.exe
 *.cso
+*.db
+*.opendb

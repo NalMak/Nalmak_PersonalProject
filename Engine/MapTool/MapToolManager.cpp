@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MapToolManager.h"
-#include "Nalmak3D_MapControlView.h"
 
+#include "ObjectInstallTool.h"
 IMPLEMENT_SINGLETON(MapToolManager)
 
 MapToolManager::MapToolManager()
@@ -18,7 +18,17 @@ void MapToolManager::SetDebuggingMode(DebuggingMode * _debuggingMode)
 	m_debugHelper = _debuggingMode;
 }
 
-void MapToolManager::SetControlView(Nalmak3D_MapControlView * _view)
+void MapToolManager::SetToolStateControl(StateControl* _state)
+{
+	m_toolControl = _state;
+}
+
+void MapToolManager::SetToolState(const wstring & _str)
+{
+	m_toolControl->SetState(_str);
+}
+
+void MapToolManager::SetControlView(ObjectInstallTool * _view)
 {
 	m_controlView = _view;
 }
