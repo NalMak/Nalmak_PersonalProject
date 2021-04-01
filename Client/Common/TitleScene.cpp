@@ -70,7 +70,10 @@ void TitleScene::Initialize()
 		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
 	}
 
-	
-	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<RigidBody>()->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>()->AddComponent<TestPlayer>()->SetPosition(0,3,0);
+	BoxCollider::Desc boxcol;
+	boxcol.posOffset = { 0,1,0 };
+	RigidBody::Desc rigid2;
+	rigid2.isKinematic = true;
+	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)->AddComponent<TestPlayer>()->SetPosition(0,3,0);
 
 }

@@ -323,9 +323,7 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 	auto rot = _col->GetTransform()->GetWorldRotation();
 	PxMeshScale meshScale = PxMeshScale(PxVec3(scale.x, scale.y, scale.z), PxQuat(PxIdentity));
 	PxMaterial* pMat = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
-
 	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
-
 	PxRigidStatic* actor = m_physics->createRigidStatic(trans);
 	PxShape* shape = PxRigidActorExt::createExclusiveShape(*actor, PxTriangleMeshGeometry(triMesh, meshScale), *pMat);
 	actor->attachShape(*shape);
@@ -336,43 +334,25 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 
 void PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody * _rigid, float _radius)
 {
-	auto pos = _rigid->GetTransform()->GetWorldPosition();
-	auto rot = _rigid->GetTransform()->GetWorldRotation();
-	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
-
 	PxShape* shape = m_physics->createShape(PxSphereGeometry(_radius), *material, true);
-	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
-	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
-
+	InitializeShapeByColliderInfo(shape, _col);
 	AttachShapeToRigidDynamic(_rigid, shape);
 }
 
 void PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * _rigid, float _width, float _height, float _depth)
 {
-	auto pos = _rigid->GetTransform()->GetWorldPosition();
-	auto rot = _rigid->GetTransform()->GetWorldRotation();
-	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
-
 	PxShape* shape = m_physics->createShape(PxBoxGeometry(_width * 0.5f, _height * 0.5f, _depth * 0.5f), *material, true);
-	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
-	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
-
+	InitializeShapeByColliderInfo(shape, _col);
 	AttachShapeToRigidDynamic(_rigid, shape);
 }
 
 void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, float _radius, float _height)
 {
-	auto pos = _rigid->GetTransform()->GetWorldPosition();
-	auto rot = _rigid->GetTransform()->GetWorldRotation();
-	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
-
 	PxShape* shape = m_physics->createShape(PxCapsuleGeometry(_radius,_height), *material, true);
-	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
-	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
-
+	InitializeShapeByColliderInfo(shape, _col);
 	AttachShapeToRigidDynamic(_rigid, shape);
 }
 
@@ -386,6 +366,16 @@ void PhysicsManager::AttachShapeToRigidDynamic(RigidBody * _rigid, PxShape* shap
 	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
 	actor->setMass(_rigid->GetMass());
 	actor->attachShape(*shape);
+}
+
+void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * collider)
+{
+	auto pos = collider->GetPosOffset();
+	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(0,0,0,1));
+	_shape->setLocalPose(trans);
+	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !collider->IsTrigger());
+	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collider->IsTrigger());
+	//_shape->setSimulationFilterData()
 }
 
 GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)

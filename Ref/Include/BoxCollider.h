@@ -8,6 +8,7 @@ public:
 		float width = 1;
 		float height = 1;
 		float depth = 1;
+		Vector3 posOffset = { 0,0,0 };
 		bool isTrigger = false;
 	};
 public:

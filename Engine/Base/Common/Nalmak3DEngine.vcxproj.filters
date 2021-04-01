@@ -525,7 +525,9 @@
     <ClCompile Include="..\Source\DebuggingMode.cpp">
       <Filter>05.Component\14.Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\CapsuleCollider.cpp" />
+    <ClCompile Include="..\Source\CapsuleCollider.cpp">
+      <Filter>05.Component\04.Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -834,7 +836,9 @@
     <ClInclude Include="..\Include\DebuggingMode.h">
       <Filter>05.Component\14.Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\CapsuleCollider.h" />
+    <ClInclude Include="..\Include\CapsuleCollider.h">
+      <Filter>05.Component\04.Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

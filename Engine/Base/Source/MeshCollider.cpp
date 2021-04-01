@@ -6,7 +6,7 @@
 
 
 MeshCollider::MeshCollider(Desc * _desc)
-	: Collider(_desc->isTrigger)
+	: Collider(_desc->isTrigger, { 0,0,0 })
 {
 }
 

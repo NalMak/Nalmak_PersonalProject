@@ -55,7 +55,7 @@ public:
 	void CreateCapsuleCollider(Collider* _col, RigidBody* _rigid, float _radius, float _height);
 private:
 	void AttachShapeToRigidDynamic(RigidBody* _rigid, PxShape* shape);
-
+	void InitializeShapeByColliderInfo(PxShape* _shape, Collider* collider);
 
 public:
 	GameObject* Raycast(Vector3* _hitPoint, const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*>& _renderList);

@@ -4,7 +4,7 @@
 
 
 CapsuleCollider::CapsuleCollider(Desc * _desc)
-	: Collider(_desc->isTrigger)
+	: Collider(_desc->isTrigger, _desc->posOffset)
 {
 	m_height = _desc->height;
 	m_radius = _desc->radius;

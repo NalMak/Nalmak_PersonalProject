@@ -2,8 +2,9 @@
 
 
 
-Collider::Collider(bool _isTrigger)
+Collider::Collider(bool _isTrigger,const Vector3& _posOffset)
 {
+	m_offset = _posOffset;
 	m_isTrigger = _isTrigger;
 }
 

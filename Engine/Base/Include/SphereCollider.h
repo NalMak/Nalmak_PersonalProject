@@ -8,6 +8,7 @@ public:
 	struct Desc
 	{
 		float radius = 0.5f;
+		Vector3 posOffset = { 0,0,0 };
 		bool isTrigger = false;
 	};
 public:

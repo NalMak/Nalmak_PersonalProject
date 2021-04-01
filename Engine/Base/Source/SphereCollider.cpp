@@ -4,7 +4,7 @@
 
 
 SphereCollider::SphereCollider(Desc * _desc)
-	: Collider(_desc->isTrigger)
+	: Collider(_desc->isTrigger,_desc->posOffset)
 {
 	m_radius = _desc->radius;
 }

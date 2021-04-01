@@ -6,7 +6,7 @@ class NALMAK_DLL Collider :
 	public Component
 {
 public:
-	Collider(bool _isTrigger);
+	Collider(bool _isTrigger, const Vector3& _posOffset);
 	virtual ~Collider();
 
 private:
@@ -18,8 +18,9 @@ protected:
 
 protected:
 	bool m_isTrigger;
-
+	Vector3 m_offset;
 public:
 	bool IsTrigger() { return m_isTrigger; }
+	const Vector3& GetPosOffset() { return m_offset; }
 };
 

@@ -7,6 +7,7 @@ public:
 	{
 		float radius = 0.5f;
 		float height = 1;
+		Vector3 posOffset = { 0,0,0 };
 		bool isTrigger = false;
 	};
 public:

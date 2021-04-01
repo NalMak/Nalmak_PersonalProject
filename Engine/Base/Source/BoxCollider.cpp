@@ -4,7 +4,7 @@
 #include "MeshRenderer.h"
 
 BoxCollider::BoxCollider(Desc * _desc)
-	: Collider(_desc->isTrigger)
+	: Collider(_desc->isTrigger,_desc->posOffset)
 {
 	m_width = _desc->width;
 	m_height = _desc->height;
