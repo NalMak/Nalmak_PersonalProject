@@ -70,6 +70,10 @@
     <ClCompile Include="..\Source\CanvasPicking.cpp" />
     <ClCompile Include="..\Source\MeshRenderer.cpp" />
     <ClCompile Include="..\Source\Nalmak_DirectXMath.cpp" />
+    <ClCompile Include="..\Source\NavCell.cpp" />
+    <ClCompile Include="..\Source\NavLine.cpp" />
+    <ClCompile Include="..\Source\NavMesh.cpp" />
+    <ClCompile Include="..\Source\NavPoint.cpp" />
     <ClCompile Include="..\Source\Number.cpp" />
     <ClCompile Include="..\Source\ObjectManager.cpp" />
     <ClCompile Include="..\Source\Particle.cpp" />
@@ -173,6 +177,10 @@
     <ClInclude Include="..\Include\Nalmak_String.h" />
     <ClInclude Include="..\Include\Nalmak_Struct.h" />
     <ClInclude Include="..\Include\Nalmak_Typedef.h" />
+    <ClInclude Include="..\Include\NavCell.h" />
+    <ClInclude Include="..\Include\NavLine.h" />
+    <ClInclude Include="..\Include\NavMesh.h" />
+    <ClInclude Include="..\Include\NavPoint.h" />
     <ClInclude Include="..\Include\Number.h" />
     <ClInclude Include="..\Include\ObjectManager.h" />
     <ClInclude Include="..\Include\Particle.h" />

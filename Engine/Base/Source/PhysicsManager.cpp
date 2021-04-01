@@ -5,6 +5,7 @@
 #include "RigidBody.h"
 #include "Collider.h"
 #include "MeshRenderer.h"
+#include "ObjectManager.h"
 IMPLEMENT_SINGLETON(PhysicsManager)
 
 PhysicsManager::PhysicsManager()
@@ -131,6 +132,43 @@ void PhysicsManager::CreateController()
 	m_controllerManager = PxCreateControllerManager(*m_scene);
 }
 
+void PhysicsManager::ActiveCollisionLayer(_OBJECT_LAYER _layer1, _OBJECT_LAYER _layer2)
+{
+	m_collisionLayer.emplace_back((unsigned long long)pow(2, _layer1) + (UINT)pow(2, _layer2));
+}
+
+void PhysicsManager::AdjustCollisionLayer(PxShape * _shape, Collider * _collider)
+{
+	USHORT layer = _collider->GetGameObject()->GetLayer();
+	PxU32 shapeLayer = (PxU32)pow(2, layer);
+
+	PxU32 targetFinalLayer = 0;
+
+	int layerCount = ObjectManager::GetInstance()->GetObjectLayerCount();
+
+	for (int i = 0; i < layerCount; ++i)
+	{
+		PxU32 targetLayer = (PxU32)pow(2, i);
+		for (auto& resultLayer : m_collisionLayer)
+		{
+			if (resultLayer == shapeLayer + targetLayer)
+			{
+				targetFinalLayer |= targetLayer;
+			}
+		}
+	}
+	SetUpFiltering(_shape, shapeLayer, targetFinalLayer);
+}
+
+void PhysicsManager::SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _filterMask)
+{
+	PxFilterData filterData;
+	filterData.word0 = _filterGroup;
+	filterData.word1 = _filterMask;
+
+	_shape->setSimulationFilterData(filterData);
+}
+
 void PhysicsManager::AddActorToScene(PxRigidDynamic * _rigid)
 {
 	m_scene->addActor(*_rigid);
@@ -226,7 +264,7 @@ void PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigi
 
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
 	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
-
+	AdjustCollisionLayer(shape, _col);
 
 	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
 
@@ -326,6 +364,8 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
 	PxRigidStatic* actor = m_physics->createRigidStatic(trans);
 	PxShape* shape = PxRigidActorExt::createExclusiveShape(*actor, PxTriangleMeshGeometry(triMesh, meshScale), *pMat);
+	AdjustCollisionLayer(shape, _col);
+
 	actor->attachShape(*shape);
 	actor->userData = _col->GetGameObject();
 
@@ -368,14 +408,14 @@ void PhysicsManager::AttachShapeToRigidDynamic(RigidBody * _rigid, PxShape* shap
 	actor->attachShape(*shape);
 }
 
-void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * collider)
+void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * _collider)
 {
-	auto pos = collider->GetPosOffset();
+	auto pos = _collider->GetPosOffset();
 	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(0,0,0,1));
 	_shape->setLocalPose(trans);
-	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !collider->IsTrigger());
-	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collider->IsTrigger());
-	//_shape->setSimulationFilterData()
+	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_collider->IsTrigger());
+	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _collider->IsTrigger());
+	AdjustCollisionLayer(_shape, _collider);
 }
 
 GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)

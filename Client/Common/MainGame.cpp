@@ -20,11 +20,10 @@ void MainGame::ApplicationSetting()
 {
 	Core::Desc core;
 	core.OBJECT_TAG_COUNT = 1;
-	core.COLLISION_LAYER_COUNT = 1;
+	core.OBJECT_LAYER_COUNT = OBJECT_LAYER_MAX;
 	core.wincx = WINCX;
 	core.wincy = WINCY;
 	core.windowMode = true;
-
 	// all resource load in resource directory
 	core.resourceDirectoryPath = L"../Resource";
 
@@ -34,6 +33,9 @@ void MainGame::ApplicationSetting()
 void MainGame::SystemSetting()
 {
 	g_time = TimeManager::GetInstance();
+
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_DEFAULT, OBJECT_LAYER_BACKGROUND);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_DEFAULT, OBJECT_LAYER_DEFAULT);
 
 	m_engine->AddScene(L"title", Scene::Instantiate<TitleScene>());
 	m_engine->AddScene(L"homework", Scene::Instantiate<homeworkScene>());

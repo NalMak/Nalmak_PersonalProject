@@ -25,3 +25,18 @@ void TestPlayer::Update()
 		m_rigidBody->SetWorldPosition(m_transform->position);
 	}
 }
+
+void TestPlayer::OnCollisionEnter(Collisions & _col)
+{
+	DEBUG_LOG(L"Enter", L"Enter");
+}
+
+void TestPlayer::OnCollisionStay(Collisions & _col)
+{
+	DEBUG_LOG(L"Stay", L"Stay");
+}
+
+void TestPlayer::OnCollisionExit(Collisions & _col)
+{
+	DEBUG_LOG(L"Exit", L"Exit");
+}

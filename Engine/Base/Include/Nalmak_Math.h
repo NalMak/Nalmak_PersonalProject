@@ -432,8 +432,52 @@ public:
 			return false;
 	}
 
+	static const bool IsIntersectLineToLineOn2D(const Vector3& _p0, const Vector3& _p1, const Vector3& _q0, const Vector3& _q1)
+	{
+		float t;
+		float s;
+		Vector2 AP1 = { _p0.x,_p0.z};
+		Vector2 AP2 = { _p1.x,_p1.z };
+		Vector2 BP1 = { _q0.x,_q0.z };
+		Vector2 BP2 = { _q1.x,_q1.z };
 
+		float under = (BP2.y - BP1.y)*(AP2.x - AP1.x) - (BP2.x - BP1.x)*(AP2.y - AP1.y);
+		if (under == 0)
+			return false;
+
+		float _t = (BP2.x - BP1.x)*(AP1.y - BP1.y) - (BP2.y - BP1.y)*(AP1.x - BP1.x);
+		t = _t / under;
+
+		if (t <= 0.0 || t >= 1.0)
+			return false;
+		float _s = (AP2.x - AP1.x)*(AP1.y - BP1.y) - (AP2.y - AP1.y)*(AP1.x - BP1.x);
+		s = _s / under;
+
+		if (s <= 0.0 || s >= 1.0)
+			return false;
+
+		return true;
+	}
 	
+	static const bool IsExistPointInTriangleInOn2D(Vector3 _point, Vector3 _p1, Vector3 _p2, Vector3 _p3)
+	{
+		Vector2 p, p1, p2, p3;
+		p = { _point.x,_point.z };
+		p1 = {_p1.x,_p1.z};
+		p2 = {_p2.x,_p2.z};
+		p3 = {_p3.x,_p3.z};
+
+		float alpha = ((p2.y - p3.y)*(p.x - p3.x) + (p3.x - p2.x)*(p.y - p3.y)) /
+			((p2.y - p3.y)*(p1.x - p3.x) + (p3.x - p2.x)*(p1.y - p3.y));
+		float beta = ((p3.y - p1.y)*(p.x - p3.x) + (p1.x - p3.x)*(p.y - p3.y)) /
+			((p2.y - p3.y)*(p1.x - p3.x) + (p3.x - p2.x)*(p1.y - p3.y));
+		float gamma = 1.0f - alpha - beta;
+
+		if (alpha > 0 && beta > 0 && gamma > 0)
+			return true;
+		else
+			return false;
+	}
 };
 
 

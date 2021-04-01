@@ -54,6 +54,8 @@ BEGIN(Nalmak)
 
 //https://catlikecoding.com/unity/tutorials/flow/texture-distortion/ water
 
+//https://cescg.org/wp-content/uploads/2020/03/Fridvalszky-Optimizing-multisample-anti-aliasing-for-deferred-renderers-1.pdf // deferred & msaa
+//https://scahp.tistory.com/4 msaa
 class RenderManager
 {
 	DECLARE_SINGLETON(RenderManager)

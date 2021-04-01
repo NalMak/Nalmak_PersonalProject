@@ -19,9 +19,10 @@ ObjectManager::~ObjectManager()
 
 
 
-void ObjectManager::Initialize(_OBJECT_TAG _ObjectTag)
+void ObjectManager::Initialize(_OBJECT_TAG _ObjectTag, _OBJECT_LAYER _objectLayer)
 {
 	m_gameObjectLists.assign(_ObjectTag, list<GameObject*>());
+	m_objectLayerCount = _objectLayer;
 }
 
 void ObjectManager::Update()
@@ -303,6 +304,11 @@ GameObject* ObjectManager::PickObjectByMouse(Vector3* _hitPoint)
 	Vector3 dir = cam->GetCamToMouseWorldDirection();
 
 	return PhysicsManager::GetInstance()->Raycast(_hitPoint, camPos, camPos + dir * 1000, pickEnableRenderList);
+}
+
+USHORT ObjectManager::GetObjectLayerCount()
+{
+	return m_objectLayerCount;
 }
 
 void ObjectManager::MergeObjectList()

@@ -241,6 +241,9 @@
     <Filter Include="07.PhysX">
       <UniqueIdentifier>{e820d523-c2e2-40cd-99f0-328f7307756e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\15.NavMesh">
+      <UniqueIdentifier>{25daed7f-c6b6-444b-9d62-23a9578e2d8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core.cpp">
@@ -527,6 +530,18 @@
     </ClCompile>
     <ClCompile Include="..\Source\CapsuleCollider.cpp">
       <Filter>05.Component\04.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavMesh.cpp">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavCell.cpp">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavLine.cpp">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavPoint.cpp">
+      <Filter>05.Component\15.NavMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -838,6 +853,18 @@
     </ClInclude>
     <ClInclude Include="..\Include\CapsuleCollider.h">
       <Filter>05.Component\04.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavMesh.h">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavCell.h">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavLine.h">
+      <Filter>05.Component\15.NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavPoint.h">
+      <Filter>05.Component\15.NavMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

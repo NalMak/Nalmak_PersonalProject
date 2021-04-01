@@ -29,7 +29,7 @@ void TitleScene::Initialize()
 	render.meshName = L"box";
 	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0)->AddComponent<MeshCollider>();
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		RigidBody::Desc rigid;
 		//rigid.isKinematic = true;
@@ -59,7 +59,9 @@ void TitleScene::Initialize()
 		mesh.meshName = L"plane";
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
-		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, -10, 0);
+		rigid.isGravity = false;
+		auto plane = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, -10, 0);
+		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
 	{
@@ -73,7 +75,8 @@ void TitleScene::Initialize()
 	BoxCollider::Desc boxcol;
 	boxcol.posOffset = { 0,1,0 };
 	RigidBody::Desc rigid2;
-	rigid2.isKinematic = true;
 	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)->AddComponent<TestPlayer>()->SetPosition(0,3,0);
 
+
+	INSTANTIATE()->AddComponent<NavMesh>();
 }

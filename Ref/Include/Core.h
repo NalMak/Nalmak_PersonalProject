@@ -31,6 +31,10 @@
 #include "SplineCurve.h"
 #include "IState.h"
 
+#include "NavCell.h"
+#include "NavPoint.h"
+#include "NavLine.h"
+
 #pragma region Component
 #include "MeshRenderer.h"
 #include "Camera.h"
@@ -67,6 +71,7 @@
 #include "CapsuleCollider.h"
 #include "RigidBody.h"
 #include "DebugObject.h"
+#include "NavMesh.h"
 #pragma endregion
 
 //#define __SOUND_ON__
@@ -95,7 +100,7 @@ public:
 		wstring resourceDirectoryPath = L"../../Resource";
 		_OBJECT_TAG OBJECT_TAG_COUNT = 1;
 		_RENDER_LAYER RENDER_LAYER_COUNT = 1;
-		_COLLISION_LAYER COLLISION_LAYER_COUNT = 1;
+		_OBJECT_LAYER OBJECT_LAYER_COUNT = 1;
 	};
 public:
 	void Initialize(HINSTANCE _hInst, HWND mainHandle,  Desc* _desc, HWND inputHandle = nullptr);
@@ -110,7 +115,7 @@ public:
 public:
 	GameObject* GetPrototype(const wstring& _name);
 public:
-	void ActivateCollisionByLayer(_COLLISION_LAYER _layer1, _COLLISION_LAYER _layer2);
+	void ActivateCollisionByLayer(_OBJECT_LAYER _layer1, _OBJECT_LAYER _layer2);
 public:
 	// Search
 	GameObject* FindFirstObject(_OBJECT_TAG _tag);

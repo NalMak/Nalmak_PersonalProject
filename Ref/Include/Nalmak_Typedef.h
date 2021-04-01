@@ -10,9 +10,9 @@ typedef D3DXMATRIX Matrix;
 typedef D3DXQUATERNION Quaternion;
 
 typedef int _OBJECT_TAG;
+typedef int _OBJECT_LAYER;
 typedef int _RENDER_LAYER;
 typedef int _RENDER_QUEUE;
-typedef int _COLLISION_LAYER;
 typedef int _SOUND_CHANNEL;
 typedef int _CANVAS_GROUP;
 

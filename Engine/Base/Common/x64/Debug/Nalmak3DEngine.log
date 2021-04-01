@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h
@@ -72,6 +72,10 @@
   ..\Include\Nalmak_String.h
   ..\Include\Nalmak_Struct.h
   ..\Include\Nalmak_Typedef.h
+  ..\Include\NavCell.h
+  ..\Include\NavLine.h
+  ..\Include\NavMesh.h
+  ..\Include\NavPoint.h
   ..\Include\Number.h
   ..\Include\ObjectManager.h
   ..\Include\Particle.h
@@ -122,7 +126,7 @@
   ..\Include\UIInteractor.h
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
-  122개 파일이 복사되었습니다.
+  126개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

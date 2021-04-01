@@ -10,7 +10,6 @@ class NALMAK_DLL RigidBody :
 public:
 	struct Desc
 	{
-		float density = 1;
 		float damping = 0.1f;
 		float mass = 1;
 		bool isGravity = true;
@@ -55,14 +54,12 @@ public:
 	PxRigidDynamic* GetRigidBody();
 private:
 	PxRigidDynamic* m_rigid;
-	float m_density;
 	float m_damping;
 	float m_mass;
 	bool  m_isGravity;
 	bool  m_isKinematic;
 	BitFlag<CONSTRAINTS_DIRECTION> m_constraints;
 public:
-	float GetDensity();
 	float GetDamping();
 	float GetMass();
 	bool IsGravity();

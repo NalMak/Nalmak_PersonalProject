@@ -5,7 +5,6 @@
 
 RigidBody::RigidBody(Desc * _desc)
 {
-	m_density = _desc->density;
 	m_damping = _desc->damping;
 	m_isGravity = _desc->isGravity;
 	m_isKinematic = _desc->isKinematic;

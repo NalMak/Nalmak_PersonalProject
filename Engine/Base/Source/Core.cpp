@@ -70,7 +70,7 @@ void Core::Initialize(HINSTANCE _hInst, HWND mainHandle, Desc* _desc, HWND input
 		inputHandle = mainHandle;
 
 	RenderManager::GetInstance()->SetWindowSize(_desc->wincx, _desc->wincy);
-	ObjectManager::GetInstance()->Initialize(_desc->OBJECT_TAG_COUNT);
+	ObjectManager::GetInstance()->Initialize(_desc->OBJECT_TAG_COUNT,_desc->OBJECT_LAYER_COUNT);
 	DeviceManager::GetInstance()->Initialize(_desc->wincx, _desc->wincy, mainHandle, _desc->windowMode);
 
 	m_soundManager->Initialize();
@@ -143,8 +143,9 @@ GameObject * Core::GetPrototype(const wstring& _name)
 	return m_prototypeManager->GetPrototype(_name);
 }
 
-void Core::ActivateCollisionByLayer(_COLLISION_LAYER _layer1, _COLLISION_LAYER _layer2)
+void Core::ActivateCollisionByLayer(_OBJECT_LAYER _layer1, _OBJECT_LAYER _layer2)
 {
+	m_physicsManager->ActiveCollisionLayer(_layer1, _layer2);
 }
 
 GameObject * Core::FindFirstObject(_OBJECT_TAG _tag)

@@ -29,7 +29,7 @@ void LineManager::Initialize()
 
 	for (UINT i = 0; i < m_maxLineCount; ++i)
 	{
-		auto line = GameObject::Instantiate(0, L"line")->AddComponent<MeshRenderer>(&desc);
+		auto line = GameObject::Instantiate(0,0, L"line")->AddComponent<MeshRenderer>(&desc);
 		line->SetDontDestroy(true);
 		line->SetActive(false);
 		line->InitializeComponents();

@@ -25,9 +25,9 @@ private:
 	vector<list<GameObject*>> m_gameObjectLists;
 	vector<GameObject*> m_willBeDeadObjectList;
 	vector<Component*> m_willBeDeadComponents;
-
+	USHORT m_objectLayerCount = 1;
 public:
-	void Initialize(_OBJECT_TAG _ObjectTag);
+	void Initialize(_OBJECT_TAG _ObjectTag,_OBJECT_LAYER _objectLayer);
 	void Update();
 	void LateUpdate();
 	void PreRender();
@@ -46,6 +46,7 @@ public:
 	GameObject* Find(_OBJECT_TAG _tag, const wstring& _name);
 	GameObject* FindFirstObjectbyTag(_OBJECT_TAG _tag);
 	GameObject* PickObjectByMouse(Vector3* _hitPoint);
+	USHORT GetObjectLayerCount();
 public:
 	void MergeObjectList();
 

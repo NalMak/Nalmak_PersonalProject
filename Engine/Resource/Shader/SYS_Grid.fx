@@ -9,6 +9,10 @@ float4 g_mainTexColor;
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
+
+	MinFilter = anisotropic;   
+	MagFilter = anisotropic; 
+    	MipFilter = anisotropic;
 };
 
 struct VS_INPUT

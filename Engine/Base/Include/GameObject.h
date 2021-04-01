@@ -34,7 +34,7 @@ private:
 
 public:
 	//static GameObject* MakePrototype(wstring _name);
-	static GameObject* Instantiate(int _tag = 0, wstring _name = L"default");
+	static GameObject* Instantiate(USHORT _tag = 0,USHORT _layer =0,  const wstring& _name = L"default");
 	static GameObject* Instantiate(wstring _name);
 
 	//static GameObject* Instantiate(GameObject* _prototype);
@@ -195,8 +195,8 @@ private:
 	bool m_static;
 	bool m_dontDestroy;
 	wstring m_name;
-	int m_tag;
-
+	USHORT m_tag;
+	USHORT m_layer;
 public:
 	void SetParents(Transform* _parents);
 	void SetParents(GameObject* _parents);
@@ -204,13 +204,12 @@ public:
 	void SetDontDestroy(bool _dontDestroy);
 	void SetStatic(bool _static) { m_static = _static; }
 	void SetActive(bool _active);
-	bool GetActive();
 	void SetName(wstring _name) { m_name = _name; }
-	void SetTag(int _tag);
+	void SetTag(USHORT _tag);
+	void SetLayer(USHORT _layer);
 	bool IsActive() const { return m_active; }
 	bool IsAlive() const { return !m_dead; }
-	const wstring GetName() const { return m_name; }
-	int GetTag() const { return m_tag; }
+
 	bool IsStatic() const { return m_static; }
 	GameObject* SetPosition(const Vector3& _pos);
 	GameObject* SetPosition(float _x, float _y, float _z);
@@ -221,7 +220,10 @@ public:
 	GameObject* SetRotation(float _xAngle, float _yAngle, float _zAngle);
 
 public:
-	
+	const wstring GetName() const { return m_name; }
+	USHORT GetTag() const { return m_tag; }
+	bool GetActive();
+	USHORT GetLayer() { return m_layer; }
 };
 
 

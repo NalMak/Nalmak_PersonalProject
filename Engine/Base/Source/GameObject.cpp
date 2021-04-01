@@ -19,7 +19,7 @@
 //	return obj;
 //}
 
-GameObject * GameObject::Instantiate(int _tag, wstring _name)
+GameObject * GameObject::Instantiate(USHORT _tag, USHORT _layer, const wstring& _name)
 {
 	GameObject* obj = nullptr;
 
@@ -27,9 +27,9 @@ GameObject * GameObject::Instantiate(int _tag, wstring _name)
 	assert("Fail to Create GameObject!" && obj);
 	obj->Initialize();
 	obj->m_tag = _tag;
+	obj->m_layer = _layer;
 	obj->m_name = _name;
 	obj->m_dontDestroy = false;
-
 
 
 	ObjectManager::GetInstance()->AddObject(obj);
@@ -45,6 +45,7 @@ GameObject * GameObject::Instantiate(wstring _name)
 	assert("Fail to Create GameObject!" && obj);
 	obj->Initialize();
 	obj->m_tag = 0;
+	obj->m_layer = 0;
 	obj->m_name = _name;
 	obj->m_dontDestroy = false;
 
@@ -404,10 +405,15 @@ bool GameObject::GetActive()
 	return m_active;
 }
 
-void GameObject::SetTag(int _tag)
+void GameObject::SetTag(USHORT _tag)
 {
 	ObjectManager::GetInstance()->ChangeTag(_tag, this);
 	m_tag = _tag;
+}
+
+void GameObject::SetLayer(USHORT _layer)
+{
+	m_layer = _layer;
 }
 
 GameObject* GameObject::SetPosition(const Vector3 & _pos)

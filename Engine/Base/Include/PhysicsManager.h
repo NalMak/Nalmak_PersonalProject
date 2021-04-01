@@ -41,6 +41,13 @@ private:
 	PxControllerManager*	m_controllerManager = nullptr;
 
 	NalmakPxEventCallBack*  m_eventCallback;
+
+	vector<unsigned long long>  m_collisionLayer;
+public:
+	void ActiveCollisionLayer(_OBJECT_LAYER _layer1, _OBJECT_LAYER _layer2);
+private:
+	void AdjustCollisionLayer(PxShape * _shape, Collider * collider);
+	void SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _filterMask);
 public:
 	void AddActorToScene(PxRigidDynamic* _rigid);
 	void RemoveActorFromScene(PxRigidDynamic* _rigid);
