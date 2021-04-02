@@ -29,5 +29,6 @@ public:
 	void UpdateSelectObjectTransform(GameObject* _obj);
 	GameObject* GetSelectedObject();
 	DebuggingMode* GetDebuggingObject();
+	StateControl* GetToolState();
 };
 

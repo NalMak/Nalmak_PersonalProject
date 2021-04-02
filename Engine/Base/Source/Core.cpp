@@ -163,6 +163,10 @@ GameObject * Core::PickObjectByMouse(Vector3* _hitPoint)
 	return m_objectManager->PickObjectByMouse(_hitPoint);
 }
 
+GameObject* Core::PickObjectByMouse(Vector3* _hitPoint, const vector<MeshRenderer*>& _renderList)
+{
+	return m_physicsManager->RaycastCamToMouse(_hitPoint, _renderList);
+}
 
 
 list<GameObject*> Core::GetObjectList(_OBJECT_TAG _tag)

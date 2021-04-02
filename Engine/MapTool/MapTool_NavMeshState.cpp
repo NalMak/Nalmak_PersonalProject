@@ -27,11 +27,20 @@ void MapTool_NavMeshState::Initialize()
 
 	m_currentSelectAddPoints[0] = nullptr;
 	m_currentSelectAddPoints[1] = nullptr;
+
+
+	render.mtrlName = L"SYS_Diffuse_Blue";
+	m_startPoint = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.3f, 0.3f, 0.3f);
+	m_endPoint = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.3f, 0.3f, 0.3f);
+	m_startPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+	m_endPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+
 }
 
 void MapTool_NavMeshState::EnterState()
 {
 	GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, false);
+
 }
 
 void MapTool_NavMeshState::UpdateState()
@@ -48,52 +57,97 @@ void MapTool_NavMeshState::UpdateState()
 		m_pickingPointsForDebug[0]->SetActive(false);
 		m_pickingPointsForDebug[1]->SetActive(false);
 
-		for (auto& point : m_navMesh->GetPointList())
+		switch (m_toolMode)
 		{
-			if(IsPickingSuccessNavPoint(point->position))
-			{
-				m_currentSelectMovePoint = point;
-				return;
-			}
-		}
-			
-		m_currentSelectCell = nullptr;
-		// 클릭이 된 셀을 얻어냄
-		for (auto& cell : m_navMesh->GetCellList())
+		case MapTool_NavMeshState::NAVMESH_TOOL_MODE_INSTALL:
 		{
-			if(IsPickingSuccessNavPoint(cell->GetCenter()))
+			for (auto& point : m_navMesh->GetPointList())
 			{
-				m_currentSelectCell = cell;
-				break;
+				if (IsPickingSuccessNavPoint(point->position))
+				{
+					m_currentSelectMovePoint = point;
+					return;
+				}
 			}
+
+			m_currentSelectCell = nullptr;
+			// 클릭이 된 셀을 얻어냄
+			for (auto& cell : m_navMesh->GetCellList())
+			{
+				if (IsPickingSuccessNavPoint(cell->GetCenter()))
+				{
+					m_currentSelectCell = cell;
+					break;
+				}
+			}
+			break;
 		}
-		m_navMesh->SetStartPosition(m_startPoint.position);
-		m_navMesh->SetEndPosition(m_endPoint.position);
+		case MapTool_NavMeshState::NAVMESH_TOOL_MODE_SET_START_POINT:
+		{
+			if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
+			{
+				m_startPoint->SetPosition(pickingPoint);
+				m_navMesh->SetStartPosition(m_startPoint->GetTransform()->GetWorldPosition());
+				m_toolMode = NAVMESH_TOOL_MODE_INSTALL;
+			}
+			break;
+		}
+		case MapTool_NavMeshState::NAVMESH_TOOL_MODE_SET_END_POINT:
+		{
+			if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
+			{
+				m_endPoint->SetPosition(pickingPoint);
+				m_navMesh->SetEndPosition(m_endPoint->GetTransform()->GetWorldPosition());
+				m_toolMode = NAVMESH_TOOL_MODE_INSTALL;
+
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		
+		m_navMesh->SetStartPosition(m_startPoint->GetTransform()->GetWorldPosition());
+		m_navMesh->SetEndPosition(m_endPoint->GetTransform()->GetWorldPosition());
 		m_navMesh->FindPath();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 	{
-		// 선택된 점이 있다면
-		if (m_currentSelectMovePoint)
+		if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
 		{
-			if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
+			// 선택된 점이 있다면
+			if (m_currentSelectMovePoint)
 			{
 				m_currentSelectMovePoint->position = pickingPoint;
-
-				// 선택된 점 한개가 움직일경우 위치 변경
-				if (m_currentSelectMovePoint == &m_startPoint || m_currentSelectMovePoint == &m_endPoint)
-				{
-					
-
-
-				}
-				m_navMesh->FindPath();
-
-				m_navMesh->SetStartPosition(m_startPoint.position);
-				m_navMesh->SetEndPosition(m_endPoint.position);
-
-				m_navMesh->UpdateMapBoundaryLine();
 			}
+			else
+			{
+				vector<MeshRenderer*> pathPoints;
+				pathPoints.emplace_back(m_startPoint->GetComponent<MeshRenderer>());
+				pathPoints.emplace_back(m_endPoint->GetComponent<MeshRenderer>());
+
+				Vector3 hitPoint;
+				GameObject* point = Core::GetInstance()->PickObjectByMouse(&hitPoint, pathPoints);
+
+				if (point)
+				{
+					if (point == m_startPoint)
+					{
+						m_startPoint->SetPosition(pickingPoint);
+						m_navMesh->SetStartPosition(m_startPoint->GetTransform()->GetWorldPosition());
+
+					}
+					else if (point == m_endPoint)
+					{
+						m_endPoint->SetPosition(pickingPoint);
+						m_navMesh->SetEndPosition(m_endPoint->GetTransform()->GetWorldPosition());
+					}
+				}
+			}
+
+
+			m_navMesh->FindPath();
+			m_navMesh->UpdateMapBoundaryLine();
 		}
 	}
 	if (InputManager::GetInstance()->GetKeyUp(KEY_STATE_LEFT_MOUSE))
@@ -238,4 +292,9 @@ bool MapTool_NavMeshState::IsPickingSuccessNavPoint(Vector3  _point)
 	}
 
 	return false;
+}
+
+void MapTool_NavMeshState::SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode)
+{
+	m_toolMode = _mode;
 }

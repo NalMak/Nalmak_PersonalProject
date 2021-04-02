@@ -96,3 +96,8 @@ DebuggingMode * MapToolManager::GetDebuggingObject()
 {
 	return m_debugHelper;
 }
+
+StateControl * MapToolManager::GetToolState()
+{
+	return m_toolControl;
+}

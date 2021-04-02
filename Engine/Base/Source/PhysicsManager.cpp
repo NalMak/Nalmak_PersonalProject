@@ -6,6 +6,8 @@
 #include "Collider.h"
 #include "MeshRenderer.h"
 #include "ObjectManager.h"
+#include "Camera.h"
+#include "RenderManager.h"
 IMPLEMENT_SINGLETON(PhysicsManager)
 
 PhysicsManager::PhysicsManager()
@@ -418,7 +420,7 @@ void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * 
 	AdjustCollisionLayer(_shape, _collider);
 }
 
-GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLayPos, const Vector3 & _endLayPos, vector<MeshRenderer*>& _renderList)
+GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRayPos, const Vector3 & _endRayPos, vector<MeshRenderer*>& _renderList)
 {
 	
 	vector<MeshRenderer*> raycastRenderers;
@@ -428,23 +430,23 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLa
 		Vector3 center = render->GetTransform()->GetWorldPosition();
 
 		float rayLength = sqrt(
-			pow(_endLayPos.x - _startLayPos.x, 2) +
-			pow(_endLayPos.y - _startLayPos.y, 2) +
-			pow(_endLayPos.z - _startLayPos.z, 2)
+			pow(_endRayPos.x - _startRayPos.x, 2) +
+			pow(_endRayPos.y - _startRayPos.y, 2) +
+			pow(_endRayPos.z - _startRayPos.z, 2)
 		);
 
-		float rayDx = (_endLayPos.x - _startLayPos.x) / rayLength;
-		float rayDy = (_endLayPos.y - _startLayPos.y) / rayLength;
-		float rayDz = (_endLayPos.z - _startLayPos.z) / rayLength;
+		float rayDx = (_endRayPos.x - _startRayPos.x) / rayLength;
+		float rayDy = (_endRayPos.y - _startRayPos.y) / rayLength;
+		float rayDz = (_endRayPos.z - _startRayPos.z) / rayLength;
 
 		float t =
-			rayDx * (center.x - _startLayPos.x) +
-			rayDy * (center.y - _startLayPos.y) +
-			rayDz * (center.z - _startLayPos.z);
+			rayDx * (center.x - _startRayPos.x) +
+			rayDy * (center.y - _startRayPos.y) +
+			rayDz * (center.z - _startRayPos.z);
 
-		float Ex = t * rayDx + _startLayPos.x;
-		float Ey = t * rayDy + _startLayPos.y;
-		float Ez = t * rayDz + _startLayPos.z;
+		float Ex = t * rayDx + _startRayPos.x;
+		float Ey = t * rayDy + _startRayPos.y;
+		float Ez = t * rayDz + _startRayPos.z;
 
 		float LineToSphereMinDistance = pow(Ex - center.x, 2) + pow(Ey - center.y, 2) + pow(Ez - center.z, 2);
 
@@ -459,17 +461,17 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLa
 		return nullptr;
 
 	GameObject* pickObject = nullptr;
-	Vector3 rayDirection = Nalmak_Math::Normalize(_endLayPos - _startLayPos);
+	Vector3 rayDirection = Nalmak_Math::Normalize(_endRayPos - _startRayPos);
 	
 	float minDistance = INFINITY;
 
 	for(auto& render : raycastRenderers)
 	{
-		Vector3 rayStartPos = _startLayPos; 
+		Vector3 rayStartPos = _startRayPos; 
 		Vector3 dir = rayDirection;
 		Matrix matInvWorld;
 		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetWorldMatrix());
-		D3DXVec3TransformCoord(&rayStartPos, &_startLayPos, &matInvWorld);
+		D3DXVec3TransformCoord(&rayStartPos, &_startRayPos, &matInvWorld);
 		D3DXVec3TransformNormal(&dir, &dir, &matInvWorld);
 		
 		float u, v, dist;
@@ -509,5 +511,95 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startLa
 	return pickObject;
 }
 
+GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector<MeshRenderer*>& _renderList)
+{
+	vector<MeshRenderer*> raycastRenderers;
+	Camera* mainCam = RenderManager::GetInstance()->GetMainCamera();
+
+	float rayLength = mainCam->GetFar();
+	Vector3 startRayPos = mainCam->GetTransform()->GetWorldPosition();
+	Vector3 endRayPos = startRayPos + mainCam->GetCamToMouseWorldDirection() *rayLength;
+
+	for (auto& render : _renderList)
+	{
+
+		Vector3 center = render->GetTransform()->GetWorldPosition();
+
+
+		float rayDx = (endRayPos.x - startRayPos.x) / rayLength;
+		float rayDy = (endRayPos.y - startRayPos.y) / rayLength;
+		float rayDz = (endRayPos.z - startRayPos.z) / rayLength;
+
+		float t =
+			rayDx * (center.x - startRayPos.x) +
+			rayDy * (center.y - startRayPos.y) +
+			rayDz * (center.z - startRayPos.z);
+
+		float Ex = t * rayDx + startRayPos.x;
+		float Ey = t * rayDy + startRayPos.y;
+		float Ez = t * rayDz + startRayPos.z;
+
+		float LineToSphereMinDistance = pow(Ex - center.x, 2) + pow(Ey - center.y, 2) + pow(Ez - center.z, 2);
+
+		Vector3 scale = render->GetTransform()->scale;
+		//float maxScale = max(max(scale.x, scale.y), scale.z);
+		if (LineToSphereMinDistance > render->GetBoundingRadius() *  render->GetBoundingRadius()) //* maxScale * maxScale
+			continue;
+
+		raycastRenderers.emplace_back(render);
+	}
+	if (raycastRenderers.size() == 0)
+		return nullptr;
+
+	GameObject* pickObject = nullptr;
+	Vector3 rayDirection = Nalmak_Math::Normalize(endRayPos - startRayPos);
+
+	float minDistance = INFINITY;
+
+	for (auto& render : raycastRenderers)
+	{
+		Vector3 rayStartPos = startRayPos;
+		Vector3 dir = rayDirection;
+		Matrix matInvWorld;
+		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetWorldMatrix());
+		D3DXVec3TransformCoord(&rayStartPos, &startRayPos, &matInvWorld);
+		D3DXVec3TransformNormal(&dir, &dir, &matInvWorld);
+
+		float u, v, dist;
+
+		Mesh* mesh = render->GetMesh();
+
+		for (unsigned long i = 0; i < mesh->GetFigureCount(); ++i)
+		{
+			Vector3 v0, v1, v2;
+			v0 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._0];
+			v1 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._1];
+			v2 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._2];
+
+			if (D3DXIntersectTri(
+				&v0,
+				&v1,
+				&v2,
+				&rayStartPos,
+				&dir,
+				&u, &v, &dist))
+			{
+				//// 교차점 구하는 공식
+				//// V1 + U(V2-V1) + V(V3-V1)
+				//*pOut = m_pVertices[_1] + u * (m_pVertices[_2] - m_pVertices[_1]) + v * (m_pVertices[_3] - m_pVertices[_1]);
+				//D3DXVec3TransformCoord(pOut, pOut, pWorldMatrix);
+				if (minDistance > dist)
+				{
+					minDistance = dist;
+					*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
+					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetWorldMatrix());
+					pickObject = render->GetGameObject();
+				}
+
+			}
+		}
+	}
+	return pickObject;
+}
 
 

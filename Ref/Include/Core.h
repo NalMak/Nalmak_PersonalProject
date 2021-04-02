@@ -121,6 +121,7 @@ public:
 	GameObject* FindFirstObject(_OBJECT_TAG _tag);
 	GameObject* FindObjectByName(_OBJECT_TAG _tag, const wstring& name);
 	GameObject* PickObjectByMouse(Vector3* _hitPoint);
+	GameObject* PickObjectByMouse(Vector3* _hitPoint, const vector<MeshRenderer*>& _renderList);
 	list<GameObject*> GetObjectList(_OBJECT_TAG _tag);
 	Camera* GetMainCamera();
 public:

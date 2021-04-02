@@ -251,6 +251,9 @@ BEGIN
     GROUPBOX        "Nav List",IDC_STATIC,21,18,111,152
     GROUPBOX        "Nav Info",IDC_STATIC,22,177,111,152
     LTEXT           "Name",IDC_STATIC,32,199,38,14
+    GROUPBOX        "Nav Debug",IDC_STATIC,142,18,111,152
+    PUSHBUTTON      "Set Start Position",IDC_BUTTON1,153,38,89,14
+    PUSHBUTTON      "Set End Position",IDC_BUTTON2,153,57,89,14
 END
 
 

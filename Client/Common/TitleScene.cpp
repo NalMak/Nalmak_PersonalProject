@@ -75,7 +75,9 @@ void TitleScene::Initialize()
 	BoxCollider::Desc boxcol;
 	boxcol.posOffset = { 0,1,0 };
 	RigidBody::Desc rigid2;
-	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)->AddComponent<TestPlayer>()->SetPosition(0,3,0);
+	INSTANTIATE()->AddComponent<MeshRenderer>()
+		//->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)
+		->AddComponent<TestPlayer>()->SetPosition(0,3,0)->SetScale(1,1,20)->SetRotation(30,20,10);
 
 
 	INSTANTIATE()->AddComponent<NavMesh>();
