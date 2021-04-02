@@ -5,9 +5,10 @@ class NavMesh;
 class NavCell;
 class NavLine;
 
-class NavPoint
+class NALMAK_DLL NavPoint
 {
 public:
+	explicit NavPoint();
 	explicit NavPoint(float _x, float _y, float _z);
 	~NavPoint() = default;
 public:

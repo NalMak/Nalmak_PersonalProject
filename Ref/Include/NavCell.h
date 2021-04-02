@@ -6,7 +6,7 @@ class NavMesh;
 class NavPoint;
 class NavLine;
 
-class NavCell
+class NALMAK_DLL NavCell
 {
 public:
 	explicit NavCell(NavMesh* _nav);

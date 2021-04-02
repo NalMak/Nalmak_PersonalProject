@@ -4,6 +4,10 @@
 #include "NavLine.h"
 #include "NavMesh.h"
 
+NavPoint::NavPoint()
+{
+	position = { 0,0,0 };
+}
 
 NavPoint::NavPoint(float _x, float _y, float _z)
 {

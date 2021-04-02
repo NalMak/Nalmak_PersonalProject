@@ -1,14 +1,16 @@
 #pragma once
 
+#include "Nalmak_Include.h"
+
 class NavMesh;
 class NavPoint;
 class NavCell;
 
-class NavLine
+class NALMAK_DLL NavLine
 {
 public:
 	explicit NavLine(NavPoint* _p0, NavPoint* _p1);
-	~NavLine();
+	virtual ~NavLine() = default;
 public:
 	void Release();
 	NavCell** GetParentCell();

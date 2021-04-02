@@ -3,29 +3,12 @@
 #include "NavCell.h"
 #include "NavPoint.h"
 #include "NavLine.h"
+#include "MeshRenderer.h"
+#include "LineManager.h"
 
 NavMesh::NavMesh(Desc * _desc)
 {
-	NavPoint* point0 = new NavPoint(0,0,0);
-	NavPoint* point1 = new NavPoint(0,0,0);
-	NavPoint* point2 = new NavPoint(0,0,0);
-
-	m_PointList.emplace_back(point0);
-	m_PointList.emplace_back(point1);
-	m_PointList.emplace_back(point2);
-		
-	NavLine* line0 = new NavLine(point0, point1);
-	NavLine* line1 = new NavLine(point1, point2);
-	NavLine* line2 = new NavLine(point2, point0);
-	m_LineList.emplace_back(line0);
-	m_LineList.emplace_back(line1);
-	m_LineList.emplace_back(line2);
-
-
-	NavCell* firstCell = new NavCell(this);
-
-	firstCell->Initialize(point0, point1, point2, line0, line1, line2);
-	m_CellList.emplace_back(firstCell);
+	
 }
 
 
@@ -35,6 +18,18 @@ void NavMesh::Initialize()
 
 void NavMesh::Update()
 {
+	auto lineManager = LineManager::GetInstance();
+	for (auto& line : m_LineList)
+	{
+		lineManager->DrawLine(line->GetPoint()[0]->position, line->GetPoint()[1]->position);
+	}
+
+	int i = 0;
+	for (auto& point : m_PointList)
+	{
+		m_debugObjects[i]->SetPosition(point->position);
+		++i;
+	}
 }
 
 bool NavMesh::FindPath()
@@ -342,7 +337,7 @@ void NavMesh::AddCell(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2)
 		line2 = new NavLine(point0, point2);
 		m_LineList.emplace_back(line1);
 		m_LineList.emplace_back(line2);
-		m_PointList.emplace_back(point0);
+		EmplacePoint(point0);
 	}
 	else if (point1 == nullptr)
 	{
@@ -351,7 +346,7 @@ void NavMesh::AddCell(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2)
 		line2 = new NavLine(point1, point0);
 		m_LineList.emplace_back(line1);
 		m_LineList.emplace_back(line2);
-		m_PointList.emplace_back(point1);
+		EmplacePoint(point1);
 	}
 	else if (point2 == nullptr)
 	{
@@ -361,7 +356,7 @@ void NavMesh::AddCell(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2)
 		m_LineList.emplace_back(line1);
 		m_LineList.emplace_back(line2);
 
-		m_PointList.emplace_back(point2);
+		EmplacePoint(point2);
 	}
 	else // 세 점이 이미 포함이 되어있는 경우 
 	{
@@ -455,14 +450,23 @@ void NavMesh::AddCell(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2)
 					return;
 				}
 			}
-			// 미처리
 		}
 	}
 	// 새로운 셀 등록
 	cell->Initialize(point0, point1, point2, line0, line1, line2);
 
-
 	m_CellList.emplace_back(cell);
+}
+
+void NavMesh::EmplacePoint(NavPoint * _point)
+{
+	m_PointList.emplace_back(_point);
+
+	MeshRenderer::Desc render;
+	render.meshName = L"sphere";
+	auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(_point->position)->SetScale(0.2f,0.2f,0.2f);
+	sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+	m_debugObjects.emplace_back(sphere);
 }
 
 void NavMesh::DeleteCell(NavCell * _cell)
@@ -535,6 +539,40 @@ void NavMesh::SetStartPosition(const Vector3 & _pos)
 void NavMesh::SetEndPosition(const Vector3 & _pos)
 {
 	m_endPos = _pos;
+}
+
+void NavMesh::CreateFirstPoint(Vector3 _pos)
+{
+	NavPoint* point0 = new NavPoint(_pos.x, _pos.y, _pos.z);
+	EmplacePoint(point0);
+
+}
+
+void NavMesh::CreateSecondPoint(Vector3 _pos)
+{
+	NavPoint* point1 = new NavPoint(_pos.x, _pos.y, _pos.z);
+	EmplacePoint(point1);
+}
+
+void NavMesh::CreateThirdPoint(Vector3 _pos)
+{
+	NavPoint* point0 = m_PointList[0];
+	NavPoint* point1 = m_PointList[1];
+	NavPoint* point2 = new NavPoint(_pos.x, _pos.y, _pos.z);
+	EmplacePoint(point2);
+
+	NavLine* line0 = new NavLine(point0, point1);
+	NavLine* line1 = new NavLine(point1, point2);
+	NavLine* line2 = new NavLine(point2, point0);
+	m_LineList.emplace_back(line0);
+	m_LineList.emplace_back(line1);
+	m_LineList.emplace_back(line2);
+
+
+	NavCell* firstCell = new NavCell(this);
+
+	firstCell->Initialize(point0, point1, point2, line0, line1, line2);
+	m_CellList.emplace_back(firstCell);
 }
 
 

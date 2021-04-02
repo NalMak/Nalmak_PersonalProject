@@ -19,7 +19,7 @@ private:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void Release() override;
-private:
+public:
 	bool FindPath();
 private:
 	void RecordAstarPath(NavCell* _cell);
@@ -29,6 +29,8 @@ private:
 public:
 	bool FindAstarPath();
 	void AddCell(NavPoint* _p0, NavPoint* _p1, NavPoint* _p2);
+private:
+	void EmplacePoint(NavPoint* _point);
 public:
 	vector<NavCell*> GetCellList() const { return m_CellList; }
 	vector<NavLine*> GetLineList() const { return m_LineList; }
@@ -40,6 +42,7 @@ private:
 	vector<NavCell*> m_CellList;
 	vector<NavLine*> m_LineList;
 	vector<NavPoint*> m_PointList;
+	vector<GameObject*> m_debugObjects;
 public:
 	vector<NavCell*> m_openList;
 private:
@@ -66,6 +69,10 @@ public:
 	void SetEndPosition(const Vector3& _pos);
 	const Vector3& GetStartPosition() { return m_startPos; }
 	const Vector3& GetEndPosition() { return m_endPos; }
+public:
+	void CreateFirstPoint(Vector3 _pos);
+	void CreateSecondPoint(Vector3 _pos);
+	void CreateThirdPoint(Vector3 _pos);
 
 };
 

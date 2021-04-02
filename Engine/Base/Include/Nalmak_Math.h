@@ -147,20 +147,15 @@ public:
 
 		return sqrtf(Nalmak_Math::Dot(dP, dP));
 	}
-	static float GetDistance_PointToLine(const Vector3& P1, const Line& L1)
+	static float GetDistance_PointToInfinityLine(const Vector3& P1, const Line& L1)
 	{
-		float lineLength = Nalmak_Math::Distance(L1.start, L1.end);
+		Vector3 AB = L1.end - L1.start;
+		Vector3 AP = P1 - L1.start;
 
-		if (lineLength == 0)
-			return Nalmak_Math::Distance(L1.start, P1);
+		float area = Nalmak_Math::Magnitude(Nalmak_Math::Cross(AB, AP));
+		float CD = area / Nalmak_Math::Magnitude(AB);
 
-		float proj = ((P1.x - L1.start.x) * (L1.end.x - L1.start.x) + (P1.y - L1.start.y) * (L1.end.y - L1.start.y)) / lineLength;
-		if (proj < 0)
-			return  Nalmak_Math::Distance(L1.start, P1);
-		else if (proj > lineLength)
-			return  Nalmak_Math::Distance(L1.end, P1);
-		else
-			return fabs(-1 * (P1.x - L1.start.x) * (L1.end.y - L1.start.y) + (P1.y - L1.start.y) * (L1.end.x - L1.start.x)) / lineLength;
+		return CD;
 	}
 	/*inline static bool GetInterSection2D_LineToLine(const Vector2& _p0, const Vector2& _p1,
 	const Vector2& _q0, const Vector2& _q1)

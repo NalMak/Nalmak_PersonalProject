@@ -44,7 +44,7 @@ void DebuggingMode::Initialize()
 	text.option = DT_LEFT | DT_WORDBREAK;
 	text.height = 14;
 	text.width = 7;
-	auto debugDesc = INSTANTIATE()->AddComponent<Text>(&text)->AddComponent<CanvasRenderer>()->SetPosition(300, 0);
+	auto debugDesc = INSTANTIATE()->AddComponent<CanvasRenderer>()->SetPosition(300, 0)->AddComponent<Text>(&text);
 	m_debugModeDescObject = debugDesc->GetComponent<Text>();
 #pragma endregion Debug Desc
 #pragma region Debug Log

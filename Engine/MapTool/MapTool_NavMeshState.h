@@ -1,4 +1,7 @@
 #pragma once
+#include "NavCell.h"
+#include "NavPoint.h"
+#include "NavLine.h"
 
 class MapTool_NavMeshState :
 	public IState
@@ -11,5 +14,20 @@ private:
 	virtual void EnterState() override;
 	virtual void UpdateState() override;
 	virtual void ExitState() override;
+
+private:
+	const float m_navPointRadius = 0.1f;
+	NavMesh* m_navMesh = nullptr;
+
+	
+	NavPoint* m_currentSelectMovePoint;
+	NavPoint* m_currentSelectAddPoints[2] = { nullptr, };
+	NavCell* m_currentSelectCell = nullptr;
+
+	NavPoint m_startPoint;
+	NavPoint m_endPoint;
+private:
+	bool IsPickingSuccessNavPoint(Vector3 _point);
+	GameObject* m_pickingPointsForDebug[2];
 };
 

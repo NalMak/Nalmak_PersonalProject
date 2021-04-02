@@ -11,10 +11,6 @@ NavLine::NavLine(NavPoint * _p0, NavPoint * _p1)
 	m_points[1] = _p1;
 }
 
-NavLine::~NavLine()
-{
-}
-
 void NavLine::Release()
 {
 }

@@ -57,6 +57,8 @@ private:
 	CAMERA_RENDERING_MODE m_renderingMode;
 	BitFlag<_RENDER_LAYER> m_layer;
 public:
+	float GetNear() { return m_zNear; }
+	float GetFar() { return m_zFar; }
 	const Matrix GetViewMatrix() const;
 	const Matrix& GetProjMatrix() { return m_projMatrix; }
 	const Matrix GetViewportMatrix() const;
