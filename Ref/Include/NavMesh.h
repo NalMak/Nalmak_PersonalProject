@@ -42,7 +42,6 @@ private:
 	vector<NavCell*> m_CellList;
 	vector<NavLine*> m_LineList;
 	vector<NavPoint*> m_PointList;
-	vector<GameObject*> m_debugObjects;
 public:
 	vector<NavCell*> m_openList;
 private:
@@ -61,9 +60,9 @@ private:
 	void GetAstarPathFromLastCell(NavCell* _cell);
 public:
 	void Reset();
-	vector<Vector3> GetPath() { return m_OptimalPathPoint2; }
-
 	void UpdateMapBoundaryLine();
+public:
+	const vector<Vector3>& GetPath() { return m_OptimalPathPoint2; }
 	NavCell* GetEndCell() { return m_endCell; }
 	void SetStartPosition(const Vector3& _pos);
 	void SetEndPosition(const Vector3& _pos);

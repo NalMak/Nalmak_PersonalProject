@@ -77,7 +77,7 @@ void TitleScene::Initialize()
 	RigidBody::Desc rigid2;
 	INSTANTIATE()->AddComponent<MeshRenderer>()
 		//->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)
-		->AddComponent<TestPlayer>()->SetPosition(0,3,0)->SetScale(1,1,20)->SetRotation(30,20,10);
+		->AddComponent<TestPlayer>()->SetPosition(0,3,0)->SetScale(5,3,20)->SetRotation(30,20,10);
 
 
 	INSTANTIATE()->AddComponent<NavMesh>();

@@ -34,12 +34,19 @@ private:
 
 	GameObject* m_startPoint;
 	GameObject* m_endPoint;
-
 private:
 	bool IsPickingSuccessNavPoint(Vector3 _point);
 	GameObject* m_pickingPointsForDebug[2];
 	NAVMESH_TOOL_MODE m_toolMode = NAVMESH_TOOL_MODE_INSTALL;
 public:
 	void SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode);
+
+
+	/* for debug */
+private:
+	void DrawDebugObject();
+private:
+	vector<GameObject*> m_pointDebug;
+	vector<GameObject*> m_cellCenterDebug;
 };
 

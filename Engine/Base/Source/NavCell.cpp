@@ -62,15 +62,20 @@ void NavCell::UpdateCenter()
 {
 	float totalX = 0;
 	float totalY = 0;
+	float totalZ = 0;
 
 	for (int i = 0; i < 3; ++i)
 	{
 		totalX += m_points[i]->position.x;
 		totalY += m_points[i]->position.y;
+		totalZ += m_points[i]->position.z;
+
 	}
 
 	m_centerOfGravityPos.x = totalX / 3.f;
 	m_centerOfGravityPos.y = totalY / 3.f;
+	m_centerOfGravityPos.z = totalZ / 3.f;
+
 }
 
 void NavCell::UpdateAdjacentCellList()

@@ -18,18 +18,10 @@ void NavMesh::Initialize()
 
 void NavMesh::Update()
 {
-	auto lineManager = LineManager::GetInstance();
-	for (auto& line : m_LineList)
-	{
-		lineManager->DrawLine(line->GetPoint()[0]->position, line->GetPoint()[1]->position);
-	}
-
-	int i = 0;
-	for (auto& point : m_PointList)
-	{
-		m_debugObjects[i]->SetPosition(point->position);
-		++i;
-	}
+	//for (auto& cell : m_CellList)
+	//{
+	//	cell->Update();
+	//}
 }
 
 bool NavMesh::FindPath()
@@ -462,11 +454,7 @@ void NavMesh::EmplacePoint(NavPoint * _point)
 {
 	m_PointList.emplace_back(_point);
 
-	MeshRenderer::Desc render;
-	render.meshName = L"sphere";
-	auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(_point->position)->SetScale(0.2f,0.2f,0.2f);
-	sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
-	m_debugObjects.emplace_back(sphere);
+
 }
 
 void NavMesh::DeleteCell(NavCell * _cell)

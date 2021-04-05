@@ -178,97 +178,100 @@ void MapTool_NavMeshState::UpdateState()
 			else
 			{
 				//////////////////////////////////////////
-				//
-				// 우클릭시 정점 3개가 모인다면 셀을 생성시킴
-				//
-				for (auto& point : m_navMesh->GetPointList())
+//
+// 우클릭시 정점 3개가 모인다면 셀을 생성시킴
+//
+for (auto& point : m_navMesh->GetPointList())
+{
+	if (IsPickingSuccessNavPoint(point->position))
+	{
+		if (m_currentSelectAddPoints[0] == point)
+		{
+			m_currentSelectAddPoints[0] = nullptr;
+			m_pickingPointsForDebug[0]->SetActive(false);
+
+			break;
+		}
+		else if (m_currentSelectAddPoints[1] == point)
+		{
+			m_currentSelectAddPoints[1] = nullptr;
+			m_pickingPointsForDebug[1]->SetActive(false);
+			break;
+		}
+
+		if (m_currentSelectAddPoints[0] == nullptr)
+		{
+			m_currentSelectAddPoints[0] = point;
+			m_pickingPointsForDebug[0]->SetActive(true);
+			m_pickingPointsForDebug[0]->SetPosition(m_currentSelectAddPoints[0]->position);
+		}
+		else if (m_currentSelectAddPoints[1] == nullptr)
+		{
+			m_currentSelectAddPoints[1] = point;
+			m_pickingPointsForDebug[1]->SetActive(true);
+			m_pickingPointsForDebug[1]->SetPosition(m_currentSelectAddPoints[1]->position);
+		}
+		else // 세 점이 이미 만들어진 점으로 셀을 만들경우
+		{
+			m_navMesh->AddCell(point, m_currentSelectAddPoints[0], m_currentSelectAddPoints[1]);
+			m_currentSelectAddPoints[0] = nullptr;
+			m_currentSelectAddPoints[1] = nullptr;
+			m_pickingPointsForDebug[0]->SetActive(false);
+			m_pickingPointsForDebug[1]->SetActive(false);
+			m_navMesh->UpdateMapBoundaryLine();
+
+			m_navMesh->FindPath();
+
+		}
+		break;
+	}
+	else
+	{
+		++notContactCount;
+	}
+}
+// 이미 있던 두점과 새로운점 하나가 셀을 만들 경우
+if (notContactCount == m_navMesh->GetPointList().size())
+{
+	if (m_currentSelectAddPoints[0] != nullptr && m_currentSelectAddPoints[1] != nullptr)
+	{
+		bool validPoint = false;
+		for (auto& cell : m_currentSelectAddPoints[0]->GetParentCells())
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				if (cell->GetPoints()[i] == m_currentSelectAddPoints[1])
 				{
-					if (IsPickingSuccessNavPoint(point->position))
-					{
-						if (m_currentSelectAddPoints[0] == point)
-						{
-							m_currentSelectAddPoints[0] = nullptr;
-							m_pickingPointsForDebug[0]->SetActive(false);
-
-							break;
-						}
-						else if (m_currentSelectAddPoints[1] == point)
-						{
-							m_currentSelectAddPoints[1] = nullptr;
-							m_pickingPointsForDebug[1]->SetActive(false);
-							break;
-						}
-
-						if (m_currentSelectAddPoints[0] == nullptr)
-						{
-							m_currentSelectAddPoints[0] = point;
-							m_pickingPointsForDebug[0]->SetActive(true);
-							m_pickingPointsForDebug[0]->SetPosition(m_currentSelectAddPoints[0]->position);
-						}
-						else if (m_currentSelectAddPoints[1] == nullptr)
-						{
-							m_currentSelectAddPoints[1] = point;
-							m_pickingPointsForDebug[1]->SetActive(true);
-							m_pickingPointsForDebug[1]->SetPosition(m_currentSelectAddPoints[1]->position);
-						}
-						else // 세 점이 이미 만들어진 점으로 셀을 만들경우
-						{
-							m_navMesh->AddCell(point, m_currentSelectAddPoints[0], m_currentSelectAddPoints[1]);
-							m_currentSelectAddPoints[0] = nullptr;
-							m_currentSelectAddPoints[1] = nullptr;
-							m_pickingPointsForDebug[0]->SetActive(false);
-							m_pickingPointsForDebug[1]->SetActive(false);
-							m_navMesh->UpdateMapBoundaryLine();
-
-							m_navMesh->FindPath();
-
-						}
-						break;
-					}
-					else
-					{
-						++notContactCount;
-					}
+					validPoint = true;
 				}
-				// 이미 있던 두점과 새로운점 하나가 셀을 만들 경우
-				if (notContactCount == m_navMesh->GetPointList().size())
-				{
-					if (m_currentSelectAddPoints[0] != nullptr && m_currentSelectAddPoints[1] != nullptr)
-					{
-						bool validPoint = false;
-						for (auto& cell : m_currentSelectAddPoints[0]->GetParentCells())
-						{
-							for (int i = 0; i < 3; ++i)
-							{
-								if (cell->GetPoints()[i] == m_currentSelectAddPoints[1])
-								{
-									validPoint = true;
-								}
-							}
-							if (validPoint)
-								break;
-						}
-						if (!validPoint)
-							return;
+			}
+			if (validPoint)
+				break;
+		}
+		if (!validPoint)
+			return;
 
-						NavPoint* newPoint = new NavPoint(pickingPoint.x, pickingPoint.y, pickingPoint.z);
+		NavPoint* newPoint = new NavPoint(pickingPoint.x, pickingPoint.y, pickingPoint.z);
 
-						m_navMesh->AddCell(newPoint, m_currentSelectAddPoints[0], m_currentSelectAddPoints[1]);
-						m_currentSelectAddPoints[0] = nullptr;
-						m_currentSelectAddPoints[1] = nullptr;
-						m_pickingPointsForDebug[0]->SetActive(false);
-						m_pickingPointsForDebug[1]->SetActive(false);
-						m_navMesh->UpdateMapBoundaryLine();
+		m_navMesh->AddCell(newPoint, m_currentSelectAddPoints[0], m_currentSelectAddPoints[1]);
+		m_currentSelectAddPoints[0] = nullptr;
+		m_currentSelectAddPoints[1] = nullptr;
+		m_pickingPointsForDebug[0]->SetActive(false);
+		m_pickingPointsForDebug[1]->SetActive(false);
+		m_navMesh->UpdateMapBoundaryLine();
 
-						m_navMesh->FindPath();
-					}
-				}
+		m_navMesh->FindPath();
+	}
+}
 			}
 
 		}
-	
-		
+
+
 	}
+
+	DrawDebugObject();
+
 
 	
 }
@@ -297,4 +300,65 @@ bool MapTool_NavMeshState::IsPickingSuccessNavPoint(Vector3  _point)
 void MapTool_NavMeshState::SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode)
 {
 	m_toolMode = _mode;
+}
+
+void MapTool_NavMeshState::DrawDebugObject()
+{
+	if (m_navMesh->GetPointList().size() > m_pointDebug.size())
+	{
+		MeshRenderer::Desc render;
+		render.meshName = L"sphere";
+		auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.2f, 0.2f, 0.2f);
+		sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+		m_pointDebug.emplace_back(sphere);
+	}
+	else if (m_navMesh->GetPointList().size() < m_pointDebug.size())
+	{
+		for (size_t i = m_navMesh->GetPointList().size() - 1; i < m_pointDebug.size() - 1; ++i)
+		{
+			m_pointDebug[i]->SetActive(false);
+		}
+	}
+
+	int index = 0;
+	for (auto& point : m_navMesh->GetPointList())
+	{
+		m_pointDebug[index]->SetActive(true);
+		m_pointDebug[index]->SetPosition(point->position);
+		++index;
+	}
+
+
+	if (m_navMesh->GetCellList().size() > m_cellCenterDebug.size())
+	{
+		MeshRenderer::Desc render;
+		render.meshName = L"sphere";
+		render.mtrlName = L"SYS_Diffuse_Green";
+		auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.2f, 0.2f, 0.2f);
+		sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+		m_cellCenterDebug.emplace_back(sphere);
+	}
+	else if (m_navMesh->GetCellList().size() < m_cellCenterDebug.size())
+	{
+		for (size_t i = m_navMesh->GetCellList().size() - 1; i < m_cellCenterDebug.size() - 1; ++i)
+		{
+			m_cellCenterDebug[i]->SetActive(false);
+		}
+	}
+
+	index = 0;
+	for (auto& cell : m_navMesh->GetCellList())
+	{
+		m_cellCenterDebug[index]->SetActive(true);
+		m_cellCenterDebug[index]->SetPosition(cell->GetCenter());
+		++index;
+	}
+
+
+
+	Core* core = Core::GetInstance();
+	for (auto& line : m_navMesh->GetLineList())
+	{
+		core->DrawLine(line->GetPoint()[0]->position, line->GetPoint()[1]->position);
+	}
 }
