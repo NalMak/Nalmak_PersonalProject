@@ -105,6 +105,8 @@ void PhysicsManager::CreateScene()
 #ifdef _DEBUG
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
+	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_STATIC, 1.0f);
+
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f);
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 2.0f);
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCULL_BOX, 2.0f);
@@ -203,10 +205,25 @@ PxRigidDynamic* PhysicsManager::CreateRigidDynamic(RigidBody * _rigid)
 	actor->setLinearDamping(_rigid->GetDamping());
 	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
 	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
+	actor->setMass(_rigid->GetMass());
 
 	m_scene->addActor(*actor);
 
 	_rigid->SetRigidBody(actor);
+
+	return actor;
+}
+
+PxRigidStatic * PhysicsManager::CreateRigidStatic(Collider* _col)
+{
+	auto pos = _col->GetTransform()->GetWorldPosition();
+	auto rot = _col->GetTransform()->GetWorldRotation();
+
+	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
+	PxRigidStatic* actor = m_physics->createRigidStatic(trans);
+	actor->userData = _col->GetGameObject();
+
+	m_scene->addActor(*actor);
 
 	return actor;
 }
@@ -266,15 +283,11 @@ void PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigi
 
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_col->IsTrigger());
 	shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _col->IsTrigger());
+
+	_col->SetShape(shape);
 	AdjustCollisionLayer(shape, _col);
 
 	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
-
-	actor->userData = _rigid->GetGameObject();
-	actor->setLinearDamping(_rigid->GetDamping());
-	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
-	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
-	actor->setMass(_rigid->GetMass());
 
 	//pActor->attachShape(*pShape);	// 위에서 자동으로 붙여짐
 	PxQueryFilterData query;
@@ -367,7 +380,7 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 	PxRigidStatic* actor = m_physics->createRigidStatic(trans);
 	PxShape* shape = PxRigidActorExt::createExclusiveShape(*actor, PxTriangleMeshGeometry(triMesh, meshScale), *pMat);
 	AdjustCollisionLayer(shape, _col);
-
+	_col->SetShape(shape);
 	actor->attachShape(*shape);
 	actor->userData = _col->GetGameObject();
 
@@ -379,7 +392,7 @@ void PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody * _rigid, f
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
 	PxShape* shape = m_physics->createShape(PxSphereGeometry(_radius), *material, true);
 	InitializeShapeByColliderInfo(shape, _col);
-	AttachShapeToRigidDynamic(_rigid, shape);
+	AttachShapeToRigidBody(_rigid, _col);
 }
 
 void PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * _rigid, float _width, float _height, float _depth)
@@ -387,27 +400,34 @@ void PhysicsManager::CreateBoxCollider(Collider * _col, RigidBody * _rigid, floa
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
 	PxShape* shape = m_physics->createShape(PxBoxGeometry(_width * 0.5f, _height * 0.5f, _depth * 0.5f), *material, true);
 	InitializeShapeByColliderInfo(shape, _col);
-	AttachShapeToRigidDynamic(_rigid, shape);
+	AttachShapeToRigidBody(_rigid, _col);
+	
+
 }
 
 void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, float _radius, float _height)
 {
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
-	PxShape* shape = m_physics->createShape(PxCapsuleGeometry(_radius,_height), *material, true);
+	PxShape* shape = m_physics->createShape(PxCapsuleGeometry(_radius,_height * 0.5f), *material, true);
 	InitializeShapeByColliderInfo(shape, _col);
-	AttachShapeToRigidDynamic(_rigid, shape);
+	AttachShapeToRigidBody(_rigid, _col);
 }
 
-void PhysicsManager::AttachShapeToRigidDynamic(RigidBody * _rigid, PxShape* shape)
+void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
 {
-	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
+	if (_rigid)
+	{
+		PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
+		
+		actor->attachShape(*shape->GetShape());
+	}
+	else
+	{
+		PxRigidStatic* actor = CreateRigidStatic(shape);
 
-	actor->userData = _rigid->GetGameObject();
-	actor->setLinearDamping(_rigid->GetDamping());
-	actor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, _rigid->IsKinematic());
-	actor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_rigid->IsGravity());
-	actor->setMass(_rigid->GetMass());
-	actor->attachShape(*shape);
+		actor->attachShape(*shape->GetShape());
+	}
+	
 }
 
 void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * _collider)
@@ -417,6 +437,8 @@ void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * 
 	_shape->setLocalPose(trans);
 	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_collider->IsTrigger());
 	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _collider->IsTrigger());
+
+	_collider->SetShape(_shape);
 	AdjustCollisionLayer(_shape, _collider);
 }
 

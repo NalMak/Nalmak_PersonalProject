@@ -18,9 +18,10 @@ public:
 	// Collider을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
+
+	float GetRadius() { return m_radius; }
+	void SetRadius(float _radius);
 private:
-
-
 	float m_radius;
 };
 

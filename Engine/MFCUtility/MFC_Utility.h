@@ -34,5 +34,5 @@ public:
 
 #define GetFloatByEditBox(num , id) { CString value; \
 		 GetDlgItem(id)->GetWindowTextW(value);\
-			num = (float)_tstof(value);\
+			num = (float)(_tstof(value));\
 }

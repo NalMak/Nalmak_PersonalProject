@@ -1,3 +1,7 @@
-﻿  MapTool_NavMeshState.cpp
-  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exe
-  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.pdb (Partial PDB)
+﻿  ObjectInstallTool.cpp
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(849): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(858): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(867): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(876): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exe
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.pdb (Partial PDB)

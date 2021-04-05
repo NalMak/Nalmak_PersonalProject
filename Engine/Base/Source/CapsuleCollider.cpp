@@ -23,3 +23,24 @@ void CapsuleCollider::Initialize()
 void CapsuleCollider::Update()
 {
 }
+
+void CapsuleCollider::SetRadius(float _radius)
+{
+	m_radius = _radius;
+	PxCapsuleGeometry capsule;
+	m_shape->getCapsuleGeometry(capsule);
+	capsule.radius = _radius;
+	m_shape->setGeometry(capsule);
+}
+
+void CapsuleCollider::SetHeight(float _height)
+{
+	m_height = _height;
+	PxCapsuleGeometry capsule;
+	m_shape->getCapsuleGeometry(capsule);
+	capsule.halfHeight = _height * 0.5f;
+	m_shape->setGeometry(capsule);
+
+}
+
+

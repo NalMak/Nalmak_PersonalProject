@@ -5,7 +5,7 @@
 shader "SYS_Standard"
 
 texture "g_mainTex" "default"
-vector4 "g_mainTexColor" "0.5,1.f,0,1.f"
+vector4 "g_mainTexColor" "1.f,0.f,1.f,1.f"
 float "g_f0" "0.2f"
 float "g_roughness" "0.1f"
 

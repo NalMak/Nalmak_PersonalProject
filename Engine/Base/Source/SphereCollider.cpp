@@ -28,3 +28,12 @@ void SphereCollider::Initialize()
 void SphereCollider::Update()
 {
 }
+
+void SphereCollider::SetRadius(float _radius)
+{
+	m_radius = _radius;
+	PxSphereGeometry sphere;
+	m_shape->getSphereGeometry(sphere);
+	sphere.radius = _radius;
+	m_shape->setGeometry(sphere);
+}

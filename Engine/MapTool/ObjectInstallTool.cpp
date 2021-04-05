@@ -44,6 +44,34 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT20, m_subsetCount);
 	DDX_Control(pDX, IDC_EDIT19, m_shaderName);
 	DDX_Control(pDX, IDC_EDIT21, m_materialCount);
+	DDX_Control(pDX, IDC_COMBO3, m_layer);
+	DDX_Control(pDX, IDC_CHECK1, m_useMeshRenderer);
+	DDX_Control(pDX, IDC_CHECK2, m_useSphereCollider);
+	DDX_Control(pDX, IDC_CHECK6, m_IsTriggerSphereCollider);
+	DDX_Control(pDX, IDC_CHECK3, m_useBoxCollider);
+	DDX_Control(pDX, IDC_CHECK7, m_IsTriggerBoxCollider);
+	DDX_Control(pDX, IDC_CHECK4, m_useCylinderCollider);
+	DDX_Control(pDX, IDC_CHECK8, m_IsTriggerCylinderCollider);
+	DDX_Control(pDX, IDC_CHECK5, m_useMeshCollider);
+	DDX_Control(pDX, IDC_CHECK9, m_IsTriggerMeshCollider);
+	DDX_Control(pDX, IDC_EDIT22, m_sphereColliderRadius);
+	DDX_Control(pDX, IDC_EDIT23, m_sphereColliderX);
+	DDX_Control(pDX, IDC_EDIT24, m_sphereColliderY);
+	DDX_Control(pDX, IDC_EDIT25, m_sphereColliderZ);
+	DDX_Control(pDX, IDC_EDIT26, m_boxColliderWidth);
+	DDX_Control(pDX, IDC_EDIT27, m_boxColliderHeight);
+	DDX_Control(pDX, IDC_EDIT28, m_boxColliderDepth);
+	DDX_Control(pDX, IDC_EDIT29, m_boxColliderX);
+	DDX_Control(pDX, IDC_EDIT30, m_boxColliderY);
+	DDX_Control(pDX, IDC_EDIT31, m_boxColliderZ);
+	DDX_Control(pDX, IDC_EDIT32, m_cylinderColliderRadius);
+	DDX_Control(pDX, IDC_EDIT33, m_cylinderColliderHeight);
+	DDX_Control(pDX, IDC_EDIT34, m_cylinderColliderX);
+	DDX_Control(pDX, IDC_EDIT35, m_cylinderColliderY);
+	DDX_Control(pDX, IDC_EDIT36, m_cylinderColliderZ);
+	DDX_Control(pDX, IDC_BUTTON15, m_renderMaterialAddButton);
+	DDX_Control(pDX, IDC_BUTTON16, m_renderMaterialChangeButton);
+	DDX_Control(pDX, IDC_BUTTON17, m_renderMaterialDeleteButton);
 }
 
 BOOL ObjectInstallTool::OnInitDialog()
@@ -93,21 +121,53 @@ BOOL ObjectInstallTool::OnInitDialog()
 
 void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 {
+	if (_index == -1)
+		return;
+
+	_selectedObj->InitializeComponents();
+
 	m_objectList.SetCurSel(_index);
 
 	auto renderer = _selectedObj->GetComponent<MeshRenderer>();
-	int mtrlCount = renderer->GetMaterialCount();
+	if (renderer)
+	{
+		m_meshList.EnableWindow(true);
+		m_materialList.EnableWindow(true);
+		m_materialRenderList.EnableWindow(true);
+		m_renderMaterialAddButton.EnableWindow(true);
+		m_renderMaterialChangeButton.EnableWindow(true);
+		m_renderMaterialDeleteButton.EnableWindow(true);
+		int mtrlCount = renderer->GetMaterialCount();
 
-	m_materialRenderList.ResetContent();
-	for (int i = 0; i < mtrlCount; ++i)
-	{
-		auto mtrl = renderer->GetMaterial(i);
-		CString str;
-		str = mtrl->GetName().c_str();
-		m_materialRenderList.AddString(str);
+		m_materialRenderList.ResetContent();
+		for (int i = 0; i < mtrlCount; ++i)
+		{
+			auto mtrl = renderer->GetMaterial(i);
+			CString str;
+			str = mtrl->GetName().c_str();
+			m_materialRenderList.AddString(str);
+		}
+		{
+			MFC_Utility::SetEditBoxInt(&m_materialCount, renderer->GetMaterialCount());
+		}
+		{
+			CString str;
+			str = renderer->GetMesh()->GetName().c_str();
+			m_meshName.SetWindowTextW(str);
+		}
+		{
+			unsigned long index = renderer->GetMesh()->GetSubsetCount();
+			MFC_Utility::SetEditBoxInt(&m_subsetCount, index);
+		}
 	}
+	else
 	{
-		MFC_Utility::SetEditBoxInt(&m_materialCount, renderer->GetMaterialCount());
+		m_meshList.EnableWindow(false);
+		m_materialList.EnableWindow(false);
+		m_materialRenderList.EnableWindow(false);
+		m_renderMaterialAddButton.EnableWindow(false);
+		m_renderMaterialChangeButton.EnableWindow(false);
+		m_renderMaterialDeleteButton.EnableWindow(false);
 	}
 	{
 		CString str;
@@ -115,17 +175,117 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 		m_objectName.SetWindowTextW(str);
 	}
 	{
-		CString str;
-		str = renderer->GetMesh()->GetName().c_str();
-		m_meshName.SetWindowTextW(str);
-	}
-	{
-		unsigned long index = renderer->GetMesh()->GetSubsetCount();
-		MFC_Utility::SetEditBoxInt(&m_subsetCount, index);
-	}
-	{
 		m_objectTag.SetCurSel(_selectedObj->GetTag());
 	}
+	{
+		if (_selectedObj->GetComponent<MeshRenderer>())
+		{
+			m_useMeshRenderer.SetCheck(1);
+		}
+		else
+		{
+			m_useMeshRenderer.SetCheck(0);
+		}
+		if (_selectedObj->GetComponent<SphereCollider>())
+		{
+			auto collider = _selectedObj->GetComponent<SphereCollider>();
+			m_useSphereCollider.SetCheck(1);
+			m_IsTriggerSphereCollider.SetCheck(collider->IsTrigger());
+			MFC_Utility::SetEditBoxFloat(&m_sphereColliderX, collider->GetPosOffset().x);
+			MFC_Utility::SetEditBoxFloat(&m_sphereColliderY, collider->GetPosOffset().y);
+			MFC_Utility::SetEditBoxFloat(&m_sphereColliderZ, collider->GetPosOffset().z);
+			MFC_Utility::SetEditBoxFloat(&m_sphereColliderRadius, collider->GetRadius());
+			m_sphereColliderX.EnableWindow(true);
+			m_sphereColliderY.EnableWindow(true);
+			m_sphereColliderZ.EnableWindow(true);
+			m_sphereColliderRadius.EnableWindow(true);
+		}
+		else
+		{
+			m_useSphereCollider.SetCheck(0);
+			m_IsTriggerSphereCollider.SetCheck(0);
+			m_sphereColliderX.EnableWindow(false);
+			m_sphereColliderY.EnableWindow(false);
+			m_sphereColliderZ.EnableWindow(false);
+			m_sphereColliderRadius.EnableWindow(false);
+		}
+		if (_selectedObj->GetComponent<BoxCollider>())
+		{
+			auto collider = _selectedObj->GetComponent<BoxCollider>();
+			m_useBoxCollider.SetCheck(1);
+			m_IsTriggerBoxCollider.SetCheck(collider->IsTrigger());
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderX, collider->GetPosOffset().x);
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderY, collider->GetPosOffset().y);
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderZ, collider->GetPosOffset().z);
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderWidth, collider->GetWidht());
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderHeight, collider->GetHeight());
+			MFC_Utility::SetEditBoxFloat(&m_boxColliderDepth, collider->GetDepth());
+			m_boxColliderX.EnableWindow(true);
+			m_boxColliderY.EnableWindow(true);
+			m_boxColliderZ.EnableWindow(true);
+			m_boxColliderWidth.EnableWindow(true);
+			m_boxColliderHeight.EnableWindow(true);
+			m_boxColliderDepth.EnableWindow(true);
+
+		}
+		else
+		{
+			m_useBoxCollider.SetCheck(0);
+			m_IsTriggerBoxCollider.SetCheck(0);
+			m_boxColliderX.EnableWindow(false);
+			m_boxColliderY.EnableWindow(false);
+			m_boxColliderZ.EnableWindow(false);
+			m_boxColliderWidth.EnableWindow(false);
+			m_boxColliderHeight.EnableWindow(false);
+			m_boxColliderDepth.EnableWindow(false);
+		}
+		if (_selectedObj->GetComponent<CapsuleCollider>())
+		{
+			auto collider = _selectedObj->GetComponent<CapsuleCollider>();
+
+			m_useCylinderCollider.SetCheck(1);
+			m_IsTriggerCylinderCollider.SetCheck(collider->IsTrigger());
+			MFC_Utility::SetEditBoxFloat(&m_cylinderColliderX, collider->GetPosOffset().x);
+			MFC_Utility::SetEditBoxFloat(&m_cylinderColliderY, collider->GetPosOffset().y);
+			MFC_Utility::SetEditBoxFloat(&m_cylinderColliderZ, collider->GetPosOffset().z);
+			MFC_Utility::SetEditBoxFloat(&m_cylinderColliderHeight, collider->GetHeight());
+			MFC_Utility::SetEditBoxFloat(&m_cylinderColliderRadius, collider->GetRadius());
+
+			m_cylinderColliderX.EnableWindow(true);
+			m_cylinderColliderY.EnableWindow(true);
+			m_cylinderColliderZ.EnableWindow(true);
+			m_cylinderColliderHeight.EnableWindow(true);
+			m_cylinderColliderRadius.EnableWindow(true);
+
+		}
+		else
+		{
+			m_useCylinderCollider.SetCheck(0);
+			m_IsTriggerCylinderCollider.SetCheck(0);
+			m_cylinderColliderX.EnableWindow(false);
+			m_cylinderColliderY.EnableWindow(false);
+			m_cylinderColliderZ.EnableWindow(false);
+			m_cylinderColliderHeight.EnableWindow(false);
+			m_cylinderColliderRadius.EnableWindow(false);
+		}
+		if (_selectedObj->GetComponent<MeshCollider>())
+		{
+			auto collider = _selectedObj->GetComponent<MeshCollider>();
+
+			m_useMeshCollider.SetCheck(1);
+			m_IsTriggerMeshCollider.SetCheck(collider->IsTrigger());
+			m_IsTriggerMeshCollider.EnableWindow(true);
+		}
+		else
+		{
+			m_useMeshCollider.SetCheck(0);
+			m_IsTriggerMeshCollider.SetCheck(0);
+			m_IsTriggerMeshCollider.EnableWindow(false);
+
+		}
+	}
+
+
 	{
 		int index = m_materialRenderList.GetCurSel();
 		if (index != -1)
@@ -193,6 +353,31 @@ BEGIN_MESSAGE_MAP(ObjectInstallTool, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_EDIT5, &ObjectInstallTool::OnEnKillfocusEditRotY)
 	ON_EN_SETFOCUS(IDC_EDIT6, &ObjectInstallTool::OnEnSetfocusEditRotZ)
 	ON_EN_KILLFOCUS(IDC_EDIT6, &ObjectInstallTool::OnEnKillfocusEditRotZ)
+	ON_CBN_SELCHANGE(IDC_COMBO3, &ObjectInstallTool::OnCbnSelchangeComboLayer)
+	ON_BN_CLICKED(IDC_CHECK1, &ObjectInstallTool::OnBnClickedCheckMeshRender)
+	ON_BN_CLICKED(IDC_CHECK2, &ObjectInstallTool::OnBnClickedCheckSphereCollider)
+	ON_BN_CLICKED(IDC_CHECK3, &ObjectInstallTool::OnBnClickedCheckBoxCollider)
+	ON_BN_CLICKED(IDC_CHECK4, &ObjectInstallTool::OnBnClickedCheckCylinderCollider)
+	ON_BN_CLICKED(IDC_CHECK5, &ObjectInstallTool::OnBnClickedCheckMeshCollider)
+	ON_BN_CLICKED(IDC_CHECK6, &ObjectInstallTool::OnBnClickedCheckSphereIsTrigger)
+	ON_BN_CLICKED(IDC_CHECK7, &ObjectInstallTool::OnBnClickedCheckBoxIsTrigger)
+	ON_BN_CLICKED(IDC_CHECK8, &ObjectInstallTool::OnBnClickedCheckCylinderIsTrigger)
+	ON_BN_CLICKED(IDC_CHECK9, &ObjectInstallTool::OnBnClickedCheckMeshIsTrigger)
+	ON_EN_CHANGE(IDC_EDIT22, &ObjectInstallTool::OnEnChangeEditSphereColliderRadius)
+	ON_EN_CHANGE(IDC_EDIT23, &ObjectInstallTool::OnEnChangeEditSphereColliderX)
+	ON_EN_CHANGE(IDC_EDIT24, &ObjectInstallTool::OnEnChangeEditSphereColliderY)
+	ON_EN_CHANGE(IDC_EDIT25, &ObjectInstallTool::OnEnChangeEditSphereColliderZ)
+	ON_EN_CHANGE(IDC_EDIT26, &ObjectInstallTool::OnEnChangeEditBoxColliderWidth)
+	ON_EN_CHANGE(IDC_EDIT27, &ObjectInstallTool::OnEnChangeEditBoxColliderHeight)
+	ON_EN_CHANGE(IDC_EDIT28, &ObjectInstallTool::OnEnChangeEditBoxColliderDepth)
+	ON_EN_CHANGE(IDC_EDIT29, &ObjectInstallTool::OnEnChangeEditBoxColliderX)
+	ON_EN_CHANGE(IDC_EDIT30, &ObjectInstallTool::OnEnChangeEditBoxColliderY)
+	ON_EN_CHANGE(IDC_EDIT31, &ObjectInstallTool::OnEnChangeEditBoxColliderZ)
+	ON_EN_CHANGE(IDC_EDIT32, &ObjectInstallTool::OnEnChangeEditCylinderColliderRadius)
+	ON_EN_CHANGE(IDC_EDIT33, &ObjectInstallTool::OnEnChangeEditCylinderColliderHeight)
+	ON_EN_CHANGE(IDC_EDIT34, &ObjectInstallTool::OnEnChangeEditCylinderColliderX)
+	ON_EN_CHANGE(IDC_EDIT35, &ObjectInstallTool::OnEnChangeEditCylinderColliderY)
+	ON_EN_CHANGE(IDC_EDIT36, &ObjectInstallTool::OnEnChangeEditCylinderColliderZ)
 END_MESSAGE_MAP()
 
 
@@ -553,4 +738,314 @@ void ObjectInstallTool::OnEnSetfocusEditRotZ()
 void ObjectInstallTool::OnEnKillfocusEditRotZ()
 {
 	m_isFocusRotation = false;
+}
+
+
+void ObjectInstallTool::OnCbnSelchangeComboLayer()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	int index = m_layer.GetCurSel();
+	if (index == -1)
+		return;
+
+	obj->SetLayer((USHORT)index);
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckMeshRender()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	if (m_useMeshRenderer.GetCheck())
+	{
+		obj->AddComponent<MeshRenderer>();
+	}
+	else
+	{
+		obj->DeleteComponent<MeshRenderer>();
+	}
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckSphereCollider()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	if (m_useSphereCollider.GetCheck())
+	{
+		obj->AddComponent<SphereCollider>();
+	}
+	else
+	{
+		obj->DeleteComponent<SphereCollider>();
+	}
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckBoxCollider()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	if (m_useBoxCollider.GetCheck())
+	{
+		obj->AddComponent<BoxCollider>();
+	}
+	else
+	{
+		obj->DeleteComponent<BoxCollider>();
+	}
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckCylinderCollider()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	if (m_useCylinderCollider.GetCheck())
+	{
+		obj->AddComponent<CapsuleCollider>();
+	}
+	else
+	{
+		obj->DeleteComponent<CapsuleCollider>();
+	}
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckMeshCollider()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	if (m_useMeshCollider.GetCheck())
+	{
+		obj->AddComponent<MeshCollider>();
+	}
+	else
+	{
+		obj->DeleteComponent<MeshCollider>();
+	}
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckSphereIsTrigger()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	obj->GetComponent<SphereCollider>()->SetTrigger(m_IsTriggerSphereCollider.GetCheck());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckBoxIsTrigger()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	obj->GetComponent<BoxCollider>()->SetTrigger(m_IsTriggerSphereCollider.GetCheck());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckCylinderIsTrigger()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	obj->GetComponent<CapsuleCollider>()->SetTrigger(m_IsTriggerSphereCollider.GetCheck());
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckMeshIsTrigger()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	obj->GetComponent<MeshCollider>()->SetTrigger(m_IsTriggerSphereCollider.GetCheck());
+}
+
+
+void ObjectInstallTool::OnEnChangeEditSphereColliderRadius()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT22);
+	obj->GetComponent<SphereCollider>()->SetRadius(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditSphereColliderX()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT23);
+	obj->GetComponent<SphereCollider>()->SetPosX(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditSphereColliderY()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT24);
+	obj->GetComponent<SphereCollider>()->SetPosY(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditSphereColliderZ()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT25);
+	obj->GetComponent<SphereCollider>()->SetPosZ(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderWidth()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT26);
+	obj->GetComponent<BoxCollider>()->SetWidth(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderHeight()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT27);
+	obj->GetComponent<BoxCollider>()->SetHeight(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderDepth()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT28);
+	obj->GetComponent<BoxCollider>()->SetDepth(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderX()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT29);
+	obj->GetComponent<BoxCollider>()->SetPosX(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderY()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT30);
+	obj->GetComponent<BoxCollider>()->SetPosY(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditBoxColliderZ()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT31);
+	obj->GetComponent<BoxCollider>()->SetPosZ(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditCylinderColliderRadius()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT32);
+	obj->GetComponent<CapsuleCollider>()->SetRadius(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditCylinderColliderHeight()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT33);
+	obj->GetComponent<CapsuleCollider>()->SetHeight(res);
+
+}
+
+
+void ObjectInstallTool::OnEnChangeEditCylinderColliderX()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT34);
+	obj->GetComponent<CapsuleCollider>()->SetPosX(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditCylinderColliderY()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT35);
+	obj->GetComponent<CapsuleCollider>()->SetPosY(res);
+}
+
+
+void ObjectInstallTool::OnEnChangeEditCylinderColliderZ()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT36);
+	obj->GetComponent<CapsuleCollider>()->SetPosZ(res);
+
 }

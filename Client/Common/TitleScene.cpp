@@ -27,9 +27,9 @@ void TitleScene::Initialize()
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"box";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0)->AddComponent<MeshCollider>();
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0)->AddComponent<BoxCollider>();
 
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		RigidBody::Desc rigid;
 		//rigid.isKinematic = true;
@@ -77,7 +77,7 @@ void TitleScene::Initialize()
 	RigidBody::Desc rigid2;
 	INSTANTIATE()->AddComponent<MeshRenderer>()
 		//->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)
-		->AddComponent<TestPlayer>()->SetPosition(0,3,0)->SetScale(5,3,20)->SetRotation(30,20,10);
+		->AddComponent<TestPlayer>();
 
 
 	INSTANTIATE()->AddComponent<NavMesh>();

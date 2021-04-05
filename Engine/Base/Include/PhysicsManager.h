@@ -54,6 +54,7 @@ public:
 	const PxRenderBuffer& GetDebugRenderBuffer();
 public:
 	PxRigidDynamic* CreateRigidDynamic(RigidBody* _rigid);
+	PxRigidStatic* CreateRigidStatic(Collider* _col);
 	void CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion, unsigned int _gaussLimit);
 	void CreateStaticMeshCollider(Collider * _col, Mesh* _mesh, bool _directInsertion);
 public:
@@ -61,7 +62,7 @@ public:
 	void CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
 	void CreateCapsuleCollider(Collider* _col, RigidBody* _rigid, float _radius, float _height);
 private:
-	void AttachShapeToRigidDynamic(RigidBody* _rigid, PxShape* shape);
+	void AttachShapeToRigidBody(RigidBody* _rigid, Collider* shape);
 	void InitializeShapeByColliderInfo(PxShape* _shape, Collider* collider);
 
 public:

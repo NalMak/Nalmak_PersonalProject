@@ -2,8 +2,6 @@
 #include "afxwin.h"
 
 
-// ObjectInstallTool 대화 상자입니다.
-
 class ObjectInstallTool : public CDialogEx
 {
 	DECLARE_DYNAMIC(ObjectInstallTool)
@@ -78,4 +76,57 @@ public:
 	afx_msg void OnEnKillfocusEditRotY();
 	afx_msg void OnEnSetfocusEditRotZ();
 	afx_msg void OnEnKillfocusEditRotZ();
+	afx_msg void OnCbnSelchangeComboLayer();
+	CComboBox m_layer;
+	afx_msg void OnBnClickedCheckMeshRender();
+	afx_msg void OnBnClickedCheckSphereCollider();
+	afx_msg void OnBnClickedCheckBoxCollider();
+	afx_msg void OnBnClickedCheckCylinderCollider();
+	afx_msg void OnBnClickedCheckMeshCollider();
+	afx_msg void OnBnClickedCheckSphereIsTrigger();
+	afx_msg void OnBnClickedCheckBoxIsTrigger();
+	afx_msg void OnBnClickedCheckCylinderIsTrigger();
+	afx_msg void OnBnClickedCheckMeshIsTrigger();
+	CButton m_useMeshRenderer;
+	CButton m_useSphereCollider;
+	CButton m_IsTriggerSphereCollider;
+	CButton m_useBoxCollider;
+	CButton m_IsTriggerBoxCollider;
+	CButton m_useCylinderCollider;
+	CButton m_IsTriggerCylinderCollider;
+	CButton m_useMeshCollider;
+	CButton m_IsTriggerMeshCollider;
+	afx_msg void OnEnChangeEditSphereColliderRadius();
+	afx_msg void OnEnChangeEditSphereColliderX();
+	afx_msg void OnEnChangeEditSphereColliderY();
+	afx_msg void OnEnChangeEditSphereColliderZ();
+	afx_msg void OnEnChangeEditBoxColliderWidth();
+	afx_msg void OnEnChangeEditBoxColliderHeight();
+	afx_msg void OnEnChangeEditBoxColliderDepth();
+	afx_msg void OnEnChangeEditBoxColliderX();
+	afx_msg void OnEnChangeEditBoxColliderY();
+	afx_msg void OnEnChangeEditBoxColliderZ();
+	afx_msg void OnEnChangeEditCylinderColliderRadius();
+	afx_msg void OnEnChangeEditCylinderColliderHeight();
+	afx_msg void OnEnChangeEditCylinderColliderX();
+	afx_msg void OnEnChangeEditCylinderColliderY();
+	afx_msg void OnEnChangeEditCylinderColliderZ();
+	CEdit m_sphereColliderRadius;
+	CEdit m_sphereColliderX;
+	CEdit m_sphereColliderY;
+	CEdit m_sphereColliderZ;
+	CEdit m_boxColliderWidth;
+	CEdit m_boxColliderHeight;
+	CEdit m_boxColliderDepth;
+	CEdit m_boxColliderX;
+	CEdit m_boxColliderY;
+	CEdit m_boxColliderZ;
+	CEdit m_cylinderColliderRadius;
+	CEdit m_cylinderColliderHeight;
+	CEdit m_cylinderColliderX;
+	CEdit m_cylinderColliderY;
+	CEdit m_cylinderColliderZ;
+	CButton m_renderMaterialAddButton;
+	CButton m_renderMaterialChangeButton;
+	CButton m_renderMaterialDeleteButton;
 };

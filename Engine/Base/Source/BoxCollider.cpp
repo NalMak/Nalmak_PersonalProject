@@ -26,3 +26,31 @@ void BoxCollider::Initialize()
 void BoxCollider::Update()
 {
 }
+
+void BoxCollider::SetWidth(float _value)
+{
+	m_width = _value;
+	PxBoxGeometry box;
+	m_shape->getBoxGeometry(box);
+	box.halfExtents.x = _value* 0.5f;
+	m_shape->setGeometry(box);
+}
+
+void BoxCollider::SetHeight(float _value)
+{
+	m_height = _value;
+	PxBoxGeometry box;
+	m_shape->getBoxGeometry(box);
+	box.halfExtents.y = _value * 0.5f;
+	m_shape->setGeometry(box);
+}
+
+void BoxCollider::SetDepth(float _value)
+{
+	m_depth = _value;
+	PxBoxGeometry box;
+	m_shape->getBoxGeometry(box);
+	box.halfExtents.z = _value* 0.5f;
+	m_shape->setGeometry(box);
+}
+

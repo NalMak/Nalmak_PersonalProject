@@ -41,7 +41,6 @@ public:
 
 public:
 	void SetRigidBody(PxRigidDynamic* _rigid);
-	void SetTrigger(bool _trigger);
 	void SetWorldTransform();
 	void SetWorldPosition(const Vector3& _pos);
 	void SetWorldRotation(const Quaternion& _rot);

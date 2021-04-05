@@ -8,4 +8,7 @@
     <LocalDebuggerEnvironment>PATH=../Externals/Bin/Release/;%PATH% $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup>
+    <RESOURCE_FILE>Nalmak3D_MapTool.rc</RESOURCE_FILE>
+  </PropertyGroup>
 </Project>

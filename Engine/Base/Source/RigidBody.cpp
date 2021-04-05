@@ -112,14 +112,7 @@ void RigidBody::SetRigidBody(PxRigidDynamic * _rigid)
 	m_rigid = _rigid;
 }
 
-void RigidBody::SetTrigger(bool _trigger)
-{
-	PxShape* shape = nullptr;
-	m_rigid->getShapes(&shape, 1);
 
-	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_trigger);
-
-}
 
 void RigidBody::SetWorldTransform()
 {
