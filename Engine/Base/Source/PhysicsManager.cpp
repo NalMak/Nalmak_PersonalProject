@@ -108,7 +108,7 @@ void PhysicsManager::CreateScene()
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_STATIC, 1.0f);
 
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f);
-	m_scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 2.0f);
+	//m_scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 2.0f);
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCULL_BOX, 2.0f);
 
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_EDGES, 1.0f);

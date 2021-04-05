@@ -290,8 +290,8 @@ void Nalmak3D_ControlView::OnLbnSelchangeObjectList()
 
 void Nalmak3D_ControlView::OnBnClickedCreateParticle()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
-	auto obj = INSTANTIATE(0,L"particle")->AddComponent<ParticleRenderer>();
+
+	auto obj = INSTANTIATE(0,0,L"particle")->AddComponent<ParticleRenderer>();
 	ParticleObjectManager::GetInstance()->AddObject(obj);
 	m_objectListBox.AddString(L"particle");
 	m_objectListBox.SetCurSel((int)(ParticleObjectManager::GetInstance()->GetAllObjects().size() - 1));
@@ -1121,7 +1121,7 @@ void Nalmak3D_ControlView::OnBnClickedAddBurst()
 {
 	if (!m_currentSelectObject)
 		return;
-	ParticleRenderer::Burst burst;
+	ParticleData::Burst burst;
 	CString value;
 	CString burstStr;
 	GetDlgItem(IDC_EDIT27)->GetWindowTextW(value);
@@ -1160,7 +1160,6 @@ void Nalmak3D_ControlView::OnBnClickedDeleteBurst()
 
 void Nalmak3D_ControlView::OnBnClickedButtonSave()
 {
-
 	CFileDialog dlg
 	(
 		FALSE,
@@ -1181,7 +1180,7 @@ void Nalmak3D_ControlView::OnBnClickedButtonSave()
 		HANDLE handle = CreateFile(dlg.GetPathName(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 		if (INVALID_HANDLE_VALUE == handle)
 		{
-			AfxMessageBox(L"Save File Failed");
+			AfxMessageBox(L"Failed to Save File");
 			return;
 		}
 		DWORD byte;
@@ -1195,7 +1194,7 @@ void Nalmak3D_ControlView::OnBnClickedButtonSave()
 		WriteFile(handle, &burstCount, sizeof(DWORD), &byte, nullptr);
 		for (DWORD i = 0; i < burstCount; ++i)
 		{
-			WriteFile(handle, &particle->GetBurstList()[i], sizeof(ParticleRenderer::Burst), &byte, nullptr);
+			WriteFile(handle, &particle->GetBurstList()[i], sizeof(ParticleData::Burst), &byte, nullptr);
 		}
 
 		wstring mtrlName = particle->GetMaterial()->GetName();
@@ -1208,7 +1207,7 @@ void Nalmak3D_ControlView::OnBnClickedButtonSave()
 
 		CloseHandle(handle);
 
-		afx_msg(L"Save File Succeed");
+		AfxMessageBox(L"Succeeded to Save File");
 	}
 }
 
@@ -1233,6 +1232,13 @@ void Nalmak3D_ControlView::OnBnClickedButtonLoad()
 	if (dlg.DoModal())
 	{
 		
+		HANDLE handle = CreateFile(dlg.GetPathName(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+		if (INVALID_HANDLE_VALUE == handle)
+		{
+			AfxMessageBox(L"Load File Failed");
+			return;
+		}
+		CloseHandle(handle);
 
 		wstring filePath = dlg.GetPathName();
 		wstring fileName = filePath.substr(filePath.find_last_of(L'\\') + 1);
@@ -1266,8 +1272,7 @@ void Nalmak3D_ControlView::OnBnClickedButtonLoad()
 
 		OnLbnSelchangeObjectList();
 
-
-		afx_msg(L"Load File Succeed");
+	
 
 	}
 }

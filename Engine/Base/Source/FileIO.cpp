@@ -34,7 +34,7 @@ void FileIO::SearchingDir(std::list<std::wstring>* fdList, const TCHAR * _path, 
 	if ((handle = _wfindfirst(path.c_str(), &fd)) == -1L)
 	{
 		//파일이나 디렉토리가 없을 경우.
-		cout << "No file in directory!" << endl;
+		_findclose(handle);
 		return;
 	}
 	do //폴더 탐색 반복 시작

@@ -79,6 +79,7 @@ void MapToolManager::SeleteObject(int _index)
 		return;
 
 	m_selectedObject = m_createdOnMapObjectList[_index];
+	m_debugHelper->PickObject(m_selectedObject);
 	m_controlView->UpdateObjectInfo(m_selectedObject, _index);
 }
 

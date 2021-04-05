@@ -368,7 +368,7 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 	{
 		for (auto& renderer : renderList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetLayer()))
+			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
@@ -401,7 +401,7 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 	{
 		for (auto& renderer : MeshRendererList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetLayer()))
+			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
@@ -433,7 +433,7 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 
 	for (auto& renderer : m_renderUILists)
 	{
-		if (_cam->CompareLayer(renderer->GetLayer()))
+		if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
 		{
 			if (_cam->IsInFrustumCulling(renderer))
 			{
@@ -460,7 +460,7 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 	{
 		for (auto& renderer : MeshRendererList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetLayer()))
+			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{

@@ -17,7 +17,6 @@ public:
 		Material* mtrl = nullptr;
 
 		wstring meshName = L"box";
-		int layer = 0;
 	};
 	MeshRenderer(Desc* _desc);
 private:

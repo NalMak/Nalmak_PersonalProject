@@ -37,20 +37,17 @@ public:
 protected:
 	PDIRECT3DDEVICE9 m_device;
 	RENDERER_TYPE  m_type;
-	int m_layer;
 	bool m_isFrustumCulling = true;
 	bool m_isPicking = true;
 public:
 	virtual float GetBoundingRadius();
 	virtual Vector3 GetBoundingCenter();
 public:
-	int  GetLayer() const { return m_layer; }
 	bool IsPickingEnable() { return m_isPicking; }
 	bool IsFrustumCulling() { return m_isFrustumCulling; }
 public:
 	const RENDERER_TYPE& GetType() { return m_type; }
 public:
-	void SetLayer(int _layer) { m_layer = _layer; }
 	void SetFrustumCulling(bool _culling) { m_isFrustumCulling = _culling; }
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
 

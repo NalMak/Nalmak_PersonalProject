@@ -11,6 +11,7 @@
 #include "StaticMesh.h"
 #include "ScreenQuad.h"
 #include "AudioClip.h"
+#include "StaticObjectInfo.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -57,8 +58,11 @@ HRESULT ResourceManager::Release()
 	{
 		for (auto& resource : resources.second)
 		{
-			resource.second->Release();
-			SAFE_DELETE(resource.second);
+			if (resource.second)
+			{
+				resource.second->Release();
+				SAFE_DELETE(resource.second);
+			}
 		}
 		resources.second.clear();
 	}
@@ -108,6 +112,7 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 	LoadAllResources<Shader, Shader>(L"sd", _isStatic);
 	LoadAllResources<Material, Material>(L"mtrl", _isStatic);
 	LoadAllResources<ParticleInfo, ParticleInfo>(L"ptd", _isStatic);
+	LoadAllResources<StaticObjectInfo, StaticObjectInfo>(L"sttd", _isStatic);
 }
 
 void ResourceManager::LoadResourcesByFoloderName(const wstring & _sceneName, bool _isStatic)
@@ -165,8 +170,6 @@ void ResourceManager::CreateDefaultMesh()
 	}
 
 }
-
-
 
 void ResourceManager::UpdateMaterial(const wstring& _fp, bool _isStatic)
 {

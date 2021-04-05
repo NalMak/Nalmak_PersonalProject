@@ -24,7 +24,6 @@ void LineManager::Initialize()
 	MeshRenderer::Desc desc;
 	desc.meshName = L"line";
 	desc.mtrlName = L"SYS_Line_Green";
-	desc.layer = 0;
 	m_isLineRender = true;
 
 	for (UINT i = 0; i < m_maxLineCount; ++i)

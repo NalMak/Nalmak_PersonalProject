@@ -44,6 +44,7 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
+    <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
     <ClCompile Include="..\Source\Event.cpp" />
     <ClCompile Include="..\Source\EventHandler.cpp" />
     <ClCompile Include="..\Source\Exception.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
+    <ClInclude Include="..\Include\StaticObjectInfo.h" />
     <ClInclude Include="..\Include\Event.h" />
     <ClInclude Include="..\Include\EventHandler.h" />
     <ClInclude Include="..\Include\Exception.h" />

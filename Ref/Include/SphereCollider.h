@@ -23,5 +23,7 @@ public:
 	void SetRadius(float _radius);
 private:
 	float m_radius;
+
+
 };
 

@@ -1,5 +1,6 @@
-#include "..\Include\ParticleInfo.h"
-
+#include "ParticleInfo.h"
+#include "Material.h"
+#include "ResourceManager.h"
 
 
 ParticleInfo::ParticleInfo()
@@ -30,8 +31,8 @@ void ParticleInfo::Initialize(wstring _fp)
 
 	for (DWORD i = 0; i < burstCount; ++i)
 	{
-		ParticleRenderer::Burst burst;
-		ReadFile(handle, &burst, sizeof(ParticleRenderer::Burst), &byte, nullptr);
+		ParticleData::Burst burst;
+		ReadFile(handle, &burst, sizeof(ParticleData::Burst), &byte, nullptr);
 		m_bursts.emplace_back(burst);
 	}
 

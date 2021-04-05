@@ -19,7 +19,7 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 
-	float GetWidht() { return m_width; }
+	float GetWidth() { return m_width; }
 	float GetHeight() { return m_height; }
 	float GetDepth() { return m_depth; }
 
@@ -30,6 +30,7 @@ private:
 	float m_width;
 	float m_height;
 	float m_depth;
+
 };
 
 

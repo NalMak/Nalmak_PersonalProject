@@ -31,6 +31,7 @@ public:
 	static bool IsDigitString(int* _digit, wstring _string);
 	static bool IsDigitString(int* _digit, string _string);
 
+	static wstring ReadWString_ReadEachCharacter_FromFile(HANDLE _handle);
 };
 
 

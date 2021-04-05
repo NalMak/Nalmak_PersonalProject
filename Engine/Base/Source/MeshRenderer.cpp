@@ -19,7 +19,6 @@ MeshRenderer::MeshRenderer(Desc * _desc)
 	
 	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 	
-	m_layer = _desc->layer;
 	m_type = RENDERER_TYPE_MESH;
 }
 

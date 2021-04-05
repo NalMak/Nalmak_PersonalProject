@@ -21,7 +21,20 @@ const wstring g_objectTagName[OBJECT_TAG_MAX]
 	L"Environment"
 };
 
+enum OBJECT_LAYER
+{
+	OBJECT_LAYER_DEFAULT,
+	OBJECT_LAYER_BACKGROUND,
+	OBJECT_LAYER_PLAYER,
+	OBJECT_LAYER_MAX
+};
 
+const wstring g_objectLayerName[OBJECT_LAYER_MAX]
+{
+	L"Default",
+	L"BackGround",
+	L"Player"
+};
 
 #endif // !__PUBLIC_DATA_H__
 

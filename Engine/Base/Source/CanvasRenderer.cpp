@@ -19,9 +19,6 @@ CanvasRenderer::CanvasRenderer(Desc * _desc)
 
 	m_type = _desc->type;
 
-
-	m_layer = 1;
-
 }
 
 void CanvasRenderer::Initialize()

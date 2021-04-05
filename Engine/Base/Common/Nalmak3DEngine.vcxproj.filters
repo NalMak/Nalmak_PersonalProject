@@ -244,6 +244,9 @@
     <Filter Include="05.Component\15.NavMesh">
       <UniqueIdentifier>{25daed7f-c6b6-444b-9d62-23a9578e2d8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Resource\08.StaticObjectInfo">
+      <UniqueIdentifier>{ec5778b9-a648-4b8a-a276-b72fdc0d4a5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core.cpp">
@@ -542,6 +545,9 @@
     </ClCompile>
     <ClCompile Include="..\Source\NavPoint.cpp">
       <Filter>05.Component\15.NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\StaticObjectInfo.cpp">
+      <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -865,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="..\Include\NavPoint.h">
       <Filter>05.Component\15.NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\StaticObjectInfo.h">
+      <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

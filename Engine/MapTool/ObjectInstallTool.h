@@ -23,6 +23,7 @@ public:
 	void UpdateObjectInfo(GameObject* newObj, int _index);
 	void UpdateObjectTransformInfo(GameObject* _obj);
 private:
+	void UpdatePhysicsUpdate(GameObject* obj);
 	class MapToolManager* m_mapToolManager;
 	bool m_isFocusRotation = false;
 public:

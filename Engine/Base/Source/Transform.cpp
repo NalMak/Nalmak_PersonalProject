@@ -6,7 +6,9 @@ USING(Nalmak)
 
 Transform::Transform(Desc * _desc)
 {
-
+	position = _desc->position;
+	rotation = _desc->rotation;
+	scale = _desc->scale;
 }
 
 

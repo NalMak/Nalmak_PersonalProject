@@ -45,3 +45,21 @@ bool Nalmak_String::IsDigitString(int * _digit, string _string)
 
 	return false;
 }
+
+wstring Nalmak_String::ReadWString_ReadEachCharacter_FromFile(HANDLE _handle)
+{
+	DWORD byte = 0;
+	DWORD nameLength = 0;
+	wstring result;
+	ReadFile(_handle, &nameLength, sizeof(DWORD), &byte, nullptr);
+	TCHAR* nameBuffer = new TCHAR[nameLength + 1];
+	for (DWORD i = 0; i < nameLength; ++i)
+		ReadFile(_handle, &nameBuffer[i], sizeof(wchar_t), &byte, nullptr);
+	nameBuffer[nameLength] = '\0';
+	result = nameBuffer;
+
+	SAFE_DELETE(nameBuffer);
+
+	return result;
+}
+

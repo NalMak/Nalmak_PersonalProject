@@ -127,7 +127,7 @@ void DebuggingMode::Initialize()
 	m_debuggingMode.Off(DEBUGGING_MODE_RENDERTARGET);
 	m_debuggingMode.On(DEBUGGING_MODE_FREE_CAMERA);
 	m_debuggingMode.On(DEBUGGING_MODE_DEBUG_LOG);
-	m_debuggingMode.Off(DEBUGGING_MODE_COLLIDER);
+	m_debuggingMode.On(DEBUGGING_MODE_COLLIDER);
 	m_debuggingMode.Off(DEBUGGING_MODE_PICKING);
 	m_debuggingMode.On(DEBUGGING_MODE_GRID);
 	m_debuggingMode.Off(DEBUGGING_MODE_TIME_PAUSE);
@@ -399,33 +399,7 @@ void DebuggingMode::PickObject()
 	{
 		if (m_pickingObj != pickObj)
 		{
-			if (m_pickingObj)
-			{
-				m_pickingObj->DeleteComponent<DebugObject>();
-				m_pickingObj = nullptr;
-			}
-		
-
-			m_pickingObj = pickObj;
-			m_pickingObj->AddComponent<DebugObject>();
-
-			auto handler = m_event.GetHandler(0);
-			if (handler)
-				m_event.DoEvent(0);
-
-			m_pickingGizmoBase->SetParents(pickObj);
-			m_pickingGizmoBase->GetTransform()->SetPosition(0, 0, 0);
-			m_pickingGizmoBase->GetTransform()->rotation = { 0, 0, 0, 1 };
-
-			m_pickingGizmoBase->SetActive(true);
-		
-
-			//m_pickingObj->GetComponent<DebugObject>()->SetEnablePicking();
-			Mesh* mesh = m_pickingObj->GetComponent<MeshRenderer>()->GetMesh();
-			m_pickingOutLine->SetMesh(mesh);
-			m_pickingOutLine->GetTransform()->SetParents(m_pickingObj);
-			UpdateOutLine();
-
+			PickObject(pickObj);
 		}
 	}
 	else if (m_pickingObj)
@@ -583,6 +557,39 @@ DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
 	}
 	else
 		return PICKING_TYPE::PICKING_TYPE_NONE;
+}
+
+void DebuggingMode::PickObject(GameObject * _obj)
+{
+	if (m_pickingObj)
+	{
+		m_pickingObj->DeleteComponent<DebugObject>();
+		m_pickingObj = nullptr;
+	}
+
+	m_pickingObj = _obj;
+	m_pickingObj->AddComponent<DebugObject>();
+
+	auto handler = m_event.GetHandler(0);
+	if (handler)
+		m_event.DoEvent(0);
+
+	m_pickingGizmoBase->SetParents(_obj);
+	m_pickingGizmoBase->GetTransform()->SetPosition(0, 0, 0);
+	m_pickingGizmoBase->GetTransform()->rotation = { 0, 0, 0, 1 };
+
+	m_pickingGizmoBase->SetActive(true);
+
+
+	//m_pickingObj->GetComponent<DebugObject>()->SetEnablePicking();
+	if (m_pickingObj->GetComponent<MeshRenderer>())
+	{
+		Mesh* mesh = m_pickingObj->GetComponent<MeshRenderer>()->GetMesh();
+		m_pickingOutLine->SetMesh(mesh);
+	}
+	
+	m_pickingOutLine->GetTransform()->SetParents(m_pickingObj);
+	UpdateOutLine();
 }
 
 void DebuggingMode::AddEvent(EventHandler _e)

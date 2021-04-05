@@ -61,6 +61,9 @@ void GameObject::Destroy(GameObject * _obj)
 	if (!_obj)
 		return;
 
+	if (_obj->m_dead)
+		return;
+
 	_obj->m_dead = true;
 
 	for (auto& com : _obj->m_components)

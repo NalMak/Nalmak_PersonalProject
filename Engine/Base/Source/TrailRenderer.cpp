@@ -12,7 +12,6 @@ TrailRenderer::TrailRenderer(Desc * _desc)
 	{
 		m_material = _desc->mtrl;
 	}
-	m_layer = _desc->layer;
 	
 	m_maxTrailCount = _desc->maxTrailCount;
 	m_catmullrom_divideCount = _desc->detailCount;

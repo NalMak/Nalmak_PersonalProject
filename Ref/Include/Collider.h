@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "PhysicsManager.h"
 
-class NALMAK_DLL Collider :
+class NALMAK_DLL Collider abstract :
 	public Component
 {
 public:
@@ -22,6 +22,7 @@ protected:
 	Vector3 m_offset;
 	PxShape* m_shape = nullptr;
 public:
+	void UpdatePysicsTransform();
 	void SetShape(PxShape* _shape);
 	PxShape* GetShape();
 

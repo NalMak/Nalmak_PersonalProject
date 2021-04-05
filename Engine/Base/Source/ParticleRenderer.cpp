@@ -678,11 +678,11 @@ bool ParticleRenderer::IsPlaying()
 	return m_info.isPlay;
 }
 
-void ParticleRenderer::AddBurst(Burst _burst)
+void ParticleRenderer::AddBurst(ParticleData::Burst _burst)
 {
 	m_emitBursts.emplace_back(_burst);
 
-	sort(m_emitBursts.begin(), m_emitBursts.end(), []  (Burst _b1, Burst _b2)
+	sort(m_emitBursts.begin(), m_emitBursts.end(), []  (ParticleData::Burst _b1, ParticleData::Burst _b2)
 	-> bool{
 		if (_b1.time < _b2.time)
 			return true;

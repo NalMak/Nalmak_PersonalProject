@@ -12,7 +12,9 @@ class NALMAK_DLL Transform : public Component
 public:
 	struct Desc
 	{
-
+		Vector3 position = { 0,0,0 };
+		Quaternion rotation = { 0,0,0,1 };
+		Vector3 scale = { 1,1,1 };
 	};
 public:
 	Transform(Desc* _desc);

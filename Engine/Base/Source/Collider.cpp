@@ -30,14 +30,20 @@ void Collider::Release()
 
 void Collider::UpdatePysicsTransform()
 {
-	PxTransform trs = m_shape->getLocalPose();
+	PxTransform trs = m_shape->getActor()->getGlobalPose();
 	
 	Vector3 pos = m_transform->GetWorldPosition();
+	Quaternion rot = m_transform->GetWorldRotation();
 	trs.p.x = pos.x;
 	trs.p.y = pos.y;
 	trs.p.z = pos.z;
 
-	m_shape->setLocalPose(trs);
+	trs.q.x = rot.x;
+	trs.q.y = rot.y;
+	trs.q.z = rot.z;
+	trs.q.w = rot.w;
+
+	m_shape->getActor()->setGlobalPose(trs);
 }
 
 void Collider::SetShape(PxShape * _shape)

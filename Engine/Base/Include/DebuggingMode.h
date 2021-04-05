@@ -71,6 +71,7 @@ private:
 	void UpdatePickingObject();
 	DebuggingMode::PICKING_TYPE IsGizmoPicking();
 public:
+	void PickObject(GameObject* _obj);
 	void AddEvent(EventHandler _e);
 	GameObject* GetPickingObject();
 	void SetDebugModeActive(DEBUGGING_MODE _mode, bool _active);
