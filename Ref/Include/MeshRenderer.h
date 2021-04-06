@@ -29,6 +29,7 @@ public:
 	virtual void BindingStreamSource() override;
 public:
 	void AddMaterial(const wstring& _mtrl);
+	void AddMaterial(Material* _mtrl);
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) override;
 	virtual void DeleteMaterial(int _index);

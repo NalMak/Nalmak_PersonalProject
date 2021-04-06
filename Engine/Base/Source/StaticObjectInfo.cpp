@@ -22,8 +22,7 @@ void StaticObjectInfo::Initialize(wstring _fp)
 		return;
 	}
 	DWORD byte;
-	wstring name = Nalmak_String::ReadWString_ReadEachCharacter_FromFile(handle);
-	m_data.name = name;
+	m_data.name = m_name;
 
 	int tag;
 	ReadFile(handle, &tag, sizeof(int), &byte, nullptr);
@@ -102,3 +101,4 @@ void StaticObjectInfo::Initialize(wstring _fp)
 void StaticObjectInfo::Release()
 {
 }
+

@@ -13,9 +13,8 @@ class NALMAK_DLL FileIO
 public:
 	FileIO();
 	~FileIO();
-private:
-	static int IsFileOrDir(_wfinddata_t fd);
 public:
+	static int IsFileOrDir(_wfinddata_t fd);
 	static void SearchingDir(std::list<std::wstring> * fdList, const TCHAR* _path, const TCHAR* _extention);
 };
 END

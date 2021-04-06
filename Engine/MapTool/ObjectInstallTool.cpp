@@ -73,6 +73,7 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON15, m_renderMaterialAddButton);
 	DDX_Control(pDX, IDC_BUTTON16, m_renderMaterialChangeButton);
 	DDX_Control(pDX, IDC_BUTTON17, m_renderMaterialDeleteButton);
+	DDX_Control(pDX, IDC_COMBO4, m_sceneName);
 }
 
 BOOL ObjectInstallTool::OnInitDialog()
@@ -92,22 +93,44 @@ BOOL ObjectInstallTool::OnInitDialog()
 		m_layer.InsertString(i, g_objectLayerName[i].c_str());
 	}
 
-	auto& materials = ResourceManager::GetInstance()->GetAllResource<Material>();
-	for (auto& mtrl : materials)
+	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+
+	vector<wstring> sceneFolderNames;
 	{
-		auto inputLayout = ((Material*)mtrl.second)->GetShader()->GetInputLayout();
-		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_PARTICLE)
-			continue;
-		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
-			continue;
-		m_materialList.AddString(mtrl.first.c_str());
+		wstring defaultPath = path;
+		wstring path = defaultPath + L"/*.*";
+		int checkDirFile = 0;
+		struct _wfinddata_t fd;
+		intptr_t handle;
+
+		//fd 구조체 초기화.
+		if ((handle = _wfindfirst(path.c_str(), &fd)) == -1L)
+		{
+			//파일이나 디렉토리가 없을 경우.
+			_findclose(handle);
+		}
+		else
+		{
+			do //폴더 탐색 반복 시작	
+			{
+				//현재 객체 종류 확인(파일 or 디렉토리)
+				checkDirFile = FileIO::IsFileOrDir(fd);
+				if (checkDirFile == 0 && fd.name[0] != '.')
+				{
+					sceneFolderNames.emplace_back(fd.name);
+				}
+			} while (_wfindnext(handle, &fd) == 0);
+			_findclose(handle);
+		}
+	}
+	int i = 0;
+	for (auto& sceneName : sceneFolderNames)
+	{
+		m_sceneName.InsertString(i,sceneName.c_str());
+		++i;
 	}
 
-	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
-	for (auto& mesh : meshes)
-	{
-		m_meshList.AddString(mesh.first.c_str());
-	}
+
 	EventHandler e1 = [=]()
 	{
 		MapToolManager::GetInstance()->SelectObject(MapToolManager::GetInstance()->GetDebuggingObject()->GetPickingObject());
@@ -181,6 +204,9 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 	}
 	{
 		m_objectTag.SetCurSel(_selectedObj->GetTag());
+	}
+	{
+		m_layer.SetCurSel(_selectedObj->GetLayer());
 	}
 	{
 		if (_selectedObj->GetComponent<MeshRenderer>())
@@ -328,6 +354,12 @@ void ObjectInstallTool::UpdateObjectTransformInfo(GameObject * _obj)
 	UpdatePhysicsUpdate(_obj);
 }
 
+void ObjectInstallTool::DeleteAllObject()
+{
+	m_mapToolManager->DeleteAllObject();
+	m_objectList.ResetContent();
+}
+
 void ObjectInstallTool::UpdatePhysicsUpdate(GameObject * _obj)
 {
 	_obj->GetTransform()->UpdateMatrix();
@@ -347,6 +379,145 @@ void ObjectInstallTool::UpdatePhysicsUpdate(GameObject * _obj)
 	if (m_useSphereCollider.GetCheck())
 	{
 		_obj->GetComponent<SphereCollider>()->UpdatePysicsTransform();
+	}
+}
+
+void ObjectInstallTool::SaveObject(GameObject * _obj)
+{
+	auto obj = _obj; 
+	if (!obj)
+		return;
+
+	CFileDialog dlg
+	(
+		FALSE,
+		L"sttd",
+		(_obj->GetName() + L".sttd").c_str(),
+		OFN_OVERWRITEPROMPT,
+		L"Data File(*.sttd) | *.sttd||",
+		this
+	);
+
+	TCHAR fp[256] = L"";
+	GetCurrentDirectory(256, fp);
+	PathRemoveFileSpec(fp);
+	lstrcat(fp, L"\\Data\\Static");
+	dlg.m_ofn.lpstrInitialDir = fp;
+
+	if (dlg.DoModal())
+	{
+		HANDLE handle = CreateFile(dlg.GetPathName(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+		if (INVALID_HANDLE_VALUE == handle)
+		{
+			AfxMessageBox(L"Failed to Save File");
+			return;
+		}
+		DWORD byte;
+
+		int tag = m_objectTag.GetCurSel();
+		WriteFile(handle, &tag, sizeof(int), &byte, nullptr);
+		int layer = m_layer.GetCurSel();
+		WriteFile(handle, &layer, sizeof(int), &byte, nullptr);
+
+		Transform::Desc trans;
+		trans.position = obj->GetTransform()->GetWorldPosition();
+		trans.rotation = obj->GetTransform()->GetWorldRotation();
+		trans.scale = obj->GetTransform()->scale;
+
+		WriteFile(handle, &trans, sizeof(Transform::Desc), &byte, nullptr);
+
+
+		bool isExist = false;
+		auto render = obj->GetComponent<MeshRenderer>();
+		if (render)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+		if (isExist)
+		{
+			wstring meshName = render->GetMesh()->GetName();
+			DWORD meshNameLength = (DWORD)meshName.length();
+			WriteFile(handle, &meshNameLength, sizeof(DWORD), &byte, nullptr);
+			WriteFile(handle, meshName.c_str(), meshNameLength * sizeof(wchar_t), &byte, nullptr);
+
+			int materialCount = render->GetMaterialCount();
+			WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
+
+			for (int i = 0; i < materialCount; ++i)
+			{
+				wstring materialName = render->GetMaterial(i)->GetName();
+				DWORD mtrlNameLength = (DWORD)materialName.length();
+				WriteFile(handle, &mtrlNameLength, sizeof(DWORD), &byte, nullptr);
+				WriteFile(handle, materialName.c_str(), mtrlNameLength * sizeof(wchar_t), &byte, nullptr);
+			}
+		}
+		auto sphereCollider = obj->GetComponent<SphereCollider>();
+		if (sphereCollider)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+
+		if (isExist)
+		{
+			SphereCollider::Desc sphere;
+			sphere.isTrigger = sphereCollider->IsTrigger();
+			sphere.posOffset = sphereCollider->GetPosOffset();
+			sphere.radius = sphereCollider->GetRadius();
+
+			WriteFile(handle, &sphere, sizeof(SphereCollider::Desc), &byte, nullptr);
+		}
+
+		auto boxCollider = obj->GetComponent<BoxCollider>();
+		if (boxCollider)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+
+		if (isExist)
+		{
+			BoxCollider::Desc box;
+			box.isTrigger = boxCollider->IsTrigger();
+			box.width = boxCollider->GetWidth();
+			box.height = boxCollider->GetHeight();
+			box.depth = boxCollider->GetDepth();
+			box.posOffset = boxCollider->GetPosOffset();
+			WriteFile(handle, &box, sizeof(BoxCollider::Desc), &byte, nullptr);
+		}
+
+		auto capsuleCollider = obj->GetComponent<CapsuleCollider>();
+		if (capsuleCollider)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+
+		if (isExist)
+		{
+			CapsuleCollider::Desc capsule;
+			capsule.isTrigger = capsuleCollider->IsTrigger();
+			capsule.radius = capsuleCollider->GetRadius();
+			capsule.height = capsuleCollider->GetHeight();
+			capsule.posOffset = capsuleCollider->GetPosOffset();
+			WriteFile(handle, &capsule, sizeof(CapsuleCollider::Desc), &byte, nullptr);
+		}
+		auto meshCollider = obj->GetComponent<MeshCollider>();
+		if (meshCollider)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+
+		if (isExist)
+		{
+			MeshCollider::Desc mesh;
+			mesh.isTrigger = meshCollider->IsTrigger();
+			WriteFile(handle, &mesh, sizeof(MeshCollider::Desc), &byte, nullptr);
+		}
+		CloseHandle(handle);
+		AfxMessageBox(L"Succeeded to Save File");
 	}
 }
 
@@ -407,6 +578,7 @@ BEGIN_MESSAGE_MAP(ObjectInstallTool, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT34, &ObjectInstallTool::OnEnChangeEditCylinderColliderX)
 	ON_EN_CHANGE(IDC_EDIT35, &ObjectInstallTool::OnEnChangeEditCylinderColliderY)
 	ON_EN_CHANGE(IDC_EDIT36, &ObjectInstallTool::OnEnChangeEditCylinderColliderZ)
+	ON_CBN_SELCHANGE(IDC_COMBO4, &ObjectInstallTool::OnCbnSelchangeComboSceneName)
 END_MESSAGE_MAP()
 
 
@@ -611,151 +783,18 @@ void ObjectInstallTool::OnEnChangeEditScaleZ()
 void ObjectInstallTool::OnBnClickedButtonSave()
 {
 	auto obj = m_mapToolManager->GetSelectedObject();
-	if (!obj)
-		return;
-
-	CFileDialog dlg
-	(
-		FALSE,
-		L"sttd",
-		L"*.sttd",
-		OFN_OVERWRITEPROMPT,
-		L"Data File(*.sttd) | *.sttd||",
-		this
-	);
-
-	TCHAR fp[256] = L"";
-	GetCurrentDirectory(256, fp);
-	PathRemoveFileSpec(fp);
-	lstrcat(fp, L"\\Data\\Static");
-	dlg.m_ofn.lpstrInitialDir = fp;
-
-	if (dlg.DoModal())
-	{
-		HANDLE handle = CreateFile(dlg.GetPathName(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-		if (INVALID_HANDLE_VALUE == handle)
-		{
-			AfxMessageBox(L"Failed to Save File");
-			return;
-		}
-		DWORD byte;
-
-		wstring objectName = obj->GetName();
-		DWORD objNameLength = (DWORD)objectName.length();
-		WriteFile(handle, &objNameLength, sizeof(DWORD), &byte, nullptr);
-		WriteFile(handle, objectName.c_str(), objNameLength * sizeof(wchar_t), &byte, nullptr);
-
-		int tag = m_objectTag.GetCurSel();
-		WriteFile(handle, &tag, sizeof(int), &byte, nullptr);
-		int layer = m_layer.GetCurSel();
-		WriteFile(handle, &layer, sizeof(int), &byte, nullptr);
-
-		Transform::Desc trans;
-		trans.position = obj->GetTransform()->GetWorldPosition();
-		trans.rotation = obj->GetTransform()->GetWorldRotation();
-		trans.scale = obj->GetTransform()->scale;
-
-		WriteFile(handle, &trans, sizeof(Transform::Desc), &byte, nullptr);
-	
-
-		bool isExist = false;
-		auto render = obj->GetComponent<MeshRenderer>();
-		if (render)
-			isExist = true;
-		else
-			isExist = false;
-		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
-		if (isExist)
-		{
-			wstring meshName = render->GetMesh()->GetName();
-			DWORD meshNameLength = (DWORD)meshName.length();
-			WriteFile(handle, &meshNameLength, sizeof(DWORD), &byte, nullptr);
-			WriteFile(handle, meshName.c_str(), meshNameLength * sizeof(wchar_t), &byte, nullptr);
-
-			int materialCount = render->GetMaterialCount();
-			WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
-
-			for (int i = 0; i < materialCount; ++i)
-			{
-				wstring materialName = render->GetMaterial(i)->GetName();
-				DWORD mtrlNameLength = (DWORD)materialName.length();
-				WriteFile(handle, &mtrlNameLength, sizeof(DWORD), &byte, nullptr);
-				WriteFile(handle, materialName.c_str(), mtrlNameLength * sizeof(wchar_t), &byte, nullptr);
-			}
-		}
-		auto sphereCollider = obj->GetComponent<SphereCollider>();
-		if (sphereCollider)
-			isExist = true;
-		else
-			isExist = false;
-		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
-
-		if (isExist)
-		{
-			SphereCollider::Desc sphere;
-			sphere.isTrigger = sphereCollider->IsTrigger();
-			sphere.posOffset = sphereCollider->GetPosOffset();
-			sphere.radius = sphereCollider->GetRadius();
-			
-			WriteFile(handle, &sphere, sizeof(SphereCollider::Desc), &byte, nullptr);
-		}
-
-		auto boxCollider = obj->GetComponent<BoxCollider>();
-		if (boxCollider)
-			isExist = true;
-		else
-			isExist = false;
-		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
-
-		if (isExist)
-		{
-			BoxCollider::Desc box;
-			box.isTrigger = boxCollider->IsTrigger();
-			box.width = boxCollider->GetWidth();
-			box.height = boxCollider->GetHeight();
-			box.depth = boxCollider->GetDepth();
-			box.posOffset = boxCollider->GetPosOffset();
-			WriteFile(handle, &box, sizeof(BoxCollider::Desc), &byte, nullptr);
-		}
-
-		auto capsuleCollider = obj->GetComponent<CapsuleCollider>();
-		if (capsuleCollider)
-			isExist = true;
-		else
-			isExist = false;
-		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
-
-		if (isExist)
-		{
-			CapsuleCollider::Desc capsule;
-			capsule.isTrigger = capsuleCollider->IsTrigger();
-			capsule.radius = capsuleCollider->GetRadius();
-			capsule.height = capsuleCollider->GetHeight();
-			capsule.posOffset = capsuleCollider->GetPosOffset();
-			WriteFile(handle, &capsule, sizeof(CapsuleCollider::Desc), &byte, nullptr);
-		}
-		auto meshCollider = obj->GetComponent<MeshCollider>();
-		if (meshCollider)
-			isExist = true;
-		else
-			isExist = false;
-		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
-
-		if (isExist)
-		{
-			MeshCollider::Desc mesh;
-			mesh.isTrigger = meshCollider->IsTrigger();
-			WriteFile(handle, &mesh, sizeof(MeshCollider::Desc), &byte, nullptr);
-		}
-		CloseHandle(handle);
-		AfxMessageBox(L"Succeeded to Save File");
-	}
+	SaveObject(obj);
 }
 
 
 void ObjectInstallTool::OnBnClickedButtonSaveAll()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int count = m_mapToolManager->GetObjectCount();
+	for (int i = 0; i < count; ++i)
+	{
+		auto obj = m_mapToolManager->GetGameObject(i);
+		SaveObject(obj);
+	}
 }
 
 
@@ -792,60 +831,17 @@ void ObjectInstallTool::OnBnClickedButtonLoad()
 		size_t targetNum = fileName.find_last_of(L".");
 		fileName = fileName.substr(0, targetNum);
 
-		StaticObjectInfo* data = ResourceManager::GetInstance()->GetResource<StaticObjectInfo>(fileName);
-
-
 		int count = m_objectList.GetCount();
 		m_objectList.SetCurSel(count - 1);
 
-
-		auto staticObj = INSTANTIATE(data->GetData().tag)->SetPosition(data->GetData().transformDesc.position);
-		staticObj->GetTransform()->rotation = data->GetData().transformDesc.rotation;
-		staticObj->GetTransform()->scale = data->GetData().transformDesc.scale;
-		staticObj->SetName(data->GetData().name);
-		staticObj->SetLayer(data->GetData().layer);
-
-
-
-		if (data->GetData().isExistmeshRenderer)
-		{
-			staticObj->AddComponent<MeshRenderer>();
-			staticObj->GetComponent<MeshRenderer>()->SetMesh(data->GetData().mesh);
-			auto materials = data->GetData().materials;
-			int i = 0;
-			for (auto& mtrl : materials)
-			{
-				staticObj->GetComponent<MeshRenderer>()->SetMaterial(mtrl, i);
-				++i;
-			}
-		}
-
-		if (data->GetData().isExistSphereCollider)
-		{
-			staticObj->AddComponent<SphereCollider>(&(data->GetData().sphereDesc));
-		}	
-		if (data->GetData().isExistBoxCollider)
-		{
-			staticObj->AddComponent<BoxCollider>(&(data->GetData().boxDesc));
-		}
-		if (data->GetData().isExistCapsuleCollider)
-		{
-			staticObj->AddComponent<CapsuleCollider>(&(data->GetData().capsuleDesc));
-		}
-		if (data->GetData().isExistMeshCollider)
-		{
-			staticObj->AddComponent<MeshCollider>(&(data->GetData().meshDesc));
-		}
-
+		GameObject* staticObj = MAKE_STATIC(fileName);
 
 		m_mapToolManager->CreateObject(staticObj);
-
 		m_objectList.InsertString(m_objectList.GetCount(), staticObj->GetName().c_str());
 		int objCount = m_objectList.GetCount();
 		m_objectList.SetCurSel(objCount - 1);
 
 		m_mapToolManager->SelectObject(staticObj);
-
 
 	}
 }
@@ -853,7 +849,20 @@ void ObjectInstallTool::OnBnClickedButtonLoad()
 
 void ObjectInstallTool::OnBnClickedButtonLoadAll()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString sceneName;
+	m_sceneName.GetWindowTextW(sceneName);
+
+	for (auto& staticObjInfo : ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>())
+	{
+		auto staticObj = MAKE_STATIC(staticObjInfo.first);
+
+		m_mapToolManager->CreateObject(staticObj);
+		m_objectList.InsertString(m_objectList.GetCount(), staticObj->GetName().c_str());
+		int objCount = m_objectList.GetCount();
+		m_objectList.SetCurSel(objCount - 1);
+
+		m_mapToolManager->SelectObject(staticObj);
+	}
 }
 
 
@@ -1313,4 +1322,33 @@ void ObjectInstallTool::OnEnChangeEditCylinderColliderZ()
 	GetFloatByEditBox(res, IDC_EDIT36);
 	obj->GetComponent<CapsuleCollider>()->SetPosZ(res);
 
+}
+
+
+void ObjectInstallTool::OnCbnSelchangeComboSceneName()
+{
+	CString sceneName;
+	m_sceneName.GetWindowTextW(sceneName);
+	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+	path += L"/" + sceneName;
+	ResourceManager::GetInstance()->ReleaseSceneResouce();
+	ResourceManager::GetInstance()->LoadAllResources(path,false);
+
+	auto& materials = ResourceManager::GetInstance()->GetAllResource<Material>();
+	m_materialList.ResetContent();
+	for (auto& mtrl : materials)
+	{
+		auto inputLayout = ((Material*)mtrl.second)->GetShader()->GetInputLayout();
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_PARTICLE)
+			continue;
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
+			continue;
+		m_materialList.AddString(mtrl.first.c_str());
+	}
+	m_meshList.ResetContent();
+	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
+	for (auto& mesh : meshes)
+	{
+		m_meshList.AddString(mesh.first.c_str());
+	}
 }

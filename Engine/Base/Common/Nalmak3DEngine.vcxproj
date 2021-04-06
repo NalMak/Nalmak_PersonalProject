@@ -236,10 +236,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_DirectionalLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Geometry_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Geometry_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_PointLight.sd" />
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4FD6877-6BA3-4EC9-827C-E402E4199F76}</ProjectGuid>

@@ -94,9 +94,9 @@ private:
 			TYPE* resource = new T();
 			resource->m_isStatic = _isStatic;
 			assert("Fail to Create Resource!" && resource);
+			((IResource*)resource)->m_name = fileName;
 			resource->Initialize(filePath);
 			m_resoucreContainers[typeid(TYPE).name()][fileName] = resource;
-			((IResource*)resource)->m_name = fileName;
 		}
 	}
 public:

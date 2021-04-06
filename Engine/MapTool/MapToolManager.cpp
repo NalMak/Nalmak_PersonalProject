@@ -51,9 +51,24 @@ void MapToolManager::DeleteObject(int _num)
 	m_createdOnMapObjectList.erase(iter);
 }
 
+void MapToolManager::DeleteAllObject()
+{
+	for (auto& obj : m_createdOnMapObjectList)
+	{
+		DESTROY(obj);
+	}
+	
+	m_createdOnMapObjectList.clear();
+}
+
 size_t MapToolManager::GetObjectCount()
 {
 	return m_createdOnMapObjectList.size();
+}
+
+GameObject * MapToolManager::GetGameObject(int _index)
+{
+	return m_createdOnMapObjectList[_index];
 }
 
 void MapToolManager::SelectObject(GameObject * _obj)

@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h
@@ -147,8 +147,13 @@
   ..\Bin\fmodex64_vc.lib
   ..\Bin\Nalmak3D_Engine.lib
   2개 파일이 복사되었습니다.
+  ..\Bin\SCR_DirectionalLight.cso
+  ..\Bin\SCR_Emission_Pass.cso
+  ..\Bin\SCR_Geometry_Pass.cso
+  ..\Bin\SCR_PointLight.cso
   ..\Bin\SYS_OutLine.cso
-  1개 파일이 복사되었습니다.
+  ..\Bin\SYS_Standard.cso
+  6개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

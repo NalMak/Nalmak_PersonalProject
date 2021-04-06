@@ -886,9 +886,39 @@
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_Geometry_Pass.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_DirectionalLight.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SYS_Standard.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_Geometry_Pass.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_PointLight.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

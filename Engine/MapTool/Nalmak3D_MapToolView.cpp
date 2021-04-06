@@ -138,7 +138,6 @@ void CNalmak3D_MapToolView::OnInitialUpdate()
 	core.wincx = WINCX;
 	core.wincy = WINCY;
 	core.OBJECT_TAG_COUNT = OBJECT_TAG_MAX;
-	core.LoadAllResource_OnAwake = false;
 	core.resourceDirectoryPath = L"../../Client/Resource";
 	Core::GetInstance()->Initialize(g_hInst, g_hWnd, &core, AfxGetMainWnd()->m_hWnd);
 	Core::GetInstance()->AddScene(L"scene", Scene::Instantiate<BaseScene>());

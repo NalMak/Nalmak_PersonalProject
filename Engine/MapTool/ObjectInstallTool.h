@@ -23,7 +23,9 @@ public:
 	void UpdateObjectInfo(GameObject* newObj, int _index);
 	void UpdateObjectTransformInfo(GameObject* _obj);
 private:
+	void DeleteAllObject();
 	void UpdatePhysicsUpdate(GameObject* obj);
+	void SaveObject(GameObject* _obj);
 	class MapToolManager* m_mapToolManager;
 	bool m_isFocusRotation = false;
 public:
@@ -130,4 +132,6 @@ public:
 	CButton m_renderMaterialAddButton;
 	CButton m_renderMaterialChangeButton;
 	CButton m_renderMaterialDeleteButton;
+	CComboBox m_sceneName;
+	afx_msg void OnCbnSelchangeComboSceneName();
 };

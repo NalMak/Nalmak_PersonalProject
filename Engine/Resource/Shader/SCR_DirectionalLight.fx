@@ -74,63 +74,32 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	float3 normal = tex2D(NormalSampler, uvRT).xyz;
 
 	float2 depth = tex2D(DepthSampler, uvRT).xy;
-	float4 worldPos = GetWorldPosFromDepth(depth, _in.uv);
+	float4 worldPos = GetWorldPosFromDepth(depth, uvRT);
 
 	float2 cookTorrance = tex2D(CookTorranceSampler, uvRT).xy;
 	float f0 = cookTorrance.x;
 	float roughness = cookTorrance.y;
 
-
+	normal = normal * 2 - 1;
+	normal = normalize(normal);
 	float4 light = CalcLightInternal(g_directionalLight.base, g_cBuffer.worldCamLook, g_directionalLight.direction, worldPos.xyz, normal);
 
 
-	/*float specular = LightingGGX_Ref(
-		normal,
-		g_cBuffer.worldCamLook,
-		-g_directionalLight.direction,
-		cookTorrance.x,
-		cookTorrance.y
-	);*/
-	//////////////////////////
-	float specular;;
-	if (normal.x == 0 && normal.y == 0 && normal.z == 0)
+	float specular;
+	if (normal.x == -1 && normal.y == -1 && normal.z == -1)
 	{
 		specular = 0;
 	}
 	else
 	{
-		normal = normal * 2 - 1;
 		float3 _N = normal;
 		float3 _V = normalize(g_cBuffer.worldCamPos - worldPos.xyz);
 		float3 _L = -g_directionalLight.direction;
-		float3 _F0 = cookTorrance.x;
+		float _F0 = cookTorrance.x;
 		float _Roughness = cookTorrance.y;
-		float alpha = _Roughness * _Roughness;
 
-		float3 H = normalize(_V + _L);
+		specular = LightingGGX_Ref(_N, _V, _L, _F0, _Roughness);
 
-		float dotNL = saturate(dot(_N, _L));
-		float dotNV = saturate(dot(_N, _V));
-		float dotNH = saturate(dot(_N, H));
-		float dotLH = saturate(dot(_L, H));
-
-		float F; // Fresnel
-		float D; // GGX ref
-		float V; // smith's schlick
-
-		float alphaSqr = alpha * alpha;
-		const float PI = 3.141592f;
-		float denom = dotNH * dotNH * (alphaSqr - 1.0) + 1.0f;
-		D = alphaSqr / (PI * denom * denom);
-
-		float dotLH5 = pow(1.0f - dotLH, 5);
-		F = _F0 + (1.0 - _F0) * dotLH5;
-
-
-		float k = alpha / 2.0f;
-		V = G1V(dotNL, k) * G1V(dotNV, k);
-
-		specular = dotNL * D * F * V;
 	}
 	
 

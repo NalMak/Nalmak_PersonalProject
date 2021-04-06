@@ -57,7 +57,7 @@ float G1V(float _dotNV, float _k)
 	return 1.0f / (_dotNV * (1.0f - _k) + _k);
 }
 
-float LightingGGX_Ref(float3 _N, float _V, float3 _L, float _F0, float _Roughness)
+float LightingGGX_Ref(float3 _N, float3 _V, float3 _L, float _F0, float _Roughness)
 {
 	float alpha = _Roughness * _Roughness;
 
@@ -79,7 +79,6 @@ float LightingGGX_Ref(float3 _N, float _V, float3 _L, float _F0, float _Roughnes
 
 	float dotLH5 = pow(1.0f - dotLH, 5);
 	F = _F0 + (1.0 - _F0) * dotLH5;
-
 
 	float k = alpha / 2.0f;
 	V = G1V(dotNL, k) * G1V(dotNV, k);

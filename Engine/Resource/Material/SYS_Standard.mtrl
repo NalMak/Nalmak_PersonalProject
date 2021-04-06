@@ -5,9 +5,9 @@
 shader "SYS_Standard"
 
 texture "g_mainTex" "default"
-vector4 "g_mainTexColor" "1,1,1,1.f"
-float "g_f0" "0.1f"
-float "g_roughness" "0.5f"
+vector4 "g_mainTexColor" "1.f,1.f,1,1.f"
+float "g_f0" "0.3f"
+float "g_roughness" "0.1f"
 
 renderQueue "1000"
 

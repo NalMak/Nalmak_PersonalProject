@@ -19,7 +19,7 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(0, 180, 0);
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(20, 180, 0);
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
@@ -67,6 +67,7 @@ void TitleScene::Initialize()
 	{
 		MeshRenderer::Desc render;
 		render.meshName = L"f15";
+		render.mtrlName = L"test1";
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
 		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
@@ -81,4 +82,8 @@ void TitleScene::Initialize()
 
 
 	INSTANTIATE()->AddComponent<NavMesh>();
+
+	/*MAKE_STATIC(L"arisha");
+	MAKE_STATIC(L"arisha2");*/
+
 }

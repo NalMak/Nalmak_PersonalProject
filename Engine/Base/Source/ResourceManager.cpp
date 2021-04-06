@@ -80,13 +80,17 @@ void ResourceManager::ReleaseSceneResouce()
 {
 	for (auto& resources : m_resoucreContainers)
 	{
-		for (auto iter = resources.second.begin(); iter != resources.second.end(); ++iter)
+		for (auto iter = resources.second.begin(); iter != resources.second.end();)
 		{
-			if((*iter).second->m_isStatic)
+			if ((*iter).second->m_isStatic)
+			{
+				++iter;
 				continue;
-			resources.second.erase(iter);
-			(*iter).second->Release();
-			SAFE_DELETE((*iter).second);
+			}
+			auto resource = (*iter).second;
+			iter = resources.second.erase(iter);
+			resource->Release();
+			SAFE_DELETE(resource);
 		}
 	}
 
@@ -189,17 +193,17 @@ void ResourceManager::UpdateMaterial(const wstring& _fp, bool _isStatic)
 			Material material;
 			material.Initialize(filePath);
 			Material* existingMtrl = (Material*)m_resoucreContainers[typeid(Material).name()][fileName];
-			*existingMtrl = material;
 			existingMtrl->m_name = fileName;
+			*existingMtrl = material;
 		}
 		else
 		{
 			Material* resource = new Material();
 			resource->m_isStatic = _isStatic;
 			assert("Fail to Create Resource!" && resource);
+			((IResource*)resource)->m_name = fileName;
 			resource->Initialize(filePath);
 			m_resoucreContainers[typeid(Material).name()][fileName] = resource;
-			((IResource*)resource)->m_name = fileName;
 		}
 
 

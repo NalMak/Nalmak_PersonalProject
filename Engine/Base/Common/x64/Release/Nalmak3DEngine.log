@@ -1,6 +1,6 @@
 ﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\SYS_OutLine.cso
+  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\SYS_OutLine.cso
   Nalmak_String.cpp
   Animator.cpp
   AudioClip.cpp
@@ -27,6 +27,7 @@
   DrawGizmo.cpp
   DrawGizmo_2D.cpp
   DynamicInstanceBuffer.cpp
+  StaticObjectInfo.cpp
   Event.cpp
   EventHandler.cpp
   Exception.cpp
@@ -41,8 +42,8 @@
   IRenderer.cpp
   IResource.cpp
   MeshCollider.cpp
-  NalmakPxEventCallBack.cpp
   컴파일하고 있습니다...
+  NalmakPxEventCallBack.cpp
   Nalmak_Function.cpp
   IState.cpp
   Light.cpp
@@ -54,16 +55,20 @@
   CanvasPicking.cpp
   MeshRenderer.cpp
   Nalmak_DirectXMath.cpp
+  NavCell.cpp
+  NavLine.cpp
+  NavMesh.cpp
+  NavPoint.cpp
   Number.cpp
   ObjectManager.cpp
   Particle.cpp
   ParticleInfo.cpp
+  컴파일하고 있습니다...
   ParticleRenderer.cpp
   PhysicsManager.cpp
   PointLight.cpp
   PositionHandle.cpp
   PositionHandle_2D.cpp
-  컴파일하고 있습니다...
   PrototypeManager.cpp
   Quad.cpp
   QuadNoneNormal.cpp
@@ -79,12 +84,12 @@
   ShaderCompileInclude.cpp
   SingleImage.cpp
   SkyBox.cpp
+  컴파일하고 있습니다...
   Slider.cpp
   SoundManager.cpp
   SphereCollider.cpp
   SplineCurve.cpp
   StateControl.cpp
-  컴파일하고 있습니다...
   StaticMesh.cpp
   SystemInfo.cpp
   SystemManager.cpp
@@ -101,15 +106,13 @@
   VIBuffer.cpp
      ../Bin/Nalmak3D_Engine.lib 라이브러리 및 ../Bin/Nalmak3D_Engine.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  All 8076 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 8874 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   코드를 생성했습니다.
-PhysX3Extensions.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-PhysX3Extensions.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultErrorCallback.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultStreams.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-PhysX3Extensions.lib(ExtRigidBodyExt.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtRigidBodyExt.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-PhysX3Extensions.lib(ExtSimpleFactory.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtSimpleFactory.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+PhysX3Extensions.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3Extensions.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultErrorCallback.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultStreams.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h
@@ -183,6 +186,10 @@ PhysX3Extensions.lib(ExtSimpleFactory.obj) : warning LNK4099: 'PhysX3Extensions.
   ..\Include\Nalmak_String.h
   ..\Include\Nalmak_Struct.h
   ..\Include\Nalmak_Typedef.h
+  ..\Include\NavCell.h
+  ..\Include\NavLine.h
+  ..\Include\NavMesh.h
+  ..\Include\NavPoint.h
   ..\Include\Number.h
   ..\Include\ObjectManager.h
   ..\Include\Particle.h
@@ -214,6 +221,7 @@ PhysX3Extensions.lib(ExtSimpleFactory.obj) : warning LNK4099: 'PhysX3Extensions.
   ..\Include\SplineCurve.h
   ..\Include\StateControl.h
   ..\Include\StaticMesh.h
+  ..\Include\StaticObjectInfo.h
   ..\Include\SystemInfo.h
   ..\Include\SystemManager.h
   ..\Include\TBox.h
@@ -233,7 +241,7 @@ PhysX3Extensions.lib(ExtSimpleFactory.obj) : warning LNK4099: 'PhysX3Extensions.
   ..\Include\UIInteractor.h
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
-  122개 파일이 복사되었습니다.
+  127개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

@@ -62,7 +62,7 @@ void DebuggingMode::Initialize()
 #pragma region Free Camera
 	m_mainCam = RenderManager::GetInstance()->GetMainCamera()->GetGameObject();
 	assert(L"Can't find main Cam" && m_mainCam);
-	m_debugCam = INSTANTIATE(L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>()->AddComponent<DebugObject>()->SetPosition(0,1,-5);
+	m_debugCam = INSTANTIATE(0,0,L"Free Camera")->AddComponent<Camera>()->AddComponent<FreeMove>()->AddComponent<DebugObject>()->SetPosition(0,1,-5);
 	m_debugCam->SetActive(false);
 #pragma endregion Free Camera
 #pragma region RenderTarget

@@ -96,6 +96,11 @@ void MeshRenderer::AddMaterial(const wstring & _mtrl)
 	m_materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(_mtrl));
 }
 
+void MeshRenderer::AddMaterial(Material * _mtrl)
+{
+	m_materials.emplace_back(_mtrl);
+}
+
 Material * MeshRenderer::GetMaterial(int _index)
 {
 #ifdef _DEBUG

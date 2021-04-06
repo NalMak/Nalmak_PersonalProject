@@ -17,6 +17,7 @@ class Transform;
 
 //#define MAKEPROTOTYPE GameObject::MakePrototype
 #define INSTANTIATE GameObject::Instantiate
+#define MAKE_STATIC GameObject::MakeStatic
 #define DESTROY GameObject::Destroy
 typedef pair<string, Component*> ComponentData;
 
@@ -36,7 +37,7 @@ public:
 	//static GameObject* MakePrototype(wstring _name);
 	static GameObject* Instantiate(USHORT _tag = 0,USHORT _layer =0,  const wstring& _name = L"default");
 	static GameObject* Instantiate(wstring _name);
-
+	static GameObject* MakeStatic(wstring _name);
 	//static GameObject* Instantiate(GameObject* _prototype);
 	//static GameObject* Instantiate(wstring _prototypeName);
 

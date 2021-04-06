@@ -23,7 +23,9 @@ public:
 	void SetControlView(ObjectInstallTool* _view);
 	void CreateObject(GameObject* _obj);
 	void DeleteObject(int _num);
+	void DeleteAllObject();
 	size_t GetObjectCount();
+	GameObject* GetGameObject(int _index);
 	void SelectObject(GameObject* _obj);
 	void SeleteObject(int _index);
 	void UpdateSelectObjectTransform(GameObject* _obj);

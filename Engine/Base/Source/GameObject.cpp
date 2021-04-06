@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "ObjectManager.h"
 #include "PrototypeManager.h"
+#include "StaticObjectInfo.h"
 
 //GameObject * GameObject::MakePrototype(wstring _name)
 //{
@@ -54,7 +55,50 @@ GameObject * GameObject::Instantiate(wstring _name)
 	return obj;
 }
 
+GameObject* GameObject::MakeStatic(wstring _name)
+{
+	StaticObjectInfo* data = ResourceManager::GetInstance()->GetResource<StaticObjectInfo>(_name);
 
+	auto obj = INSTANTIATE(data->GetData().tag, data->GetData().layer, data->GetData().name)->SetPosition(data->GetData().transformDesc.position);
+	obj->GetTransform()->rotation = data->GetData().transformDesc.rotation;
+	obj->GetTransform()->scale = data->GetData().transformDesc.scale;
+
+	if (data->GetData().isExistmeshRenderer)
+	{
+		obj->AddComponent<MeshRenderer>();
+		obj->GetComponent<MeshRenderer>()->SetMesh(data->GetData().mesh);
+		auto materials = data->GetData().materials;
+
+		int i = 0;
+		for (auto& mtrl : materials)
+		{
+			if (i == 0)
+				obj->GetComponent<MeshRenderer>()->SetMaterial(mtrl, 0);
+			else
+				obj->GetComponent<MeshRenderer>()->AddMaterial(mtrl);
+			++i;
+		}
+	}
+
+	if (data->GetData().isExistSphereCollider)
+	{
+		obj->AddComponent<SphereCollider>(&(data->GetData().sphereDesc));
+	}
+	if (data->GetData().isExistBoxCollider)
+	{
+		obj->AddComponent<BoxCollider>(&(data->GetData().boxDesc));
+	}
+	if (data->GetData().isExistCapsuleCollider)
+	{
+		obj->AddComponent<CapsuleCollider>(&(data->GetData().capsuleDesc));
+	}
+	if (data->GetData().isExistMeshCollider)
+	{
+		obj->AddComponent<MeshCollider>(&(data->GetData().meshDesc));
+	}
+
+	return obj;
+}
 
 void GameObject::Destroy(GameObject * _obj)
 {
