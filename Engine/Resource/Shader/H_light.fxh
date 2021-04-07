@@ -1,6 +1,7 @@
 struct BaseLight
 {
 	float3 color;
+	float3 position;
 	float ambientIntensity;
 	float diffuseIntensity;
 };
@@ -9,7 +10,6 @@ struct PointLight
 {
 	BaseLight base;
 
-	float3 position;
 	float radius;
 };
 
@@ -18,6 +18,7 @@ struct DirectionalLight
 	BaseLight base;
 
 	float3 direction;
+	Matrix viewProj;
 };
 
 float4 CalcLightInternal(BaseLight _light, float3 _camPos, float3 _direction, float3 _worldPos, float3 _normal)
@@ -39,7 +40,7 @@ float4 CalcLightInternal(BaseLight _light, float3 _camPos, float3 _direction, fl
 
 float4 CalcPointLight(PointLight _pointLight,float3 _camPos, float3 _worldPos, float3 _normal)
 {
-	float3 lightDirection = _worldPos - _pointLight.position;
+	float3 lightDirection = _worldPos - _pointLight.base.position;
 	float distance = length(lightDirection);
 
 	lightDirection = normalize(lightDirection);

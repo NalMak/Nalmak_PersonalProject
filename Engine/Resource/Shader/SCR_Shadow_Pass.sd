@@ -1,0 +1,12 @@
+#########################################################
+## Shader Data Setting (sd)
+#########################################################
+
+inputRT "g_depth" "GBuffer_Depth"
+inputRT "g_lightDepth" "GBuffer_LightDepth"
+
+outputRT "GBuffer_Shadow"
+
+inputLayout "1"
+
+

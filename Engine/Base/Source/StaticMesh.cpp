@@ -1,4 +1,4 @@
-#include "..\Include\StaticMesh.h"
+#include "StaticMesh.h"
 
 
 
@@ -26,7 +26,6 @@ void StaticMesh::Initialize(wstring _fp)
 		{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
 		{ 0,12,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,  0 },
 		{ 0,24,D3DDECLTYPE_FLOAT2,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,  0 },
-
 		D3DDECL_END()
 		};
 		m_originMesh->CloneMesh(m_originMesh->GetOptions(), vtxElement, m_device, &m_mesh);
@@ -38,6 +37,7 @@ void StaticMesh::Initialize(wstring _fp)
 		m_originMesh->CloneMeshFVF(m_originMesh->GetOptions(), FVF, m_device, &m_mesh);
 	}
 
+	FVF = m_originMesh->GetFVF();
 	//D3DVERTEXELEMENT9		vtxElement[] =
 	//{
 	//	{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },

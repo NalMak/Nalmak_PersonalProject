@@ -10,6 +10,7 @@
 struct BaseLightInfo
 {
 	Vector3 color = Vector3(1,1,1);
+	Vector3 position = { 0,0,0 };
 	float ambientIntensity = 0.01f;
 	float diffuseIntensity = 0.2f;
 };
@@ -18,17 +19,24 @@ struct PointLightInfo
 {
 	BaseLightInfo base;
 
-	Vector3 position;
 	float radius;
 };
 
 struct DirectionalLightInfo
 {
 	DirectionalLightInfo() = default;
-	DirectionalLightInfo(Vector3 _direction, Vector3 _color, float _intensity ,float _ambientIntensity)
+	DirectionalLightInfo(
+		const Vector3& _direction,
+		const Vector3& _color,
+		float _intensity ,
+		float _ambientIntensity, 
+		const Vector3& _lightPos,
+		const Matrix& _lightViewProj)
 	{
 		direction = _direction;
+		lightViewProj = _lightViewProj;
 
+		base.position = _lightPos;
 		base.color = _color;
 		base.diffuseIntensity = _intensity;
 		base.ambientIntensity = _ambientIntensity;
@@ -36,7 +44,8 @@ struct DirectionalLightInfo
 	BaseLightInfo base;
 
 	Vector3 direction = Vector3(0,1,0);
-};
+	Matrix	lightViewProj;
+};	
 #pragma endregion LIGHT INFO
 
 

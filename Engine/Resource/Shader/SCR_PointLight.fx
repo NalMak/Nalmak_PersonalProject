@@ -92,7 +92,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 	float3 _N = normal;
 	float3 _V = normalize(g_cBuffer.worldCamPos - worldPos.xyz);
-	float3 _L = -normalize(worldPos.xyz - g_pointLight.position);
+	float3 _L = -normalize(worldPos.xyz - g_pointLight.base.position);
 	float _F0 = cookTorrance.x;
 	float _Roughness = cookTorrance.y;
 

@@ -49,6 +49,7 @@ struct PS_OUTPUT
 {
 	float4 emission : COLOR0;
 	float4 light : COLOR1;
+	float4 lightDepth : COLOR2;
 
 };
 
@@ -107,6 +108,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	///////////////////////////
 	o.emission = light * specular;
 	o.light = light;
+	//o.lightDepth = 
 	return o;
 }
 

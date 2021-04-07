@@ -75,6 +75,7 @@ private:
 	void SkyboxPass(ConstantBuffer& _cBuffer);
 	void DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer);
 	void GBufferPass(Camera* _cam, ConstantBuffer& _cBuffer);
+	void ShadowPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void DebugPass(ConstantBuffer& _cBuffer);
 	void LightPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PointLightPass(Camera* _cam, ConstantBuffer& _cBuffer);

@@ -901,6 +901,9 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_DirectionalLight.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd">
@@ -919,6 +922,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

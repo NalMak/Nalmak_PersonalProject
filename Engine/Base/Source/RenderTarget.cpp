@@ -169,8 +169,8 @@ void RenderTarget::Initialize(wstring _fp)
 
 	switch (format)
 	{
-	case TEXTURE_FORMAT_A8R8G8B8:
-		d3dformat = D3DFORMAT::D3DFMT_A8R8G8B8;
+	case TEXTURE_FORMAT_A16B16G16R16F:
+		d3dformat = D3DFORMAT::D3DFMT_A16B16G16R16F;
 		break;
 	case TEXTURE_FORMAT_D24S8:
 		d3dformat = D3DFORMAT::D3DFMT_D24S8;
@@ -181,6 +181,8 @@ void RenderTarget::Initialize(wstring _fp)
 	case TEXTURE_FORMAT_A32B32G32R32F:
 		d3dformat = D3DFORMAT::D3DFMT_A32B32G32R32F;
 		break;
+	case TEXTURE_FORMAT_A8R8G8B8:
+		d3dformat = D3DFORMAT::D3DFMT_A8R8G8B8;
 	default:
 		break;
 	}

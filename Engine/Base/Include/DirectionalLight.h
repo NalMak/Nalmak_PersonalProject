@@ -22,6 +22,8 @@ public:
 	DirectionalLightInfo GetDirectionalLightInfo();
 private:
 	Vector3 m_color;
+	Matrix m_lightViewProj;
+	Vector3 m_lightPos;
 	float m_diffuseIntensity;
 	float m_ambientIntensity;
 };

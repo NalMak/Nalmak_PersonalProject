@@ -153,7 +153,8 @@
   ..\Bin\SCR_PointLight.cso
   ..\Bin\SYS_OutLine.cso
   ..\Bin\SYS_Standard.cso
-  6개 파일이 복사되었습니다.
+  ..\Bin\SYS_Standard_NormalMap.cso
+  7개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

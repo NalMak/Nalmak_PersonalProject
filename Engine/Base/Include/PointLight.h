@@ -23,7 +23,7 @@ private:
 
 public:
 	PointLightInfo GetLightInfo() { return m_lightInfo; }
-	void SetLightPosition(const Vector3& _vec) { m_lightInfo.position = _vec; }
+	void SetLightPosition(const Vector3& _vec) { m_lightInfo.base.position = _vec; }
 	float GetRadius();
 	void SetRadius(float _radius);
 private:

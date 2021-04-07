@@ -87,9 +87,9 @@ void RenderManager::Render(Camera * _cam)
 	ClearRenderTarget(L"GBuffer_CookTorrance");
 	ClearRenderTarget(L"GBuffer_Light");
 	ClearRenderTarget(L"GBuffer_Debug");
-	ClearRenderTarget(L"GBuffer_Distortion");
 	ClearRenderTarget(L"GBuffer_Final");
 	ClearRenderTarget(L"GBuffer_Emission");
+	ClearRenderTarget(L"GBuffer_Shadow");
 
 
 	
@@ -112,6 +112,9 @@ void RenderManager::Render(Camera * _cam)
 	cBuffer.invProj = invProj;
 	cBuffer.time = TimeManager::GetInstance()->GetTotalTime();
 	////////////////////////////////////////////////////////
+
+
+
 	ThrowIfFailed(m_device->BeginScene());
 	DeferredRender(_cam, cBuffer);
 	ThrowIfFailed(m_device->EndScene());
@@ -127,6 +130,8 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 	GBufferPass(_cam, _cBuffer);
 
 	LightPass(_cam, _cBuffer);
+
+	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
 	RenderByShaderToScreen(L"SCR_Geometry_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
@@ -216,13 +221,15 @@ void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
 	EndRenderTarget();
 }
 
+void RenderManager::ShadowPass(Camera * _cam, ConstantBuffer & _cBuffer)
+{
+}
+
 void RenderManager::LightPass(Camera* _cam, ConstantBuffer& _cBuffer)
 {
 	DirectionalLightPass(_cBuffer);
 
 	PointLightPass(_cam, _cBuffer);
-
-
 }
 
 void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)

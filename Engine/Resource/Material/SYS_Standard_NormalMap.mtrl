@@ -5,12 +5,12 @@
 shader "SYS_Standard_NormalMap"
 
 texture "g_mainTex" "default"
-//texture "g_normalTex" "box_normal"
+texture "g_normalTex" "default_N"
 
 
 vector4 "g_mainTexColor" "1,1,1,1.f"
-float "g_f0" "0.2f"
-float "g_roughness" "0.7f"
+float "g_f0" "0.3f"
+float "g_roughness" "0.1f"
 float "g_normalPower" "1.f"
 
 

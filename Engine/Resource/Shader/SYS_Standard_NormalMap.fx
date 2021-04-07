@@ -93,18 +93,18 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	o.diffuse = diffuse * g_mainTexColor;
 	float3 normal = tex2D(normalSampler, _in.uvAndDepth.xy);
 	normal = normal * 2 - 1;
-	
+	normal = normalize(normal);
 	/*float3 bumpNormal = _in.N + (normal.x * _in.T) + (normal.y * _in.B);
 	bumpNormal = normalize(bumpNormal);*/
 
-	float3x3 tbn =
-	{
-		_in.T,
-		_in.B,
-		_in.N
-	};
-	float3 defaultNormal = normalize(_in.N);
-	normal = mul(tbn, normal) * g_normalPower + defaultNormal * (1- g_normalPower);
+	//float3x3 tbn =
+	//{
+	//	_in.T,
+	//	_in.B,
+	//	_in.N
+	//};
+	//float3 defaultNormal = normalize(_in.N);
+	//normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 

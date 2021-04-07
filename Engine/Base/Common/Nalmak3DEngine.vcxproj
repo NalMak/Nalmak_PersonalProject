@@ -242,6 +242,7 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd" />
@@ -250,6 +251,7 @@
     <None Include="..\..\Resource\Shader\SCR_PointLight.sd" />
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4FD6877-6BA3-4EC9-827C-E402E4199F76}</ProjectGuid>
