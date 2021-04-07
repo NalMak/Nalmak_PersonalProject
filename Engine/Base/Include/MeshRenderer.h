@@ -26,6 +26,8 @@ private:
 	virtual void Release() override;
 public:
 	virtual void Render(ConstantBuffer& _cBuffer) override;
+	virtual void RenderPure() override;
+
 	virtual void BindingStreamSource() override;
 public:
 	void AddMaterial(const wstring& _mtrl);

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TitleScene.h"
 #include "TestPlayer.h"
+#include "Homework_Player.h"
 
 TitleScene::TitleScene()
 {
@@ -19,7 +20,7 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(20, 180, 0);
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 180, 0)->AddComponent<Homework_Player>();
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
@@ -41,6 +42,7 @@ void TitleScene::Initialize()
 		if (dir.y < 0)
 			dir.y *= -1;
 		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>()->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
+		sphere->SetScale(10, 10, 10);
 		cam->SetParents(sphere);
 	}
 

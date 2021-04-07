@@ -185,6 +185,7 @@ void ParticleRenderer::Render(ConstantBuffer& _cBuffer)
 	ThrowIfFailed(m_device->SetStreamSourceFreq(1, 1));
 }
 
+
 void ParticleRenderer::BindingStreamSource()
 {
 	if (m_currentCount == 0)

@@ -20,6 +20,8 @@ MeshRenderer::MeshRenderer(Desc * _desc)
 	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 	
 	m_type = RENDERER_TYPE_MESH;
+
+	m_isCastShadow = true;
 }
 
 void MeshRenderer::Initialize()
@@ -42,10 +44,12 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 {
 	BindingStreamSource();
 
+
+	Shader* currentShader = nullptr;
+	Material* currentMaterial = nullptr;
+
 	for (UINT i = 0; i < m_mesh->GetSubsetCount(); ++i)
 	{
-		
-		Material* currentMaterial;
 		if (m_materials.size() > i)
 			currentMaterial = m_materials[i];
 		else
@@ -56,13 +60,28 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 		Shader* shader = currentMaterial->GetShader();
 		assert("Current Shader is nullptr! " && shader);
 
-		shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+		if (currentShader != shader)
+		{
+			currentShader = shader;
 
-		shader->CommitChanges();
+			currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+
+			currentShader->CommitChanges();
+		}
 
 		m_mesh->Draw(i);
 	}
 	
+}
+
+void MeshRenderer::RenderPure()
+{
+	BindingStreamSource();
+
+	for (UINT i = 0; i < m_mesh->GetSubsetCount(); ++i)
+	{
+		m_mesh->Draw(i);
+	}
 }
 
 void MeshRenderer::BindingStreamSource()
@@ -160,6 +179,8 @@ unsigned long MeshRenderer::GetSubsetCount()
 {
 	return m_mesh->GetSubsetCount();
 }
+
+
 
 int MeshRenderer::GetMaterialCount()
 {

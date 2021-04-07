@@ -17,6 +17,10 @@
 #include "Transform.h"
 #include "DepthStencil.h"
 #include "PhysicsManager.h"
+#include "FrustumCulling.h"
+#include "LightManager.h"
+#include "DirectionalLight.h"
+
 USING(Nalmak)
 IMPLEMENT_SINGLETON(RenderManager)
 RenderManager::RenderManager()
@@ -95,24 +99,7 @@ void RenderManager::Render(Camera * _cam)
 	
 	///////////////////////////////////////////////////////
 	// public const buffer
-	ConstantBuffer cBuffer;
-	Matrix view = _cam->GetViewMatrix();
-	Matrix proj = _cam->GetProjMatrix();
-	Matrix invView;
-	D3DXMatrixInverse(&invView, nullptr, &view);
-	Matrix invProj;
-	D3DXMatrixInverse(&invProj, nullptr, &proj);
-
-	Matrix worldCamMatrix = _cam->GetTransform()->GetWorldMatrix();
-	cBuffer.viewProj = view * proj;
-	cBuffer.worldCamPos = Vector3(worldCamMatrix._41, worldCamMatrix._42, worldCamMatrix._43);
-	cBuffer.worldCamLook = Vector3(worldCamMatrix._31, worldCamMatrix._32, worldCamMatrix._33);
-
-	cBuffer.invView = invView;
-	cBuffer.invProj = invProj;
-	cBuffer.time = TimeManager::GetInstance()->GetTotalTime();
-	////////////////////////////////////////////////////////
-
+	ConstantBuffer cBuffer = GetConstantBufferByCam(_cam);
 
 
 	ThrowIfFailed(m_device->BeginScene());
@@ -126,6 +113,8 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 {
 
 	SkyboxPass(_cBuffer);
+
+	LightDepthPass(_cBuffer);
 
 	GBufferPass(_cam, _cBuffer);
 
@@ -160,6 +149,8 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 }
 
+
+
 void RenderManager::SkyboxPass(ConstantBuffer & _cBuffer)
 {
 	if (!m_lightManager->IsSkyBoxRender())
@@ -179,14 +170,9 @@ void RenderManager::SkyboxPass(ConstantBuffer & _cBuffer)
 	viBuffer->BindingStreamSource(sizeof(INPUT_LAYOUT_SKYBOX));
 
 	DirectionalLightInfo info;
-	if (m_lightManager->GetDirectionalLightInfo(info))
-	{
-		m_currentShader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
-	}
-	else
-	{
-		m_currentShader->SetValue("g_directionalLight", &DirectionalLightInfo(), sizeof(DirectionalLightInfo));
-	}
+	if (m_lightManager->IsExistDirectionalLight())
+		info  = m_lightManager->GetDirectionalLightInfo();
+	m_currentShader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
 
 	m_currentShader->CommitChanges();
 	viBuffer->Draw();
@@ -196,6 +182,57 @@ void RenderManager::SkyboxPass(ConstantBuffer & _cBuffer)
 		m_currentShader->EndPass();
 		EndRenderTarget();
 	}
+}
+
+void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
+{
+
+	if (!m_lightManager->IsExistDirectionalLight())
+		return;
+
+
+	ClearRenderTarget(L"GBuffer_LightDepth");
+
+	Camera* lightCam = m_lightManager->GetLightCamera();
+	DirectionalLightInfo info = m_lightManager->GetDirectionalLightInfo();
+
+	// cast depth from light
+
+	Shader* shader = nullptr;
+
+	shader = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth");
+	shader->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	shader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
+	shader->BeginPass();
+
+
+	UpdateRenderTarget(shader);
+
+
+
+	for (auto& renderList : m_renderLists[RENDERING_MODE_OPAQUE])
+	{
+		for (auto& renderer : renderList.second)
+		{
+			if (!renderer->IsCastShadow())
+				continue;
+
+			if (lightCam->IsInFrustumCulling(renderer))
+			{
+
+				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
+				shader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
+				shader->CommitChanges();
+				renderer->RenderPure();
+			}
+		
+		}
+	}
+	EndRenderTarget();
+
+	shader->EndPass();
+
+	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER, 0, 1, 0));
 }
 
 void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
@@ -221,9 +258,6 @@ void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
 	EndRenderTarget();
 }
 
-void RenderManager::ShadowPass(Camera * _cam, ConstantBuffer & _cBuffer)
-{
-}
 
 void RenderManager::LightPass(Camera* _cam, ConstantBuffer& _cBuffer)
 {
@@ -350,15 +384,19 @@ void RenderManager::DebugPass(ConstantBuffer & _cBuffer)
 
 void RenderManager::DirectionalLightPass(ConstantBuffer& _cBuffer)
 {
-	DirectionalLightInfo info;
-	if (!m_lightManager->GetDirectionalLightInfo(info))
+	if (!m_lightManager->IsExistDirectionalLight())
 		return;
+
+	DirectionalLightInfo info = m_lightManager->GetDirectionalLightInfo();
 
 	Shader* shader = m_resourceManager->GetResource<Shader>(L"SCR_DirectionalLight");
 	shader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
 
-
 	RenderByShaderToScreen(L"SCR_DirectionalLight", _cBuffer, BLENDING_MODE_ADDITIVE);
+
+
+	
+	
 }
 
 void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
@@ -541,6 +579,29 @@ void RenderManager::RenderByShaderToScreen(Shader * _shader, ConstantBuffer & _c
 
 	shader->EndPass();
 	EndRenderTarget();
+}
+
+ConstantBuffer RenderManager::GetConstantBufferByCam(Camera * _cam)
+{
+	ConstantBuffer cBuffer;
+
+	Matrix view = _cam->GetViewMatrix();
+	Matrix proj = _cam->GetProjMatrix();
+	Matrix invView;
+	D3DXMatrixInverse(&invView, nullptr, &view);
+	Matrix invProj;
+	D3DXMatrixInverse(&invProj, nullptr, &proj);
+
+	Matrix worldCamMatrix = _cam->GetTransform()->GetWorldMatrix();
+	cBuffer.viewProj = view * proj;
+	cBuffer.worldCamPos = Vector3(worldCamMatrix._41, worldCamMatrix._42, worldCamMatrix._43);
+	cBuffer.worldCamLook = Vector3(worldCamMatrix._31, worldCamMatrix._32, worldCamMatrix._33);
+
+	cBuffer.invView = invView;
+	cBuffer.invProj = invProj;
+	cBuffer.time = TimeManager::GetInstance()->GetTotalTime();
+	////////////////////////////////////////////////////////
+	return cBuffer;
 }
 
 
@@ -921,7 +982,7 @@ Camera * RenderManager::GetMainCamera()
 {
 	for (auto& cam : m_cameraList)
 	{
-		if (cam->GetGameObject()->IsActive())
+		if (cam->IsActive())
 		{
 			return cam;
 		}

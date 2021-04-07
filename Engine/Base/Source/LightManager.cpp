@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "MeshRenderer.h"
 #include "DirectionalLight.h"
+#include "Camera.h"
+
 IMPLEMENT_SINGLETON(LightManager)
 
 LightManager::LightManager()
@@ -35,15 +37,16 @@ void LightManager::ResetSkyBox()
 
 void LightManager::SetDirectionalLightInfo(DirectionalLight * _light)
 {
-	if (m_directionalLigth)
+	if (m_directionalLight)
 		assert(L"Already Directional light is exist!" && 0);
 
-	m_directionalLigth = _light;
+	m_directionalLight = _light;
+
 }
 
 void LightManager::DeleteDirectionalLight()
 {
-	m_directionalLigth = nullptr;
+	m_directionalLight = nullptr;
 }
 
 void LightManager::DeletePointLight(PointLight * _light)
@@ -63,15 +66,23 @@ void LightManager::AddPointLight(PointLight * _light)
 	m_pointLights.emplace_back(_light);
 }
 
-bool LightManager::GetDirectionalLightInfo(DirectionalLightInfo& _info)
+const DirectionalLightInfo & LightManager::GetDirectionalLightInfo()
 {
-	if (m_directionalLigth)
-	{
-		_info = m_directionalLigth->GetDirectionalLightInfo();
+	return m_directionalLight->GetDirectionalLightInfo();
+}
+
+bool LightManager::IsExistDirectionalLight()
+{
+	if (m_directionalLight)
 		return true;
-	}
 	else
 		return false;
+}
+
+
+Camera * LightManager::GetLightCamera()
+{
+	return m_directionalLight->GetLightCamera();
 }
 
 Mesh * LightManager::GetSkyboxMesh()

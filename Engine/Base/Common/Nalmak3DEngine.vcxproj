@@ -240,6 +240,7 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_Geometry_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
@@ -249,6 +250,7 @@
     <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_Geometry_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_PointLight.sd" />
+    <None Include="..\..\Resource\Shader\SYS_LightDepth.sd" />
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />

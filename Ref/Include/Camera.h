@@ -51,7 +51,7 @@ private:
 	float m_width;
 	float m_height;
 	Matrix m_projMatrix;
-
+	Matrix m_viewMatrix;
 
 	CAMERA_PROJECTION_MODE m_mode;
 	CAMERA_RENDERING_MODE m_renderingMode;
@@ -88,8 +88,9 @@ public:
 private:
 	RenderTarget* m_renderTarget;
 	D3DXPLANE m_frustumPlane[6];
-private:
+public:
 	void UpdateFrustumPlane();
+	void UpdateViewMatrix();
 	void UpdateProjMatrix();
 
 private:

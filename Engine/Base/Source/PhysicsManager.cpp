@@ -473,8 +473,9 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRa
 		float LineToSphereMinDistance = pow(Ex - center.x, 2) + pow(Ey - center.y, 2) + pow(Ez - center.z, 2);
 
 		Vector3 scale = render->GetTransform()->scale;
+		float radius = render->GetBoundingRadius();
 		//float maxScale = max(max(scale.x, scale.y), scale.z);
-		if (LineToSphereMinDistance > render->GetBoundingRadius() *  render->GetBoundingRadius()) //* maxScale * maxScale
+		if (LineToSphereMinDistance > radius * radius) //* maxScale * maxScale
 			continue;
 
 		raycastRenderers.emplace_back(render);

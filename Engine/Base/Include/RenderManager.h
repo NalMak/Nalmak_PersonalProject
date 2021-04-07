@@ -74,8 +74,8 @@ public:
 private:
 	void SkyboxPass(ConstantBuffer& _cBuffer);
 	void DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer);
+	void LightDepthPass(ConstantBuffer& _cBuffer);
 	void GBufferPass(Camera* _cam, ConstantBuffer& _cBuffer);
-	void ShadowPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void DebugPass(ConstantBuffer& _cBuffer);
 	void LightPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PointLightPass(Camera* _cam, ConstantBuffer& _cBuffer);
@@ -84,12 +84,14 @@ private:
 	void TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PostProcessPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void UIPass(Camera* _cam, ConstantBuffer& _cBuffer);
+
 private:
 	void RenderNoneAlpha(Camera * _cam, ConstantBuffer& _cBuffer, RENDERING_MODE _mode);
 private:
 	void RenderByShaderToScreen(const wstring& _shaderName, ConstantBuffer& _cBuffer, BLENDING_MODE _blendMode);
 	void RenderByShaderToScreen(Shader* _shader, ConstantBuffer& _cBuffer, BLENDING_MODE _blendMode);
-
+private:
+	ConstantBuffer GetConstantBufferByCam(Camera* _cam);
 private:
 	Mesh* m_screenImageMesh;
 private:

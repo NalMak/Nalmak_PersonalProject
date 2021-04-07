@@ -17,8 +17,6 @@ Camera::Camera(Desc * _desc)
 	m_mode = _desc->mode;
 	
 	
-
-	
 	if (_desc->width == 0)
 		m_width = (float)RenderManager::GetInstance()->GetWindowWidth();
 	else
@@ -28,7 +26,10 @@ Camera::Camera(Desc * _desc)
 	else
 		m_height = (float)_desc->height;
 	
-	m_aspect = m_width / m_height;
+	if (_desc->aspect == 0)
+		m_aspect = m_width / m_height;
+	else
+		m_aspect = _desc->aspect;
 	m_renderingMode = _desc->renderMode;
 	if (m_renderingMode == CAMERA_RENDERING_MODE_DEFERRED)
 	{
@@ -63,12 +64,12 @@ void Camera::Release()
 
 void Camera::PreRender()
 {
+	UpdateViewMatrix();
 	UpdateFrustumPlane();
 }
 
-const Matrix Camera::GetViewMatrix() const
+void Camera::UpdateViewMatrix()
 {
-	Matrix matrix;
 	Vector3 worldPos = m_transform->GetWorldPosition();
 	if (m_mode == CAMERA_PROJECTION_MODE_PERSPECTIVE)
 	{
@@ -76,17 +77,17 @@ const Matrix Camera::GetViewMatrix() const
 		Matrix rotMatrix;
 		D3DXMatrixRotationQuaternion(&rotMatrix, &rot);
 		Vector3 eye = worldPos;
-		Vector3 at =Vector3(0, 0, 1);
+		Vector3 at = Vector3(0, 0, 1);
 		D3DXVec3TransformCoord(&at, &at, &rotMatrix);
 		at += worldPos;
 		Vector3 up = Vector3(0, 1, 0);
 		D3DXVec3TransformCoord(&up, &up, &rotMatrix);
 
-	/*	Vector3 eye = worldPos;
+		/*	Vector3 eye = worldPos;
 		Vector3 at = worldPos + Vector3(0, 0, 1);
 		Vector3 up = Vector3(0, 1, 0);*/
 
-		D3DXMatrixLookAtLH(&matrix, &eye, &at, &up);
+		D3DXMatrixLookAtLH(&m_viewMatrix, &eye, &at, &up);
 	}
 	else if (m_mode == CAMERA_PROJECTION_MODE_ORTHOGRAPHIC)
 	{
@@ -94,10 +95,13 @@ const Matrix Camera::GetViewMatrix() const
 		Vector3 at = worldPos + Vector3(0, 0, 1);
 		Vector3 up = Vector3(0, 1, 0);
 
-		D3DXMatrixLookAtLH(&matrix, &eye, &at, &up);
+		D3DXMatrixLookAtLH(&m_viewMatrix, &eye, &at, &up);
 	}
+}
 
-	return matrix;
+const Matrix Camera::GetViewMatrix() const
+{
+	return m_viewMatrix;
 }
 
 const Matrix Camera::GetViewportMatrix() const
@@ -156,7 +160,6 @@ Vector3 Camera::ScreenPosToWorld(const Vector2 & _screenPos, float Distance_From
 
 bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 {
-
 	if (!_renderer->IsFrustumCulling())
 		return true;
 
@@ -165,19 +168,17 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 	{
 	case RENDERER_TYPE_MESH:
 	{
-		float radius = _renderer->GetBoundingRadius() * 2;
-
 		Transform* trs = _renderer->GetTransform();
 		float scale = max(trs->scale.z, max(trs->scale.x, trs->scale.y));
-		Vector3 Center = trs->GetWorldPosition() + _renderer->GetBoundingCenter() * scale;
-		radius *= scale;
-		for (int i = 0; i < 6; ++i)
+		float radius = (_renderer->GetBoundingRadius() + Nalmak_Math::Length(_renderer->GetBoundingCenter()))* scale;
+		Vector3 Center = trs->GetWorldPosition();
+		float distance = 0.f;
+		for (unsigned int i = 0; i < 6; ++i)
 		{
-			float distance = Vector::Dot(Center, Vector3(m_frustumPlane[i].a, m_frustumPlane[i].b, m_frustumPlane[i].c)) + m_frustumPlane[i].d + radius;
-			if (distance < 0)
-			{
+			distance = D3DXPlaneDotCoord(&m_frustumPlane[i], &Center);
+
+			if (distance > radius)
 				return false;
-			}
 		}
 		break;
 	}
@@ -202,15 +203,15 @@ bool Camera::IsInFrustumCulling(const Vector3 & _pos, float _radius)
 	if (m_mode != CAMERA_PROJECTION_MODE_PERSPECTIVE)
 		return true;
 
-	Vector3 Center = _pos;
 	float radius = _radius;
-	for (int i = 0; i < 6; ++i)
+	Vector3 Center = _pos;
+	float distance = 0.f;
+	for (unsigned int i = 0; i < 6; ++i)
 	{
-		float distance = Vector::Dot(Center, Vector3(m_frustumPlane[i].a, m_frustumPlane[i].b, m_frustumPlane[i].c)) + m_frustumPlane[i].d + radius;
-		if (distance < 0)
-		{
+		distance = D3DXPlaneDotCoord(&m_frustumPlane[i], &Center);
+
+		if (distance > radius)
 			return false;
-		}
 	}
 	return true;
 }
@@ -289,37 +290,47 @@ void Camera::OffLayer(_RENDER_LAYER _layer)
 
 void Camera::UpdateFrustumPlane()
 {
-	Matrix comboMatrix = GetViewMatrix() * GetProjMatrix();
+	Vector3 point[8];
+	D3DXPLANE plane[6];
 
-	m_frustumPlane[0].a = comboMatrix._14 + comboMatrix._11;
-	m_frustumPlane[0].b = comboMatrix._24 + comboMatrix._21;
-	m_frustumPlane[0].c = comboMatrix._34 + comboMatrix._31;
-	m_frustumPlane[0].d = comboMatrix._44 + comboMatrix._41;
+	point[0] = Vector3(-1.f, 1.f, 0.f);
+	point[1] = Vector3(1.f, 1.f, 0.f);
+	point[2] = Vector3(1.f, -1.f, 0.f);
+	point[3] = Vector3(-1.f, -1.f, 0.f);
+	point[4] = Vector3(-1.f, 1.f, 1.f);
+	point[5] = Vector3(1.f, 1.f, 1.f);
+	point[6] = Vector3(1.f, -1.f, 1.f);
+	point[7] = Vector3(-1.f, -1.f, 1.f);
 
-	m_frustumPlane[1].a = comboMatrix._14 - comboMatrix._11;
-	m_frustumPlane[1].b = comboMatrix._24 - comboMatrix._21;
-	m_frustumPlane[1].c = comboMatrix._34 - comboMatrix._31;
-	m_frustumPlane[1].d = comboMatrix._44 - comboMatrix._41;
+	Matrix invView, invProj;
 
-	m_frustumPlane[2].a = comboMatrix._14 - comboMatrix._12;
-	m_frustumPlane[2].b = comboMatrix._24 - comboMatrix._22;
-	m_frustumPlane[2].c = comboMatrix._34 - comboMatrix._32;
-	m_frustumPlane[2].d = comboMatrix._44 - comboMatrix._42;
+	D3DXMatrixInverse(&invProj, nullptr, &m_projMatrix);
+	D3DXMatrixInverse(&invView, nullptr, &m_viewMatrix);
 
-	m_frustumPlane[3].a = comboMatrix._14 + comboMatrix._12;
-	m_frustumPlane[3].b = comboMatrix._24 + comboMatrix._22;
-	m_frustumPlane[3].c = comboMatrix._34 + comboMatrix._32;
-	m_frustumPlane[3].d = comboMatrix._44 + comboMatrix._42;
+	for (unsigned int i = 0; i < 8; ++i)
+	{
+		D3DXVec3TransformCoord(&point[i], &point[i], &invProj);
+		D3DXVec3TransformCoord(&point[i], &point[i], &invView);
+	}
 
-	m_frustumPlane[4].a = comboMatrix._13;
-	m_frustumPlane[4].b = comboMatrix._23;
-	m_frustumPlane[4].c = comboMatrix._33;
-	m_frustumPlane[4].d = comboMatrix._43;
+	// 월드 상태에서 각자의 평면을 만들어 준다.
+	// x+
+	D3DXPlaneFromPoints(&m_frustumPlane[0], &point[1], &point[5], &point[6]);
 
-	m_frustumPlane[5].a = comboMatrix._14 - comboMatrix._13;
-	m_frustumPlane[5].b = comboMatrix._24 - comboMatrix._23;
-	m_frustumPlane[5].c = comboMatrix._34 - comboMatrix._33;
-	m_frustumPlane[5].d = comboMatrix._44 - comboMatrix._43;
+	// x-
+	D3DXPlaneFromPoints(&m_frustumPlane[1], &point[4], &point[0], &point[3]);
+
+	// y+
+	D3DXPlaneFromPoints(&m_frustumPlane[2], &point[4], &point[5], &point[1]);
+
+	// y-
+	D3DXPlaneFromPoints(&m_frustumPlane[3], &point[3], &point[2], &point[6]);
+
+	// z+
+	D3DXPlaneFromPoints(&m_frustumPlane[4], &point[7], &point[6], &point[5]);
+
+	// z-
+	D3DXPlaneFromPoints(&m_frustumPlane[5], &point[0], &point[1], &point[2]);
 }
 
 void Camera::UpdateProjMatrix()

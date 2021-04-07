@@ -19,6 +19,11 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
+void IRenderer::RenderPure()
+{
+}
+
+
 void IRenderer::RenderRequest()
 {
 	RenderManager::GetInstance()->RenderRequest(this);

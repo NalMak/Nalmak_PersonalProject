@@ -17,14 +17,15 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void PreRender() override;
 	virtual void Release() override;
 public:
-	DirectionalLightInfo GetDirectionalLightInfo();
+	const DirectionalLightInfo& GetDirectionalLightInfo();
+	Camera* GetLightCamera();
 private:
-	Vector3 m_color;
-	Matrix m_lightViewProj;
-	Vector3 m_lightPos;
-	float m_diffuseIntensity;
-	float m_ambientIntensity;
+	DirectionalLightInfo m_info;
+	Camera* m_lightCam;
+private:
+	void CreateLightCam();
 };
 

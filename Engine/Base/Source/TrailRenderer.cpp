@@ -116,6 +116,7 @@ void TrailRenderer::Render(ConstantBuffer& _cBuffer)
 
 }
 
+
 void TrailRenderer::RecordTrail(const Vector3 & _startPos, const Vector3 & _endPos)
 {
 	m_timer += dTime;

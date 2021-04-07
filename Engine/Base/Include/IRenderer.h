@@ -24,6 +24,7 @@ private:
 	virtual void Release() override = 0;
 public:
 	virtual void Render(ConstantBuffer& _cBuffer) = 0;
+	virtual void RenderPure();
 	virtual void BindingStreamSource() = 0;
 public:
 	void RenderRequest();
@@ -39,18 +40,20 @@ protected:
 	RENDERER_TYPE  m_type;
 	bool m_isFrustumCulling = true;
 	bool m_isPicking = true;
+	bool m_isCastShadow = false;
 public:
 	virtual float GetBoundingRadius();
 	virtual Vector3 GetBoundingCenter();
 public:
 	bool IsPickingEnable() { return m_isPicking; }
 	bool IsFrustumCulling() { return m_isFrustumCulling; }
+	bool IsCastShadow() { return m_isCastShadow; }
 public:
 	const RENDERER_TYPE& GetType() { return m_type; }
 public:
 	void SetFrustumCulling(bool _culling) { m_isFrustumCulling = _culling; }
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
-
+	void SetCastShadow(bool _isCast) { m_isCastShadow = _isCast; }
 protected:
 	class RenderManager* m_renderManager = nullptr;
 };
