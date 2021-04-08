@@ -44,6 +44,8 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
+    <ClCompile Include="..\Source\DynamicMesh.cpp" />
+    <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
     <ClCompile Include="..\Source\Event.cpp" />
     <ClCompile Include="..\Source\EventHandler.cpp" />
@@ -144,6 +146,8 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
+    <ClInclude Include="..\Include\DynamicMesh.h" />
+    <ClInclude Include="..\Include\DynamicMeshHierarchy.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
     <ClInclude Include="..\Include\Event.h" />
     <ClInclude Include="..\Include\EventHandler.h" />
@@ -240,6 +244,7 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_Geometry_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
@@ -250,6 +255,7 @@
     <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_Geometry_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_PointLight.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd" />
     <None Include="..\..\Resource\Shader\SYS_LightDepth.sd" />
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />

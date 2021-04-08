@@ -20,7 +20,7 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 180, 0)->AddComponent<Homework_Player>();
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 150, 0)->AddComponent<Homework_Player>();
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
@@ -41,8 +41,10 @@ void TitleScene::Initialize()
 		Vector3 dir = Nalmak_Math::RandDirection();
 		if (dir.y < 0)
 			dir.y *= -1;
-		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>()->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
-		sphere->SetScale(10, 10, 10);
+		SphereCollider::Desc sphereCol;
+		sphereCol.radius = 1.f;
+		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
+		sphere->SetScale(2, 2, 2);
 		cam->SetParents(sphere);
 	}
 

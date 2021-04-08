@@ -43,7 +43,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	return o;
 }
 
-static const float OneDividzFar = 1 / zFar;
+static const float OneDividzFar = 1 / 400.f;
 
 PS_OUTPUT PS_Main_Default(PS_INPUT  _in) 
 {

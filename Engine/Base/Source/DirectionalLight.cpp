@@ -57,14 +57,16 @@ const DirectionalLightInfo& DirectionalLight::GetDirectionalLightInfo()
 void DirectionalLight::CreateLightCam()
 {
 	Camera::Desc camDesc;
-	camDesc.aspect = 1;
-	camDesc.fovY = D3DX_PI * 0.5f;
+	camDesc.fovY = D3DX_PI * 0.3f;
 	camDesc.zNear = 1.f;
-	camDesc.zFar = 1000.f;
+	camDesc.zFar = 400.f;
 
 	AddComponent<Camera>(&camDesc);
 	m_lightCam = GetComponent<Camera>();
 	m_lightCam->SetActive(false);
+
+	m_transform->position = { 0,100,0 };
+	m_info.base.position = m_transform->position;
 }
 
 Camera * DirectionalLight::GetLightCamera()

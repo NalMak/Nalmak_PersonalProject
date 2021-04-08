@@ -6,6 +6,7 @@ inputRT "g_diffuse" "GBuffer_Diffuse"
 inputRT "g_depth" "GBuffer_Depth"
 inputRT "g_normal" "GBuffer_Normal"
 inputRT "g_light" "GBuffer_Light"
+inputRT "g_shadow" "GBuffer_Shadow"
 
 outputRT "GBuffer_Final"
 

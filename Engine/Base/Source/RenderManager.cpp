@@ -120,7 +120,6 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	LightPass(_cam, _cBuffer);
 
-	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
 	RenderByShaderToScreen(L"SCR_Geometry_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
@@ -233,6 +232,13 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	shader->EndPass();
 
 	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER, 0, 1, 0));
+}
+
+void RenderManager::ShadowPass(ConstantBuffer & _cBuffer, DirectionalLightInfo& _info)
+{
+	Shader* shadow = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
+	shadow->SetValue("g_directionalLight", &_info, sizeof(DirectionalLightInfo));
+	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 }
 
 void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
@@ -366,6 +372,8 @@ void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _ligh
 
 
 	EndRenderTarget();
+
+
 }
 
 
@@ -395,7 +403,7 @@ void RenderManager::DirectionalLightPass(ConstantBuffer& _cBuffer)
 	RenderByShaderToScreen(L"SCR_DirectionalLight", _cBuffer, BLENDING_MODE_ADDITIVE);
 
 
-	
+	ShadowPass(_cBuffer, info);
 	
 }
 

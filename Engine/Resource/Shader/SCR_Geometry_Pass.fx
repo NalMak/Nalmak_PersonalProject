@@ -5,6 +5,7 @@ texture g_diffuse;
 texture g_depth;
 texture g_normal;
 texture g_light;
+texture g_shadow;
 
 sampler DiffuseSampler = sampler_state
 {
@@ -22,7 +23,10 @@ sampler LightSampler = sampler_state
 {
 	texture = g_light;
 };
-
+sampler ShadowSampler = sampler_state
+{
+	texture = g_shadow;
+};
 struct VS_INPUT
 {
 	float3 position : POSITION;
@@ -67,7 +71,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float3 diffuse = tex2D(DiffuseSampler, uv).xyz;
 	float3 normal = tex2D(NormalSampler, uv).xyz;
 	float3 light = tex2D(LightSampler, uv).xyz;
-
+	float3 shadow = tex2D(ShadowSampler, uv).xyz;
 
 	float3 final;
 	if (normal.x == 0 && normal.y == 0 && normal.z == 0)
@@ -76,7 +80,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	}
 	else
 	{
-		final = light * diffuse;
+		final = light * diffuse * (shadow + 0.2f);
 	}
 	
 	o.color = float4(final, 1);

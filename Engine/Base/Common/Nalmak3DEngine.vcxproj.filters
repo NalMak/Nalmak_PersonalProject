@@ -247,6 +247,9 @@
     <Filter Include="06.Resource\08.StaticObjectInfo">
       <UniqueIdentifier>{ec5778b9-a648-4b8a-a276-b72fdc0d4a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Resource\01.Mesh\02.DynamicMesh">
+      <UniqueIdentifier>{5acc79d9-60d1-42c0-82bf-b93c13bc55b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core.cpp">
@@ -548,6 +551,12 @@
     </ClCompile>
     <ClCompile Include="..\Source\StaticObjectInfo.cpp">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DynamicMesh.cpp">
+      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp">
+      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -875,6 +884,12 @@
     <ClInclude Include="..\Include\StaticObjectInfo.h">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\DynamicMesh.h">
+      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\DynamicMeshHierarchy.h">
+      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">
@@ -907,6 +922,9 @@
     <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd">
@@ -931,6 +949,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SYS_LightDepth.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

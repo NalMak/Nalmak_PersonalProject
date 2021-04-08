@@ -1,5 +1,5 @@
 
-static const float zNear = 0.1;
+static const float zNear = 1;
 static const float zFar = 400;
 static const int WINCX = 1920;
 static const int WINCY = 1080;
