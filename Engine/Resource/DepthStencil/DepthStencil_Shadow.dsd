@@ -2,9 +2,9 @@
 ## DepthStencil Data Setting (dsd)
 #########################################################
 
-width "1920"
+width "8192"
 
-height "1080"
+height "8192"
 
 format "0"
 

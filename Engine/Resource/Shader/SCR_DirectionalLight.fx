@@ -49,7 +49,7 @@ struct PS_OUTPUT
 {
 	float4 emission : COLOR0;
 	float4 light : COLOR1;
-	float4 lightDepth : COLOR2;
+	//float4 lightDepth : COLOR2;
 
 };
 
@@ -71,9 +71,11 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 	float2 uvRT = _in.uv + float2(perPixelX, perPixelY);
 
-	float4 diffuse = tex2D(DiffuseSampler, uvRT);
 	float3 normal = tex2D(NormalSampler, uvRT).xyz;
+	if (!any(normal))
+		clip(0);
 
+	float4 diffuse = tex2D(DiffuseSampler, uvRT);
 	float2 depth = tex2D(DepthSampler, uvRT).xy;
 	float4 worldPos = GetWorldPosFromDepth(depth, uvRT);
 
@@ -81,30 +83,22 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	float f0 = cookTorrance.x;
 	float roughness = cookTorrance.y;
 
+	
+
 	normal = normal * 2 - 1;
 	normal = normalize(normal);
-	float4 light = CalcLightInternal(g_directionalLight.base, g_cBuffer.worldCamLook, g_directionalLight.direction, worldPos.xyz, normal);
 
+	float3 _N = normal;
+	float3 _V = normalize(g_cBuffer.worldCamPos - worldPos.xyz);
+	float3 _L = -g_directionalLight.direction;
+	float _F0 = cookTorrance.x;
+	float _Roughness = cookTorrance.y;
 
 	float specular;
-	if (normal.x == -1 && normal.y == -1 && normal.z == -1)
-	{
-		specular = 0;
-	}
-	else
-	{
-		float3 _N = normal;
-		float3 _V = normalize(g_cBuffer.worldCamPos - worldPos.xyz);
-		float3 _L = -g_directionalLight.direction;
-		float _F0 = cookTorrance.x;
-		float _Roughness = cookTorrance.y;
+	specular = LightingGGX_Ref(_N, _V, _L, _F0, _Roughness);
 
-		specular = LightingGGX_Ref(_N, _V, _L, _F0, _Roughness);
+	float4 light = CalcLightInternal(g_directionalLight.base, g_cBuffer.worldCamLook, g_directionalLight.direction, worldPos.xyz, normal);
 
-	}
-	
-
-	
 	///////////////////////////
 	o.emission = light * specular;
 	o.light = light;

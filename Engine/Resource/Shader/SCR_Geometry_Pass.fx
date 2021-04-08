@@ -70,17 +70,19 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 
 	float3 diffuse = tex2D(DiffuseSampler, uv).xyz;
 	float3 normal = tex2D(NormalSampler, uv).xyz;
-	float3 light = tex2D(LightSampler, uv).xyz;
-	float3 shadow = tex2D(ShadowSampler, uv).xyz;
+
 
 	float3 final;
-	if (normal.x == 0 && normal.y == 0 && normal.z == 0)
+	if (any(normal))
 	{
-		final =  diffuse;
+		float3 light = tex2D(LightSampler, uv).xyz;
+		float3 shadow = tex2D(ShadowSampler, uv).xyz;
+		shadow = saturate(shadow + 0.4f);
+		final = light * diffuse * shadow;
 	}
 	else
 	{
-		final = light * diffuse * (shadow + 0.2f);
+		final = diffuse;
 	}
 	
 	o.color = float4(final, 1);

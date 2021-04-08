@@ -2,9 +2,9 @@
 ## RenderTarget Data Setting (rtd)
 #########################################################
 
-width "1920"
+width "8192"
 
-height "1080"
+height "8192"
 
 color "0,0,0,1"
 

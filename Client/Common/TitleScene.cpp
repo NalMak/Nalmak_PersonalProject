@@ -20,6 +20,7 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
+	light.ambientIntensity = 0.05f;
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 150, 0)->AddComponent<Homework_Player>();
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
@@ -27,8 +28,8 @@ void TitleScene::Initialize()
 	RigidBody::Desc rigid;
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
-	render.meshName = L"box";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(30,30,0)->AddComponent<BoxCollider>();
+	render.meshName = L"Arisha";
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
 
 	for (int i = 0; i < 10; ++i)
 	{

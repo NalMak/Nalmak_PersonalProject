@@ -1,7 +1,4 @@
-﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Bin\SCR_Geometry_Pass.cso
-  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\Animator.h
   ..\Include\AudioClip.h

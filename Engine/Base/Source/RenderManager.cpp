@@ -114,8 +114,11 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	SkyboxPass(_cBuffer);
 
+
 	LightDepthPass(_cBuffer);
 
+
+	
 	GBufferPass(_cam, _cBuffer);
 
 	LightPass(_cam, _cBuffer);
@@ -189,7 +192,6 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	if (!m_lightManager->IsExistDirectionalLight())
 		return;
 
-
 	ClearRenderTarget(L"GBuffer_LightDepth");
 
 	Camera* lightCam = m_lightManager->GetLightCamera();
@@ -207,7 +209,9 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 
 	UpdateRenderTarget(shader);
 
-
+	DepthStencil* depthStencil = ResourceManager::GetInstance()->GetResource<DepthStencil>(L"DepthStencil_Shadow");
+	depthStencil->StartRecord();
+	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER, 0, 1, 0));
 
 	for (auto& renderList : m_renderLists[RENDERING_MODE_OPAQUE])
 	{
@@ -230,15 +234,20 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	EndRenderTarget();
 
 	shader->EndPass();
+	
+	depthStencil->EndRecord();
 
-	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER, 0, 1, 0));
 }
 
 void RenderManager::ShadowPass(ConstantBuffer & _cBuffer, DirectionalLightInfo& _info)
 {
+
+
 	Shader* shadow = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
 	shadow->SetValue("g_directionalLight", &_info, sizeof(DirectionalLightInfo));
 	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+
+
 }
 
 void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)

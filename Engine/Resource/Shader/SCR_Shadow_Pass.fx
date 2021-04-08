@@ -76,11 +76,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 
 	float adjust = 0;// shadowDistance / 10;
 
-	float4 color = 1.f;
+	float3 color = 1.f;
 	if (lightDistance > objDistance * 0.99f)
-	{
-		color.xyz = 1;
-	}
+		color = 1;
 	else
 		color = 0;
 	//color.xyz = lightDepth;
@@ -93,9 +91,8 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	//color = lightDepth;
 	//color = saturate(color + length(worldPos - float4(g_cBuffer.worldCamPos,1)) / zFar);
 	//o.color = objDistance / zFar;
-	color.w = 1;
 	//o.color.xyz = lightDepth + depth;
-	o.color = color;
+	o.color = float4(color,1);
 	return o;
 }
 

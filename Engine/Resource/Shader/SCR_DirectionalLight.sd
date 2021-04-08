@@ -9,7 +9,7 @@ inputRT "g_cookTorrance" "GBuffer_CookTorrance"
 
 outputRT "GBuffer_Emission"
 outputRT "GBuffer_Light"
-outputRT "GBuffer_LightDepth"
+//outputRT "GBuffer_LightDepth"
 
 
 inputLayout "1"
