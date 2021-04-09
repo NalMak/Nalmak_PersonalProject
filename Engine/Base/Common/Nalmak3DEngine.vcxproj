@@ -26,6 +26,7 @@
     <ClCompile Include="..\Source\AudioSource.cpp" />
     <ClCompile Include="..\Source\Bezier.cpp" />
     <ClCompile Include="..\Source\BitFlag.cpp" />
+    <ClCompile Include="..\Source\BoneFrame.cpp" />
     <ClCompile Include="..\Source\BoxCollider.cpp" />
     <ClCompile Include="..\Source\Button.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="..\Include\AudioSource.h" />
     <ClInclude Include="..\Include\Bezier.h" />
     <ClInclude Include="..\Include\BitFlag.h" />
+    <ClInclude Include="..\Include\BoneFrame.h" />
     <ClInclude Include="..\Include\BoxCollider.h" />
     <ClInclude Include="..\Include\Button.h" />
     <ClInclude Include="..\Include\Camera.h" />

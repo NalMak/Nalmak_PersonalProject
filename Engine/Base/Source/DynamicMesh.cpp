@@ -13,6 +13,11 @@ DynamicMesh::~DynamicMesh()
 
 void DynamicMesh::Initialize(wstring _fp)
 {
+	// 뼈의 상태를 담고있는 행렬 
+	// 뼈의 행렬을 로컬로 담아야함 -> 스킨인포가 해줌
+	// offsetmatrix-> 담겨져있음
+	// hardware skinning 
+
 	m_hierarchy = new DynamicMeshHierarchy;
 
 	DynamicMeshHierarchy hierarchy; // 입력값  ( 뼈를 생성 -> 피부 생성 -> 피부 삭제 -> 뼈 삭제 )

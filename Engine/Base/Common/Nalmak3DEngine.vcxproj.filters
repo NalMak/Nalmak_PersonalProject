@@ -558,6 +558,7 @@
     <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp">
       <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\BoneFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -890,6 +891,7 @@
     <ClInclude Include="..\Include\DynamicMeshHierarchy.h">
       <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\BoneFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

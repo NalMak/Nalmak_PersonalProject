@@ -1,4 +1,5 @@
 #include "DynamicMeshHierarchy.h"
+#include "BoneFrame.h"
 
 
 
@@ -13,6 +14,14 @@ DynamicMeshHierarchy::~DynamicMeshHierarchy()
 
 HRESULT DynamicMeshHierarchy::CreateFrame(LPCSTR Name, LPD3DXFRAME * ppNewFrame)
 {
+	BoneFrame* frame = new BoneFrame;
+
+	if (Name != nullptr)
+	{
+		// alloc
+	}
+
+	
 	//d3dxframe_derived* frame = new d3dxframe_drived;
 	//*ppNewFrame = frame;
 
