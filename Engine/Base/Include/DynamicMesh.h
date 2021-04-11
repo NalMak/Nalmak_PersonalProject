@@ -16,6 +16,8 @@
 //Enable
 //트랙의 유효 / 무효.이 트랙을 믹서로 유효하게 하려면, TRUE 를 설정한다.무효로 하려면, FALSE 를 설정한다.
 
+
+//https://icoder.tistory.com/entry/%EC%A7%91%EC%A4%91%EB%B6%84%EC%84%9D-DirectX-Sample-MutiAnimation 멀티애니메이션 예제
 class NALMAK_DLL DynamicMesh :
 	public Mesh
 {

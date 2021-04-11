@@ -36,67 +36,77 @@ void DynamicMesh::Initialize(wstring _fp)
 	// 점 -> 폴리곤 -> 서브셋 -> 메시컨테이너 (파츠 별 메시) -> 애니메이션 메시
 	LPD3DXANIMATIONCONTROLLER controller = nullptr;
 
+
+
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &controller));
-	controller->GetMaxNumAnimationSets();
-	m_animController =  new AnimationController(controller);
-
-	UpdateBoneMatrix();
-
-	TraverseBone((Nalmak_Frame*)m_root);
-
-
-	for (auto& meshContainer : m_meshContainerList)
+	
+	if (controller)
 	{
-		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
-		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
-	}
+		m_animController = new AnimationController(controller);
 
-	m_vertexPositionData = new Vector3[m_vertexCount];
-	m_indexData = new INDEX32[m_figureCount * 3];
+		UpdateBoneMatrix();
 
-	DWORD vertexIndex = 0;
-	DWORD figureIndex = 0;
+		TraverseBone((Nalmak_Frame*)m_root);
 
-	for (auto& meshContainer : m_meshContainerList)
-	{
-		D3DVERTEXELEMENT9 decl[MAX_FVF_DECL_SIZE];
-		ZeroMemory(decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
 
-		meshContainer->MeshData.pMesh->GetDeclaration(decl);
-
-		WORD offset = 0;
-
-		for (int i = 0; i < MAX_FVF_DECL_SIZE; ++i)
+		for (auto& meshContainer : m_meshContainerList)
 		{
-			if (decl[i].Usage == D3DDECLUSAGE_POSITION)
+			m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
+			m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
+		}
+
+		m_vertexPositionData = new Vector3[m_vertexCount];
+		m_indexData = new INDEX32[m_figureCount * 3];
+
+		DWORD vertexIndex = 0;
+		DWORD figureIndex = 0;
+
+		for (auto& meshContainer : m_meshContainerList)
+		{
+			D3DVERTEXELEMENT9 decl[MAX_FVF_DECL_SIZE];
+			ZeroMemory(decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
+
+			meshContainer->MeshData.pMesh->GetDeclaration(decl);
+
+			WORD offset = 0;
+
+			for (int i = 0; i < MAX_FVF_DECL_SIZE; ++i)
 			{
-				offset = decl[i].Offset;
-				break;
+				if (decl[i].Usage == D3DDECLUSAGE_POSITION)
+				{
+					offset = decl[i].Offset;
+					break;
+				}
 			}
+
+			DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
+			m_stride = D3DXGetFVFVertexSize(FVF);
+
+
+			///////////////////////////////////////////
+			void* vertexMem = nullptr;
+			meshContainer->MeshData.pMesh->LockVertexBuffer(0, &vertexMem);
+			for (DWORD i = 0; i < meshContainer->MeshData.pMesh->GetNumVertices(); ++i)
+			{
+				m_vertexPositionData[vertexIndex] = ((INPUT_LAYOUT_POSITION_NORMAL_UV*)vertexMem)[i].position;
+				++vertexIndex;
+			}
+			meshContainer->MeshData.pMesh->UnlockVertexBuffer();
+			///////////////////////////////////////////
+
+			void* indexMem = nullptr;
+			meshContainer->MeshData.pMesh->LockIndexBuffer(0, &indexMem);
+			DWORD currentFigureCount = meshContainer->MeshData.pMesh->GetNumFaces() * 3;
+			//memcpy(&m_indexData[figureIndex], indexMem, sizeof(INDEX32) * currentFigureCount);
+			figureIndex += currentFigureCount;
+			meshContainer->MeshData.pMesh->UnlockIndexBuffer();
+
+
 		}
 
-		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
-		m_stride = D3DXGetFVFVertexSize(FVF);
-
-
-		///////////////////////////////////////////
-		void* vertexMem = nullptr;
-		meshContainer->MeshData.pMesh->LockVertexBuffer(0, &vertexMem);
-		for (DWORD i = 0; i < meshContainer->MeshData.pMesh->GetNumVertices(); ++i)
-		{
-			m_vertexPositionData[vertexIndex] = ((INPUT_LAYOUT_POSITION_NORMAL_UV*)vertexMem)[i].position;
-			++vertexIndex;
-		}
-		meshContainer->MeshData.pMesh->UnlockVertexBuffer();
-		///////////////////////////////////////////
-
-		void* indexMem = nullptr;
-		meshContainer->MeshData.pMesh->LockIndexBuffer(0, &indexMem);
-		DWORD currentFigureCount = meshContainer->MeshData.pMesh->GetNumFaces() * 3;
-		//memcpy(&m_indexData[figureIndex], indexMem, sizeof(INDEX32) * currentFigureCount);
-		figureIndex += currentFigureCount;
-		meshContainer->MeshData.pMesh->UnlockIndexBuffer();
-
+	}
+	else
+	{
 
 	}
 

@@ -87,6 +87,9 @@ HRESULT DynamicMeshHierarchy::CreateMeshContainer(
 		return S_OK;
 	}
 
+	pSkinInfo->ConvertToIndexedBlendedMesh()
+
+
 	meshContainer->pSkinInfo = pSkinInfo;
 	meshContainer->pSkinInfo->AddRef(); // !!
 

@@ -55,7 +55,6 @@ void StaticMesh::Initialize(wstring _fp)
 
 
 
-
 	D3DVERTEXELEMENT9 decl[MAX_FVF_DECL_SIZE];
 	ZeroMemory(decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
 	m_mesh->GetDeclaration(decl);

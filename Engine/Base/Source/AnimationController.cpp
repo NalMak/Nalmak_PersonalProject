@@ -28,6 +28,7 @@ AnimationController::~AnimationController()
 void AnimationController::SetAnimation(UINT _index)
 {
 	
+	
 	LPD3DXANIMATIONSET anim = nullptr;
 
 	// 1¹ø
