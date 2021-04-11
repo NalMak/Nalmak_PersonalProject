@@ -61,7 +61,7 @@ private:
 
 public:
 	void LoadAllResources(const wstring& _directoryPath, bool _isStatic);
-	void LoadResourcesByFoloderName(const wstring& _sceneName, bool _isStatic);
+	void LoadResourcesBySceneFoloderName(const wstring& _sceneName, bool _isStatic);
 	void CreateDefaultResource();
 private:
 	void CreateDefaultMesh();
@@ -69,8 +69,28 @@ private:
 public:
 	void UpdateMaterial(const wstring& _fp, bool _isStatic); // Material 데이터 다시 쓰기
 	void LoadTextures(const TCHAR* _extention, bool _isStatic);
-private:
+public:
+	template <typename TYPE, typename T>
+	void LoadResource(const wstring&_filePath, bool _isStatic = false)
+	{
+		wstring filePath = _filePath;
+		wstring fileName = filePath.substr(filePath.find_last_of(L"/") + 1);
+		size_t targetNum = fileName.find_last_of(L".");
+		fileName = fileName.substr(0, targetNum);
 
+		if (m_resoucreContainers[typeid(TYPE).name()][fileName])
+		{
+			MessageBox(NULL, (L"Resource is already exist! " + filePath).c_str(), NULL, MB_OK);
+			assert(0);
+		}
+
+		TYPE* resource = new T();
+		resource->m_isStatic = _isStatic;
+		assert("Fail to Create Resource!" && resource);
+		((IResource*)resource)->m_name = fileName;
+		resource->Initialize(filePath);
+		m_resoucreContainers[typeid(TYPE).name()][fileName] = resource;
+	}
 private:
 	template <typename TYPE, typename T>
 	void LoadAllResources(const TCHAR* _extention, bool _isStatic)

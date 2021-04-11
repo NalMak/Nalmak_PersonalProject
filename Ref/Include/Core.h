@@ -72,6 +72,7 @@
 #include "RigidBody.h"
 #include "DebugObject.h"
 #include "NavMesh.h"
+#include "SkinnedMeshRenderer.h"
 #pragma endregion
 
 //#define __SOUND_ON__

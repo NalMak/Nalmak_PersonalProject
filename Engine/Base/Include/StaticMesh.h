@@ -2,7 +2,7 @@
 #include "Mesh.h"
 
 // normal : 점이 구성하고 있는 평면의 수직인 벡터
-class StaticMesh :
+class NALMAK_DLL StaticMesh :
 	public Mesh
 {
 public:

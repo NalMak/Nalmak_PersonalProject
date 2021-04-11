@@ -2,6 +2,8 @@
 #include "TitleScene.h"
 #include "TestPlayer.h"
 #include "Homework_Player.h"
+#include "DynamicMesh.h"
+#include "StaticMesh.h"
 
 TitleScene::TitleScene()
 {
@@ -14,8 +16,41 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
+	/*ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
+	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player.X");
+	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../sylva.X");
+
 	
-	/*TestComponent::Desc test2;
+	{
+		MeshRenderer::Desc mesh;
+		mesh.meshName = L"Player2";
+		mesh.mtrlName = L"test1";
+		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f);
+		obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
+	}
+	{
+		MeshRenderer::Desc mesh;
+		mesh.meshName = L"Player";
+		mesh.mtrlName = L"test1";
+		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(-5,0,0);
+		obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
+	
+	}*/
+	{
+		SkinnedMeshRenderer::Desc mesh;
+		mesh.meshName = L"Player2";
+		mesh.mtrlName = L"test1";
+		auto obj = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&mesh)->SetPosition(5, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
+		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
+	}
+	//{
+	//	MeshRenderer::Desc mesh;
+	//	mesh.meshName = L"Player2";
+	//	auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(2,0,0);
+	//	obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
+	//}
+		/*TestComponent::Desc test2;
 	test2.obj = test;
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
@@ -25,11 +60,11 @@ void TitleScene::Initialize()
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
-	RigidBody::Desc rigid;
+	/*RigidBody::Desc rigid;
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"Arisha";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);*/
 
 	for (int i = 0; i < 10; ++i)
 	{

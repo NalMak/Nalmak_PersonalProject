@@ -12,6 +12,7 @@
 #include "ScreenQuad.h"
 #include "AudioClip.h"
 #include "StaticObjectInfo.h"
+#include "DynamicMesh.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -27,6 +28,7 @@ ResourceManager::~ResourceManager()
 
 HRESULT ResourceManager::Initialize(bool _allLoad, const wstring & _path)
 {
+
 	// Font
 	//AddFontResource(L"../../Resource/Client/Font/Selected/Astrolab.ttf");
 	m_clientDirectoryPath = _path;
@@ -103,6 +105,10 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 	m_engineDirectoryPath = _directoryPath;
 
 	LoadAllResources<Mesh, StaticMesh>(L"X", _isStatic);
+	//LoadAllResources<Mesh, DynamicMesh>(L"X", _isStatic);
+
+
+
 	LoadAllResources<AudioClip, AudioClip>(L"aud", _isStatic);
 
 	LoadTextures(L"jpg",_isStatic);
@@ -119,7 +125,7 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 	LoadAllResources<StaticObjectInfo, StaticObjectInfo>(L"sttd", _isStatic);
 }
 
-void ResourceManager::LoadResourcesByFoloderName(const wstring & _sceneName, bool _isStatic)
+void ResourceManager::LoadResourcesBySceneFoloderName(const wstring & _sceneName, bool _isStatic)
 {
 	wstring resourceDirectory = m_clientDirectoryPath + L"/" + _sceneName;
 

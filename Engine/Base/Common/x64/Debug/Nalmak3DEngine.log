@@ -1,6 +1,20 @@
-﻿  DirectionalLight.cpp
-  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  AnimationController.cpp
+  Button.cpp
+  Core.cpp
+  DebuggingMode.cpp
+  IState.cpp
+  ResourceManager.cpp
+  SkinnedMeshRenderer.cpp
+  StateControl.cpp
+  코드를 생성하고 있습니다...
+     ../Bin/Nalmak3D_Engine.lib 라이브러리 및 ../Bin/Nalmak3D_Engine.exp 개체를 생성하고 있습니다.
+PhysX3ExtensionsDEBUG.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultErrorCallback.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+PhysX3ExtensionsDEBUG.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3ExtensionsDEBUG.pdb' PDB를 'PhysX3ExtensionsDEBUG.lib(ExtDefaultStreams.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3ExtensionsDEBUG.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
+  ..\Include\AnimationController.h
   ..\Include\Animator.h
   ..\Include\AudioClip.h
   ..\Include\AudioListener.h
@@ -70,9 +84,11 @@
   ..\Include\Nalmak_DirectXMath.h
   ..\Include\Nalmak_Enum.h
   ..\Include\Nalmak_Extern.h
+  ..\Include\Nalmak_Frame.h
   ..\Include\Nalmak_Function.h
   ..\Include\Nalmak_Include.h
   ..\Include\Nalmak_Math.h
+  ..\Include\Nalmak_MeshContainer.h
   ..\Include\Nalmak_String.h
   ..\Include\Nalmak_Struct.h
   ..\Include\Nalmak_Typedef.h
@@ -104,6 +120,7 @@
   ..\Include\Shader.h
   ..\Include\ShaderCompileInclude.h
   ..\Include\SingleImage.h
+  ..\Include\SkinnedMeshRenderer.h
   ..\Include\SkyBox.h
   ..\Include\Slider.h
   ..\Include\SoundManager.h
@@ -131,7 +148,7 @@
   ..\Include\UIInteractor.h
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
-  130개 파일이 복사되었습니다.
+  134개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

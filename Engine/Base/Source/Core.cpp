@@ -66,6 +66,7 @@ Core::~Core()
 
 void Core::Initialize(HINSTANCE _hInst, HWND mainHandle, Desc* _desc, HWND inputHandle)
 {
+
 	if (!inputHandle)
 		inputHandle = mainHandle;
 
@@ -108,8 +109,8 @@ void Core::Run()
 
 void Core::SetStartScene(const wstring& _name)
 {
-	m_resourceManager->LoadResourcesByFoloderName(L"static", false);
-	m_resourceManager->LoadResourcesByFoloderName(_name, false);
+	m_resourceManager->LoadResourcesBySceneFoloderName(L"static", false);
+	m_resourceManager->LoadResourcesBySceneFoloderName(_name, false);
 
 	m_sceneManager->SetFirstScene(_name);
 }

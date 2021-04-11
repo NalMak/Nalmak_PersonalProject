@@ -77,7 +77,8 @@ void T::DestroyInstance()							\
 #define ERR_MSG(msg)  MessageBoxW(NULL, msg, L"error", 0)  
 #endif
 
-
+#define SAFE_NEW(dst,type) dst = new type; ZeroMemory(dst,sizeof(type));
+#define SAFE_NEW_ARR(dst,type,count) dst = new type[count]; ZeroMemory(dst,sizeof(type) * count);
 
 #define SAFE_DELETE(p) if(p){ delete p; p = nullptr; }
 #define SAFE_DELETE_ARR(p) if(p){ delete[]p; p = nullptr; }		

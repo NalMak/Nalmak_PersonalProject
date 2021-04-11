@@ -20,13 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Include\Nalmak_String.cpp" />
+    <ClCompile Include="..\Source\AnimationController.cpp" />
     <ClCompile Include="..\Source\Animator.cpp" />
     <ClCompile Include="..\Source\AudioClip.cpp" />
     <ClCompile Include="..\Source\AudioListener.cpp" />
     <ClCompile Include="..\Source\AudioSource.cpp" />
     <ClCompile Include="..\Source\Bezier.cpp" />
     <ClCompile Include="..\Source\BitFlag.cpp" />
-    <ClCompile Include="..\Source\BoneFrame.cpp" />
+    <ClCompile Include="..\Source\Nalmak_Frame.cpp" />
     <ClCompile Include="..\Source\BoxCollider.cpp" />
     <ClCompile Include="..\Source\Button.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
     <ClCompile Include="..\Source\DynamicMesh.cpp" />
     <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp" />
+    <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
+    <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
     <ClCompile Include="..\Source\Event.cpp" />
     <ClCompile Include="..\Source\EventHandler.cpp" />
@@ -123,13 +126,14 @@
     <ClCompile Include="..\Source\VIBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\AnimationController.h" />
     <ClInclude Include="..\Include\Animator.h" />
     <ClInclude Include="..\Include\AudioClip.h" />
     <ClInclude Include="..\Include\AudioListener.h" />
     <ClInclude Include="..\Include\AudioSource.h" />
     <ClInclude Include="..\Include\Bezier.h" />
     <ClInclude Include="..\Include\BitFlag.h" />
-    <ClInclude Include="..\Include\BoneFrame.h" />
+    <ClInclude Include="..\Include\Nalmak_Frame.h" />
     <ClInclude Include="..\Include\BoxCollider.h" />
     <ClInclude Include="..\Include\Button.h" />
     <ClInclude Include="..\Include\Camera.h" />
@@ -150,6 +154,8 @@
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
     <ClInclude Include="..\Include\DynamicMesh.h" />
     <ClInclude Include="..\Include\DynamicMeshHierarchy.h" />
+    <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
+    <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
     <ClInclude Include="..\Include\Event.h" />
     <ClInclude Include="..\Include\EventHandler.h" />

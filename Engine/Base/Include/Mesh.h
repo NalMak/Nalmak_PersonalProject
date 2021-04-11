@@ -1,6 +1,6 @@
 #pragma once
 #include "IResource.h"
-class Mesh :
+class NALMAK_DLL Mesh :
 	public IResource
 {
 public:

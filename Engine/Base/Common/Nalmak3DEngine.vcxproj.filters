@@ -558,7 +558,10 @@
     <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp">
       <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\BoneFrame.cpp" />
+    <ClCompile Include="..\Source\Nalmak_Frame.cpp" />
+    <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
+    <ClCompile Include="..\Source\AnimationController.cpp" />
+    <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -891,7 +894,10 @@
     <ClInclude Include="..\Include\DynamicMeshHierarchy.h">
       <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\BoneFrame.h" />
+    <ClInclude Include="..\Include\Nalmak_Frame.h" />
+    <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
+    <ClInclude Include="..\Include\AnimationController.h" />
+    <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

@@ -22,7 +22,7 @@ void SceneManager::LoadNextScene()
 		LightManager::GetInstance()->ResetSkyBox();
 		ResourceManager::GetInstance()->ReleaseSceneResouce();
 
-		ResourceManager::GetInstance()->LoadResourcesByFoloderName(m_currentScene->GetSceneName(), false);
+		ResourceManager::GetInstance()->LoadResourcesBySceneFoloderName(m_currentScene->GetSceneName(), false);
 		m_currentScene->Initialize();
 	}
 }
