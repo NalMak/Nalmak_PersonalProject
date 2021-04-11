@@ -36,9 +36,8 @@ void DynamicMesh::Initialize(wstring _fp)
 	// 점 -> 폴리곤 -> 서브셋 -> 메시컨테이너 (파츠 별 메시) -> 애니메이션 메시
 	LPD3DXANIMATIONCONTROLLER controller = nullptr;
 
-
-
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &controller));
+	controller->GetMaxNumAnimationSets();
 	m_animController =  new AnimationController(controller);
 
 	UpdateBoneMatrix();
@@ -193,7 +192,7 @@ void DynamicMesh::TraverseBone(Nalmak_Frame * _frame)
 
 void DynamicMesh::SetAnimation(UINT _index)
 {
-	m_animController->SetAnimation(_index);
+	m_animController->SetAnimation(_index,1.f,1.f);
 }
 
 void DynamicMesh::UpdateBoneMatrix()

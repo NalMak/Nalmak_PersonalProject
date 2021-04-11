@@ -9,17 +9,18 @@ public:
 	~AnimationController();
 public:
 	void SetAnimation(UINT _index);
+	void SetAnimation(UINT _index, float _keySpeed, float _transitionTime);
 	void PlayAnimation();
 private:
 	// 
 	LPD3DXANIMATIONCONTROLLER m_animController;
 
-	unsigned int m_currentTrack;
-	unsigned int m_newTrack;
-	unsigned int m_preAnimIndex;
+	UINT m_currentTrack;
+	UINT m_nextTrack;
+	UINT m_preAnimIndex;
 
 	double m_totalTime;
-	double m_period;
+	double m_animPlayTime;
 	double m_preTrackPos;
 	double m_preSaturPos;
 

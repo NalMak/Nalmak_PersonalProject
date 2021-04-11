@@ -1,14 +1,15 @@
 #include "AnimationController.h"
 #include "TimeManager.h"
+#include "DebugManager.h"
 
 
 AnimationController::AnimationController(LPD3DXANIMATIONCONTROLLER _controller)
 {
 	m_currentTrack = 0;
-	m_newTrack = 1;
+	m_nextTrack = 1;
 	m_totalTime = 0.f;
 	m_preAnimIndex = INFINITE;
-	m_period = 0.0;
+	m_animPlayTime = 0.0;
 	m_isReverse = false;
 
 	m_animController = _controller;
@@ -33,7 +34,7 @@ void AnimationController::SetAnimation(UINT _index)
 	m_animController->GetAnimationSet(_index, &anim); 
 
 
-	m_period = anim->GetPeriod();
+	m_animPlayTime = anim->GetPeriod();
 
 	// 2번
 	m_animController->SetTrackAnimationSet(m_currentTrack, anim);
@@ -52,6 +53,42 @@ void AnimationController::SetAnimation(UINT _index)
 	m_preAnimIndex = _index;
 }
 
+void AnimationController::SetAnimation(UINT _index, float _keySpeed, float _transitionTime)
+{
+	// ? 
+	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
+
+	LPD3DXANIMATIONSET anim = nullptr;
+
+	m_animController->GetAnimationSet(_index, &anim);
+
+	m_animPlayTime = anim->GetPeriod();
+
+	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
+
+	m_animController->UnkeyAllTrackEvents(m_currentTrack);
+	m_animController->UnkeyAllTrackEvents(m_nextTrack);
+
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transitionTime);
+	m_animController->KeyTrackSpeed(m_currentTrack, _keySpeed, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
+
+	m_animController->KeyTrackWeight(m_currentTrack, 0.1f, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
+
+	m_animController->SetTrackEnable(m_nextTrack, true);
+	m_animController->KeyTrackSpeed(m_nextTrack, _keySpeed, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
+	m_animController->KeyTrackWeight(m_nextTrack, 0.9f, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
+
+	m_animController->ResetTime(); 
+	m_totalTime = 0.0;
+
+	m_animController->SetTrackPosition(m_nextTrack, 0.0);
+
+	m_preAnimIndex = _index;
+
+	m_currentTrack = m_nextTrack;
+
+}
+
 void AnimationController::PlayAnimation()
 {
 	D3DXTRACK_DESC trackInfo;
@@ -61,7 +98,8 @@ void AnimationController::PlayAnimation()
 	m_preTrackPos = trackInfo.Position;
 	m_preSaturPos = m_preTrackPos;
 
-	if (m_period > 0.f)
+	DEBUG_LOG(L"Track value", m_currentTrack);
+	if (m_animPlayTime > 0.f)
 	{
 		/*	if (m_bReverse)
 			{
@@ -72,9 +110,9 @@ void AnimationController::PlayAnimation()
 			}
 			else*/
 		{
-			while (m_preSaturPos > m_period)
+			while (m_preSaturPos > m_animPlayTime)
 			{
-				m_preSaturPos -= m_period;
+				m_preSaturPos -= m_animPlayTime;
 			}
 		}
 	}

@@ -66,23 +66,23 @@ void TitleScene::Initialize()
 	render.meshName = L"Arisha";
 	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);*/
 
-	for (int i = 0; i < 10; ++i)
-	{
-		RigidBody::Desc rigid;
-		//rigid.isKinematic = true;
-		MeshRenderer::Desc render;
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"sphere";
-		mesh.mtrlName = L"test1";
-		Vector3 dir = Nalmak_Math::RandDirection();
-		if (dir.y < 0)
-			dir.y *= -1;
-		SphereCollider::Desc sphereCol;
-		sphereCol.radius = 1.f;
-		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
-		sphere->SetScale(2, 2, 2);
-		cam->SetParents(sphere);
-	}
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	RigidBody::Desc rigid;
+	//	//rigid.isKinematic = true;
+	//	MeshRenderer::Desc render;
+	//	MeshRenderer::Desc mesh;
+	//	mesh.meshName = L"sphere";
+	//	mesh.mtrlName = L"test1";
+	//	Vector3 dir = Nalmak_Math::RandDirection();
+	//	if (dir.y < 0)
+	//		dir.y *= -1;
+	//	SphereCollider::Desc sphereCol;
+	//	sphereCol.radius = 1.f;
+	//	auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
+	//	sphere->SetScale(2, 2, 2);
+	//	cam->SetParents(sphere);
+	//}
 
 	{
 		//MeshRenderer::Desc render;
@@ -104,14 +104,14 @@ void TitleScene::Initialize()
 		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
-	{
+	/*{
 		MeshRenderer::Desc render;
 		render.meshName = L"f15";
 		render.mtrlName = L"test1";
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
 		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
-	}
+	}*/
 
 	BoxCollider::Desc boxcol;
 	boxcol.posOffset = { 0,1,0 };

@@ -104,7 +104,7 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 {
 	m_engineDirectoryPath = _directoryPath;
 
-	LoadAllResources<Mesh, StaticMesh>(L"X", _isStatic);
+	LoadAllResources<Mesh, DynamicMesh>(L"X", _isStatic);
 	//LoadAllResources<Mesh, DynamicMesh>(L"X", _isStatic);
 
 
