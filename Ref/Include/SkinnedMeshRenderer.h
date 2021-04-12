@@ -1,7 +1,7 @@
 #pragma once
 #include "IRenderer.h"
-class DynamicMesh;
-
+class XFileMesh;
+class AnimationController;
 class NALMAK_DLL SkinnedMeshRenderer :
 	public IRenderer
 {
@@ -34,8 +34,9 @@ public:
 private:
 	vector<Material*> m_materials;
 	
-	DynamicMesh* m_mesh;
-	unsigned long GetSubsetCount();
-	int m_index = 0;
+	Mesh * m_mesh = nullptr;
+public:
+	DWORD GetSubsetCount();
+
 };
 

@@ -1,6 +1,9 @@
 #include "Animator.h"
 #include "MeshRenderer.h"
 #include "Material.h"
+#include "XFileMesh.h"
+#include "Animator.h"
+#include "AnimationController.h"
 
 Animator::Animator(Desc * _desc)
 {
@@ -9,12 +12,18 @@ Animator::Animator(Desc * _desc)
 	m_interval = _desc->interval;
 	m_loop = _desc->loop;
 	m_isNormal = _desc->isNormal;
-	m_spriteDiffuseData = ResourceManager::GetInstance()->GetResource<Texture>(_desc->spriteName);
-	if (m_isNormal)
-		m_spriteNormalData = ResourceManager::GetInstance()->GetResource<Texture>(_desc->spriteName + L"_n");
-	m_maxIndex = m_spriteDiffuseData->GetSpriteCount();
+
 	m_currentIndex = _desc->startIndex;
 	m_time = TimeManager::GetInstance();
+
+	if (_desc->meshName != L"")
+	{
+		auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+		if (mesh->GetMeshType() == MESH_TYPE_ANIMATION)
+		{
+			m_animController = new AnimationController((XFileMesh*)mesh);
+		}
+	}
 }
 
 Animator::~Animator()
@@ -29,6 +38,12 @@ void Animator::Update()
 {
 	if (m_isSleep)
 		return;
+
+	if (m_animController)
+	{
+		//m_animController->UpdateAnimationController();
+		m_animController->Update();
+	}
 
 	m_timer += m_time->GetdeltaTime();
 
@@ -58,18 +73,17 @@ void Animator::LateUpdate()
 
 void Animator::Release()
 {
+	//SAFE_DELETE(m_animController);
 }
 
 void Animator::Play(wstring _spriteName)
 {
 	m_isPlay = true;
 	m_animName = _spriteName;
-	m_spriteDiffuseData = ResourceManager::GetInstance()->GetResource<Texture>(_spriteName);
+	m_sprite = ResourceManager::GetInstance()->GetResource<Texture>(_spriteName);
 
-	if (m_isNormal)
-		m_spriteNormalData = ResourceManager::GetInstance()->GetResource<Texture>(_spriteName + L"_n");
 	m_currentIndex = 0;
-	m_maxIndex = m_spriteDiffuseData->GetSpriteCount();
+	m_maxIndex = m_sprite->GetSpriteCount();
 }
 
 void Animator::Stop()
@@ -82,14 +96,5 @@ void Animator::Resume()
 	m_isSleep = false;
 }
 
-IDirect3DBaseTexture9* Animator::GetDiffuseSprite()
-{
-	return m_spriteDiffuseData->GetTexure(m_currentIndex);
-}
-
-IDirect3DBaseTexture9* Animator::GetNormalSprite()
-{
-	return  m_spriteNormalData->GetTexure(m_currentIndex);
-}
 
 

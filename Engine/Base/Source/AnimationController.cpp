@@ -1,9 +1,10 @@
 #include "AnimationController.h"
 #include "TimeManager.h"
 #include "DebugManager.h"
+#include "AnimationController.h"
+#include "XFileMesh.h"
 
-
-AnimationController::AnimationController(LPD3DXANIMATIONCONTROLLER _controller)
+AnimationController::AnimationController(XFileMesh * _originMesh)
 {
 	m_currentTrack = 0;
 	m_nextTrack = 1;
@@ -12,7 +13,8 @@ AnimationController::AnimationController(LPD3DXANIMATIONCONTROLLER _controller)
 	m_animPlayTime = 0.0;
 	m_isReverse = false;
 
-	m_animController = _controller;
+	m_animController = _originMesh->GetAnimationController();
+	m_originMesh = _originMesh;
 }
 
 AnimationController::~AnimationController()
@@ -121,4 +123,33 @@ void AnimationController::PlayAnimation()
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
 	m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
 	m_totalTime += time;
+}
+
+AnimationController* AnimationController::CloneAnimationController()
+{
+	AnimationController* animController = nullptr;
+
+	LPD3DXANIMATIONCONTROLLER clone;
+	m_animController->CloneAnimationController(
+		m_animController->GetMaxNumAnimationOutputs(),
+		m_animController->GetMaxNumAnimationSets(),
+		m_animController->GetMaxNumTracks(),
+		m_animController->GetMaxNumEvents(),
+		&clone
+	);
+
+	animController = new AnimationController(m_originMesh);
+
+	return animController;
+}
+
+void AnimationController::Update()
+{
+	m_originMesh->UpdateBoneMatrix();
+	PlayAnimation();
+}
+
+XFileMesh * AnimationController::GetOriginMesh()
+{
+	return m_originMesh;
 }

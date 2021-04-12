@@ -18,6 +18,7 @@ VIBuffer::~VIBuffer()
 void VIBuffer::OnInitialize(const TCHAR * _fp)
 {
 	m_isStatic = true;
+	m_meshType = MESH_TYPE_VIBUFFER;
 	Initialize(_fp);
 
 	assert("Please Set vertex Count In Initialize!" && m_vertexCount);

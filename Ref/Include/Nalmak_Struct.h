@@ -68,7 +68,12 @@ struct ConstantBuffer
 //
 /////////////////////////////////////////////////////////////////////////////////
 
-
+typedef struct INDEX16
+{
+	unsigned short _0;
+	unsigned short _1;
+	unsigned short _2;
+}INDEX16;
 
 
 typedef struct INDEX32

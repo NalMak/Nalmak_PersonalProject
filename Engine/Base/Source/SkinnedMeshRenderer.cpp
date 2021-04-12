@@ -2,11 +2,12 @@
 #include "ResourceManager.h"
 #include "Transform.h"
 #include "Animator.h"
-#include "StaticMesh.h"
 #include "IRenderer.h"
 #include "RenderManager.h"
-#include "DynamicMesh.h"
 #include "InputManager.h"
+#include "XFileMesh.h"
+#include "AnimationController.h"
+
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 {
@@ -19,7 +20,7 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 		m_materials.emplace_back(_desc->mtrl);
 	}
 
-	m_mesh = (DynamicMesh*)ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 
 	m_type = RENDERER_TYPE_MESH;
 
@@ -28,19 +29,20 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 
 void SkinnedMeshRenderer::Initialize()
 {
-	m_mesh->SetAnimation(m_index);
+	//m_mesh->SetAnimation(m_index);
 }
 
 void SkinnedMeshRenderer::Update()
 {
-	m_mesh->UpdateAnimationController();
+	
+	/*m_mesh->UpdateAnimationController();
 	m_mesh->UpdateBoneMatrix();
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
 	{
 		++m_index;
 		m_mesh->SetAnimation(m_index);
-	}
+	}*/
 }
 
 void SkinnedMeshRenderer::LateUpdate()
@@ -137,7 +139,7 @@ Mesh * SkinnedMeshRenderer::GetMesh()
 	return m_mesh;
 }
 
-unsigned long SkinnedMeshRenderer::GetSubsetCount()
+DWORD SkinnedMeshRenderer::GetSubsetCount()
 {
 	return m_mesh->GetSubsetCount();
 }

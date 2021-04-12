@@ -2,7 +2,6 @@
 #include "ResourceManager.h"
 #include "Transform.h"
 #include "Animator.h"
-#include "StaticMesh.h"
 #include "IRenderer.h"
 #include "RenderManager.h"
 

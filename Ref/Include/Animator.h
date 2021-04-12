@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 class MeshRenderer;
-
+class AnimationController;
 
 // Mesh Renderer를 가진경우에만 작동!
 // Mehs Renderer의 material에 접근해 0번 Texture를 애니메이션 시켜준다
@@ -18,7 +18,7 @@ public:
 		float interval = 0.05f;
 		float timer = 0;
 		wstring spriteName = L"default";
-
+		wstring meshName = L"";
 
 		bool isNormal = false;
 		bool loop = true;
@@ -40,8 +40,7 @@ private:
 	bool m_isNormal = false;
 	bool m_loop = true;
 	wstring m_animName;
-	Texture* m_spriteDiffuseData;
-	Texture* m_spriteNormalData;
+	Texture* m_sprite;
 	bool m_isPlay;
 	bool m_isSleep;
 
@@ -53,11 +52,9 @@ public:
 	bool IsPlay() { return m_isPlay; }
 	void SetLoop(bool _loop) { m_loop = _loop; }
 	wstring GetAnimationName()const { return m_animName; }
-	IDirect3DBaseTexture9* GetDiffuseSprite();
-	IDirect3DBaseTexture9* GetNormalSprite();
 	size_t GetAnimationIndex() { return m_currentIndex; }
-
 private:
-	TimeManager* m_time;
+	AnimationController* m_animController = nullptr;
+	TimeManager* m_time = nullptr;
 };
 

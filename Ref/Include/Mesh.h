@@ -13,21 +13,22 @@ public:
 
 public:
 	virtual void Draw(UINT subset = 0) = 0;
-	virtual void BindingStreamSource(unsigned int _inputLayoutSize) = 0;
+	virtual void BindingStreamSource(UINT _inputLayoutSize) = 0;
 protected:
-
+	MESH_TYPE m_meshType;
 protected:
-	unsigned long	 m_stride;
-	unsigned long	 m_vertexCount;
-	unsigned long	 m_figureCount;
+	DWORD	 m_stride;
+	DWORD	 m_vertexCount;
+	DWORD	 m_figureCount;
 	Vector3* m_vertexPositionData = nullptr;
 	INDEX32* m_indexData = nullptr;
 	D3DPRIMITIVETYPE m_primitiveType = D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST;
 
 public:
-	unsigned long GetStride();
-	unsigned long GetVertexCount();
-	unsigned long GetFigureCount();
+	MESH_TYPE GetMeshType();
+	DWORD GetStride();
+	DWORD GetVertexCount();
+	DWORD GetFigureCount();
 	Vector3* GetVertexPositionData();
 	INDEX32* GetIndices();
 	D3DPRIMITIVETYPE GetPrimitiveType();
@@ -35,11 +36,11 @@ public:
 protected:
 	float m_boundingSphereRadius;
 	Vector3 m_boundingSphereCenter;
-	unsigned long m_subsetCount = 1;
+	DWORD m_subsetCount = 1;
 public:
 	float GetBoundingSphereRadius();
 	Vector3 GetBoundingSphereCenter();
-	unsigned long GetSubsetCount() { return m_subsetCount; }
+	DWORD GetSubsetCount() { return m_subsetCount; }
 
 	
 };

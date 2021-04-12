@@ -1,4 +1,4 @@
-#include "..\Include\Mesh.h"
+#include "Mesh.h"
 
 
 
@@ -21,17 +21,22 @@ Vector3 Mesh::GetBoundingSphereCenter()
 	return m_boundingSphereCenter;
 }
 
-unsigned long Mesh::GetStride()
+MESH_TYPE Mesh::GetMeshType()
+{
+	return m_meshType;
+}
+
+DWORD Mesh::GetStride()
 {
 	return m_stride;
 }
 
-unsigned long Mesh::GetVertexCount()
+DWORD Mesh::GetVertexCount()
 {
 	return m_vertexCount;
 }
 
-unsigned long Mesh::GetFigureCount()
+DWORD Mesh::GetFigureCount()
 {
 	return m_figureCount;
 }

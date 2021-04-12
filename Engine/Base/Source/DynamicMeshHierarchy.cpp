@@ -50,22 +50,22 @@ HRESULT DynamicMeshHierarchy::CreateMeshContainer(
 
 	LPD3DXMESH mesh = pMeshData->pMesh;
 
-	unsigned long numFaces = mesh->GetNumFaces();
+	DWORD numFaces = mesh->GetNumFaces();
 
 
-	meshContainer->pAdjacency = new unsigned long[numFaces * 3];
-	memcpy(meshContainer->pAdjacency, pAdjacency, sizeof(unsigned long) * numFaces * 3);
+	meshContainer->pAdjacency = new DWORD[numFaces * 3];
+	memcpy(meshContainer->pAdjacency, pAdjacency, sizeof(DWORD) * numFaces * 3);
 
 
-	unsigned long FVF = mesh->GetFVF();
+	DWORD FVF = mesh->GetFVF();
 	if (!(FVF & D3DFVF_NORMAL))
 	{
-		mesh->CloneMeshFVF(mesh->GetOptions(), FVF | D3DFVF_NORMAL, m_device, &meshContainer->MeshData.pMesh);
+		mesh->CloneMeshFVF(mesh->GetOptions() | D3DXMESH_32BIT, FVF | D3DFVF_NORMAL , m_device, &meshContainer->MeshData.pMesh);
 		D3DXComputeNormals(meshContainer->MeshData.pMesh, meshContainer->pAdjacency);
 	}
 	else
 	{
-		mesh->CloneMeshFVF(mesh->GetOptions(), FVF, m_device, &meshContainer->MeshData.pMesh);
+		mesh->CloneMeshFVF(mesh->GetOptions() | D3DXMESH_32BIT, FVF, m_device, &meshContainer->MeshData.pMesh);
 	}
 	meshContainer->MeshData.pMesh->CloneMeshFVF(meshContainer->MeshData.pMesh->GetOptions(),
 		meshContainer->MeshData.pMesh->GetFVF(),
@@ -87,7 +87,7 @@ HRESULT DynamicMeshHierarchy::CreateMeshContainer(
 		return S_OK;
 	}
 
-	pSkinInfo->ConvertToIndexedBlendedMesh()
+	//pSkinInfo->ConvertToIndexedBlendedMesh()
 
 
 	meshContainer->pSkinInfo = pSkinInfo;
@@ -103,7 +103,7 @@ HRESULT DynamicMeshHierarchy::CreateMeshContainer(
 	SAFE_NEW_ARR(meshContainer->renderingMatrices, Matrix, meshContainer->boneCount);
 
 
-	for (unsigned long i = 0; i < meshContainer->boneCount; ++i)
+	for (DWORD i = 0; i < meshContainer->boneCount; ++i)
 		meshContainer->offsetMatrices[i] = *pSkinInfo->GetBoneOffsetMatrix(i);
 	*ppNewMeshContainer = meshContainer;
 

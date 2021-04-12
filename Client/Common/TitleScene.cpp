@@ -2,8 +2,7 @@
 #include "TitleScene.h"
 #include "TestPlayer.h"
 #include "Homework_Player.h"
-#include "DynamicMesh.h"
-#include "StaticMesh.h"
+
 
 TitleScene::TitleScene()
 {
@@ -16,7 +15,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
+	//ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
 	/*ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
 	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player.X");
 	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../sylva.X");
@@ -41,7 +40,9 @@ void TitleScene::Initialize()
 		SkinnedMeshRenderer::Desc mesh;
 		mesh.meshName = L"Player2";
 		mesh.mtrlName = L"test1";
-		auto obj = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&mesh)->SetPosition(5, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
+		Animator::Desc anim;
+		anim.meshName = L"Player2";
+		auto obj = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&mesh)->AddComponent<Animator>(&anim)->SetPosition(5, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
 		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
 	}
 	//{
@@ -60,29 +61,29 @@ void TitleScene::Initialize()
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
-	/*RigidBody::Desc rigid;
+	RigidBody::Desc rigid;
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"Arisha";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);*/
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
 
-	//for (int i = 0; i < 10; ++i)
-	//{
-	//	RigidBody::Desc rigid;
-	//	//rigid.isKinematic = true;
-	//	MeshRenderer::Desc render;
-	//	MeshRenderer::Desc mesh;
-	//	mesh.meshName = L"sphere";
-	//	mesh.mtrlName = L"test1";
-	//	Vector3 dir = Nalmak_Math::RandDirection();
-	//	if (dir.y < 0)
-	//		dir.y *= -1;
-	//	SphereCollider::Desc sphereCol;
-	//	sphereCol.radius = 1.f;
-	//	auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
-	//	sphere->SetScale(2, 2, 2);
-	//	cam->SetParents(sphere);
-	//}
+	for (int i = 0; i < 10; ++i)
+	{
+		RigidBody::Desc rigid;
+		//rigid.isKinematic = true;
+		MeshRenderer::Desc render;
+		MeshRenderer::Desc mesh;
+		mesh.meshName = L"sphere";
+		mesh.mtrlName = L"test1";
+		Vector3 dir = Nalmak_Math::RandDirection();
+		if (dir.y < 0)
+			dir.y *= -1;
+		SphereCollider::Desc sphereCol;
+		sphereCol.radius = 1.f;
+		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
+		sphere->SetScale(2, 2, 2);
+		cam->SetParents(sphere);
+	}
 
 	{
 		//MeshRenderer::Desc render;
@@ -104,14 +105,14 @@ void TitleScene::Initialize()
 		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
-	/*{
+	{
 		MeshRenderer::Desc render;
 		render.meshName = L"f15";
 		render.mtrlName = L"test1";
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
 		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
-	}*/
+	}
 
 	BoxCollider::Desc boxcol;
 	boxcol.posOffset = { 0,1,0 };

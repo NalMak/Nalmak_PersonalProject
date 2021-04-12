@@ -46,7 +46,6 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
-    <ClCompile Include="..\Source\DynamicMesh.cpp" />
     <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp" />
     <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
@@ -110,7 +109,6 @@
     <ClCompile Include="..\Source\SphereCollider.cpp" />
     <ClCompile Include="..\Source\SplineCurve.cpp" />
     <ClCompile Include="..\Source\StateControl.cpp" />
-    <ClCompile Include="..\Source\StaticMesh.cpp" />
     <ClCompile Include="..\Source\SystemInfo.cpp" />
     <ClCompile Include="..\Source\SystemManager.cpp" />
     <ClCompile Include="..\Source\Terrain.cpp" />
@@ -124,6 +122,7 @@
     <ClCompile Include="..\Source\UIInteractor.cpp" />
     <ClCompile Include="..\Source\UserCollisionFilterFlag.cpp" />
     <ClCompile Include="..\Source\VIBuffer.cpp" />
+    <ClCompile Include="..\Source\XFileMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\AnimationController.h" />
@@ -152,7 +151,6 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
-    <ClInclude Include="..\Include\DynamicMesh.h" />
     <ClInclude Include="..\Include\DynamicMeshHierarchy.h" />
     <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
@@ -224,7 +222,6 @@
     <ClInclude Include="..\Include\SphereCollider.h" />
     <ClInclude Include="..\Include\SplineCurve.h" />
     <ClInclude Include="..\Include\StateControl.h" />
-    <ClInclude Include="..\Include\StaticMesh.h" />
     <ClInclude Include="..\Include\SystemInfo.h" />
     <ClInclude Include="..\Include\SystemManager.h" />
     <ClInclude Include="..\Include\Terrain.h" />
@@ -238,6 +235,7 @@
     <ClInclude Include="..\Include\UIInteractor.h" />
     <ClInclude Include="..\Include\UserCollisionFilterFlag.h" />
     <ClInclude Include="..\Include\VIBuffer.h" />
+    <ClInclude Include="..\Include\XFileMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

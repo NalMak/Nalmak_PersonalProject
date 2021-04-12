@@ -1,4 +1,4 @@
-#include "..\Include\ResourceManager.h"
+#include "ResourceManager.h"
 #include "Quad.h"
 #include "Triangle.h"
 #include "LineVI.h"
@@ -8,11 +8,10 @@
 #include "RenderManager.h"
 #include "ParticleInfo.h"
 #include "Core.h"
-#include "StaticMesh.h"
 #include "ScreenQuad.h"
 #include "AudioClip.h"
 #include "StaticObjectInfo.h"
-#include "DynamicMesh.h"
+#include "XFileMesh.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -104,7 +103,7 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 {
 	m_engineDirectoryPath = _directoryPath;
 
-	LoadAllResources<Mesh, DynamicMesh>(L"X", _isStatic);
+	LoadAllResources<Mesh, XFileMesh>(L"X", _isStatic);
 	//LoadAllResources<Mesh, DynamicMesh>(L"X", _isStatic);
 
 

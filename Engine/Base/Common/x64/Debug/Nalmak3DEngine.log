@@ -1,5 +1,5 @@
-﻿  DynamicMesh.cpp
-  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  AnimationController.cpp
+  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\AnimationController.h
   ..\Include\Animator.h
@@ -30,7 +30,6 @@
   ..\Include\DrawGizmo.h
   ..\Include\DrawGizmo_2D.h
   ..\Include\DynamicInstanceBuffer.h
-  ..\Include\DynamicMesh.h
   ..\Include\DynamicMeshHierarchy.h
   ..\Include\Event.h
   ..\Include\EventHandler.h
@@ -114,7 +113,6 @@
   ..\Include\SphereCollider.h
   ..\Include\SplineCurve.h
   ..\Include\StateControl.h
-  ..\Include\StaticMesh.h
   ..\Include\StaticObjectInfo.h
   ..\Include\SystemInfo.h
   ..\Include\SystemManager.h
@@ -135,7 +133,8 @@
   ..\Include\UIInteractor.h
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
-  134개 파일이 복사되었습니다.
+  ..\Include\XFileMesh.h
+  133개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

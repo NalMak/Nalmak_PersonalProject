@@ -232,9 +232,6 @@
     <Filter Include="06.Resource\01.Mesh\00.VIBuffer\08.ScreenQuad">
       <UniqueIdentifier>{905c63fa-fe96-4a0b-8238-dbf9a9f04541}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06.Resource\01.Mesh\01.StaticMesh">
-      <UniqueIdentifier>{d42f9672-10f4-4eb9-ac69-49f5e3dc506e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.GameObject\01.Debug">
       <UniqueIdentifier>{46da6154-6766-4237-8073-3de8d6b5b8d1}</UniqueIdentifier>
     </Filter>
@@ -247,7 +244,7 @@
     <Filter Include="06.Resource\08.StaticObjectInfo">
       <UniqueIdentifier>{ec5778b9-a648-4b8a-a276-b72fdc0d4a5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06.Resource\01.Mesh\02.DynamicMesh">
+    <Filter Include="06.Resource\01.Mesh\02.XFileMesh">
       <UniqueIdentifier>{5acc79d9-60d1-42c0-82bf-b93c13bc55b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -495,9 +492,6 @@
     <ClCompile Include="..\Source\VIBuffer.cpp">
       <Filter>06.Resource\01.Mesh\00.VIBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\StaticMesh.cpp">
-      <Filter>06.Resource\01.Mesh\01.StaticMesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Mesh.cpp">
       <Filter>06.Resource\01.Mesh</Filter>
     </ClCompile>
@@ -552,16 +546,16 @@
     <ClCompile Include="..\Source\StaticObjectInfo.cpp">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\DynamicMesh.cpp">
-      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp">
-      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Nalmak_Frame.cpp" />
     <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
     <ClCompile Include="..\Source\AnimationController.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
+    <ClCompile Include="..\Source\XFileMesh.cpp">
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -831,9 +825,6 @@
     <ClInclude Include="..\Include\VIBuffer.h">
       <Filter>06.Resource\01.Mesh\00.VIBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\StaticMesh.h">
-      <Filter>06.Resource\01.Mesh\01.StaticMesh</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Mesh.h">
       <Filter>06.Resource\01.Mesh</Filter>
     </ClInclude>
@@ -888,16 +879,16 @@
     <ClInclude Include="..\Include\StaticObjectInfo.h">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\DynamicMesh.h">
-      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\DynamicMeshHierarchy.h">
-      <Filter>06.Resource\01.Mesh\02.DynamicMesh</Filter>
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Nalmak_Frame.h" />
     <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
     <ClInclude Include="..\Include\AnimationController.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
+    <ClInclude Include="..\Include\XFileMesh.h">
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">
