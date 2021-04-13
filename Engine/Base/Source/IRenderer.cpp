@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
+#include "Animator.h"
 
 USING(Nalmak)
 
@@ -13,6 +14,11 @@ IRenderer::IRenderer()
 	m_renderManager = RenderManager::GetInstance();
 }
 
+
+void IRenderer::Initialize()
+{
+	m_animator = GetComponent<Animator>();
+}
 
 void IRenderer::PreRender()
 {
@@ -37,6 +43,17 @@ float IRenderer::GetBoundingRadius()
 Vector3 IRenderer::GetBoundingCenter()
 {
 	return { 0,0,0 };
+}
+
+void IRenderer::UpdateEachAnimation()
+{
+	if (m_animator)
+		m_animator->UpdateEachAnimation();
+}
+
+Animator * IRenderer::GetAnimator()
+{
+	return m_animator;
 }
 
 

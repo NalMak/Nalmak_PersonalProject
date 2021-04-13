@@ -1,5 +1,9 @@
 #pragma once
 #include "IRenderer.h"
+
+// https://icoder.tistory.com/entry/DirectX-Sample-SkinnedMesh
+
+
 class XFileMesh;
 class AnimationController;
 class NALMAK_DLL SkinnedMeshRenderer :
@@ -30,11 +34,11 @@ public:
 	virtual Material * GetMaterial(int _index = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
-	Mesh* GetMesh();
+	XFileMesh* GetMesh();
 private:
 	vector<Material*> m_materials;
 	
-	Mesh * m_mesh = nullptr;
+	XFileMesh * m_mesh = nullptr;
 public:
 	DWORD GetSubsetCount();
 

@@ -13,21 +13,26 @@ public:
 private:
 	virtual void Initialize(wstring _fp) override;
 	virtual void Release() override;
+
+	void InitializeSW();
+	void InitializeHW();
+
 public:
 	virtual void Draw(UINT subset = 0) override;
+	virtual void Draw(Shader* _shader);
+	void DrawHW();
+	bool IsRenderHW();
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
 private:
-	LPD3DXFRAME m_root;
-	class DynamicMeshHierarchy* m_hierarchy;
+	class MeshHierarchy* m_hierarchy;
 	LPD3DXANIMATIONCONTROLLER m_animController;
+	LPD3DXFRAME m_root;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
+	bool m_isRenderHW;
 private:
 	void TraverseBone(Nalmak_Frame* _frame);
-	void UpdateBoneMatrix(Nalmak_Frame* _bone, const Matrix& _parent);
 public:
 	LPD3DXANIMATIONCONTROLLER  GetAnimationController();
-	void SetAnimation(UINT _index);
-	void UpdateBoneMatrix();
-	void UpdateAnimationController();
+	LPD3DXFRAME GetRoot();
 };
 

@@ -65,7 +65,9 @@ void TitleScene::Initialize()
 	rigid.isKinematic = true;
 	MeshRenderer::Desc render;
 	render.meshName = L"Arisha";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
+	Animator::Desc anim;
+	anim.meshName = L"Player2";
+	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<Animator>(&anim)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
 
 	for (int i = 0; i < 10; ++i)
 	{

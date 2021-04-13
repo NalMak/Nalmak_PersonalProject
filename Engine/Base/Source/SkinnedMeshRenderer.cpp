@@ -20,8 +20,11 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 		m_materials.emplace_back(_desc->mtrl);
 	}
 
-	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+	auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
+		assert(L"Skinned Mesh Renderer Must have animation Mesh!" && 0);
 
+	m_mesh = (XFileMesh*)mesh;
 	m_type = RENDERER_TYPE_MESH;
 
 	m_isCastShadow = true;
@@ -29,7 +32,7 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 
 void SkinnedMeshRenderer::Initialize()
 {
-	//m_mesh->SetAnimation(m_index);
+	IRenderer::Initialize();
 }
 
 void SkinnedMeshRenderer::Update()
@@ -55,29 +58,43 @@ void SkinnedMeshRenderer::Release()
 
 void SkinnedMeshRenderer::Render(ConstantBuffer & _cBuffer)
 {
-	BindingStreamSource();
 
-
-	Shader* currentShader = nullptr;
-	Material* currentMaterial = nullptr;
-
-	currentMaterial = m_materials[0];
-	m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
-	m_renderManager->UpdateRenderTarget();
-
-	Shader* shader = currentMaterial->GetShader();
-	assert("Current Shader is nullptr! " && shader);
-
-	if (currentShader != shader)
+	if (m_mesh->IsRenderHW())
 	{
-		currentShader = shader;
-
-		currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
-
-		currentShader->CommitChanges();
+		Shader* currentShader = nullptr;
+		currentShader = ResourceManager::GetInstance()->GetResource<Shader>(L"SYS_Skinning");
+		m_mesh->Draw(currentShader);
 	}
+	else
+	{
+		BindingStreamSource();
 
-	m_mesh->Draw();
+
+		Shader* currentShader = nullptr;
+		Material* currentMaterial = nullptr;
+
+		currentMaterial = m_materials[0];
+		m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
+		m_renderManager->UpdateRenderTarget();
+
+		Shader* shader = currentMaterial->GetShader();
+		assert("Current Shader is nullptr! " && shader);
+
+		if (currentShader != shader)
+		{
+			currentShader = shader;
+
+			currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+
+			currentShader->CommitChanges();
+		}
+
+		m_mesh->Draw();
+
+	}
+	
+
+
 }
 
 void SkinnedMeshRenderer::RenderPure()

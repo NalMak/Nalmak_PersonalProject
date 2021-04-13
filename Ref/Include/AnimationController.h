@@ -1,23 +1,33 @@
 #pragma once
 
 #include "Nalmak_Include.h"
+#include "Nalmak_MeshContainer.h"
+#include "Nalmak_Frame.h"
 class XFileMesh;
 
 class AnimationController
 {
 public:
-	AnimationController(LPD3DXANIMATIONCONTROLLER _controller, XFileMesh* _originMesh);
+	static void UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
+
+private:
+	AnimationController(LPD3DXANIMATIONCONTROLLER _animController, LPD3DXFRAME _rootFrame);
 	~AnimationController();
+public:
+	static AnimationController* CloneAnimationController(LPD3DXANIMATIONCONTROLLER _animControl, LPD3DXFRAME _root);
+	void Release();
 public:
 	void SetAnimation(UINT _index);
 	void SetAnimation(UINT _index, float _keySpeed, float _transitionTime);
-	void PlayAnimation();
-	AnimationController* CloneAnimationController();
 	void Update();
-	XFileMesh* GetOriginMesh();
+private:
+	void PlayAnimation();
+	void UpdateBoneMatrix();
+
 private:
 	LPD3DXANIMATIONCONTROLLER m_animController;
-	XFileMesh* m_originMesh;
+	LPD3DXFRAME m_root;
+	vector<Nalmak_MeshContainer*>		m_meshContainerList;
 
 	UINT m_currentTrack;
 	UINT m_nextTrack;

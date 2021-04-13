@@ -4,7 +4,8 @@
 #include "AnimationController.h"
 #include "XFileMesh.h"
 
-AnimationController::AnimationController(XFileMesh * _originMesh)
+
+AnimationController::AnimationController(LPD3DXANIMATIONCONTROLLER _animController, LPD3DXFRAME _rootFrame)
 {
 	m_currentTrack = 0;
 	m_nextTrack = 1;
@@ -13,14 +14,41 @@ AnimationController::AnimationController(XFileMesh * _originMesh)
 	m_animPlayTime = 0.0;
 	m_isReverse = false;
 
-	m_animController = _originMesh->GetAnimationController();
-	m_originMesh = _originMesh;
+	m_animController = _animController;
+	m_root = _rootFrame;
 }
 
 AnimationController::~AnimationController()
 {
-	SAFE_RELEASE(m_animController);
+	
 }
+
+
+void AnimationController::Update()
+{
+	PlayAnimation();
+	UpdateBoneMatrix();
+}
+
+
+void AnimationController::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
+{
+	_bone->boneWorldMatrix = _bone->TransformationMatrix * _parent;
+
+	if (_bone->pFrameFirstChild)
+		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneWorldMatrix);
+
+	if (_bone->pFrameSibling)
+		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
+
+}
+
+void AnimationController::UpdateBoneMatrix()
+{
+	Matrix mat = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+	UpdateBoneMatrix((Nalmak_Frame*)m_root, mat);
+}
+
 
 //1. 애니메이션컨트롤러로 부터 애니메이션셋을 받아와야한다.
 //2. 애니메이션셋을 트랙에 셋팅해야 한다.
@@ -101,7 +129,6 @@ void AnimationController::PlayAnimation()
 	m_preTrackPos = trackInfo.Position;
 	m_preSaturPos = m_preTrackPos;
 
-	DEBUG_LOG(L"Track value", m_currentTrack);
 	if (m_animPlayTime > 0.f)
 	{
 		/*	if (m_bReverse)
@@ -125,31 +152,29 @@ void AnimationController::PlayAnimation()
 	m_totalTime += time;
 }
 
-AnimationController* AnimationController::CloneAnimationController()
+AnimationController * AnimationController::CloneAnimationController(LPD3DXANIMATIONCONTROLLER _animControl, LPD3DXFRAME _root)
 {
 	AnimationController* animController = nullptr;
 
+	LPD3DXANIMATIONCONTROLLER originController = _animControl;
 	LPD3DXANIMATIONCONTROLLER clone;
-	m_animController->CloneAnimationController(
-		m_animController->GetMaxNumAnimationOutputs(),
-		m_animController->GetMaxNumAnimationSets(),
-		m_animController->GetMaxNumTracks(),
-		m_animController->GetMaxNumEvents(),
+	originController->CloneAnimationController(
+		originController->GetMaxNumAnimationOutputs(),
+		originController->GetMaxNumAnimationSets(),
+		originController->GetMaxNumTracks(),
+		originController->GetMaxNumEvents(),
 		&clone
 	);
 
-	animController = new AnimationController(m_originMesh);
+	animController = new AnimationController(clone, _root);
 
 	return animController;
 }
 
-void AnimationController::Update()
+void AnimationController::Release()
 {
-	m_originMesh->UpdateBoneMatrix();
-	PlayAnimation();
+	SAFE_RELEASE(m_animController);
+	delete this;
 }
 
-XFileMesh * AnimationController::GetOriginMesh()
-{
-	return m_originMesh;
-}
+

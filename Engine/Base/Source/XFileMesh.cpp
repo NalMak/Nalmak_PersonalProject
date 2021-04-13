@@ -1,7 +1,7 @@
 #include "XFileMesh.h"
-#include "DynamicMeshHierarchy.h"
+#include "MeshHierarchy.h"
 #include "AnimationController.h"
-
+#include "Shader.h"
 
 XFileMesh::XFileMesh()
 {
@@ -17,13 +17,41 @@ XFileMesh::~XFileMesh()
 
 void XFileMesh::Initialize(wstring _fp)
 {
-	m_hierarchy = new DynamicMeshHierarchy;
+	m_hierarchy = new MeshHierarchy;
 
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &m_animController));
 
-	UpdateBoneMatrix();
+	Matrix base = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root,base);
 	TraverseBone((Nalmak_Frame*)m_root);
 
+	m_isRenderHW = true;
+	for (auto& meshContainer : m_meshContainerList)
+	{
+		if (!meshContainer->pSkinInfo)
+		{
+			m_isRenderHW = false;
+			break;
+		}
+	}
+	if (m_isRenderHW)
+	{
+		m_meshType = MESH_TYPE_ANIMATION;
+		InitializeHW();
+	}
+	else
+	{
+		m_meshType = MESH_TYPE_STATIC;
+		InitializeSW();
+	}
+
+
+
+
+}
+
+void XFileMesh::InitializeSW()
+{
 	for (auto& meshContainer : m_meshContainerList)
 	{
 		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
@@ -38,23 +66,38 @@ void XFileMesh::Initialize(wstring _fp)
 
 	DWORD vertexIndex = 0;
 	DWORD figureIndex = 0;
+
+
+
 	for (auto& meshContainer : m_meshContainerList)
 	{
 		LPD3DXMESH mesh = meshContainer->MeshData.pMesh;
 
+		D3DVERTEXELEMENT9			decl[MAX_FVF_DECL_SIZE];
+		ZeroMemory(decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
+		mesh->GetDeclaration(decl);
+		DWORD offset = 0;
+
+		for (DWORD i = 0; i < MAX_FVF_DECL_SIZE; ++i)
+		{
+			if (decl[i].Usage == D3DDECLUSAGE_POSITION)
+			{
+				offset = (unsigned char)decl[i].Offset;
+				break;
+			}
+		}
 
 		void* vertexMem = nullptr;
 		mesh->LockVertexBuffer(0, &vertexMem);
 		DWORD currentVertexCount = mesh->GetNumVertices();
 		for (DWORD i = 0; i < currentVertexCount; ++i)
 		{
-			m_vertexPositionData[vertexIndex] = ((INPUT_LAYOUT_POSITION_NORMAL_UV*)vertexMem)[i].position;
+			m_vertexPositionData[vertexIndex] = *((Vector3*)(((unsigned char*)vertexMem) + (m_stride * i + offset)));
 			++vertexIndex;
 		}
 		mesh->UnlockVertexBuffer();
 
 
-		vector<INDEX32> test2;
 		void* indexMem = nullptr;
 		mesh->LockIndexBuffer(0, &indexMem);
 		DWORD currentFigureCount = mesh->GetNumFaces();
@@ -62,28 +105,70 @@ void XFileMesh::Initialize(wstring _fp)
 		{
 			m_indexData[figureIndex] = ((INDEX32*)indexMem)[i];
 			++figureIndex;
-			test2.emplace_back(((INDEX32*)indexMem)[i]);
 		}
 		//memcpy(&m_indexData[figureIndex], indexMem, sizeof(INDEX32) * currentFigureCount);
 		mesh->UnlockIndexBuffer();
 	}
-	
-	
-	
-	if (m_animController)
+
+	D3DXComputeBoundingSphere(m_vertexPositionData,
+		m_vertexCount,
+		sizeof(Vector3),
+		&m_boundingSphereCenter,
+		&m_boundingSphereRadius);
+}
+
+void XFileMesh::InitializeHW()
+{
+	Nalmak_MeshContainer* newMeshContainer = nullptr;
+
+	vector<Nalmak_MeshContainer*> newMeshContainerList;
+
+	for (auto& meshContainer : m_meshContainerList)
 	{
-		m_meshType = MESH_TYPE_ANIMATION;
-	}
-	else 
-	{
-		m_meshType = MESH_TYPE_STATIC;
-		D3DXComputeBoundingSphere((Vector3*)m_vertexPositionData,
-			m_vertexCount,
-			sizeof(INPUT_LAYOUT_POSITION_NORMAL_UV),
-			&m_boundingSphereCenter,
-			&m_boundingSphereRadius);
+		auto mesh = meshContainer->MeshData.pMesh;
+		newMeshContainer = meshContainer;
+
+		DWORD boneCombinationCount = 0;
+		SAFE_RELEASE(mesh);
+
+		ThrowIfFailed(newMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh(
+			newMeshContainer->originalMesh,
+			D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,
+			100,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			&newMeshContainer->maxVertexInfl,
+			&boneCombinationCount,
+			&newMeshContainer->boneCombinationTable,
+			&mesh
+		));
+
+		mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
+	
+		D3DXATTRIBUTERANGE* attributeTable = new D3DXATTRIBUTERANGE[newMeshContainer->attributeTableCount];
+		mesh->GetAttributeTable(attributeTable, &newMeshContainer->attributeTableCount);
+		SAFE_DELETE_ARR(attributeTable);
+		
+		newMeshContainerList.emplace_back(newMeshContainer);
 	}
 
+	m_meshContainerList.clear();
+
+	for (auto& newMeshContainer : newMeshContainerList)
+	{
+		m_meshContainerList.emplace_back(newMeshContainer);
+	}
+
+	for (auto& meshContainer : m_meshContainerList)
+	{
+		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
+		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
+
+		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
+		m_stride = D3DXGetFVFVertexSize(FVF);
+	}
 }
 
 void XFileMesh::Release()
@@ -93,50 +178,105 @@ void XFileMesh::Release()
 	SAFE_DELETE(m_hierarchy);
 	SAFE_DELETE(m_vertexPositionData);
 	SAFE_DELETE(m_indexData);
-	SAFE_DELETE(m_animController);
+	SAFE_RELEASE(m_animController);
 }
+
+
 
 void XFileMesh::Draw(UINT subset)
 {
-	for (auto& meshContainer : m_meshContainerList)
+}
+
+void XFileMesh::Draw(Shader* _shader)
+{
+	if (m_isRenderHW)
 	{
-		LPD3DXSKININFO skin = meshContainer->pSkinInfo;
-		if (skin)
+		for (auto& meshContainer : m_meshContainerList)
 		{
-			void* srcVtx = nullptr;
-			void* dstVtx = nullptr;
+			UINT subsetCount = 0;
 
-			meshContainer->originalMesh->LockVertexBuffer(0, &srcVtx);
-			meshContainer->MeshData.pMesh->LockVertexBuffer(0, &dstVtx);
 
-			for (unsigned long i = 0; i < meshContainer->boneCount; ++i)
-				meshContainer->renderingMatrices[i] = meshContainer->offsetMatrices[i] * (*meshContainer->boneWorldMatrices[i]);
+			UINT boneCount = 50;
 
-			skin->UpdateSkinnedMesh(
-				meshContainer->renderingMatrices,
-				NULL, // 원상복귀 행렬
-				srcVtx,
-				dstVtx);
-
-			// shader 처리 
-			// commit change
-
-			for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
+			if(meshContainer->boneCount < boneCount)
 			{
-				meshContainer->MeshData.pMesh->DrawSubset(i);
+				boneCount = meshContainer->boneCount;
 			}
 
-			meshContainer->originalMesh->UnlockVertexBuffer();
-			meshContainer->MeshData.pMesh->UnlockVertexBuffer();
-		}
-		else
-		{
+			LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
+			for (UINT palette = 0; palette < boneCount; ++palette)
+			{
+				int matrixIndex = boneCombination[subsetCount].BoneId[palette];
+				if (matrixIndex != UINT_MAX)
+				{
+					meshContainer->renderingMatrices[palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
+				}
+			}
+			_shader->SetInt("g_bone", meshContainer->maxVertexInfl);
+			_shader->SetMatrixArray("g_paletteMatricies", meshContainer->renderingMatrices, boneCount);
+			_shader->CommitChanges();
+
 			for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
 			{
 				meshContainer->MeshData.pMesh->DrawSubset(i);
 			}
 		}
 	}
+	else
+	{
+		for (auto& meshContainer : m_meshContainerList)
+		{
+			LPD3DXSKININFO skin = meshContainer->pSkinInfo;
+			if (skin)
+			{
+				void* srcVtx = nullptr;
+				void* dstVtx = nullptr;
+
+				meshContainer->originalMesh->LockVertexBuffer(0, &srcVtx);
+				meshContainer->MeshData.pMesh->LockVertexBuffer(0, &dstVtx);
+
+				for (unsigned long i = 0; i < meshContainer->boneCount; ++i)
+					meshContainer->renderingMatrices[i] = meshContainer->offsetMatrices[i] * (*meshContainer->boneCombinedMatrices[i]);
+
+				skin->UpdateSkinnedMesh(
+					meshContainer->renderingMatrices,
+					NULL, // 원상복귀 행렬
+					srcVtx,
+					dstVtx);
+
+				// shader 처리 
+				// commit change
+
+				for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
+				{
+					meshContainer->MeshData.pMesh->DrawSubset(i);
+				}
+
+				meshContainer->originalMesh->UnlockVertexBuffer();
+				meshContainer->MeshData.pMesh->UnlockVertexBuffer();
+			}
+			else
+			{
+				for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
+				{
+					meshContainer->MeshData.pMesh->DrawSubset(i);
+				}
+			}
+		}
+	}
+	
+}
+
+void XFileMesh::DrawHW()
+{
+
+
+
+}
+
+bool XFileMesh::IsRenderHW()
+{
+	return m_isRenderHW;
 }
 
 void XFileMesh::BindingStreamSource(unsigned int _inputLayoutSize)
@@ -158,7 +298,7 @@ void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
 			Nalmak_Frame* frame = (Nalmak_Frame*)D3DXFrameFind(m_root, boneName);
 			if (!frame)
 				continue;
-			meshContainer->boneWorldMatrices[i] = &frame->boneWorldMatrix;
+			meshContainer->boneCombinedMatrices[i] = &frame->boneWorldMatrix;
 		}
 
 		m_meshContainerList.emplace_back(meshContainer);
@@ -171,21 +311,18 @@ void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
 		TraverseBone(siblingFrame);
 }
 
-void XFileMesh::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
-{
-	_bone->boneWorldMatrix = _bone->TransformationMatrix * _parent;
-
-	if (_bone->pFrameFirstChild)
-		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneWorldMatrix);
-
-	if (_bone->pFrameSibling)
-		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
-
-}
 
 
 LPD3DXANIMATIONCONTROLLER  XFileMesh::GetAnimationController()
 {
 	return m_animController;
 }
+
+LPD3DXFRAME XFileMesh::GetRoot()
+{
+	return m_root;
+}
+
+
+
 

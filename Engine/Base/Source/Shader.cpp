@@ -312,6 +312,11 @@ void Shader::SetMatrix(const string& _parameter, const Matrix & _value)
 	ThrowIfFailed(m_effect->SetMatrix(_parameter.c_str(), &_value));
 }
 
+void Shader::SetMatrixArray(const string & _parameter, Matrix * _matrix, UINT _count)
+{
+	ThrowIfFailed(m_effect->SetMatrixArray(_parameter.c_str(), _matrix,_count));
+}
+
 void Shader::SetTexture(const string& _parameter, IDirect3DBaseTexture9* _value)
 {
 	ThrowIfFailed(m_effect->SetTexture(_parameter.c_str(), _value));

@@ -32,6 +32,8 @@ private:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
+public:
+	virtual void UpdateEachAnimation();
 private:
 	size_t m_maxIndex;
 	size_t m_currentIndex = 0;;

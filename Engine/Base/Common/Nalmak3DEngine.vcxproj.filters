@@ -546,14 +546,16 @@
     <ClCompile Include="..\Source\StaticObjectInfo.cpp">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp">
-      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Nalmak_Frame.cpp" />
     <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
     <ClCompile Include="..\Source\AnimationController.cpp" />
-    <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\XFileMesh.cpp">
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp">
+      <Filter>05.Component\01.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\MeshHierarchy.cpp">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClCompile>
   </ItemGroup>
@@ -879,14 +881,16 @@
     <ClInclude Include="..\Include\StaticObjectInfo.h">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\DynamicMeshHierarchy.h">
-      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Nalmak_Frame.h" />
     <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
     <ClInclude Include="..\Include\AnimationController.h" />
-    <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\XFileMesh.h">
+      <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\SkinnedMeshRenderer.h">
+      <Filter>05.Component\01.Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MeshHierarchy.h">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClInclude>
   </ItemGroup>
@@ -924,6 +928,9 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Skinning.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd">
@@ -951,6 +958,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SYS_Skinning.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

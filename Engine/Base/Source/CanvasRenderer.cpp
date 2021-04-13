@@ -23,6 +23,8 @@ CanvasRenderer::CanvasRenderer(Desc * _desc)
 
 void CanvasRenderer::Initialize()
 {
+	IRenderer::Initialize();
+
 	m_renderManager = RenderManager::GetInstance();
 	m_input = InputManager::GetInstance();
 

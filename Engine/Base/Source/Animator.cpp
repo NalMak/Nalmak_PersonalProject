@@ -21,7 +21,8 @@ Animator::Animator(Desc * _desc)
 		auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 		if (mesh->GetMeshType() == MESH_TYPE_ANIMATION)
 		{
-			m_animController = new AnimationController((XFileMesh*)mesh);
+			XFileMesh* xMesh = (XFileMesh*)mesh;
+			m_animController = AnimationController::CloneAnimationController(xMesh->GetAnimationController(),xMesh->GetRoot());
 		}
 	}
 }
@@ -39,11 +40,7 @@ void Animator::Update()
 	if (m_isSleep)
 		return;
 
-	if (m_animController)
-	{
-		//m_animController->UpdateAnimationController();
-		m_animController->Update();
-	}
+
 
 	m_timer += m_time->GetdeltaTime();
 
@@ -73,7 +70,15 @@ void Animator::LateUpdate()
 
 void Animator::Release()
 {
-	//SAFE_DELETE(m_animController);
+	SAFE_RELEASE(m_animController);
+}
+
+void Animator::UpdateEachAnimation()
+{
+	if (m_animController)
+	{
+		m_animController->Update();
+	}
 }
 
 void Animator::Play(wstring _spriteName)

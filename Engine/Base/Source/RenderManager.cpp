@@ -526,6 +526,7 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
+					renderer->UpdateEachAnimation();
 					renderer->Render(_cBuffer);
 				}
 			}

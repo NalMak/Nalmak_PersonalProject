@@ -46,7 +46,7 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
-    <ClCompile Include="..\Source\DynamicMeshHierarchy.cpp" />
+    <ClCompile Include="..\Source\MeshHierarchy.cpp" />
     <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
@@ -151,7 +151,7 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
-    <ClInclude Include="..\Include\DynamicMeshHierarchy.h" />
+    <ClInclude Include="..\Include\MeshHierarchy.h" />
     <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
@@ -253,6 +253,7 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Skinning.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
   </ItemGroup>
@@ -264,6 +265,7 @@
     <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd" />
     <None Include="..\..\Resource\Shader\SYS_LightDepth.sd" />
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Skinning.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />
   </ItemGroup>

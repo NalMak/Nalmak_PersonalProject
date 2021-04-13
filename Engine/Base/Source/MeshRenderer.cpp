@@ -25,6 +25,7 @@ MeshRenderer::MeshRenderer(Desc * _desc)
 
 void MeshRenderer::Initialize()
 {
+	IRenderer::Initialize();
 }
 
 void MeshRenderer::Update()

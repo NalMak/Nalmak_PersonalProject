@@ -15,9 +15,10 @@ class NALMAK_DLL IRenderer :
 public:
 	IRenderer();
 	virtual ~IRenderer() = default;
+protected:
+	virtual void Initialize() override;
 private:
 	// Component을(를) 통해 상속됨
-	virtual void Initialize() override = 0;
 	virtual void Update() override = 0;
 	virtual void LateUpdate() override = 0;
 	virtual void PreRender() override;
@@ -54,8 +55,12 @@ public:
 	void SetFrustumCulling(bool _culling) { m_isFrustumCulling = _culling; }
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
 	void SetCastShadow(bool _isCast) { m_isCastShadow = _isCast; }
+	void UpdateEachAnimation();
+public:
+	class Animator* GetAnimator();
 protected:
 	class RenderManager* m_renderManager = nullptr;
+	class Animator* m_animator = nullptr;
 };
 
 END
