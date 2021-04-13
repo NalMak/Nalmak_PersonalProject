@@ -25,6 +25,11 @@ private:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
+private:
+	void RenderSW(ConstantBuffer & _cBuffer);
+	void RenderHW_ConstanceBuffer(ConstantBuffer & _cBuffer);
+	void RenderHW_FetchTex(ConstantBuffer & _cBuffer);
+
 public:
 	virtual void Render(ConstantBuffer & _cBuffer) override;
 	virtual void RenderPure() override;
@@ -37,8 +42,10 @@ public:
 	XFileMesh* GetMesh();
 private:
 	vector<Material*> m_materials;
-	
 	XFileMesh * m_mesh = nullptr;
+private:
+	static bool m_onceInit;
+	static LPDIRECT3DTEXTURE9 m_fetchTexture;
 public:
 	DWORD GetSubsetCount();
 

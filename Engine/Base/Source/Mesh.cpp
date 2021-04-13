@@ -21,6 +21,11 @@ Vector3 Mesh::GetBoundingSphereCenter()
 	return m_boundingSphereCenter;
 }
 
+DWORD Mesh::GetSubsetCount(UINT _meshContainerIndex)
+{
+	return m_subsetCounts[_meshContainerIndex];
+}
+
 MESH_TYPE Mesh::GetMeshType()
 {
 	return m_meshType;
@@ -39,6 +44,11 @@ DWORD Mesh::GetVertexCount()
 DWORD Mesh::GetFigureCount()
 {
 	return m_figureCount;
+}
+
+UINT Mesh::GetMeshContainerSize()
+{
+	return m_subsetCounts.size();
 }
 
 Vector3 * Mesh::GetVertexPositionData()

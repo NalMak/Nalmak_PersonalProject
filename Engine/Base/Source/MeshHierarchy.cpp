@@ -1,6 +1,4 @@
 #include "MeshHierarchy.h"
-#include "Nalmak_Frame.h"
-#include "Nalmak_MeshContainer.h"
 #include "DeviceManager.h"
 
 
@@ -20,7 +18,7 @@ HRESULT MeshHierarchy::CreateFrame(LPCSTR Name, LPD3DXFRAME * ppNewFrame)
 	Nalmak_Frame* frame;
 	SAFE_NEW(frame, Nalmak_Frame);
 	
-	AllocateName(&frame->Name, Name);
+	CopyHeap(&frame->Name, Name);
 	
 	*ppNewFrame = frame;
 
@@ -44,7 +42,7 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 	Nalmak_MeshContainer* meshContainer;
 	SAFE_NEW(meshContainer,Nalmak_MeshContainer);
 
-	AllocateName(&meshContainer->Name, Name);
+	CopyHeap(&meshContainer->Name, Name);
 
 	meshContainer->MeshData.Type = D3DXMESHTYPE_MESH;
 
@@ -92,7 +90,6 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 
 	meshContainer->pSkinInfo = pSkinInfo;
 	meshContainer->pSkinInfo->AddRef(); // !!
-
 
 	meshContainer->boneCount = pSkinInfo->GetNumBones();
 
@@ -149,7 +146,7 @@ HRESULT MeshHierarchy::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerTo
 	return S_OK;
 }
 
-void MeshHierarchy::AllocateName(char ** _dst, const char * _src)
+void MeshHierarchy::CopyHeap(char ** _dst, const char * _src)
 {
 	if (!_src)
 		return;

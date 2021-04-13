@@ -7,6 +7,7 @@ VIBuffer::VIBuffer()
 {
 	m_vertexCount = 0;
 	m_figureCount = 0;
+	m_subsetCounts.emplace_back(1);
 }
 
 
@@ -39,7 +40,7 @@ void VIBuffer::Release()
 	SAFE_DELETE_ARR(m_vertexPositionData);
 }
 
-void VIBuffer::Draw(UINT subset)
+void VIBuffer::Draw(UINT meshContainerIndex, UINT subset)
 {
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_primitiveType, 0, 0, GetVertexCount(), 0, GetFigureCount()));
 }
@@ -49,3 +50,4 @@ void VIBuffer::BindingStreamSource(unsigned int _inputLayoutSize)
 	ThrowIfFailed(m_device->SetStreamSource(0, m_vBuffer, 0, _inputLayoutSize));
 	ThrowIfFailed(m_device->SetIndices(m_iBuffer));
 }
+

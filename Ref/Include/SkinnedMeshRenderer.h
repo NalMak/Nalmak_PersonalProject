@@ -1,5 +1,9 @@
 #pragma once
 #include "IRenderer.h"
+
+// https://icoder.tistory.com/entry/DirectX-Sample-SkinnedMesh
+
+
 class XFileMesh;
 class AnimationController;
 class NALMAK_DLL SkinnedMeshRenderer :
@@ -21,6 +25,11 @@ private:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
+private:
+	void RenderSW(ConstantBuffer & _cBuffer);
+	void RenderHW_ConstanceBuffer(ConstantBuffer & _cBuffer);
+	void RenderHW_FetchTex(ConstantBuffer & _cBuffer);
+
 public:
 	virtual void Render(ConstantBuffer & _cBuffer) override;
 	virtual void RenderPure() override;
@@ -30,11 +39,13 @@ public:
 	virtual Material * GetMaterial(int _index = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
-	Mesh* GetMesh();
+	XFileMesh* GetMesh();
 private:
 	vector<Material*> m_materials;
-	
-	Mesh * m_mesh = nullptr;
+	XFileMesh * m_mesh = nullptr;
+private:
+	static bool m_onceInit;
+	static LPDIRECT3DTEXTURE9 m_fetchTexture;
 public:
 	DWORD GetSubsetCount();
 

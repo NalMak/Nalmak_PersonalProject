@@ -66,9 +66,5 @@ float4 GetWorldPosFromDepth(float2 _depth, float2 _screenUV)
 	return pos;
 }
 
-float4 GetWorldPosFromDepth2(float _depth, float2 _screenUV)
-{
-
-}
 
 

@@ -18,7 +18,7 @@ public:
 	virtual HRESULT DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerToFree) override;
 
 private:
-	void AllocateName(char ** _dst, const char * _src);
+	void CopyHeap(char ** _dst, const char * _src);
 	LPDIRECT3DDEVICE9 m_device;
 };
 

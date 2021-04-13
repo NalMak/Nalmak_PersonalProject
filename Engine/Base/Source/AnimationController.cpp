@@ -33,10 +33,10 @@ void AnimationController::Update()
 
 void AnimationController::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
 {
-	_bone->boneWorldMatrix = _bone->TransformationMatrix * _parent;
+	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
 
 	if (_bone->pFrameFirstChild)
-		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneWorldMatrix);
+		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
 
 	if (_bone->pFrameSibling)
 		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);

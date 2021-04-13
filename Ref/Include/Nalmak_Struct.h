@@ -84,6 +84,41 @@ typedef struct INDEX32
 
 }INDEX32;
 
+
+typedef struct Nalmak_MeshContainer final : public D3DXMESHCONTAINER
+{
+	DWORD boneCount = 0;
+
+	LPD3DXMESH		originalMesh = nullptr;
+	D3DXMATRIX*		offsetMatrices;
+	D3DXMATRIX**	boneCombinedMatrices;
+	D3DXMATRIX*		renderingMatrices;
+
+	DWORD attributeTableCount = 0;
+	DWORD maxVertexInfl = 0;
+	LPD3DXBUFFER boneCombinationTable = nullptr;
+}Nalmak_MeshContainer;
+
+
+typedef struct Nalmak_Frame final : public D3DXFRAME
+{
+public:
+	Nalmak_Frame()
+	{
+		boneCombinedMatrix = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+		TransformationMatrix = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+	}
+	/*	LPSTR                   Name;
+	D3DXMATRIX              TransformationMatrix; // 뼈의 로컬 개념
+
+	LPD3DXMESHCONTAINER     pMeshContainer;
+
+	struct _D3DXFRAME       *pFrameSibling;
+	struct _D3DXFRAME       *pFrameFirstChild;*/
+public:
+	Matrix boneCombinedMatrix;
+}Nalmak_Frame;
+
 /////////////////////////////////////////////////////////////////////////////////
 // INPUT LAYOUT 추가 시 꼭 해야할것!!
 //  1. VERTEX_INPUT_LAYOUT enum 추가 

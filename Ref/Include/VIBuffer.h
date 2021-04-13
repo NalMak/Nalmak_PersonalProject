@@ -18,7 +18,7 @@ public:
 private:
 	virtual void Release() override;
 public:
-	virtual void Draw(UINT subset = 0) override;
+	virtual void Draw(UINT meshContainerIndex = 0, UINT subset = 0) override;
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
 
 protected:
@@ -42,6 +42,8 @@ protected:
 			m_vertexPositionData[i] = _vertices[i].position;
 		}
 	}
+
+
 
 
 

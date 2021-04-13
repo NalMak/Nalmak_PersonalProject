@@ -25,6 +25,11 @@ void XFileMesh::Initialize(wstring _fp)
 	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root,base);
 	TraverseBone((Nalmak_Frame*)m_root);
 
+
+	for (auto& meshContainer : m_meshContainerList)
+	{
+		m_subsetCounts.emplace_back(meshContainer->NumMaterials);
+	}
 	m_isRenderHW = true;
 	for (auto& meshContainer : m_meshContainerList)
 	{
@@ -34,6 +39,8 @@ void XFileMesh::Initialize(wstring _fp)
 			break;
 		}
 	}
+
+	
 	if (m_isRenderHW)
 	{
 		m_meshType = MESH_TYPE_ANIMATION;
@@ -43,6 +50,7 @@ void XFileMesh::Initialize(wstring _fp)
 	{
 		m_meshType = MESH_TYPE_STATIC;
 		InitializeSW();
+
 	}
 
 
@@ -129,7 +137,7 @@ void XFileMesh::InitializeHW()
 		newMeshContainer = meshContainer;
 
 		DWORD boneCombinationCount = 0;
-		SAFE_RELEASE(mesh);
+		//SAFE_RELEASE(mesh);
 
 		ThrowIfFailed(newMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh(
 			newMeshContainer->originalMesh,
@@ -169,6 +177,9 @@ void XFileMesh::InitializeHW()
 		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
 		m_stride = D3DXGetFVFVertexSize(FVF);
 	}
+
+	D3DXFrameCalculateBoundingSphere(m_root, &m_boundingSphereCenter, &m_boundingSphereRadius);
+	int a = 5;
 }
 
 void XFileMesh::Release()
@@ -182,96 +193,9 @@ void XFileMesh::Release()
 }
 
 
-
-void XFileMesh::Draw(UINT subset)
+void XFileMesh::Draw(UINT meshContainerIndex, UINT subset)
 {
-}
-
-void XFileMesh::Draw(Shader* _shader)
-{
-	if (m_isRenderHW)
-	{
-		for (auto& meshContainer : m_meshContainerList)
-		{
-			UINT subsetCount = 0;
-
-
-			UINT boneCount = 50;
-
-			if(meshContainer->boneCount < boneCount)
-			{
-				boneCount = meshContainer->boneCount;
-			}
-
-			LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
-			for (UINT palette = 0; palette < boneCount; ++palette)
-			{
-				int matrixIndex = boneCombination[subsetCount].BoneId[palette];
-				if (matrixIndex != UINT_MAX)
-				{
-					meshContainer->renderingMatrices[palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
-				}
-			}
-			_shader->SetInt("g_bone", meshContainer->maxVertexInfl);
-			_shader->SetMatrixArray("g_paletteMatricies", meshContainer->renderingMatrices, boneCount);
-			_shader->CommitChanges();
-
-			for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
-			{
-				meshContainer->MeshData.pMesh->DrawSubset(i);
-			}
-		}
-	}
-	else
-	{
-		for (auto& meshContainer : m_meshContainerList)
-		{
-			LPD3DXSKININFO skin = meshContainer->pSkinInfo;
-			if (skin)
-			{
-				void* srcVtx = nullptr;
-				void* dstVtx = nullptr;
-
-				meshContainer->originalMesh->LockVertexBuffer(0, &srcVtx);
-				meshContainer->MeshData.pMesh->LockVertexBuffer(0, &dstVtx);
-
-				for (unsigned long i = 0; i < meshContainer->boneCount; ++i)
-					meshContainer->renderingMatrices[i] = meshContainer->offsetMatrices[i] * (*meshContainer->boneCombinedMatrices[i]);
-
-				skin->UpdateSkinnedMesh(
-					meshContainer->renderingMatrices,
-					NULL, // 원상복귀 행렬
-					srcVtx,
-					dstVtx);
-
-				// shader 처리 
-				// commit change
-
-				for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
-				{
-					meshContainer->MeshData.pMesh->DrawSubset(i);
-				}
-
-				meshContainer->originalMesh->UnlockVertexBuffer();
-				meshContainer->MeshData.pMesh->UnlockVertexBuffer();
-			}
-			else
-			{
-				for (unsigned long i = 0; i < meshContainer->NumMaterials; ++i)
-				{
-					meshContainer->MeshData.pMesh->DrawSubset(i);
-				}
-			}
-		}
-	}
-	
-}
-
-void XFileMesh::DrawHW()
-{
-
-
-
+	m_meshContainerList[meshContainerIndex]->MeshData.pMesh->DrawSubset(subset);
 }
 
 bool XFileMesh::IsRenderHW()
@@ -279,8 +203,14 @@ bool XFileMesh::IsRenderHW()
 	return m_isRenderHW;
 }
 
+
 void XFileMesh::BindingStreamSource(unsigned int _inputLayoutSize)
 {
+}
+
+Nalmak_MeshContainer * XFileMesh::GetMeshContainer(UINT _index)
+{
+	return m_meshContainerList[_index];
 }
 
 void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
@@ -298,7 +228,7 @@ void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
 			Nalmak_Frame* frame = (Nalmak_Frame*)D3DXFrameFind(m_root, boneName);
 			if (!frame)
 				continue;
-			meshContainer->boneCombinedMatrices[i] = &frame->boneWorldMatrix;
+			meshContainer->boneCombinedMatrices[i] = &frame->boneCombinedMatrix;
 		}
 
 		m_meshContainerList.emplace_back(meshContainer);
@@ -322,6 +252,8 @@ LPD3DXFRAME XFileMesh::GetRoot()
 {
 	return m_root;
 }
+
+
 
 
 

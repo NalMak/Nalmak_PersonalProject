@@ -546,8 +546,6 @@
     <ClCompile Include="..\Source\StaticObjectInfo.cpp">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Nalmak_Frame.cpp" />
-    <ClCompile Include="..\Source\Nalmak_MeshContainer.cpp" />
     <ClCompile Include="..\Source\AnimationController.cpp" />
     <ClCompile Include="..\Source\XFileMesh.cpp">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
@@ -881,8 +879,6 @@
     <ClInclude Include="..\Include\StaticObjectInfo.h">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Nalmak_Frame.h" />
-    <ClInclude Include="..\Include\Nalmak_MeshContainer.h" />
     <ClInclude Include="..\Include\AnimationController.h" />
     <ClInclude Include="..\Include\XFileMesh.h">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
@@ -928,7 +924,10 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Resource\Shader\SYS_Skinning.fx">
+    <FxCompile Include="..\..\Resource\Shader\SYS_HWSkinning_ConstantBuffer.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
   </ItemGroup>
@@ -960,7 +959,10 @@
     <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
-    <None Include="..\..\Resource\Shader\SYS_Skinning.sd">
+    <None Include="..\..\Resource\Shader\SYS_HWSkinning_ConstantBuffer.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

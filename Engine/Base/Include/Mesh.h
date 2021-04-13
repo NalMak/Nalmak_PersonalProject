@@ -12,7 +12,7 @@ public:
 	virtual void Release() override = 0;
 
 public:
-	virtual void Draw(UINT subset = 0) = 0;
+	virtual void Draw(UINT meshContainerIndex = 0, UINT subset = 0) = 0;
 	virtual void BindingStreamSource(UINT _inputLayoutSize) = 0;
 protected:
 	MESH_TYPE m_meshType;
@@ -29,6 +29,7 @@ public:
 	DWORD GetStride();
 	DWORD GetVertexCount();
 	DWORD GetFigureCount();
+	UINT GetMeshContainerSize();
 	Vector3* GetVertexPositionData();
 	INDEX32* GetIndices();
 	D3DPRIMITIVETYPE GetPrimitiveType();
@@ -36,11 +37,11 @@ public:
 protected:
 	float m_boundingSphereRadius;
 	Vector3 m_boundingSphereCenter;
-	DWORD m_subsetCount = 1;
+	vector<DWORD> m_subsetCounts;
 public:
 	float GetBoundingSphereRadius();
 	Vector3 GetBoundingSphereCenter();
-	DWORD GetSubsetCount() { return m_subsetCount; }
+	DWORD GetSubsetCount(UINT _meshContainerIndex = 0);
 
 	
 };

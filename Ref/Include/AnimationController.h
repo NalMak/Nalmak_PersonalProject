@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Nalmak_Include.h"
-#include "Nalmak_MeshContainer.h"
-#include "Nalmak_Frame.h"
+
 class XFileMesh;
 
 class AnimationController
