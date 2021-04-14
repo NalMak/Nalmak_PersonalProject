@@ -1,8 +1,5 @@
-﻿C:\Users\JUN\Desktop\pre Nalmak\Engine\Resource\Shader\SYS_HWSkinning_ConstantBuffer.fx(81,2-51): warning X3206: implicit truncation of vector type
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\pre Nalmak\Engine\Base\Bin\SYS_HWSkinning_ConstantBuffer.cso
-  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\pre Nalmak\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  SkinnedMeshRenderer.cpp
+  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\AnimationController.h
   ..\Include\Animator.h

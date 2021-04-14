@@ -79,7 +79,7 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 	
 }
 
-void MeshRenderer::RenderPure()
+void MeshRenderer::RenderForShadow()
 {
 	BindingStreamSource();
 

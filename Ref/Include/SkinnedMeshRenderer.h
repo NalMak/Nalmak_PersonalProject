@@ -3,9 +3,11 @@
 
 // https://icoder.tistory.com/entry/DirectX-Sample-SkinnedMesh
 
+#define HARDWARE_SKINNING_BONE_COUNT_MAX 256
 
 class XFileMesh;
 class AnimationController;
+
 class NALMAK_DLL SkinnedMeshRenderer :
 	public IRenderer
 {
@@ -27,12 +29,12 @@ private:
 	virtual void Release() override;
 private:
 	void RenderSW(ConstantBuffer & _cBuffer);
-	void RenderHW_ConstanceBuffer(ConstantBuffer & _cBuffer);
+	void RenderHW_ConstantBuffer(ConstantBuffer & _cBuffer);
 	void RenderHW_FetchTex(ConstantBuffer & _cBuffer);
 
 public:
 	virtual void Render(ConstantBuffer & _cBuffer) override;
-	virtual void RenderPure() override;
+	virtual void RenderForShadow() override;
 	virtual void BindingStreamSource() override;
 public:
 	virtual int GetMaterialCount() override;

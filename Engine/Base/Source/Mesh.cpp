@@ -48,7 +48,7 @@ DWORD Mesh::GetFigureCount()
 
 UINT Mesh::GetMeshContainerSize()
 {
-	return m_subsetCounts.size();
+	return (UINT)m_subsetCounts.size();
 }
 
 Vector3 * Mesh::GetVertexPositionData()

@@ -2,6 +2,9 @@
 
 #include "Nalmak_Include.h"
 
+// 트랙 -> 애니메이션 셋 -> 키 프레임
+
+// 트랙 -> 재생도구 
 class XFileMesh;
 
 class AnimationController

@@ -26,4 +26,5 @@
 ##   INPUT_LAYOUT_PARTICLE                    : 4
 ##   INPUT_LAYOUT_POSITION_NORMAL_BINORMAL_TANGENT_UV : 5
 ##   INPUT_LAYOUT_POSITION_COLOR : 6
+## INPUT_LAYOUT_POSITION_NORMAL_UV_ANIMATIONBLENDING : 7
 #########################################################

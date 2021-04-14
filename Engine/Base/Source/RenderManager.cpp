@@ -226,7 +226,7 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
 				shader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
 				shader->CommitChanges();
-				renderer->RenderPure();
+				renderer->RenderForShadow();
 			}
 		
 		}

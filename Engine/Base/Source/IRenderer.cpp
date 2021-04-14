@@ -25,7 +25,7 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
-void IRenderer::RenderPure()
+void IRenderer::RenderForShadow()
 {
 }
 

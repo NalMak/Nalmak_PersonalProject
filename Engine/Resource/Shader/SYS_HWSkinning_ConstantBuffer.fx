@@ -21,10 +21,10 @@ sampler mainSampler = sampler_state
 struct VS_INPUT
 {
 	float3 pos : POSITION;
-	float3 weight : BLENDWEIGHT;
-	float4 boneIndex : BLENDINDICES;
-	float2 uv : TEXCOORD0;
 	float3 normal : NORMAL;
+	float2 uv : TEXCOORD0;
+	float3 weight : BLENDWEIGHT0;
+	float4 boneIndex : BLENDINDICES0;
 };
 
 struct VS_OUTPUT
@@ -56,26 +56,26 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 {
 	VS_OUTPUT o = (VS_OUTPUT)0; // 
 
-	float3 skinningPos = 0;
+	float4 skinningPos = 0;
 	float3 skinningNormal = 0;
 
-	float lerpWeight = 0.f;
+	float lastWeight = 0.f;
 
-	for (int i = 0; i < g_bone - 1; ++i)
+
+	for (int i = 0; i < g_bone; ++i)
 	{
-		lerpWeight += _in.weight[i];
+		lastWeight += _in.weight[i];
 		
-		skinningPos += _in.weight[i] * mul(float4(_in.pos,1.f), g_palette[_in.boneIndex[i]]).xyz;
-		skinningNormal += _in.weight[i] * mul(float4(_in.normal,0.f), g_palette[_in.boneIndex[i]]).xyz;
-		
+		skinningPos +=  mul(float4(_in.pos,1),g_palette[_in.boneIndex[i]]);
+		skinningNormal += mul(_in.normal, (float3x3)g_palette[_in.boneIndex[i]]);
 	}
 	
-	lerpWeight = 1.f - lerpWeight;
+	lastWeight = 1.f - lastWeight;
+	
+	skinningPos += lastWeight * mul(float4(_in.pos,1), g_palette[_in.boneIndex[g_bone]]);
+	skinningNormal += lastWeight * mul(_in.normal, (float3x3)g_palette[_in.boneIndex[g_bone]]);
 
-	skinningPos += lerpWeight * mul(float4(_in.pos, 1.f), g_palette[_in.boneIndex[g_bone - 1]]).xyz;
-	skinningNormal += lerpWeight * mul(float4(_in.normal, 0.f), g_palette[_in.boneIndex[g_bone - 1]]).xyz;
-
-	float4 worldPos = mul(float4(skinningPos, 1), g_world);
+	float4 worldPos = mul(float4(skinningPos.xyz,1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);
 
 	o.normal = GetWorldNormal(skinningNormal, g_world);

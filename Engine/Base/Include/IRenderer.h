@@ -25,7 +25,7 @@ private:
 	virtual void Release() override = 0;
 public:
 	virtual void Render(ConstantBuffer& _cBuffer) = 0;
-	virtual void RenderPure();
+	virtual void RenderForShadow();
 	virtual void BindingStreamSource() = 0;
 public:
 	void RenderRequest();

@@ -7,6 +7,6 @@ outputRT "GBuffer_Normal"
 outputRT "GBuffer_Depth"
 outputRT "GBuffer_CookTorrance"
 
-inputLayout "2"
+inputLayout "7"
 
 

@@ -60,6 +60,8 @@ BEGIN(Nalmak)
 // https://cybershin.tistory.com/category/API.%20Programming/DirectX9?page=7 grass
 
 //https://superrealizm.tistory.com/entry/HDR-Bloom hdr 
+
+// poisson filter -> shadow 
 class RenderManager
 {
 	DECLARE_SINGLETON(RenderManager)

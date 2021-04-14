@@ -94,6 +94,9 @@ typedef struct Nalmak_MeshContainer final : public D3DXMESHCONTAINER
 	D3DXMATRIX**	boneCombinedMatrices;
 	D3DXMATRIX*		renderingMatrices;
 
+	D3DXATTRIBUTERANGE*		attributeTable = nullptr;
+
+	DWORD paletteEntriesCount = 50;
 	DWORD attributeTableCount = 0;
 	DWORD maxVertexInfl = 0;
 	LPD3DXBUFFER boneCombinationTable = nullptr;
@@ -188,7 +191,14 @@ struct INPUT_LAYOUT_PARTICLE
 	Vector3 spriteX_spriteY_index;
 };
 
-
+struct INPUT_LAYOUT_POSITION_NORMAL_UV_ANIMATIONBLENDING
+{
+	Vector3 position;
+	Vector3 normal;
+	Vector2 uv;
+	Vector4 weight;
+	Vector4 boneIndex;
+};
 
 
 // ¿œ¥‹ æ»æ∏

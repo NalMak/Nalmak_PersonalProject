@@ -27,10 +27,10 @@ sampler fetchSampler = sampler_state
 struct VS_INPUT
 {
 	float3 pos : POSITION;
-	float3 weight : BLENDWEIGHT;
-	float4 boneIndex : BLENDINDICES;
-	float2 uv : TEXCOORD0;
 	float3 normal : NORMAL;
+	float2 uv : TEXCOORD0;
+	float3 weight : BLENDWEIGHT0;
+	float4 boneIndex : BLENDINDICES0;
 };
 
 struct VS_OUTPUT
@@ -59,14 +59,14 @@ struct PS_OUTPUT
 
 matrix GetSkinMatrixFromTexture(int _index)
 {
-	float4 uvCol = float4(((float)((_index % 16) * 4) + 0.5f) / 64.0f, ((float)((_index / 16)) + 0.5f) / 64.0f, 0.0f, 0.0f);
+	float4 uvCol = float4(((float)((_index % 16) * 4) + 0.5f) / 32.0f, ((float)((_index / 16)) + 0.5f) / 32.0f, 0.0f, 0.0f);
 
 	float4x4 mat =
 	{
 		tex2Dlod(fetchSampler, uvCol),
-		tex2Dlod(fetchSampler, uvCol + float4(1.0f / 64.0f, 0, 0, 0)),
-		tex2Dlod(fetchSampler, uvCol + float4(2.0f / 64.0f, 0, 0, 0)),
-		tex2Dlod(fetchSampler, uvCol + float4(3.0f / 64.0f, 0, 0, 0))
+		tex2Dlod(fetchSampler, uvCol + float4(1.0f / 32.0f, 0, 0, 0)),
+		tex2Dlod(fetchSampler, uvCol + float4(2.0f / 32.0f, 0, 0, 0)),
+		tex2Dlod(fetchSampler, uvCol + float4(3.0f / 32.0f, 0, 0, 0))
 	};
 	return mat;
 }
@@ -80,7 +80,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 
 	float lerpWeight = 0.f;
 
-	for (int i = 0; i < g_bone - 1; ++i)
+	for (int i = 0; i < g_bone; ++i)
 	{
 		lerpWeight += _in.weight[i];
 		
@@ -91,8 +91,8 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	
 	lerpWeight = 1.f - lerpWeight;
 
-	skinningPos += lerpWeight * mul(float4(_in.pos, 1.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone - 1])).xyz;
-	skinningNormal += lerpWeight * mul(float4(_in.normal, 0.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone - 1])).xyz;
+	skinningPos += lerpWeight * mul(float4(_in.pos, 1.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone])).xyz;
+	skinningNormal += lerpWeight * mul(float4(_in.normal, 0.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone])).xyz;
 
 	float4 worldPos = mul(float4(skinningPos, 1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);

@@ -2,6 +2,7 @@
 #include "MeshHierarchy.h"
 #include "AnimationController.h"
 #include "Shader.h"
+#include "SkinnedMeshRenderer.h"
 
 XFileMesh::XFileMesh()
 {
@@ -20,10 +21,10 @@ void XFileMesh::Initialize(wstring _fp)
 	m_hierarchy = new MeshHierarchy;
 
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &m_animController));
-
 	Matrix base = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
-	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root,base);
+	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root, base);
 	TraverseBone((Nalmak_Frame*)m_root);
+
 
 
 	for (auto& meshContainer : m_meshContainerList)
@@ -40,7 +41,7 @@ void XFileMesh::Initialize(wstring _fp)
 		}
 	}
 
-	
+	//InitializeSW();
 	if (m_isRenderHW)
 	{
 		m_meshType = MESH_TYPE_ANIMATION;
@@ -136,28 +137,28 @@ void XFileMesh::InitializeHW()
 		auto mesh = meshContainer->MeshData.pMesh;
 		newMeshContainer = meshContainer;
 
-		DWORD boneCombinationCount = 0;
+		//DWORD boneCombinationCount = 0;
 		//SAFE_RELEASE(mesh);
 
 		ThrowIfFailed(newMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh(
 			newMeshContainer->originalMesh,
 			D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,
-			100,
+			HARDWARE_SKINNING_BONE_COUNT_MAX,
 			nullptr,
 			nullptr,
 			nullptr,
 			nullptr,
 			&newMeshContainer->maxVertexInfl,
-			&boneCombinationCount,
+			&newMeshContainer->attributeTableCount,
 			&newMeshContainer->boneCombinationTable,
 			&mesh
 		));
 
-		mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
-	
+	/*	mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
 		D3DXATTRIBUTERANGE* attributeTable = new D3DXATTRIBUTERANGE[newMeshContainer->attributeTableCount];
-		mesh->GetAttributeTable(attributeTable, &newMeshContainer->attributeTableCount);
-		SAFE_DELETE_ARR(attributeTable);
+		mesh->GetAttributeTable(newMeshContainer->attributeTable, &newMeshContainer->attributeTableCount);
+
+		SAFE_DELETE_ARR(newMeshContainer->attributeTable);*/
 		
 		newMeshContainerList.emplace_back(newMeshContainer);
 	}
@@ -179,7 +180,6 @@ void XFileMesh::InitializeHW()
 	}
 
 	D3DXFrameCalculateBoundingSphere(m_root, &m_boundingSphereCenter, &m_boundingSphereRadius);
-	int a = 5;
 }
 
 void XFileMesh::Release()
