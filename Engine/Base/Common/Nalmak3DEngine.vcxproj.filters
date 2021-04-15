@@ -930,6 +930,9 @@
     <FxCompile Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_GaussianBlur.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_OutLine.sd">
@@ -963,6 +966,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_GaussianBlur.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

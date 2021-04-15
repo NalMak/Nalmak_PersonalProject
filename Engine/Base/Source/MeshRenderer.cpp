@@ -79,11 +79,13 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 	
 }
 
-void MeshRenderer::RenderForShadow()
+void MeshRenderer::RenderForShadow(Shader* _shader)
 {
 	BindingStreamSource();
 
+
 	UINT meshContainerSize = m_mesh->GetMeshContainerSize();
+
 	for (UINT i = 0; i < meshContainerSize; ++i)
 	{
 		UINT subsetCount = m_mesh->GetSubsetCount(i);

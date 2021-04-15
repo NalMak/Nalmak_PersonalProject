@@ -166,6 +166,7 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 	RENDERER_TYPE type = _renderer->GetType();
 	switch (type)
 	{
+	case RENDERER_TYPE_SKINNED_MESH:
 	case RENDERER_TYPE_MESH:
 	{
 		Transform* trs = _renderer->GetTransform();

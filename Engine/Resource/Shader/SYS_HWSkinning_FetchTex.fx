@@ -38,14 +38,12 @@ struct VS_OUTPUT
 	float4 pos : POSITION;
 	float3 normal :NORMAL;
 	float4 uvAndDepth : TEXCOORD0; // x,y = uv  z = depth
-
 };
 
 struct PS_INPUT
 {
 	float3 normal :NORMAL;
 	float4 uvAndDepth : TEXCOORD0;
-
 };
 
 struct PS_OUTPUT
@@ -57,19 +55,7 @@ struct PS_OUTPUT
 
 };
 
-matrix GetSkinMatrixFromTexture(int _index)
-{
-	float4 uvCol = float4(((float)((_index % 16) * 4) + 0.5f) / 32.0f, ((float)((_index / 16)) + 0.5f) / 32.0f, 0.0f, 0.0f);
 
-	float4x4 mat =
-	{
-		tex2Dlod(fetchSampler, uvCol),
-		tex2Dlod(fetchSampler, uvCol + float4(1.0f / 32.0f, 0, 0, 0)),
-		tex2Dlod(fetchSampler, uvCol + float4(2.0f / 32.0f, 0, 0, 0)),
-		tex2Dlod(fetchSampler, uvCol + float4(3.0f / 32.0f, 0, 0, 0))
-	};
-	return mat;
-}
 
 VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 {
@@ -84,15 +70,14 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	{
 		lerpWeight += _in.weight[i];
 		
-		skinningPos += _in.weight[i] * mul(float4(_in.pos,1.f), GetSkinMatrixFromTexture(_in.boneIndex[i])).xyz;
-		skinningNormal += _in.weight[i] * mul(float4(_in.normal,0.f), GetSkinMatrixFromTexture(_in.boneIndex[i])).xyz;
+		skinningPos += _in.weight[i] * mul(float4(_in.pos,1.f), GetSkinMatrixFromTexture(fetchSampler,_in.boneIndex[i])).xyz;
+		skinningNormal += _in.weight[i] * mul(float4(_in.normal,0.f), GetSkinMatrixFromTexture(fetchSampler,_in.boneIndex[i])).xyz;
 		
 	}
-	
 	lerpWeight = 1.f - lerpWeight;
 
-	skinningPos += lerpWeight * mul(float4(_in.pos, 1.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone])).xyz;
-	skinningNormal += lerpWeight * mul(float4(_in.normal, 0.f), GetSkinMatrixFromTexture(_in.boneIndex[g_bone])).xyz;
+	skinningPos += lerpWeight * mul(float4(_in.pos, 1.f), GetSkinMatrixFromTexture(fetchSampler,_in.boneIndex[g_bone])).xyz;
+	skinningNormal += lerpWeight * mul(float4(_in.normal, 0.f), GetSkinMatrixFromTexture(fetchSampler,_in.boneIndex[g_bone])).xyz;
 
 	float4 worldPos = mul(float4(skinningPos, 1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);
@@ -110,6 +95,8 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 PS_OUTPUT PS_Main_Default(PS_INPUT  _in) 
 {
 	PS_OUTPUT o = (PS_OUTPUT)0;
+
+	
 
 	float4 diffuse = tex2D(mainSampler, _in.uvAndDepth.xy);
 	o.diffuse = diffuse * g_mainTexColor;

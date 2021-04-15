@@ -33,7 +33,7 @@ public:
 	HRESULT CheckShaderInitialize();
 	wstring GetName() { return m_name; }
 	void CommitChanges();
-	void BeginPass();
+	void BeginPass(UINT _pass = 0);
 	void EndPass();
 public:
 	VERTEX_INPUT_LAYOUT GetInputLayout() { return m_vertexInputLayout; }

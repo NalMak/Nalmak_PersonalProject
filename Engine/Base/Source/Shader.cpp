@@ -358,10 +358,10 @@ void Shader::CommitChanges()
 	m_effect->CommitChanges();
 }
 
-void Shader::BeginPass()
+void Shader::BeginPass(UINT _pass)
 {
 	ThrowIfFailed(m_effect->Begin(nullptr, 0));
-	ThrowIfFailed(m_effect->BeginPass(0));
+	ThrowIfFailed(m_effect->BeginPass(_pass));
 }
 
 void Shader::EndPass()

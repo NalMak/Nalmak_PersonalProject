@@ -25,10 +25,11 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
-void IRenderer::RenderForShadow()
+
+
+void IRenderer::RenderForShadow(Shader * _shader)
 {
 }
-
 
 void IRenderer::RenderRequest()
 {

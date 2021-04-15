@@ -31,18 +31,17 @@ void XFileMesh::Initialize(wstring _fp)
 	{
 		m_subsetCounts.emplace_back(meshContainer->NumMaterials);
 	}
-	m_isRenderHW = true;
+	bool isRenderHW = true;
 	for (auto& meshContainer : m_meshContainerList)
 	{
 		if (!meshContainer->pSkinInfo)
 		{
-			m_isRenderHW = false;
+			isRenderHW = false;
 			break;
 		}
 	}
 
-	//InitializeSW();
-	if (m_isRenderHW)
+	if (isRenderHW)
 	{
 		m_meshType = MESH_TYPE_ANIMATION;
 		InitializeHW();
@@ -70,13 +69,97 @@ void XFileMesh::InitializeSW()
 		m_stride = D3DXGetFVFVertexSize(FVF);
 	}
 
+	
+	StoreVertexIndexData();
+
+
+	D3DXComputeBoundingSphere(m_vertexPositionData,
+		m_vertexCount,
+		sizeof(Vector3),
+		&m_boundingSphereCenter,
+		&m_boundingSphereRadius);
+}
+
+void XFileMesh::InitializeHW()
+{
+	Nalmak_MeshContainer* newMeshContainer = nullptr;
+
+	vector<Nalmak_MeshContainer*> newMeshContainerList;
+
+	for (auto& meshContainer : m_meshContainerList)
+	{
+		auto mesh = meshContainer->MeshData.pMesh;
+		newMeshContainer = meshContainer;
+
+		//DWORD boneCombinationCount = 0;
+		SAFE_RELEASE(mesh);
+
+		ThrowIfFailed(newMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh(
+			newMeshContainer->originalMesh,
+			D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,
+			HARDWARE_SKINNING_BONE_COUNT_MAX,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			&newMeshContainer->maxVertexInfl,
+			&newMeshContainer->attributeTableCount,
+			&newMeshContainer->boneCombinationTable,
+			&mesh
+		));
+
+	/*	mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
+		D3DXATTRIBUTERANGE* attributeTable = new D3DXATTRIBUTERANGE[newMeshContainer->attributeTableCount];
+		mesh->GetAttributeTable(newMeshContainer->attributeTable, &newMeshContainer->attributeTableCount);
+
+		SAFE_DELETE_ARR(newMeshContainer->attributeTable);*/
+		newMeshContainer->MeshData.pMesh = mesh;
+		newMeshContainerList.emplace_back(newMeshContainer);
+	}
+
+	m_meshContainerList.clear();
+
+	for (auto& newMeshContainer : newMeshContainerList)
+	{
+		m_meshContainerList.emplace_back(newMeshContainer);
+	}
+
+	for (auto& meshContainer : m_meshContainerList)
+	{
+		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
+		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
+
+		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
+		m_stride = D3DXGetFVFVertexSize(FVF);
+
+		if (meshContainer->boneCount > HARDWARE_SKINNING_BONE_COUNT_MAX)
+		{
+			assert(L"Please Increase fetchTexture resolution!" && 0);
+		}
+	}
+
+	StoreVertexIndexData();
+
+	D3DXFrameCalculateBoundingSphere(m_root, &m_boundingSphereCenter, &m_boundingSphereRadius);
+
+	if (m_boundingSphereRadius == 0)
+	{
+		D3DXComputeBoundingSphere(m_vertexPositionData,
+			m_vertexCount,
+			sizeof(Vector3),
+			&m_boundingSphereCenter,
+			&m_boundingSphereRadius);
+	}
+
+}
+
+void XFileMesh::StoreVertexIndexData()
+{
 	m_vertexPositionData = new Vector3[m_vertexCount];
 	m_indexData = new INDEX32[m_figureCount];
 
 	DWORD vertexIndex = 0;
 	DWORD figureIndex = 0;
-
-
 
 	for (auto& meshContainer : m_meshContainerList)
 	{
@@ -101,7 +184,7 @@ void XFileMesh::InitializeSW()
 		DWORD currentVertexCount = mesh->GetNumVertices();
 		for (DWORD i = 0; i < currentVertexCount; ++i)
 		{
-			m_vertexPositionData[vertexIndex] = *((Vector3*)(((unsigned char*)vertexMem) + (m_stride * i + offset)));
+			m_vertexPositionData[vertexIndex] = *((Vector3*)(((char*)vertexMem) + (m_stride * i + offset)));
 			++vertexIndex;
 		}
 		mesh->UnlockVertexBuffer();
@@ -118,68 +201,6 @@ void XFileMesh::InitializeSW()
 		//memcpy(&m_indexData[figureIndex], indexMem, sizeof(INDEX32) * currentFigureCount);
 		mesh->UnlockIndexBuffer();
 	}
-
-	D3DXComputeBoundingSphere(m_vertexPositionData,
-		m_vertexCount,
-		sizeof(Vector3),
-		&m_boundingSphereCenter,
-		&m_boundingSphereRadius);
-}
-
-void XFileMesh::InitializeHW()
-{
-	Nalmak_MeshContainer* newMeshContainer = nullptr;
-
-	vector<Nalmak_MeshContainer*> newMeshContainerList;
-
-	for (auto& meshContainer : m_meshContainerList)
-	{
-		auto mesh = meshContainer->MeshData.pMesh;
-		newMeshContainer = meshContainer;
-
-		//DWORD boneCombinationCount = 0;
-		//SAFE_RELEASE(mesh);
-
-		ThrowIfFailed(newMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh(
-			newMeshContainer->originalMesh,
-			D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,
-			HARDWARE_SKINNING_BONE_COUNT_MAX,
-			nullptr,
-			nullptr,
-			nullptr,
-			nullptr,
-			&newMeshContainer->maxVertexInfl,
-			&newMeshContainer->attributeTableCount,
-			&newMeshContainer->boneCombinationTable,
-			&mesh
-		));
-
-	/*	mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
-		D3DXATTRIBUTERANGE* attributeTable = new D3DXATTRIBUTERANGE[newMeshContainer->attributeTableCount];
-		mesh->GetAttributeTable(newMeshContainer->attributeTable, &newMeshContainer->attributeTableCount);
-
-		SAFE_DELETE_ARR(newMeshContainer->attributeTable);*/
-		
-		newMeshContainerList.emplace_back(newMeshContainer);
-	}
-
-	m_meshContainerList.clear();
-
-	for (auto& newMeshContainer : newMeshContainerList)
-	{
-		m_meshContainerList.emplace_back(newMeshContainer);
-	}
-
-	for (auto& meshContainer : m_meshContainerList)
-	{
-		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
-		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
-
-		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
-		m_stride = D3DXGetFVFVertexSize(FVF);
-	}
-
-	D3DXFrameCalculateBoundingSphere(m_root, &m_boundingSphereCenter, &m_boundingSphereRadius);
 }
 
 void XFileMesh::Release()
@@ -196,11 +217,6 @@ void XFileMesh::Release()
 void XFileMesh::Draw(UINT meshContainerIndex, UINT subset)
 {
 	m_meshContainerList[meshContainerIndex]->MeshData.pMesh->DrawSubset(subset);
-}
-
-bool XFileMesh::IsRenderHW()
-{
-	return m_isRenderHW;
 }
 
 

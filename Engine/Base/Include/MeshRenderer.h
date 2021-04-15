@@ -26,7 +26,7 @@ private:
 	virtual void Release() override;
 public:
 	virtual void Render(ConstantBuffer& _cBuffer) override;
-	virtual void RenderForShadow() override;
+	virtual void RenderForShadow(Shader* _shader) override;
 
 	virtual void BindingStreamSource() override;
 public:

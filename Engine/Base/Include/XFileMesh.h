@@ -16,10 +16,9 @@ private:
 
 	void InitializeSW();
 	void InitializeHW();
-
+	void StoreVertexIndexData();
 public:
 	virtual void Draw(UINT meshContainerIndex = 0, UINT subset = 0) override;
-	bool IsRenderHW();
 	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
 	Nalmak_MeshContainer* GetMeshContainer(UINT _index);
 private:
@@ -27,7 +26,6 @@ private:
 	LPD3DXANIMATIONCONTROLLER m_animController;
 	LPD3DXFRAME m_root;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
-	bool m_isRenderHW;
 private:
 	void TraverseBone(Nalmak_Frame* _frame);
 public:

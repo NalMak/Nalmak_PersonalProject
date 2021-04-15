@@ -91,7 +91,7 @@ private:
 	void TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PostProcessPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void UIPass(Camera* _cam, ConstantBuffer& _cBuffer);
-
+	void BlurPass(const wstring& _inRT,const wstring& _middleRT, const wstring& _outRT, float _rtSizeX, float _rtSizeY);
 private:
 	void RenderNoneAlpha(Camera * _cam, ConstantBuffer& _cBuffer, RENDERING_MODE _mode);
 private:
@@ -132,6 +132,7 @@ public:
 	void UpdateRenderTarget();
 private:
 	void UpdateRenderTarget(Shader* _shader);
+	void UpdateRenderTarget(RenderTarget* _rt1, RenderTarget* _rt2 = nullptr, RenderTarget* _rt3 = nullptr, RenderTarget* _rt4 = nullptr);
 	void UpdateNoneAlphaMaterial(Material* _material, ConstantBuffer& _cBuffer);
 	void UpdateBlendingMode(Material * _material);
 	void UpdateBlendingMode(BLENDING_MODE _blending);

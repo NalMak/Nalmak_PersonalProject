@@ -94,7 +94,10 @@ void RenderManager::Render(Camera * _cam)
 	ClearRenderTarget(L"GBuffer_Final");
 	ClearRenderTarget(L"GBuffer_Emission");
 	ClearRenderTarget(L"GBuffer_Shadow");
-
+	ClearRenderTarget(L"GBuffer_Shadow_blur128");
+	ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
+	ClearRenderTarget(L"GBuffer_Shadow_blur512");
+	ClearRenderTarget(L"GBuffer_Shadow_blur512_out");
 
 	
 	///////////////////////////////////////////////////////
@@ -117,12 +120,12 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	LightDepthPass(_cBuffer);
 
-
 	
 	GBufferPass(_cam, _cBuffer);
 
-	LightPass(_cam, _cBuffer);
+	
 
+	LightPass(_cam, _cBuffer);
 
 	RenderByShaderToScreen(L"SCR_Geometry_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
@@ -199,15 +202,20 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 
 	// cast depth from light
 
-	Shader* shader = nullptr;
+	Shader* currentShader = nullptr;
+	Shader* shader[2] = { nullptr,nullptr };
 
-	shader = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth");
-	shader->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
-	shader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
-	shader->BeginPass();
+	shader[0] = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth");
+	shader[0]->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	shader[0]->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
+	shader[1] = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth_Animation");
+	shader[1]->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	shader[1]->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
+	
+	currentShader = shader[0];
 
-
-	UpdateRenderTarget(shader);
+	UpdateRenderTarget(currentShader);
+	currentShader->BeginPass();
 
 	DepthStencil* depthStencil = ResourceManager::GetInstance()->GetResource<DepthStencil>(L"DepthStencil_Shadow");
 	depthStencil->StartRecord();
@@ -220,20 +228,27 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 			if (!renderer->IsCastShadow())
 				continue;
 
+			Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
+			if (currentShader != newShader)
+			{
+				currentShader->EndPass();
+				currentShader = newShader;
+				currentShader->BeginPass();
+			 }
 			if (lightCam->IsInFrustumCulling(renderer))
 			{
-
 				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
-				shader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
-				shader->CommitChanges();
-				renderer->RenderForShadow();
+				currentShader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
+				currentShader->CommitChanges();
+				renderer->RenderForShadow(currentShader);
 			}
 		
 		}
 	}
-	EndRenderTarget();
 
-	shader->EndPass();
+	EndRenderTarget();
+	
+	currentShader->EndPass();
 	
 	depthStencil->EndRecord();
 
@@ -242,12 +257,13 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 void RenderManager::ShadowPass(ConstantBuffer & _cBuffer, DirectionalLightInfo& _info)
 {
 
-
 	Shader* shadow = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
 	shadow->SetValue("g_directionalLight", &_info, sizeof(DirectionalLightInfo));
 	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
+	//BlurPass(L"GBuffer_Shadow", L"GBuffer_Shadow_blur512", L"GBuffer_Shadow_blur512_out", 512, 512);
 
+	//BlurPass(L"GBuffer_Shadow", L"GBuffer_Shadow_blur128", L"GBuffer_Shadow_blur128_out", 128, 128);
 }
 
 void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
@@ -511,6 +527,44 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZENABLE, true));
+}
+
+void RenderManager::BlurPass(const wstring & _inputRT, const wstring& _middleRT, const wstring & _outputRT, float _rtSizeX, float _rtSizeY)
+{
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
+
+	Shader* shader = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_GaussianBlur");
+	m_currentShader = shader;
+
+	RenderTarget* inputRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_inputRT);
+	RenderTarget* middleRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_middleRT);
+	RenderTarget* outputRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_outputRT);
+
+	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
+	m_screenImageMesh->BindingStreamSource(sizeof(INPUT_LAYOUT_POSITION_UV));
+
+	shader->BeginPass(0);
+	UpdateRenderTarget(middleRT);
+	shader->SetTexture("g_mainTex", inputRT->GetTexture());
+	shader->SetFloat("g_RTperPixelX", 0.5f / _rtSizeX);
+	shader->SetFloat("g_RTperPixelY", 0.5f / _rtSizeY);
+	shader->CommitChanges();
+	m_screenImageMesh->Draw();
+	shader->EndPass();
+	EndRenderTarget();
+
+
+	////////////////////////////////////////////////////////////////////////////
+	shader->BeginPass(1);
+	UpdateRenderTarget(outputRT);
+	shader->SetTexture("g_mainTex", middleRT->GetTexture());
+	shader->CommitChanges();
+	m_screenImageMesh->Draw();
+	shader->EndPass();
+	EndRenderTarget();
+
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, true));
+
 }
 
 void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RENDERING_MODE _mode)
@@ -845,6 +899,30 @@ void RenderManager::UpdateRenderTarget(Shader * _shader)
 		}
 	}
 }
+
+void RenderManager::UpdateRenderTarget(RenderTarget * _rt1, RenderTarget * _rt2, RenderTarget * _rt3, RenderTarget * _rt4)
+{
+	RenderTarget* newRendertargets[4] = { _rt1,_rt2,_rt3,_rt4 };
+	RenderTarget* newRendertarget = nullptr;
+	for (int i = 0; i < 4; ++i)
+	{
+		newRendertarget = newRendertargets[i];
+
+		if (m_currentRenderTarget[i] != newRendertarget)
+		{
+			if (m_currentRenderTarget[i])
+				m_currentRenderTarget[i]->EndRecord();
+
+			m_currentRenderTarget[i] = newRendertarget;
+			if (!newRendertarget)
+				continue;
+
+			m_currentRenderTarget[i]->StartRecord(i);
+		}
+	}
+}
+
+
 
 void RenderManager::EndRenderTarget()
 {

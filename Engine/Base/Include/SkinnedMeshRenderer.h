@@ -34,7 +34,7 @@ private:
 
 public:
 	virtual void Render(ConstantBuffer & _cBuffer) override;
-	virtual void RenderForShadow() override;
+	virtual void RenderForShadow(Shader* _shader) override;
 	virtual void BindingStreamSource() override;
 public:
 	virtual int GetMaterialCount() override;
@@ -46,8 +46,10 @@ private:
 	vector<Material*> m_materials;
 	XFileMesh * m_mesh = nullptr;
 private:
-	static bool m_onceInit;
-	static LPDIRECT3DTEXTURE9 m_fetchTexture;
+	LPDIRECT3DTEXTURE9* m_fetchTexture = nullptr;
+
+
+	UINT m_textureCount;
 public:
 	DWORD GetSubsetCount();
 

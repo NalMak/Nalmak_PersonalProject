@@ -67,4 +67,18 @@ float4 GetWorldPosFromDepth(float2 _depth, float2 _screenUV)
 }
 
 
+matrix GetSkinMatrixFromTexture(sampler _fetchSampler,int _index)
+{
+	float4 uvCol = float4(((float)((_index % 16) * 4) + 0.5f) / 64.0f, ((float)((_index / 16)) + 0.5f) / 64.0f, 0.0f, 0.0f);
+
+	float4x4 mat =
+	{
+		tex2Dlod(_fetchSampler, uvCol),
+		tex2Dlod(_fetchSampler, uvCol + float4(1.0f / 64.0f, 0, 0, 0)),
+		tex2Dlod(_fetchSampler, uvCol + float4(2.0f / 64.0f, 0, 0, 0)),
+		tex2Dlod(_fetchSampler, uvCol + float4(3.0f / 64.0f, 0, 0, 0))
+	};
+	return mat;
+}
+
 

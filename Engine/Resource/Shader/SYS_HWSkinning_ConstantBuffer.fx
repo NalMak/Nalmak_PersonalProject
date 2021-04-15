@@ -56,7 +56,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 {
 	VS_OUTPUT o = (VS_OUTPUT)0; // 
 
-	float4 skinningPos = 0;
+	float3 skinningPos = 0;
 	float3 skinningNormal = 0;
 
 	float lastWeight = 0.f;
@@ -66,13 +66,13 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	{
 		lastWeight += _in.weight[i];
 		
-		skinningPos +=  mul(float4(_in.pos,1),g_palette[_in.boneIndex[i]]);
+		skinningPos +=  mul(_in.pos,(float3x3)g_palette[_in.boneIndex[i]]);
 		skinningNormal += mul(_in.normal, (float3x3)g_palette[_in.boneIndex[i]]);
 	}
 	
 	lastWeight = 1.f - lastWeight;
 	
-	skinningPos += lastWeight * mul(float4(_in.pos,1), g_palette[_in.boneIndex[g_bone]]);
+	skinningPos += lastWeight * mul(_in.pos, (float3x3)g_palette[_in.boneIndex[g_bone]]);
 	skinningNormal += lastWeight * mul(_in.normal, (float3x3)g_palette[_in.boneIndex[g_bone]]);
 
 	float4 worldPos = mul(float4(skinningPos.xyz,1), g_world);
