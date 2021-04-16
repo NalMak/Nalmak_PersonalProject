@@ -36,7 +36,7 @@ void TitleScene::Initialize()
 		obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
 	
 	}*/
-	{
+	/*{
 		SkinnedMeshRenderer::Desc mesh;
 		mesh.meshName = L"Player2";
 		mesh.mtrlName = L"test1";
@@ -44,7 +44,7 @@ void TitleScene::Initialize()
 		anim.meshName = L"Player2";
 		auto obj = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&mesh)->AddComponent<Animator>(&anim)->SetPosition(5, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
 		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
-	}
+	}*/
 	//{
 	//	MeshRenderer::Desc mesh;
 	//	mesh.meshName = L"Player2";
@@ -61,13 +61,13 @@ void TitleScene::Initialize()
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
-	RigidBody::Desc rigid;
-	rigid.isKinematic = true;
-	SkinnedMeshRenderer::Desc render;
-	render.meshName = L"Arisha";
-	Animator::Desc anim;
-	anim.meshName = L"Arisha";
-	INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&render)->AddComponent<Animator>(&anim)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
+	//RigidBody::Desc rigid;
+	//rigid.isKinematic = true;
+	//SkinnedMeshRenderer::Desc render;
+	//render.meshName = L"Arisha";
+	//Animator::Desc anim;
+	//anim.meshName = L"Arisha";
+	//INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&render)->AddComponent<Animator>(&anim)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
 
 	for (int i = 0; i < 10; ++i)
 	{

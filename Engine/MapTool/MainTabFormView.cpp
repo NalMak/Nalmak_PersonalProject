@@ -59,6 +59,8 @@ void MainTabFormView::OnInitialUpdate()
 
 	m_mainTab.InsertItem(1, L"Object");
 	m_mainTab.InsertItem(2, L"Nav Mesh");
+	m_mainTab.InsertItem(3, L"Animation");
+
 
 	CRect rt;
 	m_mainTab.GetClientRect(&rt);
@@ -70,6 +72,10 @@ void MainTabFormView::OnInitialUpdate()
 	m_navTab.Create(IDD_DIALOG2, &m_mainTab);
 	m_navTab.SetWindowPos(NULL, 4, 25, rt.Width(), rt.Height() - 30, SWP_SHOWWINDOW | SWP_NOZORDER);
 	m_navTab.ShowWindow(SW_HIDE);
+
+	m_aniTab.Create(IDD_DIALOG3, &m_mainTab);
+	m_aniTab.SetWindowPos(NULL, 4, 25, rt.Width(), rt.Height() - 30, SWP_SHOWWINDOW | SWP_NOZORDER);
+	m_aniTab.ShowWindow(SW_HIDE);
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 }
 
@@ -93,6 +99,7 @@ void MainTabFormView::OnTcnSelchangeMainTab(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	m_objectTab.ShowWindow(SW_HIDE);
 	m_navTab.ShowWindow(SW_HIDE);
+	m_aniTab.ShowWindow(SW_HIDE);
 
 	int index = m_mainTab.GetCurSel();
 
@@ -105,6 +112,10 @@ void MainTabFormView::OnTcnSelchangeMainTab(NMHDR *pNMHDR, LRESULT *pResult)
 	case 1:
 		MapToolManager::GetInstance()->SetToolState(L"navMesh");
 		m_navTab.ShowWindow(SW_SHOW);
+		break;
+	case 2:
+		MapToolManager::GetInstance()->SetToolState(L"object");
+		m_aniTab.ShowWindow(SW_SHOW);
 		break;
 	default:
 		break;

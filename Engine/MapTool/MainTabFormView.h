@@ -4,6 +4,8 @@
 
 #include "ObjectInstallTool.h"
 #include "NavMeshTool.h"
+#include "AnimationTool.h"
+
 // MainTabFormView Æû ºäÀÔ´Ï´Ù.
 
 class MainTabFormView : public CFormView
@@ -37,6 +39,7 @@ public:
 
 	ObjectInstallTool m_objectTab;
 	NavMeshTool m_navTab;
+	AnimationTool m_aniTab;
 	afx_msg void OnTcnSelchangeMainTab(NMHDR *pNMHDR, LRESULT *pResult);
 };
 

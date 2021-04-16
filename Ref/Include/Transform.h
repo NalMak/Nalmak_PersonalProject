@@ -76,6 +76,7 @@ public:
 private:
 	list<Transform*>   m_childs;
 	Transform * m_parents = nullptr;
+	Nalmak_Frame* m_boneParents = nullptr;
 public:
 	Transform* GetChild(int _index);
 	size_t GetChildCount();

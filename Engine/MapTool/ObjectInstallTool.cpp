@@ -42,7 +42,6 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT11, m_scaleY);
 	DDX_Control(pDX, IDC_EDIT16, m_scaleZ);
 	DDX_Control(pDX, IDC_EDIT18, m_meshName);
-	DDX_Control(pDX, IDC_EDIT20, m_subsetCount);
 	DDX_Control(pDX, IDC_EDIT19, m_shaderName);
 	DDX_Control(pDX, IDC_EDIT21, m_materialCount);
 	DDX_Control(pDX, IDC_COMBO3, m_layer);
@@ -74,6 +73,8 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON16, m_renderMaterialChangeButton);
 	DDX_Control(pDX, IDC_BUTTON17, m_renderMaterialDeleteButton);
 	DDX_Control(pDX, IDC_COMBO4, m_sceneName);
+	DDX_Control(pDX, IDC_LIST5, m_subsetCountList);
+	DDX_Control(pDX, IDC_COMBO1, m_meshRenderer_selectedMesh);
 }
 
 BOOL ObjectInstallTool::OnInitDialog()
@@ -165,9 +166,12 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 		m_renderMaterialAddButton.EnableWindow(true);
 		m_renderMaterialChangeButton.EnableWindow(true);
 		m_renderMaterialDeleteButton.EnableWindow(true);
+		m_meshRenderer_selectedMesh.EnableWindow(true);
 		int mtrlCount = renderer->GetMaterialCount();
 
 		m_materialRenderList.ResetContent();
+		
+
 		for (int i = 0; i < mtrlCount; ++i)
 		{
 			auto mtrl = renderer->GetMaterial(i);
@@ -183,10 +187,15 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 			str = renderer->GetMesh()->GetName().c_str();
 			m_meshName.SetWindowTextW(str);
 		}
-		{
-			unsigned long index = renderer->GetMesh()->GetSubsetCount();
-			MFC_Utility::SetEditBoxInt(&m_subsetCount, index);
-		}
+		/*	{
+
+				for (UINT i = 0; i < renderer->GetMesh()->GetMeshContainerSize(); ++i)
+				{
+					unsigned long index = renderer->GetMesh()->GetSubsetCount(i);
+					CString str = to_wstring(index).c_str();
+					m_subsetCountList.AddString(str);
+				}
+			}*/
 	}
 	else
 	{
@@ -196,6 +205,8 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 		m_renderMaterialAddButton.EnableWindow(false);
 		m_renderMaterialChangeButton.EnableWindow(false);
 		m_renderMaterialDeleteButton.EnableWindow(false);
+		m_meshRenderer_selectedMesh.EnableWindow(false);
+
 	}
 	{
 		CString str;
@@ -579,6 +590,7 @@ BEGIN_MESSAGE_MAP(ObjectInstallTool, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT35, &ObjectInstallTool::OnEnChangeEditCylinderColliderY)
 	ON_EN_CHANGE(IDC_EDIT36, &ObjectInstallTool::OnEnChangeEditCylinderColliderZ)
 	ON_CBN_SELCHANGE(IDC_COMBO4, &ObjectInstallTool::OnCbnSelchangeComboSceneName)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &ObjectInstallTool::OnCbnSelchangeComboMeshRendererToMesh)
 END_MESSAGE_MAP()
 
 
@@ -789,7 +801,7 @@ void ObjectInstallTool::OnBnClickedButtonSave()
 
 void ObjectInstallTool::OnBnClickedButtonSaveAll()
 {
-	int count = m_mapToolManager->GetObjectCount();
+	int count = (int)m_mapToolManager->GetObjectCount();
 	for (int i = 0; i < count; ++i)
 	{
 		auto obj = m_mapToolManager->GetGameObject(i);
@@ -876,14 +888,21 @@ void ObjectInstallTool::OnLbnSelchangeMeshList()
 	if (index == -1)
 		return;
 
+
+	m_subsetCountList.ResetContent();
+
+
 	CString meshName;
 	m_meshList.GetText(index, meshName);
+	auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(meshName.GetString());
+	
 
-	obj->GetComponent<MeshRenderer>()->SetMesh(meshName.GetString());
-	m_meshName.SetWindowTextW(meshName);
-	MFC_Utility::SetEditBoxInt(&m_subsetCount, obj->GetComponent<MeshRenderer>()->GetMesh()->GetSubsetCount());
-
-	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+	for (UINT i = 0; i <mesh->GetMeshContainerSize(); ++i)
+	{
+		unsigned long index = mesh->GetSubsetCount(i);
+		CString str = to_wstring(index).c_str();
+		m_subsetCountList.AddString(str);
+	}
 }
 
 
@@ -1328,7 +1347,7 @@ void ObjectInstallTool::OnEnChangeEditCylinderColliderZ()
 void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 {
 	CString sceneName;
-	m_sceneName.GetWindowTextW(sceneName);
+	m_sceneName.GetLBText(m_sceneName.GetCurSel(), sceneName);
 	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
 	path += L"/" + sceneName;
 	ResourceManager::GetInstance()->ReleaseSceneResouce();
@@ -1346,9 +1365,24 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 		m_materialList.AddString(mtrl.first.c_str());
 	}
 	m_meshList.ResetContent();
+	m_meshRenderer_selectedMesh.ResetContent();
 	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
 	for (auto& mesh : meshes)
 	{
 		m_meshList.AddString(mesh.first.c_str());
+		m_meshRenderer_selectedMesh.AddString(mesh.first.c_str());
 	}
+}
+
+
+void ObjectInstallTool::OnCbnSelchangeComboMeshRendererToMesh()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	CString meshName;
+	m_meshRenderer_selectedMesh.GetLBText(m_meshRenderer_selectedMesh.GetCurSel(), meshName);
+
+	obj->GetComponent<MeshRenderer>()->SetMesh(meshName.GetString());
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

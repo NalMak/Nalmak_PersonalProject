@@ -64,7 +64,6 @@ public:
 	afx_msg void OnBnClickedButtonLoadAll();
 	afx_msg void OnLbnSelchangeMeshList();
 	CEdit m_meshName;
-	CEdit m_subsetCount;
 	afx_msg void OnLbnSelchangeMaterialList();
 	CEdit m_shaderName;
 	afx_msg void OnBnClickedButtonAddMaterial();
@@ -134,4 +133,7 @@ public:
 	CButton m_renderMaterialDeleteButton;
 	CComboBox m_sceneName;
 	afx_msg void OnCbnSelchangeComboSceneName();
+	afx_msg void OnCbnSelchangeComboMeshRendererToMesh();
+	CListBox m_subsetCountList;
+	CComboBox m_meshRenderer_selectedMesh;
 };

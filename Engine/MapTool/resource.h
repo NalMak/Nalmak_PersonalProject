@@ -9,6 +9,7 @@
 #define IDD_DIALOG1                     311
 #define IDD_MAINTABFORMVIEW             312
 #define IDD_DIALOG2                     314
+#define IDD_DIALOG3                     316
 #define IDC_LIST1                       1000
 #define IDC_LIST2                       1001
 #define IDC_LIST3                       1002
@@ -23,6 +24,7 @@
 #define IDC_BUTTON10                    1011
 #define IDC_BUTTON2                     1011
 #define IDC_BUTTON11                    1012
+#define IDC_BUTTON3                     1012
 #define IDC_BUTTON12                    1013
 #define IDC_BUTTON13                    1014
 #define IDC_BUTTON14                    1015
@@ -65,14 +67,21 @@
 #define IDC_EDIT35                      1054
 #define IDC_EDIT36                      1055
 #define IDC_COMBO4                      1056
+#define IDC_LIST5                       1057
+#define IDC_COMBO1                      1058
+#define IDC_COMBO5                      1059
+#define IDC_BUTTON4                     1060
+#define IDC_BUTTON5                     1061
+#define IDC_BUTTON6                     1062
+#define IDC_TREE1                       1063
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        316
+#define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1064
 #define _APS_NEXT_SYMED_VALUE           313
 #endif
 #endif

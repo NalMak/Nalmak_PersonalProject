@@ -193,7 +193,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Client\Common\MapTool_AnimationState.h" />
     <ClInclude Include="..\MFCUtility\MFC_Utility.h" />
+    <ClInclude Include="AnimationTool.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
@@ -214,6 +216,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Client\Common\MapTool_AnimationState.cpp" />
+    <ClCompile Include="AnimationTool.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MainTabFormView.cpp" />

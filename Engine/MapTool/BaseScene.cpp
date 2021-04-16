@@ -3,6 +3,7 @@
 #include "MapToolManager.h"
 #include "MapTool_ObjectState.h"
 #include "MapTool_NavMeshState.h"
+#include "MapTool_AnimationState.h"
 
 
 BaseScene::BaseScene()
@@ -29,6 +30,8 @@ void BaseScene::Initialize()
 	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>()->AddComponent<StateControl>();
 	debug->GetComponent<StateControl>()->AddState<MapTool_ObjectState>(L"object");
 	debug->GetComponent<StateControl>()->AddState<MapTool_NavMeshState>(L"navMesh");
+	debug->GetComponent<StateControl>()->AddState<MapTool_AnimationState>(L"animation");
+
 	debug->GetComponent<StateControl>()->InitState(L"object");
 
 	MapToolManager::GetInstance()->SetDebuggingMode(debug->GetComponent<DebuggingMode>());

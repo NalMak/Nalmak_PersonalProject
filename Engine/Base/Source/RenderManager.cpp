@@ -94,10 +94,10 @@ void RenderManager::Render(Camera * _cam)
 	ClearRenderTarget(L"GBuffer_Final");
 	ClearRenderTarget(L"GBuffer_Emission");
 	ClearRenderTarget(L"GBuffer_Shadow");
-	ClearRenderTarget(L"GBuffer_Shadow_blur128");
-	ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
-	ClearRenderTarget(L"GBuffer_Shadow_blur512");
-	ClearRenderTarget(L"GBuffer_Shadow_blur512_out");
+	//ClearRenderTarget(L"GBuffer_Shadow_blur128");
+	//ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
+	//ClearRenderTarget(L"GBuffer_Shadow_blur512");
+	//ClearRenderTarget(L"GBuffer_Shadow_blur512_out");
 
 	
 	///////////////////////////////////////////////////////
@@ -963,10 +963,12 @@ void RenderManager::RenderPhysX(ConstantBuffer& _cBuffer)
 	UpdateFillMode(FILL_MODE_WIREFRAME);
 	UpdateShader(shader, _cBuffer);
 	UpdateRenderTarget(shader);
-
+	m_currentShader->CommitChanges();
 
 	RenderPhysXLine();
 	RenderPhysXTriangle();
+
+	EndRenderTarget();
 
 	if (m_currentShader)
 	{
@@ -981,7 +983,7 @@ void RenderManager::RenderPhysXTriangle()
 
 	if (nbTriangleCount)
 	{
-		INPUT_LAYOUT_POSITION_COLOR* vertex = new INPUT_LAYOUT_POSITION_COLOR[nbTriangleCount * 3];
+		INPUT_LAYOUT_POSITION* vertex = new INPUT_LAYOUT_POSITION[nbTriangleCount * 3];
 
 		const PxDebugTriangle* triangles = renderData.getTriangles();
 
@@ -989,22 +991,18 @@ void RenderManager::RenderPhysXTriangle()
 		while (nbTriangleCount--)
 		{
 			vertex[vertexIndex].position = { triangles->pos0.x,triangles->pos0.y, triangles->pos0.z };
-			vertex[vertexIndex].color = DWORD_TO_COLOR3(triangles->color0);
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { triangles->pos1.x,triangles->pos1.y, triangles->pos1.z };
-			vertex[vertexIndex].color = DWORD_TO_COLOR3(triangles->color1);
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { triangles->pos2.x,triangles->pos2.y, triangles->pos2.z };
-			vertex[vertexIndex].color = DWORD_TO_COLOR3(triangles->color2);
 			++vertexIndex;
 
 			++triangles;
 		}
 
-
-		m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, renderData.getNbTriangles(), vertex, sizeof(INPUT_LAYOUT_POSITION_COLOR));
+		m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, renderData.getNbTriangles(), vertex, sizeof(INPUT_LAYOUT_POSITION));
 		SAFE_DELETE_ARR(vertex);
 	}
 }
@@ -1017,7 +1015,7 @@ void RenderManager::RenderPhysXLine()
 
 	if (nbLineCount)
 	{
-		INPUT_LAYOUT_POSITION_COLOR* vertex = new INPUT_LAYOUT_POSITION_COLOR[nbLineCount * 2];
+		INPUT_LAYOUT_POSITION* vertex = new INPUT_LAYOUT_POSITION[nbLineCount * 2];
 
 		const PxDebugLine* lines = renderData.getLines();
 
@@ -1025,17 +1023,16 @@ void RenderManager::RenderPhysXLine()
 		while (nbLineCount--)
 		{
 			vertex[vertexIndex].position = { lines->pos0.x,lines->pos0.y, lines->pos0.z };
-			vertex[vertexIndex].color = DWORD_TO_COLOR3(lines->color0);
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { lines->pos1.x,lines->pos1.y, lines->pos1.z };
-			vertex[vertexIndex].color = DWORD_TO_COLOR3(lines->color1);
 			++vertexIndex;
 
 			++lines;
+
 		}
 
-		m_device->DrawPrimitiveUP(D3DPT_LINELIST, renderData.getNbLines(), vertex, sizeof(INPUT_LAYOUT_POSITION_COLOR));
+		m_device->DrawPrimitiveUP(D3DPT_LINELIST, renderData.getNbLines(), vertex, sizeof(INPUT_LAYOUT_POSITION));
 		SAFE_DELETE_ARR(vertex);
 	}
 }

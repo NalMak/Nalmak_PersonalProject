@@ -93,6 +93,12 @@
     <ClInclude Include="MapTool_NavMeshState.h">
       <Filter>03.Scene</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationTool.h">
+      <Filter>01.View</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Client\Common\MapTool_AnimationState.h">
+      <Filter>03.Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +133,12 @@
       <Filter>03.Scene</Filter>
     </ClCompile>
     <ClCompile Include="MapTool_ObjectState.cpp">
+      <Filter>03.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationTool.cpp">
+      <Filter>01.View</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Client\Common\MapTool_AnimationState.cpp">
       <Filter>03.Scene</Filter>
     </ClCompile>
   </ItemGroup>
