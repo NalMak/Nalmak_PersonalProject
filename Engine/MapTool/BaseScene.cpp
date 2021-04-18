@@ -21,7 +21,7 @@ void BaseScene::Initialize()
 
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.6f;
-	light.ambientIntensity = 0.02f;
+	light.ambientIntensity = 0.1f;
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(60, 180, 0);
 
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f);

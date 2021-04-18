@@ -228,15 +228,16 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 			if (!renderer->IsCastShadow())
 				continue;
 
-			Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
-			if (currentShader != newShader)
-			{
-				currentShader->EndPass();
-				currentShader = newShader;
-				currentShader->BeginPass();
-			 }
 			if (lightCam->IsInFrustumCulling(renderer))
 			{
+				Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
+				if (currentShader != newShader)
+				{
+					currentShader->EndPass();
+					currentShader = newShader;
+					currentShader->BeginPass();
+				}
+
 				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
 				currentShader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
 				currentShader->CommitChanges();
@@ -247,7 +248,6 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	}
 
 	EndRenderTarget();
-	
 	currentShader->EndPass();
 	
 	depthStencil->EndRecord();
@@ -450,7 +450,7 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->Render(_cBuffer);
+					renderer->OnRender(_cBuffer);
 				}
 			}
 		}
@@ -483,7 +483,7 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->Render(_cBuffer);
+					renderer->OnRender(_cBuffer);
 				}
 			}
 		}
@@ -515,7 +515,7 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 		{
 			if (_cam->IsInFrustumCulling(renderer))
 			{
-				renderer->Render(_cBuffer);
+				renderer->OnRender(_cBuffer);
 			}
 		}
 	}
@@ -580,8 +580,7 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 			{
 				if (_cam->IsInFrustumCulling(renderer))
 				{
-					renderer->UpdateEachAnimation();
-					renderer->Render(_cBuffer);
+					renderer->OnRender(_cBuffer);
 				}
 			}
 		}

@@ -29,6 +29,7 @@ protected:
 	virtual void LateUpdate()override;
 	virtual void Release()override;
 	virtual void PreRender()override;
+	virtual void EachRender()override;
 	virtual void PostRender()override;
 
 	void OnTriggerEnter(Collisions& _col) override;

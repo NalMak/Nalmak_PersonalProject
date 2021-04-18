@@ -56,9 +56,13 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
-	light.ambientIntensity = 0.05f;
+	light.ambientIntensity = 0.3f;
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 150, 0)->AddComponent<Homework_Player>();
+
+
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
+
+	
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
 	//RigidBody::Desc rigid;
@@ -69,23 +73,23 @@ void TitleScene::Initialize()
 	//anim.meshName = L"Arisha";
 	//INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&render)->AddComponent<Animator>(&anim)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
 
-	for (int i = 0; i < 10; ++i)
-	{
-		RigidBody::Desc rigid;
-		//rigid.isKinematic = true;
-		MeshRenderer::Desc render;
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"sphere";
-		mesh.mtrlName = L"test1";
-		Vector3 dir = Nalmak_Math::RandDirection();
-		if (dir.y < 0)
-			dir.y *= -1;
-		SphereCollider::Desc sphereCol;
-		sphereCol.radius = 1.f;
-		auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
-		sphere->SetScale(2, 2, 2);
-		cam->SetParents(sphere);
-	}
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	RigidBody::Desc rigid;
+	//	//rigid.isKinematic = true;
+	//	MeshRenderer::Desc render;
+	//	MeshRenderer::Desc mesh;
+	//	mesh.meshName = L"sphere";
+	//	mesh.mtrlName = L"test1";
+	//	Vector3 dir = Nalmak_Math::RandDirection();
+	//	if (dir.y < 0)
+	//		dir.y *= -1;
+	//	SphereCollider::Desc sphereCol;
+	//	sphereCol.radius = 1.f;
+	//	auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
+	//	sphere->SetScale(2, 2, 2);
+	//	cam->SetParents(sphere);
+	//}
 
 	{
 		//MeshRenderer::Desc render;
@@ -107,24 +111,39 @@ void TitleScene::Initialize()
 		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
-	{
-		MeshRenderer::Desc render;
-		render.meshName = L"f15";
-		render.mtrlName = L"test1";
-		RigidBody::Desc rigid;
-		rigid.isGravity = false;
-		INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
-	}
+	//{
+	//	MeshRenderer::Desc render;
+	//	render.meshName = L"f15";
+	//	render.mtrlName = L"test1";
+	//	RigidBody::Desc rigid;
+	//	rigid.isGravity = false;
+	//	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
+	//}
 
-	BoxCollider::Desc boxcol;
-	boxcol.posOffset = { 0,1,0 };
-	RigidBody::Desc rigid2;
-	INSTANTIATE()->AddComponent<MeshRenderer>()
-		//->AddComponent<RigidBody>(&rigid2)->AddComponent<CapsuleCollider>()->AddComponent<BoxCollider>(&boxcol)
-		->AddComponent<TestPlayer>();
+	MeshRenderer::Desc render;
+	render.meshName = L"lyn_test";
+	render.mtrlName = L"lyn_test1";
+	auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&render);
+	/*obj->GetComponent<MeshRenderer>()->AddMaterial(L"lyn_test3");
+	obj->GetComponent<MeshRenderer>()->AddMaterial(L"lyn_test2");*/
 
+	//BoxCollider::Desc boxcol;
+	//boxcol.posOffset = { 0,1,0 };
+	//RigidBody::Desc rigid2; 
+	//SkinnedMeshRenderer::Desc skin;
+	//skin.meshName = L"lyn";
+	//AnimationController::Desc anim;
+	//anim.meshName = L"lyn";
+	//auto player = INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<SkinnedMeshRenderer>(&skin)->AddComponent<AnimationController>(&anim)
+	//	->AddComponent<TestPlayer>()->SetScale(0.1f, 0.1f, 0.1f);
+	//player->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
 
-	INSTANTIATE()->AddComponent<NavMesh>();
+	//player->GetComponent<AnimationController>()->AddBoolParameter("attackEnd", false);
+
+	//player->GetComponent<AnimationController>()->AddAnimationClip("Anim1", 0.5f, true, false);
+
+	//player->GetComponent<AnimationController>()->SetEntryClip("Anim1");
+	//INSTANTIATE()->AddComponent<NavMesh>();
 
 	/*MAKE_STATIC(L"arisha");
 	MAKE_STATIC(L"arisha2");*/

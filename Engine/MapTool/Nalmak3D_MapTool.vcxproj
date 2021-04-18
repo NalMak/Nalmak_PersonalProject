@@ -193,7 +193,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Client\Common\MapTool_AnimationState.h" />
     <ClInclude Include="..\MFCUtility\MFC_Utility.h" />
     <ClInclude Include="AnimationTool.h" />
     <ClInclude Include="BaseScene.h" />
@@ -203,6 +202,7 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MainTabFormView.h" />
     <ClInclude Include="MapToolManager.h" />
+    <ClInclude Include="MapTool_AnimationState.h" />
     <ClInclude Include="MapTool_NavMeshState.h" />
     <ClInclude Include="MapTool_ObjectState.h" />
     <ClInclude Include="Nalmak3D_MapTool.h" />
@@ -216,12 +216,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Client\Common\MapTool_AnimationState.cpp" />
     <ClCompile Include="AnimationTool.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MainTabFormView.cpp" />
     <ClCompile Include="MapToolManager.cpp" />
+    <ClCompile Include="MapTool_AnimationState.cpp" />
     <ClCompile Include="MapTool_NavMeshState.cpp" />
     <ClCompile Include="MapTool_ObjectState.cpp" />
     <ClCompile Include="Nalmak3D_MapTool.cpp" />

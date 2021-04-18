@@ -13,10 +13,14 @@ public:
 private:
 	StateControl* m_toolControl = nullptr;
 	GameObject* m_selectedObject = nullptr;
+	GameObject* m_animationObject = nullptr;
+
 	vector<GameObject*> m_createdOnMapObjectList;
 	ObjectInstallTool* m_controlView;
 	DebuggingMode* m_debugHelper;
 public:
+	void ActiveAnimationObject(bool _active);
+
 	void SetDebuggingMode(DebuggingMode* _debuggingMode);
 	void SetToolStateControl(StateControl* _state);
 	void SetToolState(const wstring& _str);
@@ -32,5 +36,7 @@ public:
 	GameObject* GetSelectedObject();
 	DebuggingMode* GetDebuggingObject();
 	StateControl* GetToolState();
+	GameObject* GetAnimationObject();
+	void SetAnimationObjectMesh(const wstring& _meshName);
 };
 

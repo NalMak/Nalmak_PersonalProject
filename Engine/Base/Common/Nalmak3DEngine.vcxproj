@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Include\Nalmak_String.cpp" />
+    <ClCompile Include="..\Source\AnimationClip.cpp" />
     <ClCompile Include="..\Source\AnimationController.cpp" />
+    <ClCompile Include="..\Source\AnimationTransition.cpp" />
     <ClCompile Include="..\Source\Animator.cpp" />
     <ClCompile Include="..\Source\AudioClip.cpp" />
     <ClCompile Include="..\Source\AudioListener.cpp" />
@@ -46,6 +48,7 @@
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
     <ClCompile Include="..\Source\MeshHierarchy.cpp" />
+    <ClCompile Include="..\Source\Nalmak_Animation.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
     <ClCompile Include="..\Source\Event.cpp" />
@@ -123,7 +126,9 @@
     <ClCompile Include="..\Source\XFileMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\AnimationClip.h" />
     <ClInclude Include="..\Include\AnimationController.h" />
+    <ClInclude Include="..\Include\AnimationTransition.h" />
     <ClInclude Include="..\Include\Animator.h" />
     <ClInclude Include="..\Include\AudioClip.h" />
     <ClInclude Include="..\Include\AudioListener.h" />
@@ -149,6 +154,7 @@
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
     <ClInclude Include="..\Include\MeshHierarchy.h" />
+    <ClInclude Include="..\Include\Nalmak_Animation.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
     <ClInclude Include="..\Include\Event.h" />

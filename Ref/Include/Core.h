@@ -12,6 +12,7 @@
 #include "Nalmak_Define.h"
 #include "Nalmak_Extern.h"
 #include "Nalmak_Struct.h"
+#include "Nalmak_Animation.h"
 
 #include "SceneManager.h"
 #include "PrototypeManager.h"
@@ -73,6 +74,7 @@
 #include "DebugObject.h"
 #include "NavMesh.h"
 #include "SkinnedMeshRenderer.h"
+#include "AnimationController.h"
 #pragma endregion
 
 //#define __SOUND_ON__

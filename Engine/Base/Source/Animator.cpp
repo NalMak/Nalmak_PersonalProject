@@ -16,15 +16,7 @@ Animator::Animator(Desc * _desc)
 	m_currentIndex = _desc->startIndex;
 	m_time = TimeManager::GetInstance();
 
-	if (_desc->meshName != L"")
-	{
-		auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
-		if (mesh->GetMeshType() == MESH_TYPE_ANIMATION)
-		{
-			XFileMesh* xMesh = (XFileMesh*)mesh;
-			m_animController = AnimationController::CloneAnimationController(xMesh->GetAnimationController(),xMesh->GetRoot());
-		}
-	}
+
 }
 
 Animator::~Animator()
@@ -70,15 +62,6 @@ void Animator::LateUpdate()
 
 void Animator::Release()
 {
-	SAFE_RELEASE(m_animController);
-}
-
-void Animator::UpdateEachAnimation()
-{
-	if (m_animController)
-	{
-		m_animController->Update();
-	}
 }
 
 void Animator::Play(wstring _spriteName)

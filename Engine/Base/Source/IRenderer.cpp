@@ -17,7 +17,6 @@ IRenderer::IRenderer()
 
 void IRenderer::Initialize()
 {
-	m_animator = GetComponent<Animator>();
 }
 
 void IRenderer::PreRender()
@@ -25,11 +24,17 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
+void IRenderer::OnRender(ConstantBuffer & _cBuffer)
+{
+	m_gameObject->EachRender();
+	Render(_cBuffer);
+}
 
 
 void IRenderer::RenderForShadow(Shader * _shader)
 {
 }
+
 
 void IRenderer::RenderRequest()
 {
@@ -44,17 +49,6 @@ float IRenderer::GetBoundingRadius()
 Vector3 IRenderer::GetBoundingCenter()
 {
 	return { 0,0,0 };
-}
-
-void IRenderer::UpdateEachAnimation()
-{
-	if (m_animator)
-		m_animator->UpdateEachAnimation();
-}
-
-Animator * IRenderer::GetAnimator()
-{
-	return m_animator;
 }
 
 

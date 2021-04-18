@@ -20,6 +20,7 @@ protected:
 	virtual void Update();
 	virtual void LateUpdate();
 	virtual void PreRender();
+	virtual void EachRender();
 	virtual void PostRender();
 	virtual void Release() = 0;
 

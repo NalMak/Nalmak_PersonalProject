@@ -96,7 +96,7 @@
     <ClInclude Include="AnimationTool.h">
       <Filter>01.View</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Client\Common\MapTool_AnimationState.h">
+    <ClInclude Include="MapTool_AnimationState.h">
       <Filter>03.Scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -138,7 +138,7 @@
     <ClCompile Include="AnimationTool.cpp">
       <Filter>01.View</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Client\Common\MapTool_AnimationState.cpp">
+    <ClCompile Include="MapTool_AnimationState.cpp">
       <Filter>03.Scene</Filter>
     </ClCompile>
   </ItemGroup>

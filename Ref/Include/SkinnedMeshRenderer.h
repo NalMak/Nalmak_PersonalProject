@@ -42,6 +42,7 @@ public:
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
 	XFileMesh* GetMesh();
+	void SetMesh(const wstring& _meshName);
 private:
 	vector<Material*> m_materials;
 	XFileMesh * m_mesh = nullptr;

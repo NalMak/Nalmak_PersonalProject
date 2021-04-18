@@ -78,6 +78,8 @@ public:
 private:
 	IState* m_state;
 	map<wstring, IState*> m_stateList;
+
+
 	map<wstring, int>		m_blackBoardInteger;
 	map<wstring, float>		m_blackBoardFloat;
 	map<wstring, Vector3>	m_blackBoardVector3;

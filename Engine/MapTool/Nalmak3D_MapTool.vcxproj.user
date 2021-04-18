@@ -10,5 +10,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <RESOURCE_FILE>Nalmak3D_MapTool.rc</RESOURCE_FILE>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>

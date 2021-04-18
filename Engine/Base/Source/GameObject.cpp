@@ -307,6 +307,17 @@ void GameObject::PreRender()
 	}
 }
 
+void GameObject::EachRender()
+{
+	for (auto& component : m_components)
+	{
+		if (component.second->m_isActive)
+		{
+			component.second->EachRender();
+		}
+	}
+}
+
 void GameObject::PostRender()
 {
 	for (auto& component : m_components)

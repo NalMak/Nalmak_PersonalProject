@@ -1,6 +1,6 @@
 #include "MeshHierarchy.h"
 #include "DeviceManager.h"
-
+#include "Nalmak_Animation.h"
 
 
 MeshHierarchy::MeshHierarchy()

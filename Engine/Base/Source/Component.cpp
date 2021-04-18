@@ -42,6 +42,10 @@ void Component::PreRender()
 {
 }
 
+void Component::EachRender()
+{
+}
+
 void Component::PostRender()
 {
 }

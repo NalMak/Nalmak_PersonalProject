@@ -556,6 +556,13 @@
     <ClCompile Include="..\Source\MeshHierarchy.cpp">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Nalmak_Animation.cpp">
+      <Filter>11.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\AnimationTransition.cpp">
+      <Filter>11.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\AnimationClip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -889,6 +896,13 @@
     <ClInclude Include="..\Include\MeshHierarchy.h">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\Nalmak_Animation.h">
+      <Filter>11.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\AnimationTransition.h">
+      <Filter>11.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\AnimationClip.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

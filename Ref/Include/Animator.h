@@ -18,7 +18,6 @@ public:
 		float interval = 0.05f;
 		float timer = 0;
 		wstring spriteName = L"default";
-		wstring meshName = L"";
 
 		bool isNormal = false;
 		bool loop = true;
@@ -32,8 +31,6 @@ private:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
-public:
-	virtual void UpdateEachAnimation();
 private:
 	size_t m_maxIndex;
 	size_t m_currentIndex = 0;;
@@ -56,7 +53,6 @@ public:
 	wstring GetAnimationName()const { return m_animName; }
 	size_t GetAnimationIndex() { return m_currentIndex; }
 private:
-	AnimationController* m_animController = nullptr;
 	TimeManager* m_time = nullptr;
 };
 

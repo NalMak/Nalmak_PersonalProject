@@ -21,8 +21,7 @@ void TestPlayer::Update()
 
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_UP_ARROW))
 	{
-		m_transform->position += m_transform->GetForward() * dTime;
-		//m_rigidBody->SetWorldPosition(m_transform->position);
+		GetComponent<AnimationController>()->SetBool("attackEnd", true);
 	}
 }
 

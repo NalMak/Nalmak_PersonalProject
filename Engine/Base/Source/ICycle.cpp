@@ -31,6 +31,10 @@ void ICycle::PreRender()
 {
 }
 
+void ICycle::EachRender()
+{
+}
+
 void ICycle::PostRender()
 {
 }

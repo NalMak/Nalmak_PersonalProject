@@ -7,7 +7,7 @@
 #include "InputManager.h"
 #include "XFileMesh.h"
 #include "AnimationController.h"
-
+#include "Nalmak_Animation.h"
 
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
@@ -342,6 +342,16 @@ XFileMesh * SkinnedMeshRenderer::GetMesh()
 {
 	return m_mesh;
 }
+
+void SkinnedMeshRenderer::SetMesh(const wstring & _meshName)
+{
+	auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_meshName);
+	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
+		assert(L"Skinned Mesh Renderer must have animation Mesh!" && 0);
+
+	m_mesh = (XFileMesh*)mesh;
+}
+
 
 DWORD SkinnedMeshRenderer::GetSubsetCount()
 {

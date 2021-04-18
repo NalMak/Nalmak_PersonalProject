@@ -3,19 +3,41 @@
 #include "DebugManager.h"
 #include "AnimationController.h"
 #include "XFileMesh.h"
+#include "SkinnedMeshRenderer.h"
+#include "AnimationTransition.h"
+#include "AnimationController.h"
 
 
-AnimationController::AnimationController(LPD3DXANIMATIONCONTROLLER _animController, LPD3DXFRAME _rootFrame)
+AnimationController::AnimationController(Desc * _desc)
 {
 	m_currentTrack = 0;
 	m_nextTrack = 1;
 	m_totalTime = 0.f;
-	m_preAnimIndex = INFINITE;
 	m_animPlayTime = 0.0;
-	m_isReverse = false;
+	m_isStop = false;
 
-	m_animController = _animController;
-	m_root = _rootFrame;
+	m_currentAnimationClip = nullptr;
+
+	
+	Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+
+	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
+		assert(L"This Animation Controller mesh must be of animation type!" && 0);
+
+	XFileMesh* xMesh = (XFileMesh*)mesh;
+	LPD3DXANIMATIONCONTROLLER originController = xMesh->GetAnimationController();
+	LPD3DXANIMATIONCONTROLLER clone;
+	originController->CloneAnimationController(
+		originController->GetMaxNumAnimationOutputs(),
+		originController->GetMaxNumAnimationSets(),
+		originController->GetMaxNumTracks(),
+		originController->GetMaxNumEvents(),
+		&clone
+	);
+
+	m_animController = clone;
+	m_root = xMesh->GetRoot();
+
 }
 
 AnimationController::~AnimationController()
@@ -26,8 +48,134 @@ AnimationController::~AnimationController()
 
 void AnimationController::Update()
 {
-	PlayAnimation();
-	UpdateBoneMatrix();
+	if (m_isStop)
+		return;
+	if (!m_currentAnimationClip)
+		return;
+
+	CheckNextAnimationByFrame();
+
+	for (auto& transition : m_currentAnimationClip->transtionInfos)
+	{
+		if (m_totalTime > m_animPlayTime - transition->m_transitionTime)
+		{
+			CheckNextAnimation(transition);
+		}
+	}
+
+}
+
+void AnimationController::EachRender()
+{
+	if (m_isStop)
+		return;
+	if (!m_currentAnimationClip)
+		return;
+
+	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
+	
+
+	if (m_totalTime < m_animPlayTime)
+	{
+		m_totalTime += time;
+		m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
+		UpdateBoneMatrix();
+	}
+	else if (m_currentAnimationClip->loop)
+	{
+		m_totalTime = 0;
+		m_animController->AdvanceTime(time, NULL);	
+		UpdateBoneMatrix();
+	}
+	else
+	{
+		m_totalTime = m_animPlayTime;
+	}
+	
+}
+
+
+void AnimationController::Initialize()
+{
+	
+
+}
+
+//1. 애니메이션컨트롤러로 부터 애니메이션셋을 받아와야한다.
+//2. 애니메이션셋을 트랙에 셋팅해야 한다.
+//3. 애니메이션 트랙을 활성화시킨다.
+//4. 애니메이션 컨트롤러로 애니메이션을 진행시킨다.
+
+void AnimationController::SetEntryClip(const string& _clipName)
+{
+	for (auto& clip : m_animationClips)
+	{
+		if (clip->animationName == _clipName)
+		{
+			m_currentAnimationClip = clip;
+			Play(m_currentAnimationClip);
+			return;
+		}
+	}
+	assert(L"Can't find animation clip!" && 0);
+}
+
+void AnimationController::CheckNextAnimationByFrame()
+{
+	for (auto& transition : m_currentAnimationClip->transtionInfos)
+	{
+		if (!transition->m_hasExitTime)
+			CheckNextAnimation(transition);
+	}
+}
+
+
+void AnimationController::CheckNextAnimation(AnimationTransition* _transition)
+{
+	if (_transition->Comparision(this))
+	{
+		Play(_transition);
+	}
+}
+
+void AnimationController::AddAnimationClip(const string & _animName, float _speed, bool _loop, bool _reverse)
+{
+	AnimationClip* clip = new AnimationClip();
+	clip->animationName = _animName;
+	clip->speed = _speed;
+	clip->loop = _loop;
+	clip->reverse = _reverse;
+
+	LPD3DXANIMATIONSET anim = nullptr;
+	m_animController->GetAnimationSetByName(_animName.c_str(), &anim);
+	assert(L"Can't find animation Set!" && anim);
+	clip->animationSet = anim;
+
+	m_animationClips.emplace_back(clip);
+}
+
+AnimationTransition* AnimationController::AddAnimationTransition(const string & _firstAnim, const string & _secondAnim, float _transitionTime, float _weight,bool _hasExitTime, D3DXTRANSITION_TYPE _type)
+{
+	AnimationClip* first =  GetAnimationClip(_firstAnim);
+	AnimationClip* second = GetAnimationClip(_secondAnim);
+
+	AnimationTransition* transition = new AnimationTransition(first, second, _transitionTime, _weight, _hasExitTime, _type);
+	first->transtionInfos.emplace_back(transition);
+
+	return transition;
+
+}
+
+AnimationClip* AnimationController::GetAnimationClip(const string & _clipName)
+{
+	for (auto& clip : m_animationClips)
+	{
+		if (clip->animationName == _clipName)
+		{
+			return clip;
+		}
+	}
+	return nullptr;
 }
 
 
@@ -40,7 +188,90 @@ void AnimationController::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & 
 
 	if (_bone->pFrameSibling)
 		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
+}
 
+void AnimationController::Play(AnimationClip * _clip)
+{
+	LPD3DXANIMATIONSET anim = _clip->animationSet;
+
+	m_animController->SetTrackSpeed(m_currentTrack, _clip->speed);
+
+	m_animController->ResetTime();
+	m_totalTime = 0.0;
+
+	m_animController->SetTrackPosition(m_currentTrack, 0.0);
+
+}
+
+void AnimationController::Play(const string & _animName)
+{
+
+
+
+}
+
+
+
+
+void AnimationController::Play(AnimationTransition* _transition)
+{
+	AnimationClip* nextClip = _transition->m_SecondClip;
+
+	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
+
+	LPD3DXANIMATIONSET anim = nextClip->animationSet;
+
+	m_animPlayTime = anim->GetPeriod();
+	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
+
+	m_animController->UnkeyAllTrackEvents(m_currentTrack);
+	m_animController->UnkeyAllTrackEvents(m_nextTrack);
+
+	// 특정시점에 트랙을 활성화함
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transition->m_transitionTime);
+	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+	m_animController->KeyTrackWeight(m_currentTrack, _transition->m_weight, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+
+	m_animController->SetTrackEnable(m_nextTrack, true);
+	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+	m_animController->KeyTrackWeight(m_nextTrack, 1 - _transition->m_weight, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+
+	// 내부에 누적된 시간값 초기화
+	m_animController->ResetTime(); 
+	m_totalTime = 0.0;
+
+	m_animController->SetTrackPosition(m_nextTrack, 0.0);
+
+	m_currentTrack = m_nextTrack;
+	m_currentAnimationClip = nextClip;
+}
+
+void AnimationController::Stop()
+{
+}
+
+bool AnimationController::IsPlay()
+{
+	return false;
+}
+
+void AnimationController::SetSpeed()
+{
+}
+
+float AnimationController::GetSpeed()
+{
+	return 0.0f;
+}
+
+float AnimationController::GetPlayTime()
+{
+	return 0.0f;
+}
+
+float AnimationController::GetTotalPlayTime()
+{
+	return 0.0f;
 }
 
 void AnimationController::UpdateBoneMatrix()
@@ -49,132 +280,196 @@ void AnimationController::UpdateBoneMatrix()
 	UpdateBoneMatrix((Nalmak_Frame*)m_root, mat);
 }
 
-
-//1. 애니메이션컨트롤러로 부터 애니메이션셋을 받아와야한다.
-//2. 애니메이션셋을 트랙에 셋팅해야 한다.
-//3. 애니메이션 트랙을 활성화시킨다.
-//4. 애니메이션 컨트롤러로 애니메이션을 진행시킨다.
-
-void AnimationController::SetAnimation(UINT _index)
+void AnimationController::AddFloatParameter(const string & _param, float _value)
 {
-	
-	
-	LPD3DXANIMATIONSET anim = nullptr;
-
-	// 1번
-	m_animController->GetAnimationSet(_index, &anim); 
-
-
-	m_animPlayTime = anim->GetPeriod();
-
-	// 2번
-	m_animController->SetTrackAnimationSet(m_currentTrack, anim);
-	m_animController->UnkeyAllTrackEvents(m_currentTrack);
-
-	// 3번
-	m_animController->SetTrackEnable(m_currentTrack, true);
-	m_animController->KeyTrackSpeed(m_currentTrack, 1.f, m_totalTime, 0.25, D3DXTRANSITION_LINEAR);
-	m_animController->KeyTrackWeight(m_currentTrack, 1.f, m_totalTime, 0.25, D3DXTRANSITION_LINEAR);
-
-	// 4번
-	m_animController->ResetTime();
-	m_totalTime = 0.0;
-	m_animController->SetTrackPosition(m_currentTrack, 0.0);
-
-	m_preAnimIndex = _index;
+	m_parmeterFloat.emplace_back(pair<string, float>(_param, _value));
 }
 
-void AnimationController::SetAnimation(UINT _index, float _keySpeed, float _transitionTime)
+void AnimationController::AddBoolParameter(const string & _param, bool _value)
 {
-	// ? 
-	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
-
-	LPD3DXANIMATIONSET anim = nullptr;
-
-	m_animController->GetAnimationSet(_index, &anim);
-
-	m_animPlayTime = anim->GetPeriod();
-
-	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
-
-	m_animController->UnkeyAllTrackEvents(m_currentTrack);
-	m_animController->UnkeyAllTrackEvents(m_nextTrack);
-
-	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transitionTime);
-	m_animController->KeyTrackSpeed(m_currentTrack, _keySpeed, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
-
-	m_animController->KeyTrackWeight(m_currentTrack, 0.1f, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
-
-	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->KeyTrackSpeed(m_nextTrack, _keySpeed, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
-	m_animController->KeyTrackWeight(m_nextTrack, 0.9f, m_totalTime, _transitionTime, D3DXTRANSITION_LINEAR);
-
-	m_animController->ResetTime(); 
-	m_totalTime = 0.0;
-
-	m_animController->SetTrackPosition(m_nextTrack, 0.0);
-
-	m_preAnimIndex = _index;
-
-	m_currentTrack = m_nextTrack;
-
+	m_parameterBool.emplace_back(pair<string, bool>(_param, _value));
 }
 
-void AnimationController::PlayAnimation()
+void AnimationController::AddIntParameter(const string & _param, int _value)
 {
-	D3DXTRACK_DESC trackInfo;
-	ZeroMemory(&trackInfo, sizeof(D3DXTRACK_DESC));
+	m_parameterInt.emplace_back(pair<string, int>(_param, _value));
+}
 
-	m_animController->GetTrackDesc(m_currentTrack, &trackInfo);
-	m_preTrackPos = trackInfo.Position;
-	m_preSaturPos = m_preTrackPos;
-
-	if (m_animPlayTime > 0.f)
+float AnimationController::GetFloat(const string & _param)
+{
+	for (auto& value : m_parmeterFloat)
 	{
-		/*	if (m_bReverse)
-			{
-				while (m_dOldSaturPos < 0.f)
-				{
-					m_dOldSaturPos += m_dPeriod;
-				}
-			}
-			else*/
+		if (value.first == _param)
 		{
-			while (m_preSaturPos > m_animPlayTime)
-			{
-				m_preSaturPos -= m_animPlayTime;
-			}
+			value.second;
 		}
 	}
-
-	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
-	m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
-	m_totalTime += time;
+	assert(L"Can't find parameter!" && 0);
+	return 0;
 }
 
-AnimationController * AnimationController::CloneAnimationController(LPD3DXANIMATIONCONTROLLER _animControl, LPD3DXFRAME _root)
+bool AnimationController::GetBool(const string & _param)
 {
-	AnimationController* animController = nullptr;
-
-	LPD3DXANIMATIONCONTROLLER originController = _animControl;
-	LPD3DXANIMATIONCONTROLLER clone;
-	originController->CloneAnimationController(
-		originController->GetMaxNumAnimationOutputs(),
-		originController->GetMaxNumAnimationSets(),
-		originController->GetMaxNumTracks(),
-		originController->GetMaxNumEvents(),
-		&clone
-	);
-
-	animController = new AnimationController(clone, _root);
-
-	return animController;
+	for (auto& value : m_parameterBool)
+	{
+		if (value.first == _param)
+		{
+			return value.second;
+		}
+	}
+	assert(L"Can't find parameter!" && 0);
+	return false;
 }
+
+int AnimationController::GetInt(const string & _param)
+{
+	for (auto& value : m_parameterInt)
+	{
+		if (value.first == _param)
+		{
+			return value.second;
+		}
+	}
+	assert(L"Can't find parameter!" && 0);
+	return 0;
+}
+
+void AnimationController::SetFloat(const string & _param, float _value)
+{
+	for (auto& value : m_parmeterFloat)
+	{
+		if (value.first == _param)
+		{
+			value.second = _value;
+			return;
+		}
+	}
+	assert(L"Can't find float parameter!" && 0);
+}
+
+void AnimationController::SetBool(const string & _param, bool _value)
+{
+	for (auto& value : m_parameterBool)
+	{
+		if (value.first == _param)
+		{
+			value.second = _value;
+			return;
+		}
+	}
+	assert(L"Can't find bool parameter!" && 0);
+}
+
+void AnimationController::SetInt(const string & _param, int _value)
+{
+	for (auto& value : m_parameterInt)
+	{
+		if (value.first == _param)
+		{
+			value.second = _value;
+			return;
+		}
+	}
+	assert(L"Can't find int parameter!" && 0);
+}
+
+
+
+
 
 void AnimationController::Release()
 {
+
+	for (auto& clip : m_animationClips)
+	{
+		SAFE_DELETE(clip);
+	}
+
+	m_animationClips.clear();
+
 	SAFE_RELEASE(m_animController);
-	delete this;
 }
 
+TransitionConditionFloat::TransitionConditionFloat(const string & _name, float _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+{
+	m_value = _value;
+	m_name = _name;
+	m_type = _type;
+}
 
+bool TransitionConditionFloat::Comparision(AnimationController* anim)
+{
+	switch (m_type)
+	{
+	case ANIMATION_CONDITION_COMPARISION_TYPE_EQUAL:
+		return m_value == anim->GetFloat(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_LESS:
+		return m_value > anim->GetFloat(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_GREATER:
+		return m_value < anim->GetFloat(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_NOTEQUAL:
+		return m_value != anim->GetFloat(m_name);
+		break;
+	default:
+		break;
+	}
+	assert(L"Comparision type is not valid" && 0);
+	return false;
+}
+
+TransitionConditionInt::TransitionConditionInt(const string & _name, int _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+{
+	m_value = _value;
+	m_name = _name;
+	m_type = _type;
+}
+
+bool TransitionConditionInt::Comparision(AnimationController* anim)
+{
+	switch (m_type)
+	{
+	case ANIMATION_CONDITION_COMPARISION_TYPE_EQUAL:
+		return m_value == anim->GetInt(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_LESS:
+		return m_value > anim->GetInt(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_GREATER:
+		return m_value < anim->GetInt(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_NOTEQUAL:
+		return m_value != anim->GetInt(m_name);
+		break;
+	default:
+		break;
+	}
+	assert(L"Comparision type is not valid" && 0);
+	return false;
+}
+
+TransitionConditionBool::TransitionConditionBool(const string & _name, bool _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+{
+	m_value = _value;
+	m_name = _name;
+	m_type = _type;
+}
+
+bool TransitionConditionBool::Comparision(AnimationController* anim)
+{
+	switch (m_type)
+	{
+	case ANIMATION_CONDITION_COMPARISION_TYPE_EQUAL:
+		return m_value == anim->GetBool(m_name);
+		break;
+	case ANIMATION_CONDITION_COMPARISION_TYPE_NOTEQUAL:
+		return m_value != anim->GetBool(m_name);
+		break;
+	default:
+		break;
+	}
+	assert(L"Comparision type is not valid" && 0);
+	return false;
+}

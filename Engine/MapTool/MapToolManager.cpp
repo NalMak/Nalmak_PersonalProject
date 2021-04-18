@@ -2,6 +2,8 @@
 #include "MapToolManager.h"
 
 #include "ObjectInstallTool.h"
+#include "AnimationController.h"
+
 IMPLEMENT_SINGLETON(MapToolManager)
 
 MapToolManager::MapToolManager()
@@ -11,6 +13,19 @@ MapToolManager::MapToolManager()
 
 MapToolManager::~MapToolManager()
 {
+}
+
+void MapToolManager::ActiveAnimationObject(bool _active)
+{
+	if (!m_animationObject)
+	{
+		m_animationObject = INSTANTIATE();
+		m_animationObject->SetActive(false);
+	}
+	else
+	{
+		m_animationObject->SetActive(_active);
+	}
 }
 
 void MapToolManager::SetDebuggingMode(DebuggingMode * _debuggingMode)
@@ -117,3 +132,30 @@ StateControl * MapToolManager::GetToolState()
 {
 	return m_toolControl;
 }
+
+GameObject * MapToolManager::GetAnimationObject()
+{
+	return m_animationObject;
+}
+
+void MapToolManager::SetAnimationObjectMesh(const wstring & _meshName)
+{
+	if (!m_animationObject->GetComponent<SkinnedMeshRenderer>())
+	{
+		SkinnedMeshRenderer::Desc renderer;
+		renderer.meshName = _meshName;
+		AnimationController::Desc anim;
+		anim.meshName = _meshName;
+		m_animationObject->AddComponent<AnimationController>(&anim);
+		m_animationObject->AddComponent<SkinnedMeshRenderer>(&renderer);
+		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
+		m_animationObject->SetActive(true);
+	}
+	else
+	{
+		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetMesh(_meshName);
+	}
+
+	//m_animationObject->GetComponent<Animator>()->
+}
+

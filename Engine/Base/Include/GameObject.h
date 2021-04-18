@@ -182,6 +182,8 @@ private:
 	void OnCollisionEnter(Collisions& _col) override;
 	void OnCollisionStay(Collisions& _col) override;
 	void OnCollisionExit(Collisions& _col) override;
+public:
+	void EachRender() override;
 private:
 	vector<pair<string, Component*>> m_components;
 	vector<pair<string, Component*>> m_newComponents;

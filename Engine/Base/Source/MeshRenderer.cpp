@@ -48,12 +48,12 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 	Shader* currentShader = nullptr;
 	Material* currentMaterial = nullptr;
 
+	UINT materialIndex = 0;
 	for (UINT i = 0; i < meshContainerSize; ++i)
 	{
 		UINT subsetCount = m_mesh->GetSubsetCount(i);
 		for (UINT j = 0; j < subsetCount; ++j)
 		{
-			UINT materialIndex = i * meshContainerSize + j;
 
 			if (m_materials.size() > materialIndex)
 				currentMaterial = m_materials[materialIndex];
@@ -71,9 +71,10 @@ void MeshRenderer::Render(ConstantBuffer& _cBuffer)
 
 				currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
 
-				currentShader->CommitChanges();
 			}
+			currentShader->CommitChanges();
 			m_mesh->Draw(i,j);
+			++materialIndex;
 		}
 	}
 	

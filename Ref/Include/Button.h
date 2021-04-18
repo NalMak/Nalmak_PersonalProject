@@ -76,6 +76,8 @@ public:
 
 protected:
 	Event m_event;
+
+
 	ResourceManager* m_resource;
 	CanvasRenderer* m_renderer;
 	GameObject* m_text;

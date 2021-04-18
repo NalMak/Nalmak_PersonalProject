@@ -242,7 +242,11 @@ void DebuggingMode::Update()
 		UpdateDesc();
 		CheckColliderRender();
 	}
-
+	if (m_input->GetKeyDown(KEY_STATE_F11))
+	{
+		m_debugCam->SetPosition(0, 0, -10);
+		m_debugCam->SetRotation(0, 0, 0);
+	}
 	
 	//DEBUGGING_MODE_GIZMO
 }
@@ -383,7 +387,7 @@ void DebuggingMode::UpdateDesc()
 	else
 		debugDesc += L"(Off) ";
 	debugDesc += L"Collider \n";
-
+	debugDesc += L"F11 - Camera Reset";
 	m_debugModeDescObject->SetText(debugDesc);
 }
 

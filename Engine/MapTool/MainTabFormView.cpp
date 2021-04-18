@@ -114,7 +114,7 @@ void MainTabFormView::OnTcnSelchangeMainTab(NMHDR *pNMHDR, LRESULT *pResult)
 		m_navTab.ShowWindow(SW_SHOW);
 		break;
 	case 2:
-		MapToolManager::GetInstance()->SetToolState(L"object");
+		MapToolManager::GetInstance()->SetToolState(L"animation");
 		m_aniTab.ShowWindow(SW_SHOW);
 		break;
 	default:

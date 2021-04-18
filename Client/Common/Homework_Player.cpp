@@ -31,9 +31,8 @@ void Homework_Player::Update()
 		MeshRenderer::Desc mesh;
 		mesh.meshName = L"Player2";
 		mesh.mtrlName = L"test1";
-		Animator::Desc anim;
-		anim.meshName = L"Player2";
-		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<Animator>(&anim)->SetPosition(10, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
+		
+		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetPosition(10, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
 	}
 	
 	/*if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_DOWN_ARROW))

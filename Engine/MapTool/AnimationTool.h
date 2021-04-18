@@ -22,7 +22,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+private:
+	void SearchFrame(Nalmak_Frame* _frame, HTREEITEM _item);
 public:
+	virtual BOOL OnInitDialog();
 	afx_msg void OnCbnSelchangeComboSceneName();
 	CComboBox m_sceneName;
 	CListBox m_meshList;
@@ -52,4 +55,8 @@ public:
 	CEdit m_transitionTime;
 	afx_msg void OnEnChangeEditAnimationWeight();
 	CEdit m_animationWeight;
+
+	afx_msg void OnEnChangeEditScale();
+	CEdit m_scale;
+
 };

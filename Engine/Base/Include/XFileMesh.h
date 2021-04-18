@@ -1,9 +1,9 @@
 #pragma once
 #include "Mesh.h"
-
+#include "Nalmak_Animation.h"
 class Shader;
 
-class XFileMesh :
+class NALMAK_DLL XFileMesh :
 	public Mesh
 {
 public:

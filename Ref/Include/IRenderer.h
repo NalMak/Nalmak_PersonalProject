@@ -24,7 +24,10 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override = 0;
 public:
+	void OnRender(ConstantBuffer& _cBuffer);
+protected:
 	virtual void Render(ConstantBuffer& _cBuffer) = 0;
+public:
 	virtual void RenderForShadow(Shader* _shader);
 	virtual void BindingStreamSource() = 0;
 public:
@@ -56,11 +59,8 @@ public:
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
 	void SetCastShadow(bool _isCast) { m_isCastShadow = _isCast; }
 	void UpdateEachAnimation();
-public:
-	class Animator* GetAnimator();
 protected:
 	class RenderManager* m_renderManager = nullptr;
-	class Animator* m_animator = nullptr;
 };
 
 END
