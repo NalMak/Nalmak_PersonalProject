@@ -31,10 +31,6 @@ struct PS_INPUT
 struct PS_OUTPUT
 {
 	float4 diffuse0 : COLOR0;
-	float4 diffuse1 : COLOR1;
-	float4 diffuse2 : COLOR2;
-	float4 diffuse3 : COLOR3;
-
 };
 
 VS_OUTPUT VS_Main_Default(VS_INPUT _input)
@@ -57,9 +53,6 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float4 diffuse = tex2D(mainSampler, _input.uv);
 	float4 final = diffuse * g_mainTexColor;
 	o.diffuse0 = final;
-	o.diffuse1 = final;
-	o.diffuse2 = final;
-	o.diffuse3 = final;
 
 	return o;
 }

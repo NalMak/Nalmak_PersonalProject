@@ -4,8 +4,8 @@
 
 outputRT "GBuffer_Diffuse"
 outputRT "GBuffer_Normal"
-outputRT "GBuffer_Depth"
-outputRT "GBuffer_CookTorrance"
+outputRT  "GBuffer_Depth_CookTorrance"
+
 
 inputLayout "7"
 

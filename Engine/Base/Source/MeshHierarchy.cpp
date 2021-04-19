@@ -55,18 +55,24 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 	memcpy(meshContainer->pAdjacency, pAdjacency, sizeof(DWORD) * numFaces * 3);
 
 
-	DWORD FVF = mesh->GetFVF();
-	if (!(FVF & D3DFVF_NORMAL))
+	D3DVERTEXELEMENT9 decl[MAX_FVF_DECL_SIZE] =
 	{
-		mesh->CloneMeshFVF(mesh->GetOptions() | D3DXMESH_32BIT, FVF | D3DFVF_NORMAL , m_device, &meshContainer->MeshData.pMesh);
-		D3DXComputeNormals(meshContainer->MeshData.pMesh, meshContainer->pAdjacency);
-	}
-	else
-	{
-		mesh->CloneMeshFVF(mesh->GetOptions() | D3DXMESH_32BIT, FVF, m_device, &meshContainer->MeshData.pMesh);
-	}
-	meshContainer->MeshData.pMesh->CloneMeshFVF(meshContainer->MeshData.pMesh->GetOptions(),
-		meshContainer->MeshData.pMesh->GetFVF(),
+		{ 0,0,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+		{ 0,12,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,  0 },
+		{ 0,24,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL,  0 },
+		{ 0,36,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,  0 },
+		{ 0,48,D3DDECLTYPE_FLOAT2,D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,0 },
+		D3DDECL_END()
+	};
+
+	mesh->CloneMesh(mesh->GetOptions() | D3DXMESH_32BIT, decl, m_device, &meshContainer->MeshData.pMesh);
+
+
+	D3DXComputeNormals(meshContainer->MeshData.pMesh, meshContainer->pAdjacency);
+	D3DXComputeTangent(meshContainer->MeshData.pMesh, 0, 0, 0, 0, (DWORD*)meshContainer->pAdjacency);
+
+	meshContainer->MeshData.pMesh->CloneMesh(meshContainer->MeshData.pMesh->GetOptions(),
+		decl,
 		m_device,
 		&meshContainer->originalMesh);
 
@@ -84,8 +90,28 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 		*ppNewMeshContainer = meshContainer;
 		return S_OK;
 	}
+	unsigned char offset;
 
-	//pSkinInfo->ConvertToIndexedBlendedMesh()
+	D3DVERTEXELEMENT9			Decl[MAX_FVF_DECL_SIZE];
+	ZeroMemory(Decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
+
+	meshContainer->MeshData.pMesh->GetDeclaration(Decl);
+
+	for (DWORD i = 0; i < MAX_FVF_DECL_SIZE; ++i)
+	{
+		if (Decl[i].Usage == D3DDECLUSAGE_TANGENT)
+		{
+			offset = (unsigned char)Decl[i].Offset;
+		}
+		if (Decl[i].Usage == D3DDECLUSAGE_NORMAL)
+		{
+			offset = (unsigned char)Decl[i].Offset;
+		}
+		if (Decl[i].Usage == D3DDECLUSAGE_BINORMAL)
+		{
+			offset = (unsigned char)Decl[i].Offset;
+		}
+	}
 
 
 	meshContainer->pSkinInfo = pSkinInfo;

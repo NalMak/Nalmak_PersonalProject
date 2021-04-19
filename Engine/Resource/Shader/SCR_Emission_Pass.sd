@@ -4,6 +4,7 @@
 
 inputRT "g_final" "GBuffer_Final"
 inputRT "g_emission" "GBuffer_Emission"
+inputRT "g_specular" "GBuffer_Specular"
 
 outputRT "GBuffer_Final"
 

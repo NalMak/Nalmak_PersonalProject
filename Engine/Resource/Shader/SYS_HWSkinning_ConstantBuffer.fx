@@ -46,9 +46,7 @@ struct PS_OUTPUT
 {
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
-	float4 depth : COLOR2;
-	float4 cookTorrance : COLOR3;
-
+	float4 depth_cookTorrance : COLOR2;
 };
 
 
@@ -96,12 +94,11 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	o.diffuse = diffuse * g_mainTexColor;
 	o.normal = GetScaleBiasNormal(_in.normal);
 	
-	o.depth = float4(GetDepth(_in.uvAndDepth.zw),0,1);
+	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 
-	o.cookTorrance.x = g_f0;
-	o.cookTorrance.y = g_roughness;
-	o.cookTorrance.z = 0;
-	o.cookTorrance.w = 1;
+	o.depth_cookTorrance.z = g_f0;
+	o.depth_cookTorrance.w = g_roughness;
+
 
 	return o;
 }

@@ -210,24 +210,19 @@ void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer & _cBuffer)
 {
 	Shader* currentShader = nullptr;
 	Material* currentMaterial = nullptr;
-	currentMaterial = ResourceManager::GetInstance()->GetResource<Material>(L"SYS_Standard_HWSkinning_FetchTex");
 
 	UINT texIndex = 0;
 	UINT meshContainerSize = m_mesh->GetMeshContainerSize();
+	UINT materialIndex = 0;
+
 	for (UINT i = 0; i < meshContainerSize; ++i)
 	{
 		Nalmak_MeshContainer* meshContainer = m_mesh->GetMeshContainer(i);
 
-		LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
-
-		m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
-		m_renderManager->UpdateRenderTarget();
-
 		UINT maxSubsetCount = meshContainer->NumMaterials;
 		UINT boneCount = meshContainer->boneCount;
 
-
-
+		LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
 
 		for (UINT j = 0; j < maxSubsetCount; ++j)
 		{
@@ -239,7 +234,20 @@ void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer & _cBuffer)
 					meshContainer->renderingMatrices[palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
 				}
 			}
+			if (m_materials.size() > materialIndex)
+				currentMaterial = m_materials[materialIndex];
+			else
+				currentMaterial = m_materials.back();
+			m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
 
+
+			/*		D3DVERTEXELEMENT9 Decl[MAX_FVF_DECL_SIZE];
+					meshContainer->MeshData.pMesh->GetDeclaration(Decl);
+					IDirect3DVertexDeclaration9* decl;
+					m_device->CreateVertexDeclaration(Decl, &decl);
+					ThrowIfFailed(m_device->SetVertexDeclaration(decl));*/
+
+			m_renderManager->UpdateRenderTarget();
 
 			D3DLOCKED_RECT lockRect;
 			m_fetchTexture[texIndex]->LockRect(0, &lockRect, 0, D3DLOCK_DISCARD);
@@ -264,6 +272,7 @@ void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer & _cBuffer)
 			currentShader->CommitChanges();
 			meshContainer->MeshData.pMesh->DrawSubset(j);
 			++texIndex;
+			++materialIndex;
 		}
 
 		

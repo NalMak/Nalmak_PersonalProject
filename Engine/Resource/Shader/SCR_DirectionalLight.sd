@@ -4,12 +4,12 @@
 
 inputRT "g_diffuse" "GBuffer_Diffuse"
 inputRT "g_normal" "GBuffer_Normal"
-inputRT "g_depth" "GBuffer_Depth"
-inputRT "g_cookTorrance" "GBuffer_CookTorrance"
+inputRT "g_depth_cookTorrance" "GBuffer_Depth_CookTorrance"
 
-outputRT "GBuffer_Emission"
+
+outputRT "GBuffer_Specular"
 outputRT "GBuffer_Light"
-//outputRT "GBuffer_LightDepth"
+
 
 
 inputLayout "1"

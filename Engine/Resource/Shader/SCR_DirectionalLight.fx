@@ -5,8 +5,8 @@ DirectionalLight g_directionalLight;
 
 texture g_diffuse;
 texture g_normal;
-texture g_depth;
-texture g_cookTorrance;
+texture g_depth_cookTorrance;
+
 
 sampler DiffuseSampler = sampler_state
 {
@@ -18,14 +18,9 @@ sampler NormalSampler = sampler_state
 	texture = g_normal;
 };
 
-sampler DepthSampler = sampler_state
+sampler DepthCookTorranceSampler = sampler_state
 {
-	texture = g_depth;
-};
-
-sampler CookTorranceSampler = sampler_state
-{
-	texture = g_cookTorrance;
+	texture = g_depth_cookTorrance;
 };
 
 struct VS_INPUT
@@ -76,14 +71,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		clip(0);
 
 	float4 diffuse = tex2D(DiffuseSampler, uvRT);
-	float2 depth = tex2D(DepthSampler, uvRT).xy;
-	float4 worldPos = GetWorldPosFromDepth(depth, uvRT);
+	float4 depth_cookTorrance = tex2D(DepthCookTorranceSampler, uvRT);
+	float4 worldPos = GetWorldPosFromDepth(depth_cookTorrance.xy, uvRT);
 
-	float2 cookTorrance = tex2D(CookTorranceSampler, uvRT).xy;
-	float f0 = cookTorrance.x;
-	float roughness = cookTorrance.y;
-
-	
 
 	normal = normal * 2 - 1;
 	normal = normalize(normal);
@@ -91,8 +81,8 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	float3 _N = normal;
 	float3 _V = normalize(g_cBuffer.worldCamPos - worldPos.xyz);
 	float3 _L = -g_directionalLight.direction;
-	float _F0 = cookTorrance.x;
-	float _Roughness = cookTorrance.y;
+	float _F0 = depth_cookTorrance.z;
+	float _Roughness = depth_cookTorrance.w;
 
 	float specular;
 	specular = LightingGGX_Ref(_N, _V, _L, _F0, _Roughness);

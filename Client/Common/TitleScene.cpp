@@ -2,6 +2,8 @@
 #include "TitleScene.h"
 #include "TestPlayer.h"
 #include "Homework_Player.h"
+#include "Player.h"
+#include "PlayerIdle.h"
 
 
 TitleScene::TitleScene()
@@ -15,92 +17,18 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-	//ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
-	/*ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player2.X");
-	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../Player.X");
-	ResourceManager::GetInstance()->LoadResource<Mesh, DynamicMesh>(L"../sylva.X");
 
-	
-	{
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"Player2";
-		mesh.mtrlName = L"test1";
-		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f);
-		obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
-	}
-	{
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"Player";
-		mesh.mtrlName = L"test1";
-		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(-5,0,0);
-		obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
-	
-	}*/
-	/*{
-		SkinnedMeshRenderer::Desc mesh;
-		mesh.meshName = L"Player2";
-		mesh.mtrlName = L"test1";
-		Animator::Desc anim;
-		anim.meshName = L"Player2";
-		auto obj = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&mesh)->AddComponent<Animator>(&anim)->SetPosition(5, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
-		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
-	}*/
-	//{
-	//	MeshRenderer::Desc mesh;
-	//	mesh.meshName = L"Player2";
-	//	auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(2,0,0);
-	//	obj->GetComponent<MeshRenderer>()->SetFrustumCulling(false);
-	//}
-		/*TestComponent::Desc test2;
-	test2.obj = test;
-	INSTANTIATE()->AddComponent<TestComponent>(&test2);*/
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.8f;
 	light.ambientIntensity = 0.3f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 150, 0)->AddComponent<Homework_Player>();
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(15, 70, 0)->AddComponent<Homework_Player>();
 
 
 	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-10);
-
 	
 	INSTANTIATE()->AddComponent<DebuggingMode>();
 
-	//RigidBody::Desc rigid;
-	//rigid.isKinematic = true;
-	//SkinnedMeshRenderer::Desc render;
-	//render.meshName = L"Arisha";
-	//Animator::Desc anim;
-	//anim.meshName = L"Arisha";
-	//INSTANTIATE()->AddComponent<SkinnedMeshRenderer>(&render)->AddComponent<Animator>(&anim)->SetRotation(0, 0, 0)->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0,7,0);
-
-	//for (int i = 0; i < 10; ++i)
-	//{
-	//	RigidBody::Desc rigid;
-	//	//rigid.isKinematic = true;
-	//	MeshRenderer::Desc render;
-	//	MeshRenderer::Desc mesh;
-	//	mesh.meshName = L"sphere";
-	//	mesh.mtrlName = L"test1";
-	//	Vector3 dir = Nalmak_Math::RandDirection();
-	//	if (dir.y < 0)
-	//		dir.y *= -1;
-	//	SphereCollider::Desc sphereCol;
-	//	sphereCol.radius = 1.f;
-	//	auto sphere = INSTANTIATE()->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->AddComponent<ParticleRenderer>()->AddComponent<SphereCollider>(&sphereCol)->AddComponent<PointLight>()->SetPosition(dir * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0,5,0));
-	//	sphere->SetScale(2, 2, 2);
-	//	cam->SetParents(sphere);
-	//}
-
-	{
-		//MeshRenderer::Desc render;
-		//render.meshName = L"Arisha";
-		//render.mtrlName = L"Arisha_mtrl";
-		//RigidBody::Desc rigid;
-		//rigid.isKinematic = true;
-		//auto player = INSTANTIATE()->AddComponent<MeshCollider>()->AddComponent<RigidBody>(&rigid)->SetPosition(0.5f, -20.f, 0)->AddComponent<MeshRenderer>(&render)->SetScale(0.1f,0.1f,0.1f);
-		//player->SetStatic(true);
-		//player->GetComponent<MeshRenderer>()->AddMaterial()
-	}
+	
 	{
 		MeshRenderer::Desc mesh;
 		mesh.meshName = L"plane";
@@ -111,41 +39,26 @@ void TitleScene::Initialize()
 		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
-	//{
-	//	MeshRenderer::Desc render;
-	//	render.meshName = L"f15";
-	//	render.mtrlName = L"test1";
-	//	RigidBody::Desc rigid;
-	//	rigid.isGravity = false;
-	//	INSTANTIATE()->AddComponent<MeshRenderer>(&render)->AddComponent<RigidBody>(&rigid)->SetPosition(0,5,0);
-	//}
+	{
+		auto obj = INSTANTIATE();
+		SkinnedMeshRenderer::Desc render;
+		render.meshName = L"lyn_test";
+		render.mtrlName = L"lyn_test1";
+		AnimationController::Desc anim;
+		anim.meshName = L"lyn_test";
+		obj->AddComponent<SkinnedMeshRenderer>(&render);
+		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
 
-	MeshRenderer::Desc render;
-	render.meshName = L"lyn_test";
-	render.mtrlName = L"lyn_test1";
-	auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&render);
-	/*obj->GetComponent<MeshRenderer>()->AddMaterial(L"lyn_test3");
-	obj->GetComponent<MeshRenderer>()->AddMaterial(L"lyn_test2");*/
+		obj->AddComponent<Player>();
+		obj->AddComponent<AnimationController>(&anim);
+		obj->GetComponent<AnimationController>()->AddAnimationClip("Anim1", 1.f, true, false);
+		obj->GetComponent<AnimationController>()->SetEntryClip("Anim1");
+		obj->AddComponent<StateControl>();
+		obj->GetComponent<StateControl>()->AddState<PlayerIdle>(L"idle");
+		obj->GetComponent<StateControl>()->InitState(L"idle");
 
-	//BoxCollider::Desc boxcol;
-	//boxcol.posOffset = { 0,1,0 };
-	//RigidBody::Desc rigid2; 
-	//SkinnedMeshRenderer::Desc skin;
-	//skin.meshName = L"lyn";
-	//AnimationController::Desc anim;
-	//anim.meshName = L"lyn";
-	//auto player = INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<SkinnedMeshRenderer>(&skin)->AddComponent<AnimationController>(&anim)
-	//	->AddComponent<TestPlayer>()->SetScale(0.1f, 0.1f, 0.1f);
-	//player->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
-
-	//player->GetComponent<AnimationController>()->AddBoolParameter("attackEnd", false);
-
-	//player->GetComponent<AnimationController>()->AddAnimationClip("Anim1", 0.5f, true, false);
-
-	//player->GetComponent<AnimationController>()->SetEntryClip("Anim1");
-	//INSTANTIATE()->AddComponent<NavMesh>();
-
-	/*MAKE_STATIC(L"arisha");
-	MAKE_STATIC(L"arisha2");*/
-
+		obj->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0, -10, 0);
+	}
+	
+	
 }

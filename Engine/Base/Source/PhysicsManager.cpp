@@ -442,7 +442,7 @@ void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * 
 	AdjustCollisionLayer(_shape, _collider);
 }
 
-GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRayPos, const Vector3 & _endRayPos, vector<MeshRenderer*>& _renderList)
+GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRayPos, const Vector3 & _endRayPos, vector<MeshRenderer*> _renderList)
 {
 	
 	vector<MeshRenderer*> raycastRenderers;

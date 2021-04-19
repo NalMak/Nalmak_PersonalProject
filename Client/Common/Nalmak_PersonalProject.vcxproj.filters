@@ -31,6 +31,12 @@
     <Filter Include="97.HomeWork">
       <UniqueIdentifier>{07d1344e-0293-470d-94e0-54ddf2eb7da8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Shader">
+      <UniqueIdentifier>{4c9be8bc-184b-41dd-980a-2516cdd0fcf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Player">
+      <UniqueIdentifier>{e83a7808-1be1-4d56-aaea-a945024fc96b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -76,6 +82,8 @@
       <Filter>98.PreCompile</Filter>
     </ClInclude>
     <ClInclude Include="TestPlayer.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerIdle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,6 +108,8 @@
       <Filter>97.HomeWork</Filter>
     </ClCompile>
     <ClCompile Include="TestPlayer.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIdle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -118,5 +128,21 @@
     <ResourceCompile Include="Nalmak_PersonalProject.rc">
       <Filter>99.Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_StaticObject.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

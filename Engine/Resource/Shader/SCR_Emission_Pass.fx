@@ -2,7 +2,7 @@
 
 texture g_final;
 texture g_emission;
-
+texture g_specular;
 sampler FinalSampler = sampler_state
 {
 	texture = g_final;
@@ -13,7 +13,10 @@ sampler EmissionSampler = sampler_state
 	texture = g_emission;
 };
 
-
+sampler SpecularSampler = sampler_state
+{
+	texture = g_specular;
+};
 
 struct VS_INPUT
 {
@@ -58,8 +61,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 
 	float3 final = tex2D(FinalSampler, uv).xyz;
 	float3 emission = tex2D(EmissionSampler, uv).xyz;
+	float3 specular = tex2D(SpecularSampler, uv).xyz;
 
-	o.color = float4(final + emission, 1);
+	o.color = float4(final + emission + specular , 1);
 
 	return o;
 }

@@ -55,8 +55,7 @@ struct PS_OUTPUT
 {
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
-	float4 depth : COLOR2;
-	float4 cookTorrance : COLOR3;
+	float4 depth_cookTorrance : COLOR2;
 
 };
 
@@ -97,24 +96,22 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	/*float3 bumpNormal = _in.N + (normal.x * _in.T) + (normal.y * _in.B);
 	bumpNormal = normalize(bumpNormal);*/
 
-	//float3x3 tbn =
-	//{
-	//	_in.T,
-	//	_in.B,
-	//	_in.N
-	//};
-	//float3 defaultNormal = normalize(_in.N);
-	//normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
+	float3x3 tbn =
+	{
+		_in.T,
+		_in.B,
+		_in.N
+	};
+	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 
 
-	o.depth = float4(GetDepth(_in.uvAndDepth.zw),0,1);
+	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 
-	o.cookTorrance.x = g_f0;
-	o.cookTorrance.y = g_roughness;
-	o.cookTorrance.z = 0;
-	o.cookTorrance.w = 1;
+	o.depth_cookTorrance.z = g_f0;
+	o.depth_cookTorrance.w = g_roughness;
+
 
 
 	return o;

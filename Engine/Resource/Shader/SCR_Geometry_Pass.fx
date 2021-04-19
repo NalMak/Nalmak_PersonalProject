@@ -2,7 +2,6 @@
 
 
 texture g_diffuse;
-texture g_depth;
 texture g_normal;
 texture g_light;
 texture g_shadow;
@@ -10,10 +9,6 @@ texture g_shadow;
 sampler DiffuseSampler = sampler_state
 {
 	texture = g_diffuse;
-};
-sampler DepthSampler = sampler_state
-{
-	texture = g_depth;
 };
 sampler NormalSampler = sampler_state
 {

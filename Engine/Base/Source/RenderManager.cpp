@@ -87,12 +87,12 @@ void RenderManager::Render(Camera * _cam)
 
 	ClearRenderTarget(L"GBuffer_Diffuse");
 	ClearRenderTarget(L"GBuffer_Normal");
-	ClearRenderTarget(L"GBuffer_Depth");
-	ClearRenderTarget(L"GBuffer_CookTorrance");
+	ClearRenderTarget(L"GBuffer_Depth_CookTorrance");
 	ClearRenderTarget(L"GBuffer_Light");
 	ClearRenderTarget(L"GBuffer_Debug");
 	ClearRenderTarget(L"GBuffer_Final");
 	ClearRenderTarget(L"GBuffer_Emission");
+	ClearRenderTarget(L"GBuffer_Specular");
 	ClearRenderTarget(L"GBuffer_Shadow");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
@@ -246,7 +246,31 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 		
 		}
 	}
+	for (auto& renderList : m_renderLists[RENDERING_MODE_CUTOUT])
+	{
+		for (auto& renderer : renderList.second)
+		{
+			if (!renderer->IsCastShadow())
+				continue;
 
+			if (lightCam->IsInFrustumCulling(renderer))
+			{
+				Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
+				if (currentShader != newShader)
+				{
+					currentShader->EndPass();
+					currentShader = newShader;
+					currentShader->BeginPass();
+				}
+
+				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
+				currentShader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
+				currentShader->CommitChanges();
+				renderer->RenderForShadow(currentShader);
+			}
+
+		}
+	}
 	EndRenderTarget();
 	currentShader->EndPass();
 	

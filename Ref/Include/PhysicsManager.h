@@ -66,7 +66,7 @@ private:
 	void InitializeShapeByColliderInfo(PxShape* _shape, Collider* collider);
 
 public:
-	GameObject* Raycast(Vector3* _hitPoint, const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*>& _renderList);
+	GameObject* Raycast(Vector3* _hitPoint, const Vector3& _startLayPos, const Vector3& _endLayPos, vector<MeshRenderer*> _renderList);
 	GameObject* RaycastCamToMouse(Vector3 * _hitPoint, const vector<MeshRenderer*>& _renderList);
 
 };

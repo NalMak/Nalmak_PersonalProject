@@ -12,7 +12,6 @@ typedef struct NALMAK_DLL Nalmak_MeshContainer final : public D3DXMESHCONTAINER
 
 	D3DXATTRIBUTERANGE*		attributeTable = nullptr;
 
-	DWORD paletteEntriesCount = 50;
 	DWORD attributeTableCount = 0;
 	DWORD maxVertexInfl = 0;
 	LPD3DXBUFFER boneCombinationTable = nullptr;

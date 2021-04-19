@@ -24,7 +24,7 @@ void XFileMesh::Initialize(wstring _fp)
 	Matrix base = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
 	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root, base);
 	TraverseBone((Nalmak_Frame*)m_root);
-
+	m_stride = sizeof(INPUT_LAYOUT_POSITION_NORMAL_BINORMAL_TANGENT_UV);
 
 
 	for (auto& meshContainer : m_meshContainerList)
@@ -60,13 +60,14 @@ void XFileMesh::Initialize(wstring _fp)
 
 void XFileMesh::InitializeSW()
 {
+
+
 	for (auto& meshContainer : m_meshContainerList)
 	{
 		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
 		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
 
-		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
-		m_stride = D3DXGetFVFVertexSize(FVF);
+
 	}
 
 	
@@ -111,8 +112,15 @@ void XFileMesh::InitializeHW()
 	/*	mesh->GetAttributeTable(nullptr, &newMeshContainer->attributeTableCount);
 		D3DXATTRIBUTERANGE* attributeTable = new D3DXATTRIBUTERANGE[newMeshContainer->attributeTableCount];
 		mesh->GetAttributeTable(newMeshContainer->attributeTable, &newMeshContainer->attributeTableCount);
-
 		SAFE_DELETE_ARR(newMeshContainer->attributeTable);*/
+
+		D3DVERTEXELEMENT9			Decl[MAX_FVF_DECL_SIZE];
+		ZeroMemory(Decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
+		mesh->GetDeclaration(Decl);
+
+
+		int a = 5;
+
 		newMeshContainer->MeshData.pMesh = mesh;
 		newMeshContainerList.emplace_back(newMeshContainer);
 	}
@@ -129,8 +137,6 @@ void XFileMesh::InitializeHW()
 		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
 		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
 
-		DWORD FVF = meshContainer->MeshData.pMesh->GetFVF();
-		m_stride = D3DXGetFVFVertexSize(FVF);
 
 		if (meshContainer->boneCount > HARDWARE_SKINNING_BONE_COUNT_MAX)
 		{

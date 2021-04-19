@@ -185,6 +185,8 @@
     <ClInclude Include="Homework_Player.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PublicData.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -199,6 +201,8 @@
     <ClCompile Include="Homework_Player.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -214,6 +218,14 @@
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd" />
+    <None Include="..\Resource\static\Shader\BnS_StaticObject.sd" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

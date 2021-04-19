@@ -3,19 +3,19 @@
 
 DirectionalLight g_directionalLight;
 
-texture g_depth;
+texture g_depth_cookTorrance;
 texture g_lightDepth;
 
 
-sampler DepthSampler = sampler_state
-{
-	texture = g_depth;
-};
 sampler LightDepthSampler = sampler_state
 {
 	texture = g_lightDepth;
 };
 
+sampler DepthCookTorranceSampler = sampler_state
+{
+	texture = g_depth_cookTorrance;
+};
 
 struct VS_INPUT
 {
@@ -59,7 +59,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float2 uv = float2(_input.uv) + float2(perPixelX, perPixelY);
 
 
-	float2 depth = tex2D(DepthSampler, uv).xy;
+	float2 depth = tex2D(DepthCookTorranceSampler, uv).xy;
 	float4 worldPos = GetWorldPosFromDepth(depth, uv);
 	float4 lightPos = mul(worldPos, g_directionalLight.viewProj);
 

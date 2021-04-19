@@ -2,7 +2,7 @@
 ## Shader Data Setting (sd)
 #########################################################
 
-inputRT "g_depth" "GBuffer_Depth"
+inputRT "g_depth_cookTorrance" "GBuffer_Depth_CookTorrance"
 inputRT "g_lightDepth" "GBuffer_LightDepth"
 
 outputRT "GBuffer_Shadow"

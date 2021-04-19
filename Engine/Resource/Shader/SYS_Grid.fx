@@ -12,7 +12,7 @@ sampler mainSampler = sampler_state
 
 	MinFilter = anisotropic;   
 	MagFilter = anisotropic; 
-    	MipFilter = anisotropic;
+    MipFilter = anisotropic;
 };
 
 struct VS_INPUT

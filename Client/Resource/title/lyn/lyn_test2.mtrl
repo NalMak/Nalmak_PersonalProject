@@ -2,14 +2,21 @@
 ##  Material Data Setting
 #########################################################
 
-shader "SYS_Standard"
+shader "BnS_Character_HWSkinning"
+//shader "SYS_Standard_NormalMap"
 
-texture "g_mainTex" "10121_LynF_col2_01_D"
+
+texture "g_mainTex" "60107_LynF_col2_D"
+texture "g_normalTex" "60107_LynF_col2_N"
+texture "g_specularTex" "60107_LynF_col2_S"
+texture "g_maskTex" "60107_LynF_col2_M"
+
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
 float "g_f0" "0.3f"
-float "g_roughness" "0.6f"
+float "g_roughness" "0.8f"
+float "g_normalPower" "1.f"
 
-renderQueue "1000"
+renderQueue "2000"
 
 blendingMode "0"
 
