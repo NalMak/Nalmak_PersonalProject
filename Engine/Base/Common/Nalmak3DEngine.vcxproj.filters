@@ -563,6 +563,7 @@
     <ClCompile Include="..\Source\Shader.cpp">
       <Filter>06.Resource\03.Shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\CharacterController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -903,6 +904,7 @@
     <ClInclude Include="..\Include\Shader.h">
       <Filter>06.Resource\03.Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\CharacterController.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

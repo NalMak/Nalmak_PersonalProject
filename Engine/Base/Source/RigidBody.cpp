@@ -39,6 +39,7 @@ void RigidBody::LateUpdate()
 void RigidBody::Release()
 {
 	PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
+	//m_rigid->release();
 }
 
 void RigidBody::OnEnable()

@@ -34,6 +34,7 @@
     <ClCompile Include="..\Source\Camera.cpp" />
     <ClCompile Include="..\Source\CanvasRenderer.cpp" />
     <ClCompile Include="..\Source\CapsuleCollider.cpp" />
+    <ClCompile Include="..\Source\CharacterController.cpp" />
     <ClCompile Include="..\Source\Collider.cpp" />
     <ClCompile Include="..\Source\Component.cpp" />
     <ClCompile Include="..\Source\Core.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="..\Include\Camera.h" />
     <ClInclude Include="..\Include\CanvasRenderer.h" />
     <ClInclude Include="..\Include\CapsuleCollider.h" />
+    <ClInclude Include="..\Include\CharacterController.h" />
     <ClInclude Include="..\Include\Collider.h" />
     <ClInclude Include="..\Include\Component.h" />
     <ClInclude Include="..\Include\Core.h" />

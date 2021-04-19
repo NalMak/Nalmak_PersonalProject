@@ -61,6 +61,7 @@ public:
 	void CreateSphereCollider(Collider* _col,RigidBody* _rigid, float _radius);
 	void CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
 	void CreateCapsuleCollider(Collider* _col, RigidBody* _rigid, float _radius, float _height);
+	PxController* CreateCharacterController(CharacterController* _controller);
 private:
 	void AttachShapeToRigidBody(RigidBody* _rigid, Collider* shape);
 	void InitializeShapeByColliderInfo(PxShape* _shape, Collider* collider);

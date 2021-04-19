@@ -8,6 +8,8 @@
 #include "ObjectManager.h"
 #include "Camera.h"
 #include "RenderManager.h"
+#include "CharacterController.h"
+
 IMPLEMENT_SINGLETON(PhysicsManager)
 
 PhysicsManager::PhysicsManager()
@@ -411,6 +413,31 @@ void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, 
 	PxShape* shape = m_physics->createShape(PxCapsuleGeometry(_radius,_height * 0.5f), *material, true);
 	InitializeShapeByColliderInfo(shape, _col);
 	AttachShapeToRigidBody(_rigid, _col);
+}
+
+PxController* PhysicsManager::CreateCharacterController(CharacterController* _controller)
+{
+	PxCapsuleControllerDesc desc;
+	desc.userData = _controller->GetGameObject();
+	desc.climbingMode = _controller->m_climbingMode;
+	desc.material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
+	desc.height = _controller->m_height;
+	desc.radius = _controller->m_radius;
+	desc.contactOffset = _controller->m_skinWidth;
+	desc.stepOffset = _controller->m_stepOffset;
+	desc.slopeLimit =  Deg2Rad * _controller->m_slopeLimit;
+	desc.upDirection = PxVec3(0.f, 1.f, 0.f);
+	Vector3 pos = _controller->GetTransform()->GetWorldPosition() + _controller->m_center;
+	desc.position = PxExtendedVec3(pos.x, pos.y, pos.z);
+
+	//PxFilterData filterData;
+	//filterData.word0 = _filterGroup;
+	//filterData.word1 = _filterMask;
+
+	//_shape->setSimulationFilterData(filterData);
+
+	auto controller =  m_controllerManager->createController(desc);
+	//controller->
 }
 
 void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
