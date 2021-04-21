@@ -298,7 +298,7 @@ void PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigi
 	convexMesh->release();
 }
 
-void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, bool _directInsertion)
+void PhysicsManager::CreateStaticMeshCollider(Collider * _col, bool _directInsertion, DWORD _vertexCount, Vector3* _vertexPositionData, DWORD _figureCount, INDEX32* _figureData)
 {
 	PxCookingParams params = m_cooking->getParams();
 
@@ -312,7 +312,7 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 	// 쿠킹 중 메쉬 정리 여부 결정 (조건)
 	//  1. 버텍스 복사가 없어야 함
 	//  2. 거대 폴리곤이 없어야 함
-	bool skipMeshCleanup = true;
+	bool skipMeshCleanup = false;
 	bool skipEdgeData = false;
 	bool inserted = false; // false -> fast
 
@@ -329,18 +329,19 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, Mesh * _mesh, boo
 		params.meshPreprocessParams |= PxMeshPreprocessingFlag::eDISABLE_ACTIVE_EDGES_PRECOMPUTE;
 
 	params.midphaseDesc.mBVH34Desc.numTrisPerLeaf = 15;
+	//params.meshWeldTolerance = 10.f;
 
 	m_cooking->setParams(params);
 
 
 	PxTriangleMeshDesc meshDesc;
 	meshDesc.setToDefault();
-	meshDesc.points.count = _mesh->GetVertexCount();
-	meshDesc.points.data = _mesh->GetVertexPositionData();
+	meshDesc.points.count = _vertexCount;
+	meshDesc.points.data = _vertexPositionData;
 	meshDesc.points.stride = sizeof(Vector3);
 
-	meshDesc.triangles.count = _mesh->GetFigureCount();
-	meshDesc.triangles.data = _mesh->GetIndices();
+	meshDesc.triangles.count = _figureCount;
+	meshDesc.triangles.data = _figureData;
 	meshDesc.triangles.stride = sizeof(INDEX32);
 
 	assert(L"Mesh is not valid for triangleMesh" && meshDesc.isValid());
@@ -427,7 +428,7 @@ PxController* PhysicsManager::CreateCharacterController(CharacterController* _co
 	desc.stepOffset = _controller->m_stepOffset;
 	desc.slopeLimit =  Deg2Rad * _controller->m_slopeLimit;
 	desc.upDirection = PxVec3(0.f, 1.f, 0.f);
-	Vector3 pos = _controller->GetTransform()->GetWorldPosition() + _controller->m_center;
+	Vector3 pos = _controller->GetTransform()->GetWorldPosition(); 
 	desc.position = PxExtendedVec3(pos.x, pos.y, pos.z);
 
 	//PxFilterData filterData;
@@ -435,9 +436,11 @@ PxController* PhysicsManager::CreateCharacterController(CharacterController* _co
 	//filterData.word1 = _filterMask;
 
 	//_shape->setSimulationFilterData(filterData);
-
 	auto controller =  m_controllerManager->createController(desc);
+	controller->setFootPosition(PxExtendedVec3(_controller->m_center.x, _controller->m_center.y, _controller->m_center.z));
 	//controller->
+
+	return controller;
 }
 
 void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
@@ -501,11 +504,12 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRa
 
 		Vector3 scale = render->GetTransform()->scale;
 		float radius = render->GetBoundingRadius();
-		//float maxScale = max(max(scale.x, scale.y), scale.z);
-		if (LineToSphereMinDistance > radius * radius) //* maxScale * maxScale
+		float maxScale = max(max(scale.x, scale.y), scale.z);
+		if (LineToSphereMinDistance > radius * radius* maxScale * maxScale) //
 			continue;
 
 		raycastRenderers.emplace_back(render);
+
 	}
 	if (raycastRenderers.size() == 0)
 		return nullptr;
@@ -520,7 +524,8 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRa
 		Vector3 rayStartPos = _startRayPos; 
 		Vector3 dir = rayDirection;
 		Matrix matInvWorld;
-		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetWorldMatrix());
+		
+		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetNoneScaleWorldMatrix());
 		D3DXVec3TransformCoord(&rayStartPos, &_startRayPos, &matInvWorld);
 		D3DXVec3TransformNormal(&dir, &dir, &matInvWorld);
 		
@@ -528,12 +533,16 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRa
 		
 		Mesh* mesh = render->GetMesh();
 	
+		Vector3 scale = render->GetTransform()->scale;
 		for (unsigned long i = 0; i < mesh->GetFigureCount(); ++i)
 		{
 			Vector3 v0, v1, v2;
-			v0 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._0];
-			v1 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._1];
-			v2 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._2];
+			v0 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._0];
+			v0 = { v0.x * scale.x ,v0.y * scale.y,v0.z * scale.z };
+			v1 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._1];
+			v1 = { v1.x * scale.x ,v1.y * scale.y,v1.z * scale.z };
+			v2 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._2];
+			v2 = { v2.x * scale.x ,v2.y * scale.y,v2.z * scale.z };
 
 			if (D3DXIntersectTri(
 				&v0,
@@ -551,8 +560,9 @@ GameObject * PhysicsManager::Raycast(Vector3* _hitPoint,const Vector3 & _startRa
 				{
 					minDistance = dist;
 					*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
-					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetWorldMatrix());
+					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetNoneScaleWorldMatrix());
 					pickObject = render->GetGameObject();
+
 				}
 
 			}
@@ -592,11 +602,13 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 		float LineToSphereMinDistance = pow(Ex - center.x, 2) + pow(Ey - center.y, 2) + pow(Ez - center.z, 2);
 
 		Vector3 scale = render->GetTransform()->scale;
-		//float maxScale = max(max(scale.x, scale.y), scale.z);
-		if (LineToSphereMinDistance > render->GetBoundingRadius() *  render->GetBoundingRadius()) //* maxScale * maxScale
+		float maxScale = max(max(scale.x, scale.y), scale.z);
+		if (LineToSphereMinDistance > render->GetBoundingRadius() *  render->GetBoundingRadius()* maxScale * maxScale) //
 			continue;
 
 		raycastRenderers.emplace_back(render);
+
+	
 	}
 	if (raycastRenderers.size() == 0)
 		return nullptr;
@@ -611,7 +623,7 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 		Vector3 rayStartPos = startRayPos;
 		Vector3 dir = rayDirection;
 		Matrix matInvWorld;
-		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetWorldMatrix());
+		D3DXMatrixInverse(&matInvWorld, 0, &render->GetTransform()->GetNoneScaleWorldMatrix());
 		D3DXVec3TransformCoord(&rayStartPos, &startRayPos, &matInvWorld);
 		D3DXVec3TransformNormal(&dir, &dir, &matInvWorld);
 
@@ -619,12 +631,17 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 
 		Mesh* mesh = render->GetMesh();
 
+		Vector3 scale = render->GetTransform()->scale;
+
 		for (unsigned long i = 0; i < mesh->GetFigureCount(); ++i)
 		{
 			Vector3 v0, v1, v2;
-			v0 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._0];
-			v1 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._1];
-			v2 = mesh->GetVertexPositionData()[mesh->GetIndices()[i]._2];
+			v0 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._0];
+			v0 = { v0.x * scale.x ,v0.y * scale.y,v0.z * scale.z };
+			v1 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._1];
+			v1 = { v1.x * scale.x ,v1.y * scale.y,v1.z * scale.z };
+			v2 = mesh->GetVertexPositionData()[mesh->GetIndexData()[i]._2];
+			v2 = { v2.x * scale.x ,v2.y * scale.y,v2.z * scale.z };
 
 			if (D3DXIntersectTri(
 				&v0,
@@ -642,7 +659,8 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 				{
 					minDistance = dist;
 					*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
-					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetWorldMatrix());
+					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetNoneScaleWorldMatrix());
+				
 					pickObject = render->GetGameObject();
 				}
 

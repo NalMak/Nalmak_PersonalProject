@@ -62,6 +62,7 @@ public:
 	void Reset();
 	void UpdateMapBoundaryLine();
 public:
+	void SetData(vector<NavCell*> _cell, vector<NavLine*> _line, vector<NavPoint*> _point);
 	const vector<Vector3>& GetPath() { return m_OptimalPathPoint2; }
 	NavCell* GetEndCell() { return m_endCell; }
 	void SetStartPosition(const Vector3& _pos);

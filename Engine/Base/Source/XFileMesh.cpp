@@ -214,8 +214,8 @@ void XFileMesh::Release()
 	m_hierarchy->DestroyFrame(m_root);
 
 	SAFE_DELETE(m_hierarchy);
-	SAFE_DELETE(m_vertexPositionData);
-	SAFE_DELETE(m_indexData);
+	SAFE_DELETE_ARR(m_vertexPositionData);
+	SAFE_DELETE_ARR(m_indexData);
 	SAFE_RELEASE(m_animController);
 }
 

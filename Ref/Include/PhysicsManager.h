@@ -8,6 +8,7 @@
 class RigidBody;
 class Collider;
 class Mesh;
+class CharacterController;
 
 using namespace physx;
 
@@ -56,11 +57,12 @@ public:
 	PxRigidDynamic* CreateRigidDynamic(RigidBody* _rigid);
 	PxRigidStatic* CreateRigidStatic(Collider* _col);
 	void CreateConvexMeshCollider(Collider * _col, RigidBody * _rigid, Mesh* _mesh, bool _directInsertion, unsigned int _gaussLimit);
-	void CreateStaticMeshCollider(Collider * _col, Mesh* _mesh, bool _directInsertion);
+	void CreateStaticMeshCollider(Collider * _col, bool _directInsertion, DWORD _vertexCount, Vector3* _vertexPositionData, DWORD _figureCount, INDEX32* _figureData);
 public:
 	void CreateSphereCollider(Collider* _col,RigidBody* _rigid, float _radius);
 	void CreateBoxCollider(Collider* _col, RigidBody* _rigid, float _width, float _height, float _depth);
 	void CreateCapsuleCollider(Collider* _col, RigidBody* _rigid, float _radius, float _height);
+	PxController* CreateCharacterController(CharacterController* _controller);
 private:
 	void AttachShapeToRigidBody(RigidBody* _rigid, Collider* shape);
 	void InitializeShapeByColliderInfo(PxShape* _shape, Collider* collider);

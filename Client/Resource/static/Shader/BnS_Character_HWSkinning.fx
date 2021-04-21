@@ -160,6 +160,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.N
 	};
 	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
+	normal = normalize(normal);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 

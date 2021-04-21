@@ -49,7 +49,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	o.pos = mul(float4(_in.pos,1), wvp);
 
 	o.normal = GetWorldNormal(_in.normal, g_world);
-
+	//o.normal = _in.normal;
 	o.uvAndDepth.xy = _in.uv;
 	o.uvAndDepth.zw = o.pos.zw;
 	

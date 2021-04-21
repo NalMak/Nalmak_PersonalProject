@@ -25,7 +25,15 @@ void MeshCollider::Initialize()
 		PhysicsManager::GetInstance()->CreateConvexMeshCollider(this, rigid, meshRenderer->GetMesh(), false, 16);
 	}
 	else
-		PhysicsManager::GetInstance()->CreateStaticMeshCollider(this, meshRenderer->GetMesh(), false);
+	{
+		Mesh* mesh = meshRenderer->GetMesh();
+		PhysicsManager::GetInstance()->CreateStaticMeshCollider(this,
+			false,
+			mesh->GetVertexCount(),
+			mesh->GetVertexPositionData(),
+			mesh->GetFigureCount(),
+			mesh->GetIndexData());
+	}
 }
 
 void MeshCollider::Update()

@@ -37,7 +37,6 @@ public:
 	virtual void DeleteMaterial(int _index);
 	void SetMesh(const wstring& _meshName);
 	void SetMesh(Mesh* _mesh);
-
 public:
 	virtual Material * GetMaterial(int _index = 0) override;
 	virtual float GetBoundingRadius() override;

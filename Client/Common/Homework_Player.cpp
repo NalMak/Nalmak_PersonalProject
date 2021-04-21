@@ -26,14 +26,6 @@ void Homework_Player::Update()
 	{
 		m_transform->RotateAxis({ -1,0,0 }, dTime * 3);
 	}
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_T))
-	{
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"Player2";
-		mesh.mtrlName = L"test1";
-		
-		auto obj = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetPosition(10, -10, 0)->SetScale(0.1f, 0.1f, 0.1f);
-	}
 	
 	/*if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_DOWN_ARROW))
 	{

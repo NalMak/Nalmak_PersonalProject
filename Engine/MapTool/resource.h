@@ -26,6 +26,7 @@
 #define IDC_BUTTON11                    1012
 #define IDC_BUTTON3                     1012
 #define IDC_BUTTON12                    1013
+#define IDC_BUTTON7                     1013
 #define IDC_BUTTON13                    1014
 #define IDC_BUTTON14                    1015
 #define IDC_BUTTON15                    1016

@@ -10,6 +10,7 @@ class NALMAK_DLL NavCell
 {
 public:
 	explicit NavCell(NavMesh* _nav);
+	NavCell();
 	~NavCell();
 private:
 	int num = 0;
@@ -18,6 +19,7 @@ public:
 	void Reset();
 	void Initialize(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2, NavLine * _l0, NavLine * _l1, NavLine * _l2);
 	void Update();
+	void AddLine(NavLine* _nav);
 	Vector3 GetCenter()const { return m_centerOfGravityPos; }
 	NavCell** GetAdjacentCells() { return m_AdjacentCellList; }
 	NavLine** GetLines() { return m_lines; }

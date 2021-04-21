@@ -10,6 +10,10 @@ NavCell::NavCell(NavMesh * _nav)
 	m_navMesh = _nav;
 }
 
+NavCell::NavCell()
+{
+}
+
 NavCell::~NavCell()
 {
 }
@@ -56,6 +60,20 @@ void NavCell::Update()
 {
 	UpdateCenter();
 	UpdateCost();
+}
+
+void NavCell::AddLine(NavLine * _nav)
+{
+	if (m_lines[0] && m_lines[1] && m_lines[2])
+		return;
+
+	if (!m_lines[0])
+		m_lines[0] = _nav;
+	if (!m_lines[1])
+		m_lines[1] = _nav;
+	if (!m_lines[2])
+		m_lines[2] = _nav;
+
 }
 
 void NavCell::UpdateCenter()

@@ -75,6 +75,10 @@
 #include "NavMesh.h"
 #include "SkinnedMeshRenderer.h"
 #include "AnimationController.h"
+#include "CharacterController.h"
+#include "LOD_Group.h"
+#include "NavCollider.h"
+
 #pragma endregion
 
 //#define __SOUND_ON__

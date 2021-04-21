@@ -56,7 +56,7 @@ Vector3 * Mesh::GetVertexPositionData()
 	return m_vertexPositionData;
 }
 
-INDEX32 * Mesh::GetIndices()
+INDEX32 * Mesh::GetIndexData()
 {
 	return m_indexData;
 }

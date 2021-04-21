@@ -48,8 +48,11 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
+    <ClCompile Include="..\Source\LOD_Group.cpp" />
     <ClCompile Include="..\Source\MeshHierarchy.cpp" />
     <ClCompile Include="..\Source\Nalmak_Animation.cpp" />
+    <ClCompile Include="..\Source\NavCollider.cpp" />
+    <ClCompile Include="..\Source\NavMeshData.cpp" />
     <ClCompile Include="..\Source\Shader.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
@@ -155,8 +158,11 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
+    <ClInclude Include="..\Include\LOD_Group.h" />
     <ClInclude Include="..\Include\MeshHierarchy.h" />
     <ClInclude Include="..\Include\Nalmak_Animation.h" />
+    <ClInclude Include="..\Include\NavCollider.h" />
+    <ClInclude Include="..\Include\NavMeshData.h" />
     <ClInclude Include="..\Include\Shader.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
@@ -250,6 +256,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4FD6877-6BA3-4EC9-827C-E402E4199F76}</ProjectGuid>

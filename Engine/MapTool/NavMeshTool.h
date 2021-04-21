@@ -23,4 +23,6 @@ protected:
 public:
 	afx_msg void OnBnClickedStartPosition();
 	afx_msg void OnBnClickedEndPosition();
+	afx_msg void OnBnClickedButtonSaveNav();
+	afx_msg void OnBnClickedButtonLoadNav();
 };

@@ -509,6 +509,13 @@ void NavMesh::Reset()
 	m_OptimalPathPoint2.clear();
 }
 
+void NavMesh::SetData(vector<NavCell*> _cell, vector<NavLine*> _line, vector<NavPoint*> _point)
+{
+	m_CellList = _cell;
+	m_LineList = _line;
+	m_PointList = _point;
+}
+
 void NavMesh::UpdateMapBoundaryLine()
 {
 	m_MapBoundaryLines.clear();

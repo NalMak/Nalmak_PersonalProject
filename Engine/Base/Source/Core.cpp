@@ -109,7 +109,7 @@ void Core::Run()
 
 void Core::SetStartScene(const wstring& _name)
 {
-	m_resourceManager->LoadResourcesBySceneFoloderName(L"static", false);
+	m_resourceManager->LoadResourcesBySceneFoloderName(L"static", true);
 	m_resourceManager->LoadResourcesBySceneFoloderName(_name, false);
 
 	m_sceneManager->SetFirstScene(_name);

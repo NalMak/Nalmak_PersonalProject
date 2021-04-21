@@ -34,6 +34,13 @@ DebuggingMode::~DebuggingMode()
 
 void DebuggingMode::Initialize()
 {
+	MeshRenderer::Desc render;
+	render.mtrlName = L"SYS_Diffuse_Green";
+	m_test = INSTANTIATE()->AddComponent<MeshRenderer>(&render);
+	m_test->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+	m_test->SetScale(0.1f, 0.1f, 0.1f);
+
+
 	m_input = InputManager::GetInstance();
 	m_render = RenderManager::GetInstance();
 
@@ -155,6 +162,19 @@ void DebuggingMode::Update()
 	if (m_input->GetKeyDown(KEY_STATE_F2))
 	{
 		UpdateMaterial();
+	}
+
+	if (m_input->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
+	{
+		Vector3 pos;
+		if (Core::GetInstance()->PickObjectByMouse(&pos))
+		{
+			m_test->SetPosition(pos);
+		}
+		else
+		{
+			DEBUG_LOG(L"ww", L"ww");
+		}
 	}
 
 	if (m_debuggingMode.Check(DEBUGGING_MODE_PICKING))

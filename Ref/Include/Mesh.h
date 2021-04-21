@@ -31,7 +31,7 @@ public:
 	DWORD GetFigureCount();
 	UINT GetMeshContainerSize();
 	Vector3* GetVertexPositionData();
-	INDEX32* GetIndices();
+	INDEX32* GetIndexData();
 	D3DPRIMITIVETYPE GetPrimitiveType();
 
 protected:

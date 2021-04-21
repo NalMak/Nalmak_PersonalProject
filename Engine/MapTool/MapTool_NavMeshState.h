@@ -39,12 +39,16 @@ private:
 	GameObject* m_pickingPointsForDebug[2];
 	NAVMESH_TOOL_MODE m_toolMode = NAVMESH_TOOL_MODE_INSTALL;
 public:
+	void SetNavMesh(NavMesh* _navMesh);
 	void SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode);
-
+	NavMesh* GetNavMesh();
 
 	/* for debug */
 private:
 	void DrawDebugObject();
+	void AddDebugPoint();
+	void AddDebugCenter();
+
 private:
 	vector<GameObject*> m_pointDebug;
 	vector<GameObject*> m_cellCenterDebug;

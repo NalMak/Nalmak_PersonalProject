@@ -127,6 +127,8 @@ BOOL ObjectInstallTool::OnInitDialog()
 	int i = 0;
 	for (auto& sceneName : sceneFolderNames)
 	{
+		if(sceneName == L"static")
+			continue;
 		m_sceneName.InsertString(i,sceneName.c_str());
 		++i;
 	}
@@ -142,6 +144,27 @@ BOOL ObjectInstallTool::OnInitDialog()
 	};
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e1);
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e2);
+
+	
+	auto& materials = ResourceManager::GetInstance()->GetAllResource<Material>();
+	m_materialList.ResetContent();
+	for (auto& mtrl : materials)
+	{
+		auto inputLayout = ((Material*)mtrl.second)->GetShader()->GetInputLayout();
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_PARTICLE)
+			continue;
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
+			continue;
+		m_materialList.AddString(mtrl.first.c_str());
+	}
+	m_meshList.ResetContent();
+	m_meshRenderer_selectedMesh.ResetContent();
+	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
+	for (auto& mesh : meshes)
+	{
+		m_meshList.AddString(mesh.first.c_str());
+		m_meshRenderer_selectedMesh.AddString(mesh.first.c_str());
+	}
 
 	return TRUE;  
 }
@@ -617,6 +640,9 @@ void ObjectInstallTool::OnLbnSelchangeObjectList()
 void ObjectInstallTool::OnBnClickedButtonCreateObject()
 {
 	auto newObj = INSTANTIATE()->AddComponent<MeshRenderer>();
+
+	auto pos = Core::GetInstance()->GetMainCamera()->GetTransform()->GetWorldPosition() + Core::GetInstance()->GetMainCamera()->GetTransform()->GetForward() * 10;
+	newObj->SetPosition(pos);
 	m_mapToolManager->CreateObject(newObj);
 	m_objectList.InsertString(m_objectList.GetCount(), newObj->GetName().c_str());
 	int count = m_objectList.GetCount();
@@ -1349,6 +1375,9 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 	CString sceneName;
 	m_sceneName.GetLBText(m_sceneName.GetCurSel(), sceneName);
 	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+
+
+
 	path += L"/" + sceneName;
 	ResourceManager::GetInstance()->ReleaseSceneResouce();
 	ResourceManager::GetInstance()->LoadAllResources(path,false);

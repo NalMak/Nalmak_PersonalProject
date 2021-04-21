@@ -3,7 +3,7 @@
 #include "PhysicsManager.h"
 
 // Only work in static mesh collider
-class CharacterController :
+class NALMAK_DLL CharacterController :
 	public Component
 {
 	friend class PhysicsManager;
@@ -17,7 +17,6 @@ public:
 		float slopeLimit = 45;
 		float skinWidth = 0.01f;
 		float stepOffset = 0.1f;
-		float stepLimit = 0.01f;
 		PxCapsuleClimbingMode::Enum climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 	};
 public:
@@ -27,7 +26,12 @@ public:
 private:
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void LateUpdate() override;
 	virtual void Release() override;
+public:
+	bool IsGround();
+	void Move(const Vector3& _velocity);
+	void Move(float _x, float _y, float _z);
 private:
 	float m_radius;
 	float m_height;

@@ -247,6 +247,9 @@
     <Filter Include="06.Resource\01.Mesh\02.XFileMesh">
       <UniqueIdentifier>{5acc79d9-60d1-42c0-82bf-b93c13bc55b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Resource\09.NavMesh">
+      <UniqueIdentifier>{8731b8fd-50e6-4167-aa33-f1d16ab17069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core.cpp">
@@ -564,6 +567,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\CharacterController.cpp" />
+    <ClCompile Include="..\Source\LOD_Group.cpp" />
+    <ClCompile Include="..\Source\NavMeshData.cpp" />
+    <ClCompile Include="..\Source\NavCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -905,6 +911,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\CharacterController.h" />
+    <ClInclude Include="..\Include\LOD_Group.h" />
+    <ClInclude Include="..\Include\NavMeshData.h" />
+    <ClInclude Include="..\Include\NavCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">
@@ -913,5 +922,13 @@
     <FxCompile Include="..\..\Resource\Shader\H_light.fxh">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\SYS_Standard.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

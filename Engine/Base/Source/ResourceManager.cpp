@@ -12,6 +12,7 @@
 #include "AudioClip.h"
 #include "StaticObjectInfo.h"
 #include "XFileMesh.h"
+#include "NavMeshData.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -122,6 +123,8 @@ void ResourceManager::LoadAllResources(const wstring & _directoryPath, bool _isS
 	LoadAllResources<Material, Material>(L"mtrl", _isStatic);
 	LoadAllResources<ParticleInfo, ParticleInfo>(L"ptd", _isStatic);
 	LoadAllResources<StaticObjectInfo, StaticObjectInfo>(L"sttd", _isStatic);
+	LoadAllResources<NavMeshData, NavMeshData>(L"nvd", _isStatic);
+
 }
 
 void ResourceManager::LoadResourcesBySceneFoloderName(const wstring & _sceneName, bool _isStatic)
