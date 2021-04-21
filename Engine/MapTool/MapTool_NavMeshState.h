@@ -7,14 +7,6 @@ class MapTool_NavMeshState :
 	public IState
 {
 public:
-	enum NAVMESH_TOOL_MODE
-	{
-		NAVMESH_TOOL_MODE_INSTALL,
-		NAVMESH_TOOL_MODE_SET_START_POINT,
-		NAVMESH_TOOL_MODE_SET_END_POINT,
-		NAVMESH_TOOL_MODE_MAX
-	};
-public:
 	MapTool_NavMeshState();
 	~MapTool_NavMeshState();
 private:

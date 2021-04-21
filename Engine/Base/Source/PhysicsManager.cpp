@@ -107,6 +107,8 @@ void PhysicsManager::CreateScene()
 #ifdef _DEBUG
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
+	m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_DYNAMIC, 1.0f);
+
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_STATIC, 1.0f);
 
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f);

@@ -40,6 +40,12 @@ void TitleScene::Initialize()
 	}
 
 	{
+		MeshRenderer::Desc render;
+		render.meshName = L"sphere";
+		for(int i = 0 ; i < 10; ++i)
+			INSTANTIATE()->AddComponent<RigidBody>()->AddComponent<SphereCollider>()->AddComponent<MeshRenderer>(&render)->SetPosition(Nalmak_Math::RandDirection() * Nalmak_Math::Rand(0.f, 10.f) + Vector3(0, 5, 0));
+	}
+	/*{
 		auto obj = INSTANTIATE();
 		SkinnedMeshRenderer::Desc render;
 		render.meshName = L"lyn_test";
@@ -64,7 +70,7 @@ void TitleScene::Initialize()
 		obj->GetComponent<StateControl>()->InitState(L"idle");
 
 		obj->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0, 10, -3);
-	}
+	}*/
 
 	//MAKE_STATIC(L"building")->AddComponent<MeshCollider>();
 	{
@@ -75,8 +81,9 @@ void TitleScene::Initialize()
 		cylinder->GetComponent<LOD_Group>()->AddLODMesh(L"cylinder", 0.1f);
 		cylinder->GetComponent<LOD_Group>()->AddLODMesh(L"box", 0.3f);
 		cylinder->GetComponent<LOD_Group>()->AddLODMesh(L"lyn_test", 0.4f);
-
 	}
+
+
 	NavCollider::Desc navCollider;
 	navCollider.navName = L"default";
 	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
