@@ -76,6 +76,7 @@ void MainTabFormView::OnInitialUpdate()
 	m_aniTab.Create(IDD_DIALOG3, &m_mainTab);
 	m_aniTab.SetWindowPos(NULL, 4, 25, rt.Width(), rt.Height() - 30, SWP_SHOWWINDOW | SWP_NOZORDER);
 	m_aniTab.ShowWindow(SW_HIDE);
+
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 }
 

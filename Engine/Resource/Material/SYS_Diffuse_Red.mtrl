@@ -8,7 +8,7 @@ texture "g_mainTex" "default"
 vector4 "g_mainTexColor" "0.9,0,0,1.f"
 
 
-renderQueue "1000"
+renderQueue "3000"
 
 blendingMode "0"
 

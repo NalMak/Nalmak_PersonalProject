@@ -44,11 +44,17 @@ void Transform::Release()
 	{
 		m_parents = nullptr;
 	}
+	if (m_boneParents)
+	{
+		m_boneParents = nullptr;
+	}
 
 	for (auto& child : m_childs)
 	{
 		child->m_parents = nullptr;
 	}
+
+
 }
 
 void Transform::UpdateMatrix()
@@ -82,7 +88,16 @@ void Transform::UpdateMatrix()
 	memcpy(&worldMatrix.m[3][0], &position, sizeof(Vector3));
 
 	if (m_parents)
-		worldMatrix = worldMatrix * m_parents->GetNoneScaleWorldMatrix();
+	{
+		if (m_boneParents)
+		{
+			worldMatrix = worldMatrix * *m_boneParents * m_parents->GetWorldMatrix();
+		}
+		else
+		{
+			worldMatrix = worldMatrix * m_parents->GetNoneScaleWorldMatrix();
+		}
+	}
 }
 
 
@@ -236,7 +251,17 @@ Matrix Transform::GetNoneScaleWorldMatrix()
 
 
 	if (m_parents)
-		noneScaleWorld = noneScaleWorld * m_parents->GetNoneScaleWorldMatrix();
+	{
+		if (m_boneParents)
+		{
+			noneScaleWorld = noneScaleWorld * *m_boneParents * m_parents->GetWorldMatrix();
+		}
+		else
+		{
+			noneScaleWorld = noneScaleWorld * m_parents->GetNoneScaleWorldMatrix();
+		}
+	}
+
 
 	return noneScaleWorld;
 }
@@ -282,7 +307,18 @@ Vector3 Transform::GetWorldPosition()
 Quaternion Transform::GetWorldRotation()
 {
 	if (m_parents)
-		return rotation * m_parents->GetWorldRotation();
+	{
+		if (m_boneParents)
+		{
+			Quaternion bone;
+			D3DXQuaternionRotationMatrix(&bone, m_boneParents);
+			return rotation  * bone * m_parents->GetWorldRotation();
+		}
+		else
+		{
+			return rotation * m_parents->GetWorldRotation();
+		}
+	}
 	else
 		return rotation;
 }
@@ -458,10 +494,6 @@ void Transform::LookAt(const Vector3 & _dest, Quaternion * _qOut)
 
 
 
-
-
-
-
 Transform * Transform::GetChild(int _index)
 {
 	int i = 0;
@@ -479,11 +511,24 @@ size_t Transform::GetChildCount()
 	return m_childs.size();
 }
 
+void Transform::SetParents(Transform * _parents, Matrix * _bone)
+{
+	if (m_parents)
+		m_parents->DeleteChild(this);
+
+	m_parents = _parents;
+	_parents->AddChild(this);
+
+	m_boneParents = _bone;
+}
+
 
 void Transform::SetParents(Transform * _parents)
 {
 	assert("parents is nullptr" && _parents);
 	assert("parents are themselves" && !(_parents == this));
+	if (m_boneParents)
+		m_boneParents = nullptr;
 
 	if (m_parents)
 		m_parents->DeleteChild(this);
@@ -498,6 +543,9 @@ void Transform::SetParents(GameObject * _parents)
 	Transform* parents = _parents->GetTransform();
 	assert("parent is nullptr" && parents);
 	assert("parents are themselves" && !(parents == this));
+	if (m_boneParents)
+		m_boneParents = nullptr;
+
 
 	if (m_parents)
 		m_parents->DeleteChild(this);
@@ -539,6 +587,7 @@ void Transform::DeleteParent()
 	m_parents->DeleteChild(this);
 
 	m_parents = nullptr;
+	m_boneParents = nullptr;
 }
 
 Transform * Transform::GetParents()

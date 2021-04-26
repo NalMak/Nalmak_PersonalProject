@@ -18,6 +18,8 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 	else
 		m_materials.emplace_back(_desc->mtrl);
 
+	if (m_materials[0]->GetShader()->GetInputLayout() != VERTEX_INPUT_LAYOUT_POSITION_NORMAL_UV_ANIMATIONBLENDING)
+		assert(L"Skinned Mesh Renderer Must have animation blending Shader!" && 0);
 
 	auto mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
@@ -27,8 +29,14 @@ SkinnedMeshRenderer::SkinnedMeshRenderer(Desc * _desc)
 	
 	UINT  meshContainerSize = m_mesh->GetMeshContainerSize();
 
-	for (UINT i = 0; i < m_mesh->GetMeshContainerSize(); ++i)
+	m_meshContainerSize = m_mesh->GetMeshContainerSize();
+	m_boneWorldMatrices = new D3DXMATRIX*[m_meshContainerSize];
+
+	for (UINT i = 0; i < m_meshContainerSize; ++i)
+	{
 		m_textureCount += m_mesh->GetMeshContainer(i)->NumMaterials;
+		m_boneWorldMatrices[i] = new D3DXMATRIX[m_mesh->GetMeshContainer(i)->boneCount];
+	}
 
 	m_fetchTexture = new LPDIRECT3DTEXTURE9[m_textureCount];
 	for (UINT i = 0; i < m_textureCount; ++i)
@@ -68,6 +76,12 @@ void SkinnedMeshRenderer::Release()
 		m_fetchTexture[i]->Release();
 	}
 	SAFE_DELETE_ARR(m_fetchTexture);
+
+	for (UINT i = 0; i < m_meshContainerSize; ++i)
+	{
+		SAFE_DELETE_ARR(m_boneWorldMatrices[i]);
+	}
+	SAFE_DELETE_ARR(m_boneWorldMatrices);
 }
 
 void SkinnedMeshRenderer::Render(ConstantBuffer & _cBuffer)
@@ -105,10 +119,10 @@ void SkinnedMeshRenderer::RenderSW(ConstantBuffer & _cBuffer)
 			meshContainer->MeshData.pMesh->LockVertexBuffer(0, &dstVtx);
 
 			for (DWORD j = 0; j < meshContainer->boneCount; ++j)
-				meshContainer->renderingMatrices[j] = meshContainer->offsetMatrices[j] * (*meshContainer->boneCombinedMatrices[j]);
+				m_boneWorldMatrices[i][j] = meshContainer->offsetMatrices[j] * (*meshContainer->boneCombinedMatrices[j]);
 
 			skin->UpdateSkinnedMesh(
-				meshContainer->renderingMatrices,
+				m_boneWorldMatrices[i],
 				NULL, // 원상복귀 행렬
 				srcVtx,
 				dstVtx);
@@ -180,7 +194,7 @@ void SkinnedMeshRenderer::RenderHW_ConstantBuffer(ConstantBuffer & _cBuffer)
 				int matrixIndex = boneCombination[attribute].BoneId[palette];
 				if (matrixIndex != UINT_MAX)
 				{
-					meshContainer->renderingMatrices[palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
+					m_boneWorldMatrices[i][palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
 				}
 			}
 
@@ -195,7 +209,7 @@ void SkinnedMeshRenderer::RenderHW_ConstantBuffer(ConstantBuffer & _cBuffer)
 
 					currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
 					currentShader->SetInt("g_bone", meshContainer->maxVertexInfl - 1);
-					currentShader->SetMatrixArray("g_palette", meshContainer->renderingMatrices, boneCount);
+					currentShader->SetMatrixArray("g_palette", m_boneWorldMatrices[i], boneCount);
 					currentShader->CommitChanges();
 				}
 				meshContainer->MeshData.pMesh->DrawSubset(j);
@@ -231,7 +245,7 @@ void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer & _cBuffer)
 				int matrixIndex = boneCombination[j].BoneId[palette];
 				if (matrixIndex != UINT_MAX)
 				{
-					meshContainer->renderingMatrices[palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
+					m_boneWorldMatrices[i][palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
 				}
 			}
 			if (m_materials.size() > materialIndex)
@@ -252,7 +266,7 @@ void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer & _cBuffer)
 			D3DLOCKED_RECT lockRect;
 			m_fetchTexture[texIndex]->LockRect(0, &lockRect, 0, D3DLOCK_DISCARD);
 			LPDWORD texElements = (LPDWORD)lockRect.pBits;
-			memcpy(texElements, meshContainer->renderingMatrices, sizeof(Matrix)* boneCount);
+			memcpy(texElements, m_boneWorldMatrices[i], sizeof(Matrix)* boneCount);
 			m_fetchTexture[texIndex]->UnlockRect(0);
 
 			Shader* shader = currentMaterial->GetShader();
@@ -308,6 +322,21 @@ void SkinnedMeshRenderer::BindingStreamSource()
 	m_mesh->BindingStreamSource(m_materials[0]->GetShader()->GetInputLayoutSize());
 }
 
+void SkinnedMeshRenderer::ReserveMaterial(UINT _index)
+{
+	m_materials.assign(_index, nullptr);
+}
+
+void SkinnedMeshRenderer::AddMaterial(const wstring & _mtrl)
+{
+	m_materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(_mtrl));
+}
+
+void SkinnedMeshRenderer::AddMaterial(Material * _mtrl)
+{
+	m_materials.emplace_back(_mtrl);
+}
+
 int SkinnedMeshRenderer::GetMaterialCount()
 {
 	return (int)m_materials.size();
@@ -359,6 +388,14 @@ void SkinnedMeshRenderer::SetMesh(const wstring & _meshName)
 		assert(L"Skinned Mesh Renderer must have animation Mesh!" && 0);
 
 	m_mesh = (XFileMesh*)mesh;
+}
+
+Matrix * SkinnedMeshRenderer::GetBoneWorldMatrix(const string & _boneName)
+{
+	LPD3DXFRAME frame = D3DXFrameFind(m_mesh->GetRoot(), _boneName.c_str());
+	assert(L"Can't find bone!" && frame);
+
+	return &((Nalmak_Frame*)frame)->boneCombinedMatrix;
 }
 
 

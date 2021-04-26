@@ -60,6 +60,9 @@ void NalmakPxEventCallBack::onTrigger(PxTriggerPair * pairs, PxU32 count)
 
 		GameObject* obj0 = (GameObject*)(tp.triggerActor->userData);
 		GameObject* obj1 = (GameObject*)(tp.otherActor->userData);
+		if (!obj0 || !obj1)
+			continue;
+
 		vector<int> a;
 		if (tp.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{

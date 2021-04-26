@@ -30,8 +30,6 @@ void NavMeshTool::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(NavMeshTool, CDialogEx)
-	ON_BN_CLICKED(IDC_BUTTON1, &NavMeshTool::OnBnClickedStartPosition)
-	ON_BN_CLICKED(IDC_BUTTON2, &NavMeshTool::OnBnClickedEndPosition)
 	ON_BN_CLICKED(IDC_BUTTON3, &NavMeshTool::OnBnClickedButtonSaveNav)
 	ON_BN_CLICKED(IDC_BUTTON7, &NavMeshTool::OnBnClickedButtonLoadNav)
 END_MESSAGE_MAP()
@@ -39,21 +37,6 @@ END_MESSAGE_MAP()
 
 // NavMeshTool 메시지 처리기입니다.
 
-
-void NavMeshTool::OnBnClickedStartPosition()
-{
-	MapTool_NavMeshState* nav = MapToolManager::GetInstance()->GetToolState()->GetState<MapTool_NavMeshState>(L"navMesh");
-	nav->SetNavMeshToolMode(MapTool_NavMeshState::NAVMESH_TOOL_MODE_SET_START_POINT);
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
-
-void NavMeshTool::OnBnClickedEndPosition()
-{
-	MapTool_NavMeshState* nav = MapToolManager::GetInstance()->GetToolState()->GetState<MapTool_NavMeshState>(L"navMesh");
-	nav->SetNavMeshToolMode(MapTool_NavMeshState::NAVMESH_TOOL_MODE_SET_END_POINT);
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
 
 
 void NavMeshTool::OnBnClickedButtonSaveNav()
@@ -126,24 +109,30 @@ void NavMeshTool::OnBnClickedButtonSaveNav()
 
 		for (size_t i = 0; i < cellCount; ++i)
 		{
+		
+			size_t pointIndex[3];
+
 			for (size_t j = 0; j < pointCount; ++j)
 			{
-				if (cellList[i]->GetPoints()[0] == pointList[j])
+				for (int k = 0; k < 3; ++k)
 				{
-					WriteFile(handle, &j, sizeof(size_t), &byte, nullptr);
-					continue;
-				}
-				if (cellList[i]->GetPoints()[1] == pointList[j])
-				{
-					WriteFile(handle, &j, sizeof(size_t), &byte, nullptr);
-					continue;
-				}
-				if (cellList[i]->GetPoints()[2] == pointList[j])
-				{
-					WriteFile(handle, &j, sizeof(size_t), &byte, nullptr);
-					continue;
+					if (cellList[i]->GetPoints()[k] == pointList[j])
+					{
+						pointIndex[k] = j;
+						continue;
+					}
 				}
 			}
+
+			Vector3 line1 = cellList[i]->GetPoints()[pointIndex[0]]->position - cellList[i]->GetPoints()[pointIndex[1]]->position;
+			Vector3 line2 = cellList[i]->GetPoints()[pointIndex[1]]->position - cellList[i]->GetPoints()[pointIndex[2]]->position;
+			Vector3 cross;
+			D3DXVec3Cross(&cross, &line1, &line2);
+			
+
+			for(int j = 0; j <3; ++j)
+				WriteFile(handle, &pointIndex[j], sizeof(size_t), &byte, nullptr);
+
 		}
 
 		CloseHandle(handle);

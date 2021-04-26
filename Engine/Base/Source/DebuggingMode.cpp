@@ -130,9 +130,9 @@ void DebuggingMode::Initialize()
 #pragma endregion Picking Gizmo
 
 
-
 	m_debuggingMode.Off(DEBUGGING_MODE_RENDERTARGET);
 	m_debuggingMode.On(DEBUGGING_MODE_FREE_CAMERA);
+	m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA_ROCK);
 	m_debuggingMode.On(DEBUGGING_MODE_DEBUG_LOG);
 	m_debuggingMode.On(DEBUGGING_MODE_COLLIDER);
 	m_debuggingMode.Off(DEBUGGING_MODE_PICKING);
@@ -143,6 +143,7 @@ void DebuggingMode::Initialize()
 	CheckGridRender();
 	CheckRenderTargetRender();
 	CheckFreeCamera();
+	CheckFreeCameraRock();
 	CheckRecordDebugLog();
 	CheckColliderRender();
 	CheckPicking();
@@ -153,6 +154,8 @@ void DebuggingMode::Initialize()
 
 void DebuggingMode::Update()
 {
+
+
 	if (m_input->GetKeyDown(KEY_STATE_F1))
 	{
 		ToggleMode(DEBUGGING_MODE::DEBUGGING_MODE_TIME_PAUSE);
@@ -225,6 +228,14 @@ void DebuggingMode::Update()
 			m_pickingType = PICKING_TYPE_NONE;
 		}
 	}
+	if (m_input->GetKeyDown(KEY_STATE_Z))
+	{
+		ToggleMode(DEBUGGING_MODE::DEBUGGING_MODE_FREE_CAMERA_ROCK);
+		UpdateDesc();
+		CheckFreeCameraRock();
+	}
+
+
 	if (m_input->GetKeyDown(KEY_STATE_F4))
 	{
 		ToggleMode(DEBUGGING_MODE::DEBUGGING_MODE_GRID);
@@ -308,6 +319,18 @@ void DebuggingMode::CheckFreeCamera()
 	}
 }
 
+void DebuggingMode::CheckFreeCameraRock()
+{
+	if (m_debuggingMode.Check(DEBUGGING_MODE_FREE_CAMERA_ROCK))
+	{
+		m_debugCam->GetComponent<FreeMove>()->SetActive(false);
+	}
+	else
+	{
+		m_debugCam->GetComponent<FreeMove>()->SetActive(true);
+	}
+}
+
 void DebuggingMode::CheckColliderRender()
 {
 	m_render->SetColliderRender(m_debuggingMode.Check(DEBUGGING_MODE_COLLIDER));
@@ -349,6 +372,8 @@ void DebuggingMode::UpdateMaterial()
 void DebuggingMode::UpdateDesc()
 {
 	wstring debugDesc;
+
+	
 
 	debugDesc += L"F1 -  ";
 	if (m_debuggingMode.Check(DEBUGGING_MODE_TIME_PAUSE))
@@ -395,6 +420,16 @@ void DebuggingMode::UpdateDesc()
 	else
 		debugDesc += L"(Off) ";
 	debugDesc += L"Free Camera \n";
+
+	debugDesc += L"Z -  ";
+	if (m_debuggingMode.Check(DEBUGGING_MODE_FREE_CAMERA_ROCK))
+		debugDesc += L"(On)  ";
+	else
+	{
+		debugDesc += L"(Off) ";
+	}
+	debugDesc += L"Camera Rock \n";
+
 	debugDesc += L"F8 -  ";
 	if (m_debuggingMode.Check(DEBUGGING_MODE_DEBUG_LOG))
 		debugDesc += L"(On)  ";

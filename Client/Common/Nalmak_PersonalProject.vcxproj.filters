@@ -34,7 +34,7 @@
     <Filter Include="03.Shader">
       <UniqueIdentifier>{4c9be8bc-184b-41dd-980a-2516cdd0fcf9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Player">
+    <Filter Include="04.Lyn">
       <UniqueIdentifier>{e83a7808-1be1-4d56-aaea-a945024fc96b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -81,9 +81,26 @@
     <ClInclude Include="PublicData.h">
       <Filter>98.PreCompile</Filter>
     </ClInclude>
-    <ClInclude Include="TestPlayer.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerIdle.h" />
+    <ClInclude Include="LynIdle.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynInfo.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynRun.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynState.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynStateControl.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynTurning.h" />
+    <ClInclude Include="LynIdleToJump.h" />
+    <ClInclude Include="LynJump.h" />
+    <ClInclude Include="LynJumpToMove.h" />
+    <ClInclude Include="LynJumpToIdle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -107,9 +124,26 @@
     <ClCompile Include="homeworkScene.cpp">
       <Filter>97.HomeWork</Filter>
     </ClCompile>
-    <ClCompile Include="TestPlayer.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerIdle.cpp" />
+    <ClCompile Include="LynIdle.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynInfo.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynRun.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynState.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynStateControl.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynTurning.cpp" />
+    <ClCompile Include="LynIdleToJump.cpp" />
+    <ClCompile Include="LynJump.cpp" />
+    <ClCompile Include="LynJumpToMove.cpp" />
+    <ClCompile Include="LynJumpToIdle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -136,12 +170,24 @@
     <None Include="..\Resource\static\Shader\BnS_StaticObject.sd">
       <Filter>03.Shader</Filter>
     </None>
+    <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

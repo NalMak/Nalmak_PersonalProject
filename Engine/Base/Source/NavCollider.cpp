@@ -4,7 +4,7 @@
 
 
 NavCollider::NavCollider(Desc * _desc)
-	: Collider(false, { 0,0,0 })
+	: Collider(false, { 0,0,0 }, { 0,0,0,1 })
 {
 	m_navData = ResourceManager::GetInstance()->GetResource<NavMeshData>(_desc->navName);
 }

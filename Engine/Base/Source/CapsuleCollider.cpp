@@ -4,7 +4,7 @@
 
 
 CapsuleCollider::CapsuleCollider(Desc * _desc)
-	: Collider(_desc->isTrigger, _desc->posOffset)
+	: Collider(_desc->isTrigger, _desc->posOffset, *D3DXQuaternionRotationYawPitchRoll(&Quaternion(), _desc->rotOffset.x, _desc->rotOffset.y, _desc->rotOffset.z))
 {
 	m_height = _desc->height;
 	m_radius = _desc->radius;

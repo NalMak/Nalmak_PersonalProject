@@ -65,20 +65,6 @@ void NavMeshData::Initialize(wstring _fp)
 		index32._1 = (DWORD)index2;
 		index32._2 = (DWORD)index3;
 
-		
-		Vector3 line1 = points[index]->position - points[index2]->position;
-		Vector3 line2 = points[index2]->position - points[index3]->position;
-		Vector3 cross;
-		D3DXVec3Cross(&cross, &line1, &line2);
-
-		if (cross.y < 0)
-		{
-			DWORD temp = index32._1;
-			index32._1 = index32._2;
-			index32._2 = temp;
-		}
-	
-
 		indices.emplace_back(index32);
 
 		auto cell = new NavCell;

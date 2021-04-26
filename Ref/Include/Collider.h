@@ -6,7 +6,7 @@ class NALMAK_DLL Collider abstract :
 	public Component
 {
 public:
-	Collider(bool _isTrigger, const Vector3& _posOffset);
+	Collider(bool _isTrigger,const Vector3& _posOffset, const Quaternion& _rotOffset);
 	virtual ~Collider();
 
 private:
@@ -20,6 +20,7 @@ protected:
 protected:
 	bool m_isTrigger;
 	Vector3 m_offset;
+	Quaternion m_rotOffset;
 	PxShape* m_shape = nullptr;
 public:
 	void UpdatePysicsTransform();
@@ -29,6 +30,7 @@ public:
 	void SetTrigger(bool _isTrigger);
 	bool IsTrigger() { return m_isTrigger; }
 	const Vector3& GetPosOffset() { return m_offset; }
+	const Quaternion& GetRotOffset() { return m_rotOffset; }
 	void SetPosOffset(const Vector3& _pos);
 	void SetPosX(float _x);
 	void SetPosY(float _y);

@@ -8,7 +8,7 @@ typedef struct NALMAK_DLL Nalmak_MeshContainer final : public D3DXMESHCONTAINER
 	LPD3DXMESH		originalMesh = nullptr;
 	D3DXMATRIX*		offsetMatrices;
 	D3DXMATRIX**	boneCombinedMatrices;
-	D3DXMATRIX*		renderingMatrices;
+	//D3DXMATRIX*		renderingMatrices;
 
 	D3DXATTRIBUTERANGE*		attributeTable = nullptr;
 

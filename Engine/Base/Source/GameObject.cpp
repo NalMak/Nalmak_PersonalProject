@@ -413,6 +413,16 @@ void GameObject::OnCollisionExit(Collisions & _col)
 }
 
 
+void GameObject::SetParents(Transform * _parents, Matrix * _boneMatrix)
+{
+	m_transform->SetParents(_parents, _boneMatrix);
+
+}
+
+void GameObject::SetParents(GameObject * _parents, Matrix * _boneMatrix)
+{
+	m_transform->SetParents(_parents->m_transform, _boneMatrix);
+}
 
 void GameObject::SetParents(Transform * _parents)
 {

@@ -10,6 +10,7 @@ texture g_maskTex;
 float4 g_mainTexColor;
 float  g_f0;
 float  g_roughness;
+float g_normalPower;
 
 sampler mainSampler = sampler_state
 {
@@ -116,7 +117,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.B,
 		_in.N
 	};
-	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
+	normal = mul(tbn, normal) * g_normalPower + normal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 
@@ -142,6 +143,7 @@ technique DefaultTechnique
 	/*	ZEnable = true;
 		ZWriteEnable = true;
 		CullMode = CCW;*/
+		//CullMode = none;
 		VertexShader = compile vs_3_0 VS_Main_Default();
 		PixelShader = compile ps_3_0 PS_Main_Default();
 

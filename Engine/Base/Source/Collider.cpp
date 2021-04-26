@@ -3,9 +3,10 @@
 
 
 
-Collider::Collider(bool _isTrigger,const Vector3& _posOffset)
+Collider::Collider(bool _isTrigger,const Vector3& _posOffset, const Quaternion& _rotOffset)
 {
 	m_offset = _posOffset;
+	m_rotOffset = _rotOffset;
 	m_isTrigger = _isTrigger;
 }
 

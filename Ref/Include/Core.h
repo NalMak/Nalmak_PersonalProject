@@ -35,6 +35,7 @@
 #include "NavCell.h"
 #include "NavPoint.h"
 #include "NavLine.h"
+#include "XFileMesh.h"
 
 #pragma region Component
 #include "MeshRenderer.h"

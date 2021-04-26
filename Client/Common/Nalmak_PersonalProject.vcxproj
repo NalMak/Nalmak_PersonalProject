@@ -183,33 +183,47 @@
     <ClInclude Include="homeworkScene.h" />
     <ClInclude Include="homework_enemy.h" />
     <ClInclude Include="Homework_Player.h" />
+    <ClInclude Include="LynIdle.h" />
+    <ClInclude Include="LynIdleToJump.h" />
+    <ClInclude Include="LynInfo.h" />
+    <ClInclude Include="LynJump.h" />
+    <ClInclude Include="LynJumpToIdle.h" />
+    <ClInclude Include="LynJumpToMove.h" />
+    <ClInclude Include="LynRun.h" />
+    <ClInclude Include="LynState.h" />
+    <ClInclude Include="LynStateControl.h" />
+    <ClInclude Include="LynTurning.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PublicData.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestPlayer.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
+    <ClCompile Include="LynIdle.cpp" />
+    <ClCompile Include="LynIdleToJump.cpp" />
+    <ClCompile Include="LynInfo.cpp" />
+    <ClCompile Include="LynJump.cpp" />
+    <ClCompile Include="LynJumpToIdle.cpp" />
+    <ClCompile Include="LynJumpToMove.cpp" />
+    <ClCompile Include="LynRun.cpp" />
+    <ClCompile Include="LynState.cpp" />
+    <ClCompile Include="LynStateControl.cpp" />
+    <ClCompile Include="LynTurning.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestPlayer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -221,10 +235,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd" />
+    <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd" />
+    <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject.sd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

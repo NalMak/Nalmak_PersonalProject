@@ -16,23 +16,22 @@ private:
 	virtual void ExitState() override;
 
 private:
-	const float m_navPointRadius = 0.1f;
+	const float m_navPointRadius = 0.3f;
 	NavMesh* m_navMesh = nullptr;
 
 	
-	NavPoint* m_currentSelectMovePoint;
+	GameObject* m_currentSelectMovePoint;
 	NavPoint* m_currentSelectAddPoints[2] = { nullptr, };
-	NavCell* m_currentSelectCell = nullptr;
 
 	GameObject* m_startPoint;
 	GameObject* m_endPoint;
+
+	bool m_pickModeGizmo;
 private:
 	bool IsPickingSuccessNavPoint(Vector3 _point);
 	GameObject* m_pickingPointsForDebug[2];
-	NAVMESH_TOOL_MODE m_toolMode = NAVMESH_TOOL_MODE_INSTALL;
 public:
 	void SetNavMesh(NavMesh* _navMesh);
-	void SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode);
 	NavMesh* GetNavMesh();
 
 	/* for debug */
@@ -40,7 +39,7 @@ private:
 	void DrawDebugObject();
 	void AddDebugPoint();
 	void AddDebugCenter();
-
+	
 private:
 	vector<GameObject*> m_pointDebug;
 	vector<GameObject*> m_cellCenterDebug;

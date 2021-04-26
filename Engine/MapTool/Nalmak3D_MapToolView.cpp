@@ -117,6 +117,11 @@ CNalmak3D_MapToolDoc* CNalmak3D_MapToolView::GetDocument() const // 디버그되지 �
 
 void CNalmak3D_MapToolView::OnInitialUpdate()
 {
+//#if defined(DEBUG) | defined(_DEBUG)
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//#endif
+//	_CrtSetBreakAlloc(210610);
+
 	CView::OnInitialUpdate();
 
 	CMainFrame* mainFrame = (CMainFrame*)::AfxGetApp()->GetMainWnd();

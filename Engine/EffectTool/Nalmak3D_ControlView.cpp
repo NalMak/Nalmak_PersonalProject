@@ -560,7 +560,7 @@ void Nalmak3D_ControlView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
-	for (auto& mtrl : ResourceManager::GetInstance()->GetAllResource<Material>())
+	for (auto mtrl : ResourceManager::GetInstance()->GetAllResource<Material>())
 	{
 		if (((Material*)(mtrl.second))->GetShader()->GetInputLayout() == VERTEX_INPUT_LAYOUT_PARTICLE)
 		{

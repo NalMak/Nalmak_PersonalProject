@@ -14,7 +14,7 @@ class NALMAK_DLL SkinnedMeshRenderer :
 public:
 	struct Desc
 	{
-		wstring mtrlName = L"SYS_Standard";
+		wstring mtrlName = L"SYS_Standard_HWSkinning_FetchTex";
 		Material* mtrl = nullptr;
 
 		wstring meshName = L"box";
@@ -37,19 +37,23 @@ public:
 	virtual void RenderForShadow(Shader* _shader) override;
 	virtual void BindingStreamSource() override;
 public:
+	void ReserveMaterial(UINT _index);
+	void AddMaterial(const wstring& _mtrl);
+	void AddMaterial(Material* _mtrl);
 	virtual int GetMaterialCount() override;
 	virtual Material * GetMaterial(int _index = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
 	XFileMesh* GetMesh();
 	void SetMesh(const wstring& _meshName);
+	Matrix* GetBoneWorldMatrix(const string& _boneName);
 private:
 	vector<Material*> m_materials;
 	XFileMesh * m_mesh = nullptr;
 private:
 	LPDIRECT3DTEXTURE9* m_fetchTexture = nullptr;
-
-
+	D3DXMATRIX** m_boneWorldMatrices = nullptr;
+	UINT m_meshContainerSize;
 	UINT m_textureCount;
 public:
 	DWORD GetSubsetCount();

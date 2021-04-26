@@ -7,6 +7,6 @@ outputRT "GBuffer_Normal"
 outputRT  "GBuffer_Depth_CookTorrance"
 outputRT "GBuffer_Specular"
 
-inputLayout "5"
+inputLayout "7"
 
 

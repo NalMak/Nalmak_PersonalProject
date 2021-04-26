@@ -5,27 +5,26 @@
 class AnimationController;
 class AnimationClip;
 
-enum ANIMATION_CONDITION_COMPARISION_TYPE
+enum ANIM_COMPARE_TYPE
 {
-	ANIMATION_CONDITION_COMPARISION_TYPE_EQUAL,
-	ANIMATION_CONDITION_COMPARISION_TYPE_LESS,
-	ANIMATION_CONDITION_COMPARISION_TYPE_GREATER,
-	ANIMATION_CONDITION_COMPARISION_TYPE_NOTEQUAL,
-	ANIMATION_CONDITION_COMPARISION_TYPE_MAX
-
+	ANIM_COMPARE_TYPE_EQUAL,
+	ANIM_COMPARE_TYPE_LESS,
+	ANIM_COMPARE_TYPE_GREATER,
+	ANIM_COMPARE_TYPE_NOTEQUAL,
+	ANIM_COMPARE_TYPE_MAX
 };
 class  NALMAK_DLL TransitionCondition
 {
 protected:
 	string m_name;
-	ANIMATION_CONDITION_COMPARISION_TYPE m_type;
+	ANIM_COMPARE_TYPE m_type;
 public:
 	virtual bool Comparision(AnimationController* anim) = 0;
 };
 class NALMAK_DLL TransitionConditionFloat : public TransitionCondition
 {
 public:
-	TransitionConditionFloat(const string& _name, float _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
+	TransitionConditionFloat(const string& _name, float _value, ANIM_COMPARE_TYPE _type);
 private:
 	float m_value;
 public:
@@ -34,7 +33,7 @@ public:
 class NALMAK_DLL TransitionConditionInt : public TransitionCondition
 {
 public:
-	TransitionConditionInt(const string& _name, int _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
+	TransitionConditionInt(const string& _name, int _value, ANIM_COMPARE_TYPE _type);
 private:
 	int m_value;
 public:
@@ -43,7 +42,7 @@ public:
 class NALMAK_DLL TransitionConditionBool : public TransitionCondition
 {
 public:
-	TransitionConditionBool(const string& _name, bool _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
+	TransitionConditionBool(const string& _name, bool _value, ANIM_COMPARE_TYPE _type);
 private:
 	bool m_value;
 public:
@@ -67,9 +66,9 @@ private:
 	AnimationClip* m_SecondClip = nullptr;
 	vector<TransitionCondition*> m_conditions;
 public:
-	void AddConditionFloat(const string& _name, float _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
-	void AddConditionInt(const string& _name, int _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
-	void AddConditionBool(const string& _name, bool _value, ANIMATION_CONDITION_COMPARISION_TYPE _type);
+	AnimationTransition* AddConditionFloat(const string& _name, float _value, ANIM_COMPARE_TYPE _type);
+	AnimationTransition* AddConditionInt(const string& _name, int _value, ANIM_COMPARE_TYPE _type);
+	AnimationTransition* AddConditionBool(const string& _name, bool _value, ANIM_COMPARE_TYPE _type);
 	bool Comparision(AnimationController* controller) const;
 };
 

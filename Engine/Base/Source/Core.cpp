@@ -97,8 +97,9 @@ void Core::Run()
 	m_inputManager->Update();
 
 	m_sceneManager->Update();
-	m_physicsManager->Update();
 	m_sceneManager->LateUpdate();
+	m_physicsManager->Update();
+
 
 	m_sceneManager->PreRender();
 

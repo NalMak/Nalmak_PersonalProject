@@ -201,6 +201,9 @@ private:
 	USHORT m_tag;
 	USHORT m_layer;
 public:
+	void SetParents(Transform* _parents, Matrix* _boneMatrix);
+	void SetParents(GameObject* _parents, Matrix* _boneMatrix);
+
 	void SetParents(Transform* _parents);
 	void SetParents(GameObject* _parents);
 

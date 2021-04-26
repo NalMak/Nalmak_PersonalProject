@@ -29,22 +29,28 @@ void AnimationTransition::Release()
 	}
 }
 
-void AnimationTransition::AddConditionFloat(const string& _name, float _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+AnimationTransition* AnimationTransition::AddConditionFloat(const string& _name, float _value, ANIM_COMPARE_TYPE _type)
 {
 	TransitionCondition* condition = new TransitionConditionFloat(_name, _value, _type);
 	m_conditions.emplace_back(condition);
+
+	return this;
 }
 
-void AnimationTransition::AddConditionInt(const string& _name, int _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+AnimationTransition* AnimationTransition::AddConditionInt(const string& _name, int _value, ANIM_COMPARE_TYPE _type)
 {
 	TransitionCondition* condition = new TransitionConditionInt(_name, _value, _type);
 	m_conditions.emplace_back(condition);
+
+	return this;
 }
 
-void AnimationTransition::AddConditionBool(const string& _name, bool _value, ANIMATION_CONDITION_COMPARISION_TYPE _type)
+AnimationTransition* AnimationTransition::AddConditionBool(const string& _name, bool _value, ANIM_COMPARE_TYPE _type)
 {
 	TransitionCondition* condition = new TransitionConditionBool(_name, _value, _type);
 	m_conditions.emplace_back(condition);
+
+	return this;
 }
 
 bool AnimationTransition::Comparision(AnimationController * controller) const

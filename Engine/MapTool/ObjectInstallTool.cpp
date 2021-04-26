@@ -146,7 +146,7 @@ BOOL ObjectInstallTool::OnInitDialog()
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e2);
 
 	
-	auto& materials = ResourceManager::GetInstance()->GetAllResource<Material>();
+	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
 	m_materialList.ResetContent();
 	for (auto& mtrl : materials)
 	{
@@ -986,7 +986,8 @@ void ObjectInstallTool::OnBnClickedButtonChangeMaterial()
 	m_materialList.GetText(mtrlIndex, mtrlName);
 
 	auto render = obj->GetComponent<MeshRenderer>();
-	render->SetMaterial(mtrlName.GetString(), renderIndex);
+	wstring str = mtrlName.GetString();
+	render->SetMaterial(str, renderIndex);
 
 
 	m_materialRenderList.DeleteString(renderIndex);
@@ -1382,7 +1383,7 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 	ResourceManager::GetInstance()->ReleaseSceneResouce();
 	ResourceManager::GetInstance()->LoadAllResources(path,false);
 
-	auto& materials = ResourceManager::GetInstance()->GetAllResource<Material>();
+	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
 	m_materialList.ResetContent();
 	for (auto& mtrl : materials)
 	{
@@ -1391,11 +1392,11 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 			continue;
 		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
 			continue;
-		m_materialList.AddString(mtrl.first.c_str());
+		m_materialList.AddString(mtrl.second->GetName().c_str());
 	}
 	m_meshList.ResetContent();
 	m_meshRenderer_selectedMesh.ResetContent();
-	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
+	auto meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
 	for (auto& mesh : meshes)
 	{
 		m_meshList.AddString(mesh.first.c_str());

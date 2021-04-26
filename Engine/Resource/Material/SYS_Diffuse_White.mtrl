@@ -7,7 +7,7 @@ shader "SYS_Diffuse"
 texture "g_mainTex" "default"
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1"
 
-renderQueue "1000"
+renderQueue "3000"
 
 blendingMode "0"
 

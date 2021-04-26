@@ -63,6 +63,22 @@ void NavCell::AddLine(NavLine * _nav)
 
 }
 
+void NavCell::ReverseCCW()
+{
+	Vector3 a1 = m_points[0]->position;
+	Vector3 a2 = m_points[1]->position;
+	Vector3 a3 = m_points[2]->position;
+
+	Vector3 normal = Nalmak_Math::Cross(a1 - a2, a1 - a3);
+	normal = Nalmak_Math::Normalize(normal);
+
+	NavPoint* temp = m_points[0];
+	m_points[0] = m_points[1];
+	m_points[1] = temp;
+}
+
+
+
 void NavCell::UpdateCenter()
 {
 	float totalX = 0;

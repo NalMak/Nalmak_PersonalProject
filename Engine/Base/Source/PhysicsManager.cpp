@@ -107,7 +107,7 @@ void PhysicsManager::CreateScene()
 #ifdef _DEBUG
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
-	m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_DYNAMIC, 1.0f);
+	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_DYNAMIC, 1.0f);
 
 	//m_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_STATIC, 1.0f);
 
@@ -292,7 +292,7 @@ void PhysicsManager::CreateConvexMeshCollider(Collider * _col, RigidBody * _rigi
 	AdjustCollisionLayer(shape, _col);
 
 	PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
-
+	actor->userData = _col->GetGameObject();
 	//pActor->attachShape(*pShape);	// 위에서 자동으로 붙여짐
 	PxQueryFilterData query;
 	query.flags |= PxQueryFlag::eNO_BLOCK;
@@ -418,7 +418,7 @@ void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, 
 	AttachShapeToRigidBody(_rigid, _col);
 }
 
-PxController* PhysicsManager::CreateCharacterController(CharacterController* _controller)
+PxCapsuleController* PhysicsManager::CreateCharacterController(CharacterController* _controller)
 {
 	PxCapsuleControllerDesc desc;
 	desc.userData = _controller->GetGameObject();
@@ -439,10 +439,11 @@ PxController* PhysicsManager::CreateCharacterController(CharacterController* _co
 
 	//_shape->setSimulationFilterData(filterData);
 	auto controller =  m_controllerManager->createController(desc);
+	controller->setUserData(_controller->GetGameObject());
 	controller->setFootPosition(PxExtendedVec3(_controller->m_center.x, _controller->m_center.y, _controller->m_center.z));
 	//controller->
 
-	return controller;
+	return (PxCapsuleController*)controller;
 }
 
 void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
@@ -450,13 +451,13 @@ void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
 	if (_rigid)
 	{
 		PxRigidDynamic* actor = CreateRigidDynamic(_rigid);
-		
+		actor->userData = shape->GetGameObject();
 		actor->attachShape(*shape->GetShape());
 	}
 	else
 	{
 		PxRigidStatic* actor = CreateRigidStatic(shape);
-
+		actor->userData = shape->GetGameObject();
 		actor->attachShape(*shape->GetShape());
 	}
 	
@@ -465,7 +466,8 @@ void PhysicsManager::AttachShapeToRigidBody(RigidBody * _rigid, Collider* shape)
 void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * _collider)
 {
 	auto pos = _collider->GetPosOffset();
-	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(0,0,0,1));
+	auto rot = _collider->GetRotOffset();
+	PxTransform trans = PxTransform(PxVec3(pos.x, pos.y, pos.z), PxQuat(rot.x, rot.y, rot.z, rot.w));
 	_shape->setLocalPose(trans);
 	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_collider->IsTrigger());
 	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _collider->IsTrigger());
@@ -660,8 +662,12 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 				if (minDistance > dist)
 				{
 					minDistance = dist;
-					*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
-					D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetNoneScaleWorldMatrix());
+
+					if (_hitPoint)
+					{
+						*_hitPoint = v0 + u * (v1 - v0) + v * (v2 - v0);
+						D3DXVec3TransformCoord(_hitPoint, _hitPoint, &render->GetTransform()->GetNoneScaleWorldMatrix());
+					}
 				
 					pickObject = render->GetGameObject();
 				}

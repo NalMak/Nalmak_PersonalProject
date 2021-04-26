@@ -119,11 +119,9 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 
 	meshContainer->boneCount = pSkinInfo->GetNumBones();
 
-	meshContainer->NumMaterials = NumMaterials;
 
 	SAFE_NEW_ARR(meshContainer->offsetMatrices, Matrix, meshContainer->boneCount);
 	SAFE_NEW_ARR(meshContainer->boneCombinedMatrices, Matrix*, meshContainer->boneCount);
-	SAFE_NEW_ARR(meshContainer->renderingMatrices, Matrix, meshContainer->boneCount);
 
 
 	for (DWORD i = 0; i < meshContainer->boneCount; ++i)
@@ -160,7 +158,6 @@ HRESULT MeshHierarchy::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerTo
 	SAFE_DELETE_ARR(meshContainer->pAdjacency);
 	SAFE_DELETE_ARR(meshContainer->offsetMatrices);
 	SAFE_DELETE_ARR(meshContainer->boneCombinedMatrices);
-	SAFE_DELETE_ARR(meshContainer->renderingMatrices);
 
 
 	SAFE_RELEASE(meshContainer->MeshData.pMesh);

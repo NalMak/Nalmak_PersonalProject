@@ -5,8 +5,12 @@
 
 #include "Nalmak_Include.h"
 #include "Component.h"
+
+
 BEGIN(Nalmak)
 class RenderManager;
+struct Nalmak_Frame;
+
 class NALMAK_DLL Transform : public Component
 {
 public:
@@ -76,9 +80,11 @@ public:
 private:
 	list<Transform*>   m_childs;
 	Transform * m_parents = nullptr;
+	Matrix* m_boneParents = nullptr;
 public:
 	Transform* GetChild(int _index);
 	size_t GetChildCount();
+	void SetParents(Transform* _parents,Matrix* _bone);
 	void SetParents(Transform* _parents);
 	void SetParents(GameObject* _parents);
 	void AddChild(Transform* _child);

@@ -58,6 +58,7 @@ private:
 private:
 	void CheckPicking();
 	void CheckFreeCamera();
+	void CheckFreeCameraRock();
 	void CheckColliderRender();
 	void CheckRecordDebugLog();
 	void CheckRenderTargetRender();

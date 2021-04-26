@@ -1,13 +1,7 @@
-﻿C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Resource\Shader\SYS_HWSkinning_ConstantBuffer.fx(81,2-51): warning X3206: implicit truncation of vector type
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\SYS_HWSkinning_ConstantBuffer.cso
-C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Resource\Shader\SYS_HWSkinning_FetchTex.fx(97,2-51): warning X3206: implicit truncation of vector type
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\SYS_HWSkinning_FetchTex.cso
-  Nalmak_String.cpp
+﻿  Nalmak_String.cpp
+  AnimationClip.cpp
   AnimationController.cpp
+  AnimationTransition.cpp
   Animator.cpp
   AudioClip.cpp
   AudioListener.cpp
@@ -17,16 +11,16 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   BoxCollider.cpp
   Button.cpp
   Camera.cpp
-  CanvasPicking.cpp
   CanvasRenderer.cpp
   CapsuleCollider.cpp
+  CharacterController.cpp
   Collider.cpp
   Component.cpp
   Core.cpp
-  DebugManager.cpp
-  DebugObject.cpp
   DebuggingMode.cpp
   컴파일하고 있습니다...
+  DebugManager.cpp
+  DebugObject.cpp
   DepthStencil.cpp
   DeviceManager.cpp
   DirectionalLight.cpp
@@ -34,33 +28,42 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   DrawGizmo.cpp
   DrawGizmo_2D.cpp
   DynamicInstanceBuffer.cpp
+  LOD_Group.cpp
+  MeshHierarchy.cpp
+  Nalmak_Animation.cpp
+  NavCollider.cpp
+  NavMeshData.cpp
+  Shader.cpp
+  SkinnedMeshRenderer.cpp
+  StaticObjectInfo.cpp
   Event.cpp
   EventHandler.cpp
   Exception.cpp
+  컴파일하고 있습니다...
   FileIO.cpp
   FreeMove.cpp
   GameObject.cpp
   Grid.cpp
   IAnimation.cpp
   ICycle.cpp
+  LoadResourcesUsingThread.cpp
+  InputManager.cpp
   IRenderer.cpp
   IResource.cpp
+  MeshCollider.cpp
+  NalmakPxEventCallBack.cpp
+  Nalmak_Function.cpp
   IState.cpp
-  InputManager.cpp
-  컴파일하고 있습니다...
   Light.cpp
   LightManager.cpp
   LineManager.cpp
   LineVI.cpp
-  LoadResourcesUsingThread.cpp
   Material.cpp
   Mesh.cpp
-  MeshCollider.cpp
-  MeshHierarchy.cpp
+  컴파일하고 있습니다...
+  CanvasPicking.cpp
   MeshRenderer.cpp
-  NalmakPxEventCallBack.cpp
   Nalmak_DirectXMath.cpp
-  Nalmak_Function.cpp
   NavCell.cpp
   NavLine.cpp
   NavMesh.cpp
@@ -68,7 +71,6 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   Number.cpp
   ObjectManager.cpp
   Particle.cpp
-  컴파일하고 있습니다...
   ParticleInfo.cpp
   ParticleRenderer.cpp
   PhysicsManager.cpp
@@ -79,6 +81,7 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   Quad.cpp
   QuadNoneNormal.cpp
   RenderManager.cpp
+  컴파일하고 있습니다...
   RenderTarget.cpp
   ResourceManager.cpp
   RigidBody.cpp
@@ -86,23 +89,20 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   Scene.cpp
   SceneManager.cpp
   ScreenQuad.cpp
-  Shader.cpp
   ShaderCompileInclude.cpp
   SingleImage.cpp
-  컴파일하고 있습니다...
-  SkinnedMeshRenderer.cpp
   SkyBox.cpp
   Slider.cpp
   SoundManager.cpp
   SphereCollider.cpp
   SplineCurve.cpp
   StateControl.cpp
-  StaticObjectInfo.cpp
   SystemInfo.cpp
   SystemManager.cpp
   Terrain.cpp
   Text.cpp
   Texture.cpp
+  컴파일하고 있습니다...
   TimeManager.cpp
   Toggle.cpp
   TrailRenderer.cpp
@@ -110,13 +110,12 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   Triangle.cpp
   UIInteractor.cpp
   VIBuffer.cpp
-  컴파일하고 있습니다...
   XFileMesh.cpp
      ../Bin/Nalmak3D_Engine.lib 라이브러리 및 ../Bin/Nalmak3D_Engine.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  453 of 9128 functions ( 5.0%) were compiled, the rest were copied from previous compilation.
-    117 functions were new in current compilation
-    210 functions had inline decision re-evaluated but remain unchanged
+  3279 of 9657 functions (34.0%) were compiled, the rest were copied from previous compilation.
+    773 functions were new in current compilation
+    966 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
 PhysX3Extensions.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
@@ -124,7 +123,9 @@ PhysX3Extensions.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: 'PhysX3Exte
 PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultStreams.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
   Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
+  ..\Include\AnimationClip.h
   ..\Include\AnimationController.h
+  ..\Include\AnimationTransition.h
   ..\Include\Animator.h
   ..\Include\AudioClip.h
   ..\Include\AudioListener.h
@@ -138,6 +139,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\CanvasPicking.h
   ..\Include\CanvasRenderer.h
   ..\Include\CapsuleCollider.h
+  ..\Include\CharacterController.h
   ..\Include\Collider.h
   ..\Include\Component.h
   ..\Include\Core.h
@@ -181,6 +183,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\LineManager.h
   ..\Include\LineVI.h
   ..\Include\LoadResourcesUsingThread.h
+  ..\Include\LOD_Group.h
   ..\Include\Material.h
   ..\Include\Mesh.h
   ..\Include\MeshCollider.h
@@ -189,6 +192,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\MeshRenderer.h
   ..\Include\MessageProc.h
   ..\Include\NalmakPxEventCallBack.h
+  ..\Include\Nalmak_Animation.h
   ..\Include\Nalmak_Define.h
   ..\Include\Nalmak_DirectXMath.h
   ..\Include\Nalmak_Enum.h
@@ -200,8 +204,10 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\Nalmak_Struct.h
   ..\Include\Nalmak_Typedef.h
   ..\Include\NavCell.h
+  ..\Include\NavCollider.h
   ..\Include\NavLine.h
   ..\Include\NavMesh.h
+  ..\Include\NavMeshData.h
   ..\Include\NavPoint.h
   ..\Include\Number.h
   ..\Include\ObjectManager.h
@@ -255,7 +261,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
   ..\Include\XFileMesh.h
-  131개 파일이 복사되었습니다.
+  138개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll
@@ -275,18 +281,35 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Bin\fmodex64_vc.lib
   ..\Bin\Nalmak3D_Engine.lib
   2개 파일이 복사되었습니다.
+  ..\Bin\SCR_Bloom.cso
+  ..\Bin\SCR_Debug_Pass.cso
   ..\Bin\SCR_DirectionalLight.cso
   ..\Bin\SCR_Emission_Pass.cso
+  ..\Bin\SCR_Final_Pass.cso
+  ..\Bin\SCR_GaussianBlur.cso
   ..\Bin\SCR_Geometry_Pass.cso
   ..\Bin\SCR_PointLight.cso
+  ..\Bin\SCR_PointLight_Stencil.cso
   ..\Bin\SCR_Shadow_Pass.cso
+  ..\Bin\SYS_Debug.cso
+  ..\Bin\SYS_Diffuse.cso
+  ..\Bin\SYS_Emission.cso
+  ..\Bin\SYS_GrabPass.cso
+  ..\Bin\SYS_Grid.cso
   ..\Bin\SYS_HWSkinning_ConstantBuffer.cso
   ..\Bin\SYS_HWSkinning_FetchTex.cso
   ..\Bin\SYS_LightDepth.cso
+  ..\Bin\SYS_LightDepth_Animation.cso
+  ..\Bin\SYS_Line.cso
   ..\Bin\SYS_OutLine.cso
+  ..\Bin\SYS_Particle.cso
+  ..\Bin\SYS_PhysX.cso
+  ..\Bin\SYS_PickingDebug.cso
+  ..\Bin\SYS_SkyBox.cso
   ..\Bin\SYS_Standard.cso
   ..\Bin\SYS_Standard_NormalMap.cso
-  11개 파일이 복사되었습니다.
+  ..\Bin\SYS_UI.cso
+  28개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

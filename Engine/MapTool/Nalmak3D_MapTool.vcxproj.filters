@@ -99,6 +99,7 @@
     <ClInclude Include="MapTool_AnimationState.h">
       <Filter>03.Scene</Filter>
     </ClInclude>
+    <ClInclude Include="NavPointDraw.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -141,6 +142,7 @@
     <ClCompile Include="MapTool_AnimationState.cpp">
       <Filter>03.Scene</Filter>
     </ClCompile>
+    <ClCompile Include="NavPointDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak3D_MapTool.rc">

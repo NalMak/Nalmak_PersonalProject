@@ -31,7 +31,9 @@ public:
 public:
 	void SetEntryClip(const string& _clipName);
 
+	void Play(const string & _clipName1, const string & _clipName2, float blendRatio, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType = D3DXTRANSITION_LINEAR);
 	void Play(AnimationClip* _clip);
+	void Play(const string & _clipName, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType = D3DXTRANSITION_LINEAR);
 	void Play(const string& _animName);
 
 	void Stop();
@@ -40,6 +42,8 @@ public:
 	float GetSpeed();
 	float GetPlayTime();
 	float GetTotalPlayTime();
+	double GetPlayRemainTime();
+	float GetPlayRatio();
 private:
 	void Play(AnimationTransition* _transition);
 	void CheckNextAnimationByFrame();
@@ -50,6 +54,7 @@ private:
 	class SkinnedMeshRenderer* m_renderer;
 	LPD3DXANIMATIONCONTROLLER m_animController;
 	LPD3DXFRAME m_root;
+	XFileMesh* m_mesh;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
 private:
 	vector<AnimationClip*> m_animationClips;
@@ -71,7 +76,7 @@ public:
 	void SetBool(const string& _param,bool _value);
 	void SetInt(const string& _param,int _value);
 public:
-	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true, bool _reverse = false);
+	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true);
 	AnimationTransition* AddAnimationTransition(const string & _firstAnim, const string & _secondAnim, float _transitionTime, float _weight, bool _hasExitTime, D3DXTRANSITION_TYPE _type);
 	AnimationClip* GetAnimationClip(const string& _clipName);
 

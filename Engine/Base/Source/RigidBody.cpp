@@ -23,11 +23,20 @@ void RigidBody::Initialize()
 
 void RigidBody::Update()
 {
+	SetWorldTransform();
 }
 
 void RigidBody::LateUpdate()
 {
+
+}
+
+void RigidBody::PreRender()
+{
 	if (!m_rigid)
+		return;
+
+	if (m_isKinematic)
 		return;
 
 	m_transform->position = GetWorldPosition();

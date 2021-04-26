@@ -18,7 +18,7 @@ public:
 public:
 	StateControl(Desc* _desc);
 	~StateControl();
-private:
+protected:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
@@ -75,10 +75,9 @@ public:
 	float GetFloat(wstring _key);
 	const Vector3& GetVector3(wstring _key);
 	const wstring& GetString(wstring _key);
-private:
+protected:
 	IState* m_state;
 	map<wstring, IState*> m_stateList;
-
 
 	map<wstring, int>		m_blackBoardInteger;
 	map<wstring, float>		m_blackBoardFloat;

@@ -23,7 +23,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-	//_CrtSetBreakAlloc(19246);
+	//_CrtSetBreakAlloc(33971);
 
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_NALMAK_PERSONALPROJECT, szWindowClass, MAX_LOADSTRING);

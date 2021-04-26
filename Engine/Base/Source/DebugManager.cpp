@@ -21,8 +21,8 @@ void DebugManager::DebugLog(const wstring&  _name, Transform * _trs)
 {
 	m_debugLog += L"\n-----------------------------------";
 	m_debugLog += L"\n   " + _name;
-	m_debugLog += L"\n   position    " + Nalmak_String::GetVectorToWstring(_trs->position);
-	m_debugLog += L"\n   rotation    " + Nalmak_String::GetVectorToWstring(Nalmak_Math::QuaternionToEuler(_trs->rotation));
+	m_debugLog += L"\n   position    " + Nalmak_String::GetVectorToWstring(_trs->GetWorldPosition());
+	m_debugLog += L"\n   rotation    " + Nalmak_String::GetVectorToWstring(Nalmak_Math::QuaternionToEuler(_trs->GetWorldRotation()));
 	m_debugLog += L"\n   scale       " + Nalmak_String::GetVectorToWstring(_trs->scale);
 }
 

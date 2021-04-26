@@ -19,6 +19,7 @@ public:
 	void Initialize(NavPoint * _p0, NavPoint * _p1, NavPoint * _p2, NavLine * _l0, NavLine * _l1, NavLine * _l2);
 	void Update();
 	void AddLine(NavLine* _nav);
+	void ReverseCCW();
 	Vector3 GetCenter()const { return m_centerOfGravityPos; }
 	NavLine** GetLines() { return m_lines; }
 	NavPoint** GetPoints() { return m_points; }

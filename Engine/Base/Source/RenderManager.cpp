@@ -302,7 +302,7 @@ void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
 
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, true));
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHAREF, 50));
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHAREF, 100));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
 
 	RenderNoneAlpha(_cam, _cBuffer, RENDERING_MODE_CUTOUT);

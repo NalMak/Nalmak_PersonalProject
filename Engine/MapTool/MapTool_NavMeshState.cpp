@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MapTool_NavMeshState.h"
+#include "NavPointDraw.h"
 
 
 MapTool_NavMeshState::MapTool_NavMeshState()
@@ -35,11 +36,12 @@ void MapTool_NavMeshState::Initialize()
 	m_startPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 	m_endPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 
+	m_pickModeGizmo = true;
 }
 
 void MapTool_NavMeshState::EnterState()
 {
-	GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, false);
+	//GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, false);
 
 }
 
@@ -47,36 +49,49 @@ void MapTool_NavMeshState::UpdateState()
 {
 	Vector2 mousePos = InputManager::GetInstance()->GetMousePosition();
 	Vector3 pickingPoint = { 0,0,0 };
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
+	{
+		m_pickModeGizmo ^= true;
+
+		if (m_pickModeGizmo)
+		{
+			for (auto& point : m_pointDebug)
+				point->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+		}
+		else
+		{
+			for (auto& point : m_pointDebug)
+				point->GetComponent<MeshRenderer>()->SetPickingEnable(true);
+		}
+	}
+
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
 	{
-		m_navMesh->Reset();
 
 		m_currentSelectAddPoints[0] = nullptr;
 		m_currentSelectAddPoints[1] = nullptr;
+
 		m_pickingPointsForDebug[0]->SetActive(false);
 		m_pickingPointsForDebug[1]->SetActive(false);
 
-		
-		for (auto& point : m_navMesh->GetPointList())
+		if (m_pickModeGizmo)
 		{
-			if (IsPickingSuccessNavPoint(point->position))
-			{
-				m_currentSelectMovePoint = point;
-				return;
-			}
+			vector<MeshRenderer*> pointRenderer;
+			for (auto& point : m_pointDebug)
+				pointRenderer.emplace_back(point->GetComponent<MeshRenderer>());
+			GameObject* pickPoint = Core::GetInstance()->PickObjectByMouse(nullptr, pointRenderer);
+			if (pickPoint)
+				m_currentSelectMovePoint = pickPoint;
 		}
 
-		m_currentSelectCell = nullptr;
-		// 클릭이 된 셀을 얻어냄
-		for (auto& cell : m_navMesh->GetCellList())
-		{
-			if (IsPickingSuccessNavPoint(cell->GetCenter()))
-			{
-				m_currentSelectCell = cell;
-				break;
-			}
-		}
+		vector<MeshRenderer*> centerRenderer;
+		for (auto& cell : m_cellCenterDebug)
+			centerRenderer.emplace_back(cell->GetComponent<MeshRenderer>());
+		GameObject* pickCenter = Core::GetInstance()->PickObjectByMouse(nullptr, centerRenderer);
+		if (pickCenter)
+			pickCenter->GetComponent<NavPointDraw>()->ReverseCell();
+		
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 	{
@@ -84,7 +99,7 @@ void MapTool_NavMeshState::UpdateState()
 		{
 			// 선택된 점이 있다면
 			if (m_currentSelectMovePoint)
-				m_currentSelectMovePoint->position = pickingPoint;
+				m_currentSelectMovePoint->GetTransform()->SetPosition(pickingPoint);
 		}
 	}
 	if (InputManager::GetInstance()->GetKeyUp(KEY_STATE_LEFT_MOUSE))
@@ -191,15 +206,12 @@ void MapTool_NavMeshState::UpdateState()
 						m_currentSelectAddPoints[1] = nullptr;
 						m_pickingPointsForDebug[0]->SetActive(false);
 						m_pickingPointsForDebug[1]->SetActive(false);
-						m_navMesh->UpdateMapBoundaryLine();
 
 					}
 				}
 			}
 
 		}
-
-
 	}
 
 	DrawDebugObject();
@@ -234,10 +246,6 @@ void MapTool_NavMeshState::SetNavMesh(NavMesh * _navMesh)
 	m_navMesh = _navMesh;
 }
 
-void MapTool_NavMeshState::SetNavMeshToolMode(NAVMESH_TOOL_MODE _mode)
-{
-	m_toolMode = _mode;
-}
 
 NavMesh * MapTool_NavMeshState::GetNavMesh()
 {
@@ -247,27 +255,7 @@ NavMesh * MapTool_NavMeshState::GetNavMesh()
 void MapTool_NavMeshState::DrawDebugObject()
 {
 	AddDebugPoint();
-	
-
-	int index = 0;
-	for (auto& point : m_navMesh->GetPointList())
-	{
-		m_pointDebug[index]->SetActive(true);
-		m_pointDebug[index]->SetPosition(point->position);
-		++index;
-	}
-
 	AddDebugCenter();
-	
-
-	index = 0;
-	for (auto& cell : m_navMesh->GetCellList())
-	{
-		m_cellCenterDebug[index]->SetActive(true);
-		m_cellCenterDebug[index]->SetPosition(cell->GetCenter());
-		++index;
-	}
-
 
 
 	Core* core = Core::GetInstance();
@@ -281,21 +269,15 @@ void MapTool_NavMeshState::AddDebugPoint()
 {
 	if (m_navMesh->GetPointList().size() > m_pointDebug.size())
 	{
-		MeshRenderer::Desc render;
-		render.meshName = L"sphere";
-		render.mtrlName = L"SYS_Diffuse_White";
-		auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.2f, 0.2f, 0.2f);
-		sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
-		m_pointDebug.emplace_back(sphere);
-
-		AddDebugPoint();
-	}
-	else if (m_navMesh->GetPointList().size() < m_pointDebug.size())
-	{
-		for (size_t i = m_navMesh->GetPointList().size() - 1; i < m_pointDebug.size() - 1; ++i)
+		for (size_t i = m_pointDebug.size(); i < m_navMesh->GetPointList().size(); ++i)
 		{
-			m_pointDebug[i]->SetActive(false);
+			NavPointDraw::Desc point;
+			point.navPoint = m_navMesh->GetPointList()[i];
+			auto sphere = INSTANTIATE()->AddComponent<NavPointDraw>(&point)->SetPosition(point.navPoint->position);
+			m_pointDebug.emplace_back(sphere);
 		}
+		
+
 	}
 }
 
@@ -303,20 +285,15 @@ void MapTool_NavMeshState::AddDebugCenter()
 {
 	if (m_navMesh->GetCellList().size() > m_cellCenterDebug.size())
 	{
-		MeshRenderer::Desc render;
-		render.meshName = L"sphere";
-		render.mtrlName = L"SYS_Diffuse_Green";
-		auto sphere = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.2f, 0.2f, 0.2f);
-		sphere->GetComponent<MeshRenderer>()->SetPickingEnable(false);
-		m_cellCenterDebug.emplace_back(sphere);
-
-		AddDebugCenter();
-	}
-	else if (m_navMesh->GetCellList().size() < m_cellCenterDebug.size())
-	{
-		for (size_t i = m_navMesh->GetCellList().size() - 1; i < m_cellCenterDebug.size() - 1; ++i)
+		for (size_t i = m_cellCenterDebug.size(); i < m_navMesh->GetCellList().size(); ++i)
 		{
-			m_cellCenterDebug[i]->SetActive(false);
+			NavPointDraw::Desc point;
+			point.navCell = m_navMesh->GetCellList()[i];
+		
+			auto sphere = INSTANTIATE()->AddComponent<NavPointDraw>(&point)->SetPosition(m_navMesh->GetCellList()[i]->GetCenter());
+			m_cellCenterDebug.emplace_back(sphere);
+
+			AddDebugCenter();
 		}
 	}
 }
