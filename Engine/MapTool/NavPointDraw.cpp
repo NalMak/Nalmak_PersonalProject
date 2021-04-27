@@ -26,7 +26,7 @@ void NavPointDraw::Initialize()
 	{
 		render.mtrlName = L"SYS_Diffuse_Red";
 	}
-	AddComponent<MeshRenderer>(&render)->SetScale(0.2f,0.2f,0.2f);
+	AddComponent<MeshRenderer>(&render)->SetScale(0.15f,0.15f,0.15f);
 	GetComponent<MeshRenderer>()->SetPickingEnable(false);
 
 }

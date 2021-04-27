@@ -422,6 +422,16 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 	if (!obj)
 		return;
 
+	vector<wstring> mtrlList;
+	int materialCount = _obj->GetComponent<MeshRenderer>()->GetMaterialCount();
+	//WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
+
+	for (int i = 0; i < materialCount; ++i)
+	{
+		mtrlList.emplace_back(_obj->GetComponent<MeshRenderer>()->GetMaterial(i)->GetName());
+	}
+
+
 	CFileDialog dlg
 	(
 		FALSE,
@@ -437,6 +447,7 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 	PathRemoveFileSpec(fp);
 	lstrcat(fp, L"\\Data\\Static");
 	dlg.m_ofn.lpstrInitialDir = fp;
+
 
 	if (dlg.DoModal())
 	{
@@ -475,12 +486,12 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 			WriteFile(handle, &meshNameLength, sizeof(DWORD), &byte, nullptr);
 			WriteFile(handle, meshName.c_str(), meshNameLength * sizeof(wchar_t), &byte, nullptr);
 
-			int materialCount = render->GetMaterialCount();
+			int materialCount = mtrlList.size();
 			WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
 
 			for (int i = 0; i < materialCount; ++i)
 			{
-				wstring materialName = render->GetMaterial(i)->GetName();
+				wstring materialName = mtrlList[i];
 				DWORD mtrlNameLength = (DWORD)materialName.length();
 				WriteFile(handle, &mtrlNameLength, sizeof(DWORD), &byte, nullptr);
 				WriteFile(handle, materialName.c_str(), mtrlNameLength * sizeof(wchar_t), &byte, nullptr);

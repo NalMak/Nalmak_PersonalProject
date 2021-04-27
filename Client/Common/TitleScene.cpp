@@ -186,9 +186,9 @@ void TitleScene::Initialize()
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(0.5f,0.5f,0.5f)->AddComponent<DebugObject>()->AddComponent<CapsuleCollider>(&capsule)->AddComponent<RigidBody>(&rigid);
 		weapon->SetParents(lyn, lyn->GetComponent<SkinnedMeshRenderer>()->GetBoneWorldMatrix("WeaponR"));
 	}
-
+	MAKE_STATIC(L"default");
 
 	NavCollider::Desc navCollider;
-	navCollider.navName = L"default";
+	navCollider.navName = L"floor";
 	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
 }
