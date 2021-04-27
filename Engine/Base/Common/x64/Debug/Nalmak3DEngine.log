@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\AnimationClip.h
   ..\Include\AnimationController.h
@@ -158,35 +158,8 @@
   ..\Bin\fmodex64_vc.lib
   ..\Bin\Nalmak3D_Engine.lib
   2개 파일이 복사되었습니다.
-  ..\Bin\SCR_Bloom.cso
-  ..\Bin\SCR_Debug_Pass.cso
-  ..\Bin\SCR_DirectionalLight.cso
-  ..\Bin\SCR_Emission_Pass.cso
-  ..\Bin\SCR_Final_Pass.cso
-  ..\Bin\SCR_GaussianBlur.cso
-  ..\Bin\SCR_Geometry_Pass.cso
-  ..\Bin\SCR_PointLight.cso
-  ..\Bin\SCR_PointLight_Stencil.cso
-  ..\Bin\SCR_Shadow_Pass.cso
-  ..\Bin\SYS_Debug.cso
-  ..\Bin\SYS_Diffuse.cso
-  ..\Bin\SYS_Emission.cso
-  ..\Bin\SYS_GrabPass.cso
-  ..\Bin\SYS_Grid.cso
-  ..\Bin\SYS_HWSkinning_ConstantBuffer.cso
-  ..\Bin\SYS_HWSkinning_FetchTex.cso
-  ..\Bin\SYS_LightDepth.cso
-  ..\Bin\SYS_LightDepth_Animation.cso
-  ..\Bin\SYS_Line.cso
-  ..\Bin\SYS_OutLine.cso
-  ..\Bin\SYS_Particle.cso
-  ..\Bin\SYS_PhysX.cso
-  ..\Bin\SYS_PickingDebug.cso
-  ..\Bin\SYS_SkyBox.cso
   ..\Bin\SYS_Standard.cso
-  ..\Bin\SYS_Standard_NormalMap.cso
-  ..\Bin\SYS_UI.cso
-  28개 파일이 복사되었습니다.
+  1개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

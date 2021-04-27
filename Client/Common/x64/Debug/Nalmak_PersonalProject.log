@@ -1,4 +1,35 @@
-﻿  TitleScene.cpp
+﻿C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_Hair_HWSkinning.fx(136,9-56): warning X3206: implicit truncation of vector type
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Bin\x64\Debug\BnS_Hair_HWSkinning.cso
+C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_Head_HWSkinning.fx(135,9-56): warning X3206: implicit truncation of vector type
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Bin\x64\Debug\BnS_Head_HWSkinning.cso
+C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_StaticObject.fx(106,9-56): warning X3206: implicit truncation of vector type
+C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_StaticObject.fx(109,9-60): warning X3206: implicit truncation of vector type
+C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_StaticObject.fx(110,9-52): warning X3206: implicit truncation of vector type
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Bin\x64\Debug\BnS_StaticObject.cso
+  stdafx.cpp
+  TitleScene.cpp
+  Nalmak_PersonalProject.cpp
+  MainGame.cpp
+  LynTurning.cpp
+  LynStateControl.cpp
+  LynState.cpp
+  LynRun.cpp
+  LynJumpToMove.cpp
+  LynJumpToIdle.cpp
+  LynJump.cpp
+  LynInfo.cpp
+  LynIdleToJump.cpp
+  LynIdle.cpp
+  Homework_Player.cpp
+  homework_enemy.cpp
+  homeworkScene.cpp
+  코드를 생성하고 있습니다...
      ../Bin/x64\Debug\Nalmak_PersonalProject.lib 라이브러리 및 ../Bin/x64\Debug\Nalmak_PersonalProject.exp 개체를 생성하고 있습니다.
-  Nalmak_PersonalProject.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Common\../Bin/x64\Debug\Nalmak_PersonalProject.exe
+  Nalmak_PersonalProject.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Common\../Bin/x64\Debug\Nalmak_PersonalProject.exe
   Nalmak_PersonalProject.vcxproj -> ../Bin/x64\Debug\Nalmak_PersonalProject.pdb (Full PDB)

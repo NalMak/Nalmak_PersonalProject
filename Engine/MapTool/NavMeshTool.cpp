@@ -124,10 +124,10 @@ void NavMeshTool::OnBnClickedButtonSaveNav()
 				}
 			}
 
-			Vector3 line1 = cellList[i]->GetPoints()[pointIndex[0]]->position - cellList[i]->GetPoints()[pointIndex[1]]->position;
+	/*		Vector3 line1 = cellList[i]->GetPoints()[pointIndex[0]]->position - cellList[i]->GetPoints()[pointIndex[1]]->position;
 			Vector3 line2 = cellList[i]->GetPoints()[pointIndex[1]]->position - cellList[i]->GetPoints()[pointIndex[2]]->position;
 			Vector3 cross;
-			D3DXVec3Cross(&cross, &line1, &line2);
+			D3DXVec3Cross(&cross, &line1, &line2);*/
 			
 
 			for(int j = 0; j <3; ++j)
