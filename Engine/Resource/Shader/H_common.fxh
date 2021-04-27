@@ -81,4 +81,7 @@ matrix GetSkinMatrixFromTexture(sampler _fetchSampler,int _index)
 	return mat;
 }
 
-
+float3 LocalToWorldDirection(float3 _local, float4x4 _worldMat)
+{
+	return normalize(mul(float3(_local),(float3x3)_worldMat));
+}

@@ -70,7 +70,7 @@ struct PS_OUTPUT
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
 	float4 depth_cookTorrance : COLOR2;
-
+	float4 specular : COLOR3;
 };
 
 VS_OUTPUT VS_Main_Default(VS_INPUT _in)
@@ -109,11 +109,10 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	float4 worldPos = mul(float4(skinningPos, 1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);
 
-	//float3 normal = GetWorldNormal(_in.normal, g_world).xyz;
 
-	o.T = normalize(mul(g_world, float4(skinningTangent,1))).xyz;
-	o.B = normalize(mul(g_world, float4(skinningBinormal,1))).xyz;
-	o.N = normalize(mul(g_world, float4(skinningNormal,1))).xyz;
+	o.T = LocalToWorldDirection(_in.tangent, g_world);
+	o.B = LocalToWorldDirection(_in.binormal, g_world);
+	o.N = LocalToWorldDirection(_in.normal, g_world);
 
 	o.uvAndDepth.xy = _in.uv;
 	o.uvAndDepth.zw = o.pos.zw;
@@ -131,7 +130,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 
 	float4 diffuse = tex2D(mainSampler, _in.uvAndDepth.xy);
-	o.diffuse = diffuse * g_mainTexColor;
+	o.diffuse = diffuse + g_mainTexColor;
 	float3 normal = tex2D(normalSampler, _in.uvAndDepth.xy);
 	normal = normal * 2 - 1;
 	normal = normalize(normal);
@@ -144,14 +143,13 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.B,
 		_in.N
 	};
-	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
-	normal = normalize(normal);
+	normal = mul(normal, tbn) * g_normalPower + normal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 	o.depth_cookTorrance.zw = float2(g_f0, g_roughness);
-
+	o.specular = o.diffuse * 0.5f;
 
 	return o;
 }

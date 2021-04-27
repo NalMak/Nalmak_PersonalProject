@@ -23,15 +23,16 @@ void TitleScene::Initialize()
 {
 
 	DirectionalLight::Desc light;
-	light.diffuseIntensity = 0.8f;
-	light.ambientIntensity = 0.3f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(15, 70, 0)->AddComponent<Homework_Player>();
+	light.diffuseIntensity = 0.6f;
+	light.ambientIntensity = 0.1f;
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
 
 
 	auto cam = INSTANTIATE()->AddComponent<Camera>();
 	
-	INSTANTIATE()->AddComponent<DebuggingMode>();
-
+	DebuggingMode::Desc debug;
+	debug.createDirectoryMonitor = true;
+	auto obj =INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
 	//MAKE_STATIC(L"musin_boss_floor");
 	{
 		MeshRenderer::Desc mesh;
@@ -73,7 +74,15 @@ void TitleScene::Initialize()
 
 	//MAKE_STATIC(L"building")->AddComponent<MeshCollider>();
 	
-	
+	MAKE_STATIC(L"column");
+	//MAKE_STATIC(L"floor");
+	////MAKE_STATIC(L"plane");
+	MAKE_STATIC(L"roof");
+	MAKE_STATIC(L"wall");
+
+	NavCollider::Desc navCollider;
+	navCollider.navName = L"gwimyeon";
+	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
 
 
 	auto lyn = INSTANTIATE()->SetRotation(0,-90,0);
@@ -186,9 +195,5 @@ void TitleScene::Initialize()
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(0.5f,0.5f,0.5f)->AddComponent<DebugObject>()->AddComponent<CapsuleCollider>(&capsule)->AddComponent<RigidBody>(&rigid);
 		weapon->SetParents(lyn, lyn->GetComponent<SkinnedMeshRenderer>()->GetBoneWorldMatrix("WeaponR"));
 	}
-	MAKE_STATIC(L"default");
 
-	NavCollider::Desc navCollider;
-	navCollider.navName = L"floor";
-	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
 }

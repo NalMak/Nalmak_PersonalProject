@@ -167,13 +167,19 @@
     <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd">
       <Filter>03.Shader</Filter>
     </None>
-    <None Include="..\Resource\static\Shader\BnS_StaticObject.sd">
-      <Filter>03.Shader</Filter>
-    </None>
     <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd">
       <Filter>03.Shader</Filter>
     </None>
     <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd">
       <Filter>03.Shader</Filter>
     </None>
   </ItemGroup>
@@ -181,13 +187,19 @@
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx">
-      <Filter>03.Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

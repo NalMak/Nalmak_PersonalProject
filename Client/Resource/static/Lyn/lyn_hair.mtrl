@@ -9,9 +9,9 @@ shader "BnS_Hair_HWSkinning"
 texture "g_mainTex" "LynF_002_col1_D"
 texture "g_normalTex" "LynF_002_col1_n"
 
-vector4 "g_mainTexColor" "1.5f,1.5f,1.3f,1.f"
-float "g_f0" "0.5f"
-float "g_roughness" "0.6f"
+vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
+float "g_f0" "0.4f"
+float "g_roughness" "0.1f"
 float "g_normalPower" "1.f"
 
 renderQueue "2000"

@@ -24,7 +24,12 @@ DebuggingMode::DebuggingMode(Desc * _desc)
 	m_pickingType = PICKING_TYPE_NONE;
 	m_gizmoType = GIZMO_TYPE_POSITION;
 
-
+	if (_desc->createDirectoryMonitor)
+	{
+		DirectoryMonitoring::Desc directory;
+		directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+		m_directoryMonitor = INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
+	}
 
 }
 
@@ -90,13 +95,7 @@ void DebuggingMode::Initialize()
 		++i;
 	}
 #pragma endregion RenderTarget
-#pragma region DirectoryMonitoring
-	{
-		DirectoryMonitoring::Desc directory;
-		directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
-		INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
-	}
-#pragma endregion DirectoryMonitoring
+
 #pragma region OutLine
 	{
 		MeshRenderer::Desc render;
@@ -616,6 +615,20 @@ DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
 	}
 	else
 		return PICKING_TYPE::PICKING_TYPE_NONE;
+}
+
+
+
+void DebuggingMode::AddUpdateMaterialEvent(EventHandler _e)
+{
+#pragma region DirectoryMonitoring
+	{
+		DirectoryMonitoring::Desc directory;
+		directory.changeMaterialEvent += _e;
+		directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+		m_directoryMonitor = INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
+	}
+#pragma endregion DirectoryMonitoring
 }
 
 void DebuggingMode::PickObject(GameObject * _obj)

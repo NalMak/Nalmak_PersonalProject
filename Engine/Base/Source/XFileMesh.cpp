@@ -20,6 +20,10 @@ void XFileMesh::Initialize(wstring _fp)
 {
 	m_hierarchy = new MeshHierarchy;
 
+	if (_fp == L"../Resource/title/Gwimyeon/GW_innerRoof.X")
+	{
+		int a = 5;
+	}
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &m_animController));
 	Matrix base = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
 	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root, base);
@@ -60,19 +64,13 @@ void XFileMesh::Initialize(wstring _fp)
 
 void XFileMesh::InitializeSW()
 {
-
-
 	for (auto& meshContainer : m_meshContainerList)
 	{
 		m_vertexCount += meshContainer->MeshData.pMesh->GetNumVertices();
 		m_figureCount += meshContainer->MeshData.pMesh->GetNumFaces();
-
-
 	}
 
-	
 	StoreVertexIndexData();
-
 
 	D3DXComputeBoundingSphere(m_vertexPositionData,
 		m_vertexCount,
@@ -114,12 +112,6 @@ void XFileMesh::InitializeHW()
 		mesh->GetAttributeTable(newMeshContainer->attributeTable, &newMeshContainer->attributeTableCount);
 		SAFE_DELETE_ARR(newMeshContainer->attributeTable);*/
 
-		D3DVERTEXELEMENT9			Decl[MAX_FVF_DECL_SIZE];
-		ZeroMemory(Decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
-		mesh->GetDeclaration(Decl);
-
-
-		int a = 5;
 
 		newMeshContainer->MeshData.pMesh = mesh;
 		newMeshContainerList.emplace_back(newMeshContainer);

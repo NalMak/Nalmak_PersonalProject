@@ -2,7 +2,7 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_StaticObject"
+shader "BnS_StaticObject_DNSM"
 
 
 texture "g_mainTex" "010223_Autoscale_col1_D"
@@ -12,7 +12,7 @@ texture "g_maskTex" "010223_Autoscale_col1_M"
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
 float "g_f0" "0.1f"
-float "g_roughness" "0.3f"
+float "g_roughness" "0.5f"
 float "g_normalPower" "1.f"
 
 renderQueue "2000"

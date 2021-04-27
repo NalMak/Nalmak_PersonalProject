@@ -23,7 +23,7 @@ void LynIdle::EnterState()
 
 void LynIdle::UpdateState()
 {
-
+	//m_transform->SetPosition(0, 10, 0);
 	if (m_animController->GetPlayRemainTime() < 0.4)
 	{
 		m_animController->Play(Nalmak_Math::Random<string>("Lyn_P_Std_Idle_Event1", "Lyn_P_Std_Idle_Event2", "Lyn_P_Std_Idle_Event3", "Lyn_P_Std_Idle_Event4"),0.4f,1.f);

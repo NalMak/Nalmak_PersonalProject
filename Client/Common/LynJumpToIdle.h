@@ -12,7 +12,6 @@ public:
 	virtual void EnterState() override;
 	virtual void UpdateState() override;
 	virtual void ExitState() override;
-private:
-	float m_height;
+
 };
 

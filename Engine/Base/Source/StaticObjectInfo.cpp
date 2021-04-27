@@ -48,11 +48,12 @@ void StaticObjectInfo::Initialize(wstring _fp)
 		int materialCount;
 		ReadFile(handle, &materialCount, sizeof(int), &byte, nullptr);
 
-		for (int i = 0; i < materialCount; ++i)
+		/*for (int i = 0; i < materialCount; ++i)
 		{
 			wstring mtrlName = Nalmak_String::ReadWString_ReadEachCharacter_FromFile(handle);
 			m_data.materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(mtrlName));
-		}
+		}*/
+		m_data.materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(meshName));
 	}
 
 	ReadFile(handle, &isExist, sizeof(bool), &byte, nullptr);

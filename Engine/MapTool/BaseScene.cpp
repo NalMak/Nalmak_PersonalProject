@@ -34,6 +34,7 @@ void BaseScene::Initialize()
 
 	debug->GetComponent<StateControl>()->InitState(L"object");
 
+
 	MapToolManager::GetInstance()->SetDebuggingMode(debug->GetComponent<DebuggingMode>());
 	MapToolManager::GetInstance()->SetToolStateControl(debug->GetComponent<StateControl>());
 }

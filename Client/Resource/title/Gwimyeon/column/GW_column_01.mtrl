@@ -2,17 +2,16 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_StaticObject"
+shader "BnS_StaticObject_DNS"
 
-texture "g_mainTex" "Musin_New_Bossfloor_D"
-texture "g_normalTex" "Musin_New_Bossfloor_N"
-texture "g_specularTex" "Musin_New_Bossfloor_S"
-texture "g_maskTex" "Musin_New_Bossfloor_M"
+texture "g_mainTex" "GW_GwimyeonGeukDan_column_001_D"
+texture "g_normalTex" "GW_GwimyeonGeukDan_column_001_N"
+texture "g_specularTex" "GW_GwimyeonGeukDan_column_001_S"
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
-float "g_f0" "0.2f"
-float "g_roughness" "0.1f"
-float "g_normalPower" "1.f"
+float "g_f0" "0.3f"
+float "g_roughness" "0.6f"
+float "g_normalPower" "0.7f"
 
 renderQueue "1000"
 

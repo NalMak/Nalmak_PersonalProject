@@ -1,11 +1,13 @@
 #pragma once
 #include "Component.h"
+#include "Event.h"
 class DirectoryMonitoring :
 	public Component
 {
 public:
 	struct Desc
 	{
+		Event changeMaterialEvent;
 		wstring directoryPath = L"../Resource/";
 	};
 public:
@@ -24,7 +26,10 @@ private:
 	HANDLE m_thread;
 	HANDLE m_eventHandle;
 	wstring m_directoryPath;
+	Event m_event;
 	bool m_isThreadDone;
+private:
+	void UpdateMaterial();
 private:
 	static unsigned __stdcall DoThreadFunc(LPVOID pArg);
 };

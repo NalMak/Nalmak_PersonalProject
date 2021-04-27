@@ -122,11 +122,11 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	float4 worldPos = mul(float4(skinningPos, 1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);
 
-	//float3 normal = GetWorldNormal(_in.normal, g_world).xyz;
+	o.T = LocalToWorldDirection(skinningTangent, g_world); 
+	o.B = LocalToWorldDirection(skinningBinormal, g_world);
+	o.N = LocalToWorldDirection(skinningNormal, g_world);  
 
-	o.T = normalize(mul(g_world, float4(skinningTangent,1))).xyz;
-	o.B = normalize(mul(g_world, float4(skinningBinormal,1))).xyz;
-	o.N = normalize(mul(g_world, float4(skinningNormal,1))).xyz;
+
 
 	o.uvAndDepth.xy = _in.uv;
 	o.uvAndDepth.zw = o.pos.zw;
@@ -159,15 +159,15 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.B,
 		_in.N
 	};
-	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
+	normal = mul(normal, tbn) * g_normalPower + normal * (1 - g_normalPower);
 	normal = normalize(normal);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
-	o.depth_cookTorrance.zw = float2(g_f0, g_roughness);
+	o.depth_cookTorrance.zw = float2(g_f0, g_roughness + mask.b);
 
-	o.specular = float4(specular, 1) * mask.b;
+	o.specular = float4(specular, 1) * mask.g + (o.diffuse * mask.r) + (o.diffuse * mask.b * 3.5f);
 
 	return o;
 }

@@ -7,6 +7,7 @@ DirectoryMonitoring::DirectoryMonitoring(Desc * _desc)
 {
 	m_eventHandle = nullptr;
 	m_directoryPath = _desc->directoryPath;
+	m_event = _desc->changeMaterialEvent;
 
 }
 
@@ -54,6 +55,14 @@ void DirectoryMonitoring::ResumeMonitorion()
 	Initialize();
 }
 
+void DirectoryMonitoring::UpdateMaterial()
+{
+	if (m_event.GetHandler(0))
+	{
+		m_event.DoEvent(0);
+	}
+}
+
 unsigned DirectoryMonitoring::DoThreadFunc(LPVOID pArg)
 {
 	DirectoryMonitoring* instance = (DirectoryMonitoring*)pArg;
@@ -70,6 +79,7 @@ unsigned DirectoryMonitoring::DoThreadFunc(LPVOID pArg)
 		if (status == WAIT_OBJECT_0)
 		{
 			ResourceManager::GetInstance()->UpdateMaterial(instance->m_directoryPath,false);
+			instance->UpdateMaterial();
 		}
 		FindNextChangeNotification(instance->m_eventHandle);
 	}

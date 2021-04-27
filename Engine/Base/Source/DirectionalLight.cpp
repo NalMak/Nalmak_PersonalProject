@@ -39,7 +39,7 @@ void DirectionalLight::PreRender()
 	m_info.direction = m_transform->GetForward();
 	m_info.lightViewProj = m_lightCam->GetViewMatrix() * m_lightCam->GetProjMatrix();
 
-	m_transform->position = -m_info.direction * 150;
+	m_transform->position = -m_info.direction * 100;
 	m_info.base.position = m_transform->position;
 
 }

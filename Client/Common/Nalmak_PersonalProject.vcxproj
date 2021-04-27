@@ -237,13 +237,17 @@
     <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd" />
-    <None Include="..\Resource\static\Shader\BnS_StaticObject.sd" />
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd" />
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd" />
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

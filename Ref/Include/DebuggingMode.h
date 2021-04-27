@@ -11,7 +11,7 @@ class NALMAK_DLL DebuggingMode :
 public:
 	struct Desc
 	{
-	
+		bool createDirectoryMonitor = false;
 	};
 	enum PICKING_TYPE
 	{
@@ -46,6 +46,7 @@ private:
 	vector<GameObject*> m_renderTargets;
 	GameObject* m_debugCam;
 	GameObject* m_mainCam;
+	GameObject* m_directoryMonitor;
 	GameObject* m_grid;
 	class Text* m_debugModeDescObject;
 	GameObject* m_pickingObj;
@@ -72,6 +73,7 @@ private:
 	void UpdatePickingObject();
 	DebuggingMode::PICKING_TYPE IsGizmoPicking();
 public:
+	void AddUpdateMaterialEvent(EventHandler _e);
 	void PickObject(GameObject* _obj);
 	void AddEvent(EventHandler _e);
 	GameObject* GetPickingObject();

@@ -5,12 +5,13 @@ matrix g_world;
 texture g_mainTex;
 texture g_normalTex;
 texture g_specularTex;
-texture g_maskTex;
+
 
 float4 g_mainTexColor;
 float  g_f0;
 float  g_roughness;
 float g_normalPower;
+float g_specularPower;
 
 sampler mainSampler = sampler_state
 {
@@ -25,12 +26,6 @@ sampler normalSampler = sampler_state
 sampler specularSampler = sampler_state
 {
 	texture = g_specularTex;
-};
-
-
-sampler maskSampler = sampler_state
-{
-	texture = g_maskTex;
 };
 
 
@@ -81,9 +76,11 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 	float4 worldPos = mul(float4(_in.pos, 1), g_world);
 	o.pos = mul(worldPos, g_cBuffer.viewProj);
 
-	o.T = normalize(mul(g_world, float4(_in.tangent,1))).xyz;
-	o.B = normalize(mul(g_world, float4(_in.binormal,1))).xyz;
-	o.N = normalize(mul(g_world, float4(_in.normal,1))).xyz;
+
+	o.T = LocalToWorldDirection(_in.tangent, g_world);
+	o.B = LocalToWorldDirection(_in.binormal, g_world);
+	o.N = LocalToWorldDirection(_in.normal, g_world);
+
 
 	o.uvAndDepth.xy = _in.uv;
 	o.uvAndDepth.zw = o.pos.zw;
@@ -107,9 +104,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	normal = normal * 2 - 1;
 	normal = normalize(normal);
 	float3 specular = tex2D(specularSampler, _in.uvAndDepth.xy);
-	float3 mask = tex2D(maskSampler, _in.uvAndDepth.xy);
-	/*float3 bumpNormal = _in.N + (normal.x * _in.T) + (normal.y * _in.B);
-	bumpNormal = normalize(bumpNormal);*/
+	
 
 	float3x3 tbn =
 	{
@@ -117,17 +112,16 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.B,
 		_in.N
 	};
-	normal = mul(tbn, normal) * g_normalPower + normal * (1 - g_normalPower);
+	normal = mul(normal, tbn) * g_normalPower + normal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 
 
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 	o.depth_cookTorrance.zw = float2(g_f0, g_roughness);
-	/*if(mask.b > 0)
-		o.cookTorrance = float4(0.3f,0.1f,0, 1);*/
+	
 
-	o.specular = float4(specular , 1);
+	o.specular = float4(specular * g_specularPower, 1);
 
 	return o;
 }

@@ -136,4 +136,6 @@ public:
 	afx_msg void OnCbnSelchangeComboMeshRendererToMesh();
 	CListBox m_subsetCountList;
 	CComboBox m_meshRenderer_selectedMesh;
+public:
+	void UpdateMaterial();
 };

@@ -68,9 +68,9 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _in)
 
 	//float3 normal = GetWorldNormal(_in.normal, g_world).xyz;
 
-	o.T = normalize(mul(g_world, float4(_in.tangent,1))).xyz;
-	o.B = normalize(mul(g_world, float4(_in.binormal,1))).xyz;
-	o.N = normalize(mul(g_world, float4(_in.normal,1))).xyz;
+	o.T = LocalToWorldDirection(_in.tangent, g_world);
+	o.B = LocalToWorldDirection(_in.binormal, g_world);
+	o.N = LocalToWorldDirection(_in.normal, g_world);
 
 	o.uvAndDepth.xy = _in.uv;
 	o.uvAndDepth.zw = o.pos.zw;
@@ -102,7 +102,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 		_in.B,
 		_in.N
 	};
-	normal = mul(tbn, normal);// *g_normalPower + defaultNormal * (1 - g_normalPower);
+	normal =  mul(normal, tbn);// *g_normalPower + defaultNormal * (1 - g_normalPower);
 	normal = normal * 0.5f + 0.5f;
 	o.normal = float4(normal,1);
 

@@ -145,7 +145,12 @@ BOOL ObjectInstallTool::OnInitDialog()
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e1);
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e2);
 
-	
+	EventHandler e = [=]()
+	{
+		this->UpdateMaterial();
+	};
+	MapToolManager::GetInstance()->GetDebuggingObject()->AddUpdateMaterialEvent(e);
+
 	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
 	m_materialList.ResetContent();
 	for (auto& mtrl : materials)
@@ -162,6 +167,9 @@ BOOL ObjectInstallTool::OnInitDialog()
 	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
 	for (auto& mesh : meshes)
 	{
+		if(((Mesh*)(mesh.second))->GetMeshContainerSize() == 0)
+			continue;
+
 		m_meshList.AddString(mesh.first.c_str());
 		m_meshRenderer_selectedMesh.AddString(mesh.first.c_str());
 	}
@@ -183,6 +191,26 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 	auto renderer = _selectedObj->GetComponent<MeshRenderer>();
 	if (renderer)
 	{
+	    wstring meshName = 	renderer->GetMesh()->GetName();
+
+		for (int i = 0; i < m_meshList.GetCount(); ++i)
+		{
+			CString str;
+			m_meshList.GetText(i, str);
+			wstring str2 = str.GetString();
+			if (meshName == str2)
+			{
+				m_meshList.SetCurSel(i);
+				OnLbnSelchangeMeshList();
+				m_meshRenderer_selectedMesh.SetCurSel(i);
+
+				break;
+			}
+
+		}
+	
+
+		m_meshList.GetCount();
 		m_meshList.EnableWindow(true);
 		m_materialList.EnableWindow(true);
 		m_materialRenderList.EnableWindow(true);
@@ -1394,22 +1422,15 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 	ResourceManager::GetInstance()->ReleaseSceneResouce();
 	ResourceManager::GetInstance()->LoadAllResources(path,false);
 
-	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
-	m_materialList.ResetContent();
-	for (auto& mtrl : materials)
-	{
-		auto inputLayout = ((Material*)mtrl.second)->GetShader()->GetInputLayout();
-		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_PARTICLE)
-			continue;
-		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
-			continue;
-		m_materialList.AddString(mtrl.second->GetName().c_str());
-	}
+	UpdateMaterial();
+
 	m_meshList.ResetContent();
 	m_meshRenderer_selectedMesh.ResetContent();
 	auto meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
 	for (auto& mesh : meshes)
 	{
+		if (((Mesh*)(mesh.second))->GetMeshContainerSize() == 0)
+			continue;
 		m_meshList.AddString(mesh.first.c_str());
 		m_meshRenderer_selectedMesh.AddString(mesh.first.c_str());
 	}
@@ -1426,4 +1447,19 @@ void ObjectInstallTool::OnCbnSelchangeComboMeshRendererToMesh()
 
 	obj->GetComponent<MeshRenderer>()->SetMesh(meshName.GetString());
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void ObjectInstallTool::UpdateMaterial()
+{
+	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
+	m_materialList.ResetContent();
+	for (auto& mtrl : materials)
+	{
+		auto inputLayout = ((Material*)mtrl.second)->GetShader()->GetInputLayout();
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_PARTICLE)
+			continue;
+		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
+			continue;
+		m_materialList.AddString(mtrl.second->GetName().c_str());
+	}
 }

@@ -80,7 +80,53 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 
 	//SAFE_NEW_ARR(meshContainer->pMaterials, D3DXMATERIAL, meshContainer->NumMaterials);
 
+	unsigned char offset1;
+	unsigned char offset2;
+	unsigned char offset3;
 
+
+	D3DVERTEXELEMENT9			Decl[MAX_FVF_DECL_SIZE];
+	ZeroMemory(Decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
+
+
+	meshContainer->MeshData.pMesh->GetDeclaration(Decl);
+
+	for (DWORD i = 0; i < MAX_FVF_DECL_SIZE; ++i)
+	{
+		if (Decl[i].Usage == D3DDECLUSAGE_NORMAL)
+		{
+			offset1 = (unsigned char)Decl[i].Offset;
+		}
+		if (Decl[i].Usage == D3DDECLUSAGE_BINORMAL)
+		{
+			offset2 = (unsigned char)Decl[i].Offset;
+		}
+		if (Decl[i].Usage == D3DDECLUSAGE_TANGENT)
+		{
+			offset3 = (unsigned char)Decl[i].Offset;
+		}
+	}
+	// test
+	DWORD vertexIndex = 0;
+	void* vertexMem = nullptr;
+	meshContainer->MeshData.pMesh->LockVertexBuffer(0, &vertexMem);
+	DWORD currentVertexCount = mesh->GetNumVertices();
+	UINT stride = sizeof(INPUT_LAYOUT_POSITION_NORMAL_BINORMAL_TANGENT_UV);
+	for (DWORD i = 0; i < currentVertexCount; ++i)
+	{
+		Vector3 norm = *((Vector3*)(((char*)vertexMem) + (stride * i + offset1)));
+		Vector3 binor = *((Vector3*)(((char*)vertexMem) + (stride * i + offset2)));
+		Vector3 tan = *((Vector3*)(((char*)vertexMem) + (stride * i + offset3)));
+
+		if (norm == Vector3(0, 0, 0))
+			int a = 5;
+		++vertexIndex;
+	}
+	meshContainer->MeshData.pMesh->UnlockVertexBuffer();
+
+
+	//memcpy(&m_indexData[figureIndex], indexMem, sizeof(INDEX32) * currentFigureCount);
+	mesh->UnlockIndexBuffer();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// need skin info
@@ -90,28 +136,8 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 		*ppNewMeshContainer = meshContainer;
 		return S_OK;
 	}
-	unsigned char offset;
+	
 
-	D3DVERTEXELEMENT9			Decl[MAX_FVF_DECL_SIZE];
-	ZeroMemory(Decl, sizeof(D3DVERTEXELEMENT9) * MAX_FVF_DECL_SIZE);
-
-	meshContainer->MeshData.pMesh->GetDeclaration(Decl);
-
-	for (DWORD i = 0; i < MAX_FVF_DECL_SIZE; ++i)
-	{
-		if (Decl[i].Usage == D3DDECLUSAGE_TANGENT)
-		{
-			offset = (unsigned char)Decl[i].Offset;
-		}
-		if (Decl[i].Usage == D3DDECLUSAGE_NORMAL)
-		{
-			offset = (unsigned char)Decl[i].Offset;
-		}
-		if (Decl[i].Usage == D3DDECLUSAGE_BINORMAL)
-		{
-			offset = (unsigned char)Decl[i].Offset;
-		}
-	}
 
 
 	meshContainer->pSkinInfo = pSkinInfo;
