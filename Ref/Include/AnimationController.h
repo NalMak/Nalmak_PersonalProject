@@ -16,6 +16,13 @@ public:
 	struct Desc
 	{
 		wstring meshName = L"";
+		Matrix rootMatrix = 
+		{
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		};
 	};
 public:
 	AnimationController(Desc* _desc);
@@ -29,12 +36,12 @@ public:
 public:
 	static void UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
 public:
-	void SetEntryClip(const string& _clipName);
-
-	void Play(const string & _clipName1, const string & _clipName2, float blendRatio, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType = D3DXTRANSITION_LINEAR);
 	void Play(AnimationClip* _clip);
-	void Play(const string & _clipName, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType = D3DXTRANSITION_LINEAR);
 	void Play(const string& _animName);
+
+	void PlayBlending(AnimationClip* _clip);
+	void PlayBlending(const string&  _clipName);
+
 
 	void Stop();
 	bool IsPlay();
@@ -44,11 +51,9 @@ public:
 	float GetTotalPlayTime();
 	double GetPlayRemainTime();
 	float GetPlayRatio();
+	void SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type);
 private:
-	void Play(AnimationTransition* _transition);
-	void CheckNextAnimationByFrame();
-	void CheckNextAnimationByExitTime();
-	void CheckNextAnimation(AnimationTransition* _transition);
+	//void CheckNextAnimation(AnimationTransition* _transition);
 	void UpdateBoneMatrix();
 private:
 	class SkinnedMeshRenderer* m_renderer;
@@ -56,6 +61,7 @@ private:
 	LPD3DXFRAME m_root;
 	XFileMesh* m_mesh;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
+	Matrix m_rootMatrix;
 private:
 	vector<AnimationClip*> m_animationClips;
 	AnimationClip* m_currentAnimationClip;
@@ -77,10 +83,13 @@ public:
 	void SetInt(const string& _param,int _value);
 public:
 	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true);
-	AnimationTransition* AddAnimationTransition(const string & _firstAnim, const string & _secondAnim, float _transitionTime, float _weight, bool _hasExitTime, D3DXTRANSITION_TYPE _type);
 	AnimationClip* GetAnimationClip(const string& _clipName);
 
 private:
+	float m_transitionTime;
+	float m_blendWeight;
+	D3DXTRANSITION_TYPE m_transtionType;
+
 	UINT m_currentTrack;
 	UINT m_nextTrack;
 

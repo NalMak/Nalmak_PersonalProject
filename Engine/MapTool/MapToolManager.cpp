@@ -148,7 +148,7 @@ void MapToolManager::SetAnimationObjectMesh(const wstring & _meshName)
 		anim.meshName = _meshName;
 		m_animationObject->AddComponent<AnimationController>(&anim);
 		m_animationObject->AddComponent<SkinnedMeshRenderer>(&renderer);
-		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
+		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 		m_animationObject->SetActive(true);
 	}
 	else

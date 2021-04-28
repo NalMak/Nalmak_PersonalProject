@@ -25,7 +25,7 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 public:
-	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
+	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 	virtual void RenderForShadow(Shader* _shader) override;
 
 	virtual void BindingStreamSource() override;
@@ -38,7 +38,7 @@ public:
 	void SetMesh(const wstring& _meshName);
 	void SetMesh(Mesh* _mesh);
 public:
-	virtual Material * GetMaterial(int _index = 0) override;
+	virtual Material * GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) override;
 	virtual float GetBoundingRadius() override;
 	virtual Vector3 GetBoundingCenter() override;
 	virtual int GetMaterialCount() override;

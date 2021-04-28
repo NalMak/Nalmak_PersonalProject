@@ -2,6 +2,8 @@
 #include "TitleScene.h"
 #include "Homework_Player.h"
 
+#include "BnS_MainCamera.h"
+
 #include "LynStateControl.h"
 #include "LynIdle.h"
 #include "LynRun.h"
@@ -28,7 +30,6 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
 
 
-	auto cam = INSTANTIATE()->AddComponent<Camera>();
 	
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
@@ -45,34 +46,7 @@ void TitleScene::Initialize()
 	}
 
 	
-	/*{
-		auto obj = INSTANTIATE();
-		SkinnedMeshRenderer::Desc render;
-		render.meshName = L"lyn_test";
-		render.mtrlName = L"lyn_test1";
-		AnimationController::Desc anim;
-		anim.meshName = L"lyn_test";
-		obj->AddComponent<SkinnedMeshRenderer>(&render);
-		obj->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
 
-		obj->AddComponent<Player>();
-		CharacterController::Desc controller;
-		controller.height = 2.f;
-		controller.center = { 0,1.3f,0 };
-		controller.stepOffset = 0.5f;
-		controller.slopeLimit = 80;
-		obj->AddComponent<CharacterController>(&controller);
-		obj->AddComponent<AnimationController>(&anim);
-		obj->GetComponent<AnimationController>()->AddAnimationClip("Anim1", 1.f, true, false);
-		obj->GetComponent<AnimationController>()->SetEntryClip("Anim1");
-		obj->AddComponent<StateControl>();
-		obj->GetComponent<StateControl>()->AddState<PlayerIdle>(L"idle");
-		obj->GetComponent<StateControl>()->InitState(L"idle");
-
-		obj->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(0, 10, -3);
-	}*/
-
-	//MAKE_STATIC(L"building")->AddComponent<MeshCollider>();
 	
 	MAKE_STATIC(L"column");
 	//MAKE_STATIC(L"floor");
@@ -85,20 +59,19 @@ void TitleScene::Initialize()
 	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
 
 
-	auto lyn = INSTANTIATE()->SetRotation(0,-90,0);
-	cam->SetParents(lyn);
-	cam->SetPosition(0, 6, -10);
-	cam->SetRotation(30, 0, 0);
+	auto lyn = INSTANTIATE();// ->SetRotation(0, -90, 0);
+	auto cam = INSTANTIATE();
 
 	SkinnedMeshRenderer::Desc skin;
 	skin.meshName = L"Lyn_Model2";
 	skin.mtrlName = L"lyn_hair";
 	lyn->AddComponent<SkinnedMeshRenderer>(&skin);
-
 	lyn->AddComponent<LynInfo>();
 	lyn->AddComponent<DebugObject>();
 	AnimationController::Desc anim;
 	anim.meshName = L"Lyn_Model2";
+	Matrix rotMat;
+	anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
 	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.1f,0.1f,0.1f);
 
 	lyn->AddComponent<LynStateControl>();
@@ -113,7 +86,7 @@ void TitleScene::Initialize()
 
 	lyn->GetComponent<LynStateControl>()->InitState(L"idle");
 
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_NONE);
+	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body",0);
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
@@ -124,21 +97,25 @@ void TitleScene::Initialize()
 	lyn->AddComponent<CharacterController>(&character);
 	
 	AnimationController* controller = lyn->GetComponent<AnimationController>();
+
+
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event1", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event2", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event3", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event4", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_P_Std_Mov_LeftToRight", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RightToLeft", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_LeftToRight", 1.4f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RightToLeft", 1.4f, false);
 
 
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRight", 1.3f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunFront", 1.3f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeft", 1.3f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightBack", 1.f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRight", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftBack", 1.f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunFront", 1.f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunBack", 1.f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeft", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunBack", 1.2f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightFront", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftFront", 1.f, true);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.f, false);
@@ -154,6 +131,19 @@ void TitleScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Left", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Right", 1.f, false);
 
+	controller->AddAnimationClip("Lyn_P_BtoP_1", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_BtoP_2", 1.f, false);
+
+
+
+	{
+		BnS_MainCamera::Desc bnsCam;
+		bnsCam.player = lyn;
+		SphereCollider::Desc sphere;
+		sphere.isTrigger = true;
+		sphere.radius = 1.f;
+		cam->AddComponent<Camera>()->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>();
+	}
 
 	//controller->AddAnimationClip("lyn_idle", 1.f, true);
 
@@ -175,9 +165,6 @@ void TitleScene::Initialize()
 	//	->AddConditionInt("state", PLAYER_STATE_IDLE, ANIM_COMPARE_TYPE_EQUAL);
 
 	//
-	controller->SetEntryClip("Lyn_P_Std_Idle_Event1");
-
-
 	{
 		MeshRenderer::Desc mesh;
 		mesh.meshName = L"lyn_weapon";

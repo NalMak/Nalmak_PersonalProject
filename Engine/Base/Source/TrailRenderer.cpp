@@ -97,7 +97,7 @@ void TrailRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void TrailRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void TrailRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	if (m_currentTrailCount < 3) 
 		return;
@@ -235,7 +235,7 @@ int TrailRenderer::GetMaterialCount()
 	return 1;
 }
 
-Material * TrailRenderer::GetMaterial(int _index)
+Material * TrailRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIndex)
 {
 	return m_material;
 }

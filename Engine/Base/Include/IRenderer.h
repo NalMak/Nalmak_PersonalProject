@@ -27,9 +27,9 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override = 0;
 public:
-	void OnRender(ConstantBuffer& _cBuffer,UINT _containerIndex, UINT _subsetIndex);
+	void OnRender(Shader* _shader, ConstantBuffer& _cBuffer,UINT _containerIndex, UINT _subsetIndex);
 protected:
-	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) = 0;
+	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) = 0;
 public:
 	virtual void RenderForShadow(Shader* _shader);
 	virtual void BindingStreamSource() = 0;
@@ -38,7 +38,7 @@ public:
 public:
 	// Only _index parameter is Valid in MeshRenderer 
 	virtual int GetMaterialCount()  = 0;
-	virtual Material* GetMaterial(int _index = 0) = 0;
+	virtual Material* GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) = 0;
 	virtual void SetMaterial(Material* _material, int _index = 0) = 0;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) = 0;
 	

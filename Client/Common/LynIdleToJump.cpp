@@ -21,15 +21,15 @@ void LynIdleToJump::EnterState()
 
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_IdleToJump_Left");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Left");
 		return;
 	}
 	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_IdleToJump_Right");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Right");
 		return;
 	}
-	m_animController->Play("Lyn_P_Std_Mov_IdleToJump_Front");
+	m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Front");
 	return;
 }
 

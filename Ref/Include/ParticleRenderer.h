@@ -26,13 +26,13 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 public:
-	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
+	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 private:
 	virtual void BindingStreamSource();
 public:
 	// IRenderer을(를) 통해 상속됨
 	virtual int GetMaterialCount() override;
-	virtual Material * GetMaterial(int _index = 0) override;
+	virtual Material * GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) override;
 private:

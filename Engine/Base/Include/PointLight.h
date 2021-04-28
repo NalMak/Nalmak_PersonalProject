@@ -23,6 +23,9 @@ private:
 
 public:
 	PointLightInfo GetLightInfo() { return m_lightInfo; }
+	void SetColor(const Vector3& _color);
+	void SetDiffuseIntensity(float _intensity);
+	void SetAmbientIntensity(float _intensity);
 	void SetLightPosition(const Vector3& _vec) { m_lightInfo.base.position = _vec; }
 	float GetRadius();
 	void SetRadius(float _radius);

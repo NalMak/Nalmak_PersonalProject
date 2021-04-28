@@ -41,46 +41,11 @@ void MeshRenderer::Release()
 }
 
 
-void MeshRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void MeshRenderer::Render(Shader* _shader,ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-	BindingStreamSource();
-
-	Shader* currentShader = nullptr;
-	Material* currentMaterial = nullptr;
-
-	UINT materialIndex = 0;
-	for (UINT i = 0; i < _containerIndex; ++i)
-	{
-		UINT subsetCount = m_mesh->GetSubsetCount(i);
-		for (UINT j = 0; j < subsetCount; ++j)
-		{
-			++materialIndex;
-		}
-	}
-	materialIndex += _subsetIndex;
-
-	if (m_materials.size() > materialIndex)
-		currentMaterial = m_materials[materialIndex];
-	else
-		currentMaterial = m_materials.back();
-
-
-	m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
-	m_renderManager->UpdateRenderTarget();
-
-	Shader* shader = currentMaterial->GetShader();
-	assert("Current Shader is nullptr! " && shader);
-
-	if (currentShader != shader)
-	{
-		currentShader = shader;
-
-		currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
-	}
-	currentShader->CommitChanges();
+	_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+	_shader->CommitChanges();
 	m_mesh->Draw(_containerIndex, _subsetIndex);
-			
-	
 }
 
 void MeshRenderer::RenderForShadow(Shader* _shader)
@@ -137,16 +102,16 @@ void MeshRenderer::AddMaterial(Material * _mtrl)
 	m_materials.emplace_back(_mtrl);
 }
 
-Material * MeshRenderer::GetMaterial(int _index)
+Material * MeshRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIndex)
 {
-#ifdef _DEBUG
-	if (_index >= m_materials.size())
+	UINT mtrlIndex = 0;
+	for (UINT i = 0; i < _containerIndex; ++i)
 	{
-		assert(L"Index out of range! " && 0);
+		mtrlIndex += m_mesh->GetSubsetCount(i);
 	}
-#endif // _DEBUG
+	mtrlIndex += _subsetIndex;
 
-	return m_materials[_index];
+	return m_materials[mtrlIndex];
 }
 
 void MeshRenderer::SetMaterial(Material * _material, int _index)

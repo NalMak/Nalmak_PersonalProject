@@ -86,18 +86,46 @@ void SkinnedMeshRenderer::Release()
 	SAFE_DELETE_ARR(m_boneWorldMatrices);
 }
 
-void SkinnedMeshRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void SkinnedMeshRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 
-	RenderHW_FetchTex(_cBuffer, _containerIndex,_subsetIndex);
-	////RenderSW(_cBuffer);
-	//if (m_mesh->IsRenderHW())
-	//{
-	//
-	//	//RenderHW_ConstantBuffer(_cBuffer);
-	//}
-	//else
-	//	RenderSW(_cBuffer);
+	UINT texIndex = 0;
+	for (UINT i = 0; i < _containerIndex; ++i)
+	{
+		Nalmak_MeshContainer* meshContainer = m_mesh->GetMeshContainer(i);
+		UINT maxSubsetCount = meshContainer->NumMaterials;
+
+		texIndex += maxSubsetCount;
+	}
+	texIndex += _subsetIndex;
+
+	Nalmak_MeshContainer* meshContainer = m_mesh->GetMeshContainer(_containerIndex);
+	UINT boneCount = meshContainer->boneCount;
+
+	LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
+
+	for (UINT palette = 0; palette < boneCount; ++palette)
+	{
+		int matrixIndex = boneCombination[_subsetIndex].BoneId[palette];
+		if (matrixIndex != UINT_MAX)
+		{
+			m_boneWorldMatrices[_containerIndex][palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
+		}
+	}
+
+	D3DLOCKED_RECT lockRect;
+	m_fetchTexture[texIndex]->LockRect(0, &lockRect, 0, D3DLOCK_DISCARD);
+	LPDWORD texElements = (LPDWORD)lockRect.pBits;
+	memcpy(texElements, m_boneWorldMatrices[_containerIndex], sizeof(Matrix)* boneCount);
+	m_fetchTexture[texIndex]->UnlockRect(0);
+
+	
+	_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+	_shader->SetTexture("g_fetchTex", m_fetchTexture[texIndex]);
+	_shader->SetInt("g_bone", meshContainer->maxVertexInfl - 1);
+	//currentShader->SetMatrixArray("g_paletteMatricies", meshContainer->renderingMatrices, boneCount);
+	_shader->CommitChanges();
+	meshContainer->MeshData.pMesh->DrawSubset(_subsetIndex);
 }
 
 
@@ -223,62 +251,7 @@ void SkinnedMeshRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex,
 
 void SkinnedMeshRenderer::RenderHW_FetchTex(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-	Shader* currentShader = nullptr;
-	Material* currentMaterial = nullptr;
-
-	UINT mtrlIndex = 0;
-	for (UINT i = 0; i < _containerIndex; ++i)
-	{
-		Nalmak_MeshContainer* meshContainer = m_mesh->GetMeshContainer(i);
-		UINT maxSubsetCount = meshContainer->NumMaterials;
-
-		mtrlIndex += maxSubsetCount;
-	}
-	mtrlIndex += _subsetIndex;
-
-	Nalmak_MeshContainer* meshContainer = m_mesh->GetMeshContainer(_containerIndex);
-	UINT boneCount = meshContainer->boneCount;
-
-	LPD3DXBONECOMBINATION boneCombination = (LPD3DXBONECOMBINATION)meshContainer->boneCombinationTable->GetBufferPointer();
-		
-	for (UINT palette = 0; palette < boneCount; ++palette)
-	{
-		int matrixIndex = boneCombination[_subsetIndex].BoneId[palette];
-		if (matrixIndex != UINT_MAX)
-		{
-			m_boneWorldMatrices[_subsetIndex][palette] = meshContainer->offsetMatrices[matrixIndex] * (*meshContainer->boneCombinedMatrices[matrixIndex]);
-		}
-	}
-	if (m_materials.size() > mtrlIndex)
-		currentMaterial = m_materials[mtrlIndex];
-	else
-		currentMaterial = m_materials.back();
-
-	m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
-	m_renderManager->UpdateRenderTarget();
-	BindingStreamSource();
-
-	D3DLOCKED_RECT lockRect;
-	m_fetchTexture[mtrlIndex]->LockRect(0, &lockRect, 0, D3DLOCK_DISCARD);
-	LPDWORD texElements = (LPDWORD)lockRect.pBits;
-	memcpy(texElements, m_boneWorldMatrices[_containerIndex], sizeof(Matrix)* boneCount);
-	m_fetchTexture[mtrlIndex]->UnlockRect(0);
-
-	Shader* shader = currentMaterial->GetShader();
-	assert("Current Shader is nullptr! " && shader);
-
-	if (currentShader != shader)
-	{
-		currentShader = shader;
-		currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
-	}
-
-	currentShader = shader;
-	currentShader->SetTexture("g_fetchTex", m_fetchTexture[mtrlIndex]);
-	currentShader->SetInt("g_bone", meshContainer->maxVertexInfl - 1);
-	//currentShader->SetMatrixArray("g_paletteMatricies", meshContainer->renderingMatrices, boneCount);
-	currentShader->CommitChanges();
-	meshContainer->MeshData.pMesh->DrawSubset(_subsetIndex);
+	
 
 }
 
@@ -327,16 +300,16 @@ int SkinnedMeshRenderer::GetMaterialCount()
 	return (int)m_materials.size();
 }
 
-Material * SkinnedMeshRenderer::GetMaterial(int _index)
+Material * SkinnedMeshRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIndex)
 {
-#ifdef _DEBUG
-	if (_index >= m_materials.size())
+	UINT mtrlIndex = 0;
+	for (UINT i = 0; i < _containerIndex; ++i)
 	{
-		assert(L"Index out of range! " && 0);
+		mtrlIndex += m_mesh->GetMeshContainer(i)->NumMaterials;
 	}
-#endif // _DEBUG
+	mtrlIndex += _subsetIndex;
 
-	return m_materials[_index];
+	return m_materials[mtrlIndex];
 }
 
 void SkinnedMeshRenderer::SetMaterial(Material * _material, int _index)

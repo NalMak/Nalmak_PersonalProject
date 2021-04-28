@@ -163,7 +163,7 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 	FRUSTUM_CULLING_STATE state = _renderer->GetFrustumCullingState();
 	switch (state)
 	{
-	case FRUSTUM_CULLING_STATE_NONE:
+	case FRUSTUM_CULLING_STATE_FREE_PASS:
 		return true;
 	case FRUSTUM_CULLING_STATE_SUCCESS:
 		return true;

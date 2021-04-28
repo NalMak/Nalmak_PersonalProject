@@ -194,6 +194,7 @@
     <ClInclude Include="LynState.h" />
     <ClInclude Include="LynStateControl.h" />
     <ClInclude Include="LynTurning.h" />
+    <ClInclude Include="Lyn_Attack_Basic1.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
     <ClInclude Include="PublicData.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="LynState.cpp" />
     <ClCompile Include="LynStateControl.cpp" />
     <ClCompile Include="LynTurning.cpp" />
+    <ClCompile Include="Lyn_Attack_Basic1.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
     <ClCompile Include="stdafx.cpp">

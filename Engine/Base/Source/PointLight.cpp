@@ -37,12 +37,26 @@ float PointLight::GetRadius()
 	return m_lightInfo.radius;
 }
 
+void PointLight::SetColor(const Vector3& _color)
+{
+	m_lightInfo.base.color = _color;
+}
+
 void PointLight::SetRadius(float _radius)
 {
 	m_lightInfo.radius = _radius;
 }
 
+void PointLight::SetDiffuseIntensity(float _intensity)
+{
+	m_lightInfo.base.diffuseIntensity = _intensity;
+}
 
+void PointLight::SetAmbientIntensity(float _intensity)
+{
+	m_lightInfo.base.ambientIntensity = _intensity;
+
+}
 void PointLight::Release()
 {
 	m_lightManager->DeletePointLight(this);

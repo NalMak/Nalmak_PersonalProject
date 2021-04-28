@@ -148,4 +148,5 @@ public:
 	CEdit m_pointLightAmbientIntensity;
 	CEdit m_pointLightRadius;
 	CMFCColorButton m_pointLightColor;
+	CButton m_usePointLight;
 };

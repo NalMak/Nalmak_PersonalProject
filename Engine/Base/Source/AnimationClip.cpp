@@ -11,8 +11,4 @@ AnimationClip::~AnimationClip()
 
 void AnimationClip::Release()
 {
-	for (auto& transition : transtionInfos)
-	{
-		SAFE_DELETE(transition);
-	}
 }

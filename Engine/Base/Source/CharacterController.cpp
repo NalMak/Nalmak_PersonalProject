@@ -32,9 +32,10 @@ void CharacterController::Update()
 	if(m_isGravity)
 	{
 		if (!IsGround())
-			m_velocity += Vector3(0, -13.8f * dTime, 0);
+			m_velocity += Vector3(0, -30.f * dTime, 0);
 	}
 	Move(m_velocity);
+	DEBUG_LOG(L"Character velocity", m_velocity);
 	//m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
 }
 

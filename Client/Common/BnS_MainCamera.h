@@ -6,7 +6,8 @@ class BnS_MainCamera :
 public:
 	struct Desc
 	{
-
+		GameObject* player = nullptr;
+		float MouseSensitive = 10.f;
 	};
 public:
 	BnS_MainCamera(Desc* _desc);
@@ -19,6 +20,11 @@ public:
 	virtual void OnTriggerStay(Collisions& _col) override;
 	virtual void OnTriggerExit(Collisions& _col) override;
 private:
-
+	GameObject* m_player;
+	float m_distance;
+	Vector2 m_mouseAngle;
+	Vector3 m_offset;
+	float m_mouseSensitive;
+	bool m_triggerOn;
 };
 

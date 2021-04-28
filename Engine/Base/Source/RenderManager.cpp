@@ -476,7 +476,10 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderInfo.renderer->OnRender(_cBuffer,renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->BindingStreamSource();
+					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
+					UpdateRenderTarget();
+					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -509,7 +512,10 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 			{
 				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderInfo.renderer->OnRender(_cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->BindingStreamSource();
+					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
+					UpdateRenderTarget();
+					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -541,7 +547,10 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 		{
 			if (_cam->IsInFrustumCulling(renderer))
 			{
-				renderer->OnRender(_cBuffer,0,0);
+				renderer->BindingStreamSource();
+				UpdateMaterial(renderer->GetMaterial(), _cBuffer);
+				UpdateRenderTarget();
+				renderer->OnRender(m_currentShader, _cBuffer,0,0);
 			}
 		}
 	}
@@ -606,7 +615,10 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 			{
 				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderInfo.renderer->OnRender(_cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->BindingStreamSource();
+					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
+					UpdateRenderTarget();
+					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -713,7 +725,7 @@ ConstantBuffer RenderManager::GetConstantBufferByCam(Camera * _cam)
 
 void RenderManager::RenderRequest(IRenderer * _render)
 {
-	auto mtrl = _render->GetMaterial();
+
 
 	switch (_render->GetType())
 	{
@@ -725,6 +737,7 @@ void RenderManager::RenderRequest(IRenderer * _render)
 		UINT mtrlCount = ((MeshRenderer*)_render)->GetMaterialCount();
 		for (UINT i = 0; i < mtrlCount; ++i)
 		{
+			auto mtrl = _render->GetMaterial(i);
 			RenderInfo renderInfo;
 			renderInfo.renderer = _render;
 			renderInfo.subsetNum = i;
@@ -736,16 +749,19 @@ void RenderManager::RenderRequest(IRenderer * _render)
 	{
 		XFileMesh* mesh = ((SkinnedMeshRenderer*)_render)->GetMesh();
 		UINT containerCount = mesh->GetMeshContainerSize();
+		UINT mtrlIndex = 0;
 		for (UINT i = 0; i < containerCount; ++i)
 		{
 			UINT mtrlCount = mesh->GetSubsetCount(i);
 			for (UINT j = 0; j < mtrlCount; ++j)
 			{
+				auto mtrl = _render->GetMaterial(mtrlIndex);
 				RenderInfo renderInfo;
 				renderInfo.renderer = _render;
 				renderInfo.containerNum = i;
 				renderInfo.subsetNum = j;
 				m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+				++mtrlIndex;
 			}
 		}
 		break;
@@ -753,6 +769,7 @@ void RenderManager::RenderRequest(IRenderer * _render)
 	case RENDERER_TYPE::RENDERER_TYPE_PARTICLE:
 	case RENDERER_TYPE::RENDERER_TYPE_TRAIL:
 	{
+		auto mtrl = _render->GetMaterial();
 		RenderInfo renderInfo;
 		renderInfo.renderer = _render;
 		m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);

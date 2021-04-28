@@ -10,7 +10,7 @@ texture "g_mainTex" "LynF_face_d2"
 texture "g_normalTex" "LynF_face_n2"
 
 
-vector4 "g_mainTexColor" "0.65f,0.5f,0.4f,1.f"
+vector4 "g_mainTexColor" "0.75f,0.65f,0.6f,1.f"
 float "g_f0" "0.3f"
 float "g_roughness" "0.05f"
 float "g_normalPower" "1.f"

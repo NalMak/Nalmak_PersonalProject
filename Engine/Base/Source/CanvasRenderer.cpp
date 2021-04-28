@@ -63,27 +63,18 @@ void CanvasRenderer::Release()
 	
 }
 
-void CanvasRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void CanvasRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-	BindingStreamSource();
-
-	m_renderManager->UpdateMaterial(m_material, _cBuffer);
-	m_renderManager->UpdateRenderTarget();
-
-	Shader* shader = m_material->GetShader();
-
-	assert("Current Shader is nullptr! " && shader);
-
-	shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
+	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
 	auto images = GetComponents<SingleImage>();
 
 	for (int i = 0; i < images.size(); ++i)
 	{
-		shader->SetTexture("g_mainTex", images[i]->GetTexture());
-		shader->SetVector("g_mainTexColor", images[i]->GetColor());
+		_shader->SetTexture("g_mainTex", images[i]->GetTexture());
+		_shader->SetVector("g_mainTexColor", images[i]->GetColor());
 
-		shader->CommitChanges();
+		_shader->CommitChanges();
 
 		m_mesh->Draw();
 	}
@@ -240,7 +231,7 @@ int CanvasRenderer::GetMaterialCount()
 	return 1;
 }
 
-Material * CanvasRenderer::GetMaterial(int _index)
+Material * CanvasRenderer::GetMaterial(UINT _containerIndex , UINT _subsetIndex )
 {
 	return m_material;
 }

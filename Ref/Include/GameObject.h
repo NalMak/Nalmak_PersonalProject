@@ -135,6 +135,7 @@ public:
 	template <typename T>
 	void DeleteComponent()
 	{
+
 		string name = typeid(T).name();
 		for (auto iter = m_components.begin(); iter != m_components.end(); ++iter)
 		{

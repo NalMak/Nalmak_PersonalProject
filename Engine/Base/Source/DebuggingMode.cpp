@@ -468,10 +468,10 @@ void DebuggingMode::PickObject()
 
 void DebuggingMode::DeletePicking()
 {
-	if (m_pickingObj)
+	
+	if (IsValid(m_pickingObj))
 	{
 		m_pickingObj->DeleteComponent<DebugObject>();
-		m_pickingObj = nullptr;
 		m_pickingOutLine->GetTransform()->SetScale(Vector3(0, 0, 0));
 
 		m_pickingGizmoBase->GetTransform()->DeleteParent();
@@ -481,6 +481,8 @@ void DebuggingMode::DeletePicking()
 		if (handler)
 			m_event.DoEvent(0);
 	}
+	
+	m_pickingObj = nullptr;
 }
 
 void DebuggingMode::UpdateOutLine()

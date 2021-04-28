@@ -40,5 +40,6 @@ void LynStateControl::Update()
 			return;
 		}
 	}*/
+	DEBUG_LOG(L"Current State", GetCurStateString());
 	StateControl::Update();
 }

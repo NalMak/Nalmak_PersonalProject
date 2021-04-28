@@ -79,6 +79,7 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT37, m_pointLightAmbientIntensity);
 	DDX_Control(pDX, IDC_EDIT38, m_pointLightRadius);
 	DDX_Control(pDX, IDC_MFCCOLORBUTTON1, m_pointLightColor);
+	DDX_Control(pDX, IDC_CHECK10, m_usePointLight);
 }
 
 BOOL ObjectInstallTool::OnInitDialog()
@@ -380,6 +381,33 @@ void ObjectInstallTool::UpdateObjectInfo(GameObject * _selectedObj, int _index)
 			m_IsTriggerMeshCollider.EnableWindow(false);
 
 		}
+		if (_selectedObj->GetComponent<PointLight>())
+		{
+			auto light = _selectedObj->GetComponent<PointLight>();
+
+			m_usePointLight.SetCheck(1);
+
+			m_pointLightDiffuseIntensity.EnableWindow(true);
+			m_pointLightAmbientIntensity.EnableWindow(true);
+			m_pointLightColor.EnableWindow(true);
+			m_pointLightRadius.EnableWindow(true);
+
+			MFC_Utility::SetEditBoxFloat(&m_pointLightDiffuseIntensity, light->GetLightInfo().base.diffuseIntensity);
+			MFC_Utility::SetEditBoxFloat(&m_pointLightAmbientIntensity, light->GetLightInfo().base.ambientIntensity);
+			MFC_Utility::SetEditBoxFloat(&m_pointLightRadius, light->GetLightInfo().radius);
+
+			COLORREF color = COLOR3_TO_RGB(light->GetLightInfo().base.color.x, light->GetLightInfo().base.color.y, light->GetLightInfo().base.color.z);
+			m_pointLightColor.SetColor(color);
+		}
+		else
+		{
+			m_usePointLight.SetCheck(0);
+
+			m_pointLightDiffuseIntensity.EnableWindow(false);
+			m_pointLightAmbientIntensity.EnableWindow(false);
+			m_pointLightColor.EnableWindow(false);
+			m_pointLightRadius.EnableWindow(false);
+		}
 	}
 
 
@@ -518,7 +546,7 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 			WriteFile(handle, &meshNameLength, sizeof(DWORD), &byte, nullptr);
 			WriteFile(handle, meshName.c_str(), meshNameLength * sizeof(wchar_t), &byte, nullptr);
 
-			int materialCount = mtrlList.size();
+			int materialCount = (int)mtrlList.size();
 			WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
 
 			for (int i = 0; i < materialCount; ++i)
@@ -1476,44 +1504,62 @@ void ObjectInstallTool::UpdateMaterial()
 
 void ObjectInstallTool::OnBnClickedCheckPointLight()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	if (m_usePointLight.GetCheck())
+	{
+		obj->AddComponent<PointLight>();
+	}
+	else
+	{
+		obj->DeleteComponent<PointLight>();
+	}
+
+	UpdateObjectInfo(obj, m_objectList.GetCurSel());
+
 }
 
 
 void ObjectInstallTool::OnBnClickedMfccolorPointLight()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	COLORREF color = m_pointLightColor.GetColor();
+	obj->GetComponent<PointLight>()->SetColor(Vector3(GetRValue(color) / 255.f, GetGValue(color) / 255.f, GetBValue(color) / 255.f));
 }
 
 
 void ObjectInstallTool::OnEnChangeEditDiffuseIntensity()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT20);
+	obj->GetComponent<PointLight>()->SetDiffuseIntensity(res);
 }
 
 
 void ObjectInstallTool::OnEnChangeEditAmbientIntensity()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT37);
+	obj->GetComponent<PointLight>()->SetAmbientIntensity(res);
 }
 
 
 void ObjectInstallTool::OnEnChangeEditRadius()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+	float res;
+	GetFloatByEditBox(res, IDC_EDIT38);
+	obj->GetComponent<PointLight>()->SetRadius(res);
 }

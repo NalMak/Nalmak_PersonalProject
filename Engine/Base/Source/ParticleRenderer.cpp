@@ -164,20 +164,9 @@ void ParticleRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void ParticleRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void ParticleRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-	if (m_currentCount == 0)
-		return;
-
-	BindingStreamSource();
-
-	m_renderManager->UpdateMaterial(m_material, _cBuffer);
-	m_renderManager->UpdateRenderTarget();
-
-	Shader* shader = m_material->GetShader();
-	assert("Current Shader is nullptr! " && shader);
-
-	shader->CommitChanges();
+	_shader->CommitChanges();
 
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_viBuffer->GetPrimitiveType(), 0, 0, 4 * m_currentCount, 0, m_viBuffer->GetFigureCount()));
 
@@ -629,7 +618,7 @@ int ParticleRenderer::GetMaterialCount()
 	return 1;
 }
 
-Material * ParticleRenderer::GetMaterial(int _index)
+Material * ParticleRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIndex)
 {
 	return m_material;
 }

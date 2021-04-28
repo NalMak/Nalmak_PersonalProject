@@ -12,7 +12,6 @@ public:
 public:
 	string animationName = "";
 	float speed = 1;
-	vector<AnimationTransition*> transtionInfos;
 	bool reverse = false;
 	bool loop = false;
 

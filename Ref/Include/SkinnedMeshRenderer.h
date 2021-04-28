@@ -33,14 +33,14 @@ private:
 	void RenderHW_FetchTex(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex);
 
 public:
-	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
+	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 	virtual void RenderForShadow(Shader* _shader) override;
 	virtual void BindingStreamSource() override;
 public:
 	void AddMaterial(const wstring& _mtrl);
 	void AddMaterial(Material* _mtrl);
 	virtual int GetMaterialCount() override;
-	virtual Material * GetMaterial(int _index = 0) override;
+	virtual Material * GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
 	XFileMesh* GetMesh();

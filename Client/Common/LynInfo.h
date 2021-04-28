@@ -6,10 +6,11 @@ class LynInfo :
 public:
 	struct Desc
 	{
-		float runForwardSpeed = 8.f;
-		float runBackwardSpeed = 3.5f;
-		float jumpPower = 6.f;
-		float turningSpeed = 5.f;
+		float runForwardSpeed = 14.f;
+		float runBackwardSpeed = 6.5f;
+		float airSpeed = 5.5f;
+		float jumpPower = 15.f;
+		float turningSpeed = 7.f;
 		float halfHeight = 3.2f;
 		float jumpHalfHeight = 0.9f;
 	};
@@ -21,9 +22,12 @@ private:
 	virtual void Update() override;
 
 public:
+	void SetState(LYN_STATE _state);
 	LYN_STATE m_state;
+	float m_battleToPeaceTimer;
 
 	float m_runForwardSpeed;
+	float m_airSpeed;
 	float m_runBackwardSpeed;
 	float m_jumpPower;
 	float m_turningSpeed;
@@ -34,5 +38,6 @@ public:
 
 private:
 	GameObject* m_weapon;
+	AnimationController* m_animController;
 };
 

@@ -14,6 +14,11 @@ AnimationController::AnimationController(Desc * _desc)
 	m_nextTrack = 1;
 	m_totalTime = 0.f;
 	m_animPlayTime = 0.0;
+	m_transitionTime = 1.f;
+	m_blendWeight = 1.f;
+	m_transtionType = D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR;
+	m_rootMatrix = _desc->rootMatrix;
+
 	m_isStop = false;
 
 	m_currentAnimationClip = nullptr;
@@ -53,20 +58,7 @@ AnimationController::~AnimationController()
 
 void AnimationController::Update()
 {
-	if (m_isStop)
-		return;
-	if (!m_currentAnimationClip)
-		return;
 
-	CheckNextAnimationByFrame();
-
-	for (auto& transition : m_currentAnimationClip->transtionInfos)
-	{
-		if (m_totalTime > m_animPlayTime - transition->m_transitionTime)
-		{
-			CheckNextAnimation(transition);
-		}
-	}
 }
 
 void AnimationController::EachRender()
@@ -112,37 +104,15 @@ void AnimationController::Initialize()
 //3. 애니메이션 트랙을 활성화시킨다.
 //4. 애니메이션 컨트롤러로 애니메이션을 진행시킨다.
 
-void AnimationController::SetEntryClip(const string& _clipName)
-{
-	for (auto& clip : m_animationClips)
-	{
-		if (clip->animationName == _clipName)
-		{
-			m_currentAnimationClip = clip;
-			Play(m_currentAnimationClip);
-			return;
-		}
-	}
-	assert(L"Can't find animation clip!" && 0);
-}
-
-void AnimationController::CheckNextAnimationByFrame()
-{
-	for (auto& transition : m_currentAnimationClip->transtionInfos)
-	{
-		if (!transition->m_hasExitTime)
-			CheckNextAnimation(transition);
-	}
-}
 
 
-void AnimationController::CheckNextAnimation(AnimationTransition* _transition)
-{
-	if (_transition->Comparision(this))
-	{
-		Play(_transition);
-	}
-}
+//void AnimationController::CheckNextAnimation(AnimationTransition* _transition)
+//{
+//	if (_transition->Comparision(this))
+//	{
+//		Play(_transition);
+//	}
+//}
 
 void AnimationController::AddAnimationClip(const string & _animName, float _speed, bool _loop)
 {
@@ -184,35 +154,25 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 		animController->GetAnimationSet(animCount, &animSet);
 		m_animController->RegisterAnimationSet(animSet);
 		UINT num =  m_animController->GetNumAnimationSets();
+
+		AnimationClip* clip = new AnimationClip();
+		clip->animationName = animSet->GetName();
+		clip->speed = _speed;
+		clip->loop = _loop;
+
+		clip->animationSet = animSet;
+
+		m_animationClips.emplace_back(clip);
+
 		animSet->Release();
+
 	}
 
 
-	AnimationClip* clip = new AnimationClip();
-	clip->animationName = _animName;
-	clip->speed = _speed;
-	clip->loop = _loop;
-	//clip->reverse = _reverse;
-
-	LPD3DXANIMATIONSET anim = nullptr;
-	m_animController->GetAnimationSetByName(_animName.c_str(), &anim);
-	assert(L"Can't find animation Set!" && anim);
-	clip->animationSet = anim;
-
-	m_animationClips.emplace_back(clip);
+	
 }
 
-AnimationTransition* AnimationController::AddAnimationTransition(const string & _firstAnim, const string & _secondAnim, float _transitionTime, float _weight, bool _hasExitTime, D3DXTRANSITION_TYPE _type)
-{
-	AnimationClip* first = GetAnimationClip(_firstAnim);
-	AnimationClip* second = GetAnimationClip(_secondAnim);
 
-	AnimationTransition* transition = new AnimationTransition(first, second, _transitionTime, _weight, _hasExitTime, _type);
-	first->transtionInfos.emplace_back(transition);
-
-	return transition;
-
-}
 
 AnimationClip* AnimationController::GetAnimationClip(const string & _clipName)
 {
@@ -260,133 +220,60 @@ void AnimationController::Play(AnimationClip * _clip)
 }
 
 
-void AnimationController::Play(const string & _clipName1, const string & _clipName2, float blendRatio, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType)
-{
-	m_isStop = false;
-
-
-	AnimationClip* nextClip = GetAnimationClip(_clipName1);
-	AnimationClip* blendClip = GetAnimationClip(_clipName2);
-
-	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
-
-	LPD3DXANIMATIONSET anim1 = nextClip->animationSet;
-	LPD3DXANIMATIONSET blendAnim = blendClip->animationSet;
-
-
-	m_animPlayTime = anim1->GetPeriod();
-	m_animController->SetTrackAnimationSet(m_nextTrack, anim1);
-	m_animController->SetTrackAnimationSet(2, blendAnim);
-
-
-	m_animController->UnkeyAllTrackEvents(m_currentTrack);
-	m_animController->UnkeyAllTrackEvents(m_nextTrack);
-
-	// 특정시점에 트랙을 활성화함
-	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transtioinTime);
-	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, _transtioinTime, _transtionType);
-	m_animController->KeyTrackWeight(m_currentTrack, 1 - _weight, m_totalTime, _transtioinTime, _transtionType);
-
-	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, _transtioinTime, _transtionType);
-	m_animController->KeyTrackWeight(m_nextTrack, _weight * blendRatio, m_totalTime, _transtioinTime, _transtionType);
-
-	m_animController->SetTrackEnable(2, true);
-	m_animController->KeyTrackSpeed(2, blendClip->speed, m_totalTime, _transtioinTime, _transtionType);
-	m_animController->KeyTrackWeight(2, _weight * (1 - blendRatio), m_totalTime, _transtioinTime, _transtionType);
-
-	//// 내부에 누적된 시간값 초기화
-	//m_animController->ResetTime();
-	//m_totalTime = 0.0;
-
-	//m_animController->SetTrackPosition(m_nextTrack, 0.0);
-	//m_animController->SetTrackPosition(2, 0.0);
-
-	m_currentTrack = m_nextTrack;
-	m_currentAnimationClip = nextClip;
-
-	
-}
-
-
-void AnimationController::Play(const string & _clipName, float _transtioinTime, float _weight, D3DXTRANSITION_TYPE _transtionType)
-{
-	m_isStop = false;
-
-	AnimationClip* nextClip = GetAnimationClip(_clipName);
-
-	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
-
-	LPD3DXANIMATIONSET anim = nextClip->animationSet;
-
-	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
-
-	m_animController->UnkeyAllTrackEvents(m_currentTrack);
-	m_animController->UnkeyAllTrackEvents(m_nextTrack);
-
-	// 특정시점에 트랙을 활성화함
-	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transtioinTime);
-	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, _transtioinTime, _transtionType);
-	m_animController->KeyTrackWeight(m_currentTrack, 1 - _weight, m_totalTime, _transtioinTime, _transtionType);
-
-	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, _transtioinTime, _transtionType);
-	m_animController->KeyTrackWeight(m_nextTrack, _weight, m_totalTime, _transtioinTime, _transtionType);
-
-	// 내부에 누적된 시간값 초기화
-	m_animController->ResetTime();
-	m_animPlayTime = anim->GetPeriod();
-	m_totalTime = 0.0;
-
-	m_animController->SetTrackPosition(m_nextTrack, 0.0);
-
-	m_currentTrack = m_nextTrack;
-	m_currentAnimationClip = nextClip;
-}
-
 void AnimationController::Play(const string & _animName)
 {
-	auto anim = GetAnimationClip(_animName);
-
-	Play(anim);
+	Play(GetAnimationClip(_animName));
 }
 
-
-
-
-void AnimationController::Play(AnimationTransition* _transition)
+void AnimationController::PlayBlending(AnimationClip * _clip)
 {
+	if (!m_currentAnimationClip)
+	{
+		Play(_clip);
+		return;
+	}
+
 	m_isStop = false;
 
-	AnimationClip* nextClip = _transition->m_SecondClip;
+	AnimationClip* nextClip = _clip;
 
 	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
 
 	LPD3DXANIMATIONSET anim = nextClip->animationSet;
 
-	m_animPlayTime = anim->GetPeriod();
 	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
 
 	m_animController->UnkeyAllTrackEvents(m_currentTrack);
 	m_animController->UnkeyAllTrackEvents(m_nextTrack);
 
-	// 특정시점에 트랙을 활성화함
-	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + _transition->m_transitionTime);
-	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
-	m_animController->KeyTrackWeight(m_currentTrack, 1 - _transition->m_weight, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+	
+
+	
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + m_transitionTime);
+	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, m_totalTime, m_transitionTime, m_transtionType);
 
 	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
-	m_animController->KeyTrackWeight(m_nextTrack, _transition->m_weight, m_totalTime, _transition->m_transitionTime, _transition->m_transitionType);
+	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, m_totalTime, m_transitionTime, m_transtionType);
+
 
 	// 내부에 누적된 시간값 초기화
 	m_animController->ResetTime();
+	m_animPlayTime = anim->GetPeriod();
 	m_totalTime = 0.0;
 
 	m_animController->SetTrackPosition(m_nextTrack, 0.0);
 
 	m_currentTrack = m_nextTrack;
 	m_currentAnimationClip = nextClip;
+}
+
+void AnimationController::PlayBlending(const string & _clipName)
+{
+	PlayBlending(GetAnimationClip(_clipName));
+
+
 }
 
 void AnimationController::Stop()
@@ -428,10 +315,17 @@ float AnimationController::GetPlayRatio()
 	return (float)(m_totalTime / m_animPlayTime);
 }
 
+void AnimationController::SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type)
+{
+	m_transitionTime = _blendTime;
+	m_blendWeight = _weight;
+	m_transtionType = _type;
+}
+
+
 void AnimationController::UpdateBoneMatrix()
 {
-	Matrix mat = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
-	UpdateBoneMatrix((Nalmak_Frame*)m_root, mat);
+	UpdateBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
 }
 
 void AnimationController::AddFloatParameter(const string & _param, float _value)

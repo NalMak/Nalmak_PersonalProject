@@ -29,9 +29,9 @@ void LynRun::UpdateState()
 	m_moveDirection = CalcKeyState();
 
 
-
 	if (m_moveDirection == 0)
 	{
+		m_animController->SetBlendOption(0.7f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}
@@ -39,6 +39,7 @@ void LynRun::UpdateState()
 	if (m_preDirection != m_moveDirection)
 	{
 		UpdateAnimState();
+		DEBUG_LOG(L"Change run", L"");
 	}
 
 	m_preDirection = m_moveDirection;
@@ -60,34 +61,40 @@ UINT LynRun::CalcKeyState()
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
 	{
 		moveDir += LynRun::MOVE_DIRECTION::MOVE_DIRECTION_UP;
-		velocity += { 0,0,1 };
+		velocity += m_transform->GetForward();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
 	{
 		moveDir += LynRun::MOVE_DIRECTION::MOVE_DIRECTION_LEFT;
-		velocity += { -1, 0, 0 };
+		velocity -= m_transform->GetRight();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
 		moveDir += LynRun::MOVE_DIRECTION::MOVE_DIRECTION_DOWN;
-		velocity += { 0, 0, -1 };
+		velocity -= m_transform->GetForward();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
 	{
 		moveDir += LynRun::MOVE_DIRECTION::MOVE_DIRECTION_RIGHT;
-		velocity += { 1, 0, 0 };
+		velocity += m_transform->GetRight();
 	}
+
+	if (moveDir == 0)
+		return moveDir;
 
 	velocity = Nalmak_Math::Normalize(velocity);
 
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		m_character->SetVelocity(velocity * m_info->m_runBackwardSpeed);
+		velocity *= m_info->m_runBackwardSpeed;
 	}
 	else
 	{
-		m_character->SetVelocity(velocity * m_info->m_runForwardSpeed);
+		velocity *= m_info->m_runForwardSpeed;
 	}
+	m_character->SetVelocityX(velocity.x);
+	m_character->SetVelocityZ(velocity.z);
+
 
 
 	return moveDir;
@@ -102,45 +109,44 @@ void LynRun::UpdateAnimState()
 		return;
 	}
 
-
 	string nextAnimName = "";
 	if (m_moveDirection == MOVE_DIRECTION_DOWN)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunBack";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_LEFT)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunLeft";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_RIGHT)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunRight";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_UP)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunFront";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_DOWN + MOVE_DIRECTION_LEFT)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunLeftBack";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_DOWN + MOVE_DIRECTION_RIGHT)
 	{
 		nextAnimName = "Lyn_P_Std_Mov_RunRightBack";
-		m_animController->Play(nextAnimName, 0.1f, 1.f);
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_UP + MOVE_DIRECTION_LEFT)
 	{
-		m_animController->Play("Lyn_P_Std_Mov_RunFront", "Lyn_P_Std_Mov_RunLeft",0.5f, 0.1f, 1.f);
+		nextAnimName = "Lyn_P_Std_Mov_RunLeftFront";
+
 	}
 	else if (m_moveDirection == MOVE_DIRECTION_UP + MOVE_DIRECTION_RIGHT)
 	{
-		m_animController->Play("Lyn_P_Std_Mov_RunFront", "Lyn_P_Std_Mov_RunRight", 0.5f, 0.1f, 1.f);
+		nextAnimName = "Lyn_P_Std_Mov_RunRightFront";
+
 	}
-		
+	if (nextAnimName != "")
+	{
+		m_animController->SetBlendOption(0.7f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->PlayBlending(nextAnimName);
+	}
 }

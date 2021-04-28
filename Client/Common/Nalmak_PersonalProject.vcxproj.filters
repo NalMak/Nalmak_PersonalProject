@@ -112,6 +112,7 @@
       <Filter>04.Lyn</Filter>
     </ClInclude>
     <ClInclude Include="BnS_MainCamera.h" />
+    <ClInclude Include="Lyn_Attack_Basic1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -166,6 +167,7 @@
       <Filter>04.Lyn</Filter>
     </ClCompile>
     <ClCompile Include="BnS_MainCamera.cpp" />
+    <ClCompile Include="Lyn_Attack_Basic1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

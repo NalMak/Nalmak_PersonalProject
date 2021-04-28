@@ -21,21 +21,22 @@ void LynJumpToMove::EnterState()
 
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_JumpToMove_Left");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_JumpToMove_Left");
 	}
-	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_JumpToMove_Right");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_JumpToMove_Right");
 	}
-	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_JumpToMove_Front");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_JumpToMove_Front");
 	}
-
-	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		m_animController->Play("Lyn_P_Std_Mov_JumpToMove_Back");
+		m_animController->PlayBlending("Lyn_P_Std_Mov_JumpToMove_Back");
 	}
+	else 
+		m_animController->PlayBlending("Lyn_P_Std_Mov_JumpToMove_Front");
 }
 
 void LynJumpToMove::UpdateState()
@@ -43,33 +44,36 @@ void LynJumpToMove::UpdateState()
 	Vector3 velocity = { 0, 0, 0 };
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
 	{
-		velocity += { 0, 0, 1 };
+		velocity += m_transform->GetForward();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
 	{
-		velocity += { -1, 0, 0 };
+		velocity -= m_transform->GetRight();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		velocity += { 0, 0, -1 };
+		velocity -= m_transform->GetForward();
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
 	{
-		velocity += { 1, 0, 0 };
+		velocity += m_transform->GetRight();
 	}
 	velocity = Nalmak_Math::Normalize(velocity);
+
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		m_character->SetVelocity(velocity * m_info->m_runBackwardSpeed);
+		velocity *= m_info->m_runBackwardSpeed;
 	}
 	else
 	{
-		m_character->SetVelocity(velocity * m_info->m_runForwardSpeed);
+		velocity *= m_info->m_runForwardSpeed;
 	}
+	m_character->SetVelocityX(velocity.x);
+	m_character->SetVelocityZ(velocity.z);
 
-
-	if (m_animController->GetPlayRemainTime() < 0.2f)
+	if (m_animController->GetPlayRemainTime() < 0.05f)
 	{
+		m_animController->SetBlendOption(0.05f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"run");
 		return;
 	}

@@ -24,10 +24,10 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
-void IRenderer::OnRender(ConstantBuffer & _cBuffer, UINT _containerIndex, UINT _subsetIndex)
+void IRenderer::OnRender(Shader* _shader,ConstantBuffer & _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	m_gameObject->EachRender();
-	Render(_cBuffer, _containerIndex,_subsetIndex);
+	Render(_shader,_cBuffer, _containerIndex,_subsetIndex);
 }
 
 

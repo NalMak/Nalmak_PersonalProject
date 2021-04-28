@@ -167,7 +167,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 	o.depth_cookTorrance.zw = float2(g_f0, g_roughness + mask.b);
 
-	o.specular = float4(specular, 1) * mask.g + (o.diffuse * mask.r) + (o.diffuse * mask.b * 3.5f);
+	o.specular = float4(specular, 1) * mask.g + (o.diffuse * mask.r) + (o.diffuse * mask.b * 3.f);
 
 	return o;
 }
