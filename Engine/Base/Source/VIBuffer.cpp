@@ -45,7 +45,7 @@ void VIBuffer::Draw(UINT meshContainerIndex, UINT subset)
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_primitiveType, 0, 0, GetVertexCount(), 0, GetFigureCount()));
 }
 
-void VIBuffer::BindingStreamSource(unsigned int _inputLayoutSize)
+void VIBuffer::BindingStreamSource(UINT _inputLayoutSize)
 {
 	ThrowIfFailed(m_device->SetStreamSource(0, m_vBuffer, 0, _inputLayoutSize));
 	ThrowIfFailed(m_device->SetIndices(m_iBuffer));

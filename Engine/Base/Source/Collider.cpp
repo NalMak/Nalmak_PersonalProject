@@ -15,6 +15,16 @@ Collider::~Collider()
 {
 }
 
+void Collider::OnEnable()
+{
+	PhysicsManager::GetInstance()->RemoveActorFromScene(m_shape->getActor());
+}
+
+void Collider::OnDisable()
+{
+	PhysicsManager::GetInstance()->AddActorToScene(m_shape->getActor());
+}
+
 void Collider::Initialize()
 {
 }

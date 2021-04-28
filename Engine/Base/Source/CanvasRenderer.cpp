@@ -63,7 +63,7 @@ void CanvasRenderer::Release()
 	
 }
 
-void CanvasRenderer::Render(ConstantBuffer& _cBuffer)
+void CanvasRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	BindingStreamSource();
 

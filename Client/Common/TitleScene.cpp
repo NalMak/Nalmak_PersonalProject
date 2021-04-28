@@ -113,11 +113,10 @@ void TitleScene::Initialize()
 
 	lyn->GetComponent<LynStateControl>()->InitState(L"idle");
 
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCulling(false);
-	lyn->GetComponent<SkinnedMeshRenderer>()->ReserveMaterial(3);
+	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_NONE);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body",0);
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_face",1);
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_hair2",2);
+	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
+	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 
 	CharacterController::Desc character;
 	character.center = { 0,2.6f,0 };

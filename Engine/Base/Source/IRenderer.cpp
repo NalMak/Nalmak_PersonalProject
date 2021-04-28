@@ -24,10 +24,10 @@ void IRenderer::PreRender()
 	RenderRequest();
 }
 
-void IRenderer::OnRender(ConstantBuffer & _cBuffer)
+void IRenderer::OnRender(ConstantBuffer & _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	m_gameObject->EachRender();
-	Render(_cBuffer);
+	Render(_cBuffer, _containerIndex,_subsetIndex);
 }
 
 
@@ -49,6 +49,15 @@ float IRenderer::GetBoundingRadius()
 Vector3 IRenderer::GetBoundingCenter()
 {
 	return { 0,0,0 };
+}
+
+void IRenderer::ResetFrustumCulling()
+{
+	if (m_frustumculling == FRUSTUM_CULLING_STATE_FAIL)
+		m_frustumculling = FRUSTUM_CULLING_STATE_READY;
+	else if (m_frustumculling == FRUSTUM_CULLING_STATE_SUCCESS)
+		m_frustumculling = FRUSTUM_CULLING_STATE_READY;
+
 }
 
 

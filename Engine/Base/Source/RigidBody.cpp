@@ -2,6 +2,8 @@
 #include "Nalmak_Include.h"
 #include "transform.h"
 #include "PhysicsManager.h"
+#include "RenderInfo.h"
+
 
 RigidBody::RigidBody(Desc * _desc)
 {
@@ -48,17 +50,17 @@ void RigidBody::PreRender()
 void RigidBody::Release()
 {
 	PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
-	//m_rigid->release();
+	
 }
 
 void RigidBody::OnEnable()
 {
-	m_rigid->wakeUp();
+	PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
 }
 
 void RigidBody::OnDisable()
 {
-	m_rigid->putToSleep();
+	PhysicsManager::GetInstance()->AddActorToScene(m_rigid);
 }
 
 void RigidBody::AddForce(const Vector3 & _force)

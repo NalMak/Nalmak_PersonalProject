@@ -7,6 +7,8 @@
 
 #pragma region LIGHT INFO
 
+
+
 struct BaseLightInfo
 {
 	Vector3 color = Vector3(1,1,1);

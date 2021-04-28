@@ -164,7 +164,7 @@ void ParticleRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void ParticleRenderer::Render(ConstantBuffer& _cBuffer)
+void ParticleRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	if (m_currentCount == 0)
 		return;

@@ -160,8 +160,18 @@ Vector3 Camera::ScreenPosToWorld(const Vector2 & _screenPos, float Distance_From
 
 bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 {
-	if (!_renderer->IsFrustumCulling())
+	FRUSTUM_CULLING_STATE state = _renderer->GetFrustumCullingState();
+	switch (state)
+	{
+	case FRUSTUM_CULLING_STATE_NONE:
 		return true;
+	case FRUSTUM_CULLING_STATE_SUCCESS:
+		return true;
+	case FRUSTUM_CULLING_STATE_FAIL:
+		return false;
+	default:
+		break;
+	}
 
 	RENDERER_TYPE type = _renderer->GetType();
 	switch (type)
@@ -179,7 +189,10 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 			distance = D3DXPlaneDotCoord(&m_frustumPlane[i], &Center);
 
 			if (distance > radius)
+			{
+				_renderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FAIL);
 				return false;
+			}
 		}
 		break;
 	}
@@ -192,10 +205,14 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 			boundary->right <= 0 ||
 			boundary->top >= (LONG)RenderManager::GetInstance()->GetWindowHeight() ||
 			boundary->bottom <= 0)
+		{
+			_renderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FAIL);
 			return false;
+		}
 		break;
 	}
 
+	_renderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_SUCCESS);
 	return true;
 }
 

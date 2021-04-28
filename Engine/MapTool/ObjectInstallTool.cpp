@@ -75,6 +75,10 @@ void ObjectInstallTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO4, m_sceneName);
 	DDX_Control(pDX, IDC_LIST5, m_subsetCountList);
 	DDX_Control(pDX, IDC_COMBO1, m_meshRenderer_selectedMesh);
+	DDX_Control(pDX, IDC_EDIT20, m_pointLightDiffuseIntensity);
+	DDX_Control(pDX, IDC_EDIT37, m_pointLightAmbientIntensity);
+	DDX_Control(pDX, IDC_EDIT38, m_pointLightRadius);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON1, m_pointLightColor);
 }
 
 BOOL ObjectInstallTool::OnInitDialog()
@@ -653,6 +657,11 @@ BEGIN_MESSAGE_MAP(ObjectInstallTool, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT36, &ObjectInstallTool::OnEnChangeEditCylinderColliderZ)
 	ON_CBN_SELCHANGE(IDC_COMBO4, &ObjectInstallTool::OnCbnSelchangeComboSceneName)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &ObjectInstallTool::OnCbnSelchangeComboMeshRendererToMesh)
+	ON_BN_CLICKED(IDC_CHECK10, &ObjectInstallTool::OnBnClickedCheckPointLight)
+	ON_BN_CLICKED(IDC_MFCCOLORBUTTON1, &ObjectInstallTool::OnBnClickedMfccolorPointLight)
+	ON_EN_CHANGE(IDC_EDIT20, &ObjectInstallTool::OnEnChangeEditDiffuseIntensity)
+	ON_EN_CHANGE(IDC_EDIT37, &ObjectInstallTool::OnEnChangeEditAmbientIntensity)
+	ON_EN_CHANGE(IDC_EDIT38, &ObjectInstallTool::OnEnChangeEditRadius)
 END_MESSAGE_MAP()
 
 
@@ -1462,4 +1471,49 @@ void ObjectInstallTool::UpdateMaterial()
 			continue;
 		m_materialList.AddString(mtrl.second->GetName().c_str());
 	}
+}
+
+
+void ObjectInstallTool::OnBnClickedCheckPointLight()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void ObjectInstallTool::OnBnClickedMfccolorPointLight()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void ObjectInstallTool::OnEnChangeEditDiffuseIntensity()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void ObjectInstallTool::OnEnChangeEditAmbientIntensity()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void ObjectInstallTool::OnEnChangeEditRadius()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

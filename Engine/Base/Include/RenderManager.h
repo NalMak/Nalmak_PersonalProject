@@ -4,6 +4,7 @@
 #define __RENDERMANAGER_H__
 
 #include "Nalmak_Include.h"
+#include "RenderInfo.h"
 #include "Camera.h"
 
 class IRenderer;
@@ -17,6 +18,8 @@ class DebugManager;
 class MeshRenderer;
 class LightManager;
 BEGIN(Nalmak)
+
+
 
 // 렌더 담당 
 // IRenderer를 상속받은 컴포넌트들은 이 매니저에게 렌더정보를 넘겨주고
@@ -102,7 +105,7 @@ private:
 private:
 	Mesh* m_screenImageMesh;
 private:
-	map<RenderQueue, vector<IRenderer*>> m_renderLists[RENDERING_MODE::RENDERING_MODE_MAX];
+	map<RenderQueue, vector<RenderInfo>> m_renderLists[RENDERING_MODE::RENDERING_MODE_MAX];
 	vector<IRenderer*> m_renderUILists;
 
 	vector<Text*> m_textRenderList;

@@ -177,6 +177,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />

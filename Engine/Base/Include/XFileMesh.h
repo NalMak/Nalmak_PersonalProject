@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.h"
 #include "Nalmak_Animation.h"
+
 class Shader;
 
 class NALMAK_DLL XFileMesh :
@@ -19,7 +20,7 @@ private:
 	void StoreVertexIndexData();
 public:
 	virtual void Draw(UINT meshContainerIndex = 0, UINT subset = 0) override;
-	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
+	virtual void BindingStreamSource(UINT _inputLayoutSize) override;
 	Nalmak_MeshContainer* GetMeshContainer(UINT _index);
 private:
 	class MeshHierarchy* m_hierarchy;

@@ -53,6 +53,7 @@
     <ClCompile Include="..\Source\Nalmak_Animation.cpp" />
     <ClCompile Include="..\Source\NavCollider.cpp" />
     <ClCompile Include="..\Source\NavMeshData.cpp" />
+    <ClCompile Include="..\Source\RenderInfo.cpp" />
     <ClCompile Include="..\Source\Shader.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="..\Include\Nalmak_Animation.h" />
     <ClInclude Include="..\Include\NavCollider.h" />
     <ClInclude Include="..\Include\NavMeshData.h" />
+    <ClInclude Include="..\Include\RenderInfo.h" />
     <ClInclude Include="..\Include\Shader.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />

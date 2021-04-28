@@ -99,9 +99,6 @@ using namespace std;
 #include "Nalmak_DirectXMath.h"
 #include "Nalmak_String.h"
 
-
-
-
 #include "BitFlag.h"
 #include "Exception.h"
 #include "FileIO.h"

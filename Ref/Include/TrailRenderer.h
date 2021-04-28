@@ -25,7 +25,7 @@ private:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void Release() override;
-	virtual void Render(ConstantBuffer& _cBuffer) override;
+	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 private:
 	virtual void BindingStreamSource() override;
 public:

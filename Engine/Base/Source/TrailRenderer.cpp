@@ -97,7 +97,7 @@ void TrailRenderer::Release()
 	SAFE_DELETE(m_instanceBuffer);
 }
 
-void TrailRenderer::Render(ConstantBuffer& _cBuffer)
+void TrailRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	if (m_currentTrailCount < 3) 
 		return;

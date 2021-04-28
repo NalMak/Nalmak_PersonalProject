@@ -96,11 +96,22 @@
     <ClInclude Include="LynStateControl.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynTurning.h" />
-    <ClInclude Include="LynIdleToJump.h" />
-    <ClInclude Include="LynJump.h" />
-    <ClInclude Include="LynJumpToMove.h" />
-    <ClInclude Include="LynJumpToIdle.h" />
+    <ClInclude Include="LynIdleToJump.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynJump.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynJumpToIdle.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynJumpToMove.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynTurning.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="BnS_MainCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,11 +150,22 @@
     <ClCompile Include="LynStateControl.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynTurning.cpp" />
-    <ClCompile Include="LynIdleToJump.cpp" />
-    <ClCompile Include="LynJump.cpp" />
-    <ClCompile Include="LynJumpToMove.cpp" />
-    <ClCompile Include="LynJumpToIdle.cpp" />
+    <ClCompile Include="LynIdleToJump.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynJump.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynJumpToIdle.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynJumpToMove.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynTurning.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="BnS_MainCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

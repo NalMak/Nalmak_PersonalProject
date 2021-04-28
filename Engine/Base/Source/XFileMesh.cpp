@@ -3,6 +3,8 @@
 #include "AnimationController.h"
 #include "Shader.h"
 #include "SkinnedMeshRenderer.h"
+#include "RenderInfo.h"
+
 
 XFileMesh::XFileMesh()
 {
@@ -20,10 +22,6 @@ void XFileMesh::Initialize(wstring _fp)
 {
 	m_hierarchy = new MeshHierarchy;
 
-	if (_fp == L"../Resource/title/Gwimyeon/GW_innerRoof.X")
-	{
-		int a = 5;
-	}
 	ThrowIfFailed(D3DXLoadMeshHierarchyFromX(_fp.c_str(), D3DXMESH_32BIT | D3DXMESH_MANAGED, m_device, m_hierarchy, nullptr, &m_root, &m_animController));
 	Matrix base = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
 	AnimationController::UpdateBoneMatrix((Nalmak_Frame*)m_root, base);
@@ -218,7 +216,7 @@ void XFileMesh::Draw(UINT meshContainerIndex, UINT subset)
 }
 
 
-void XFileMesh::BindingStreamSource(unsigned int _inputLayoutSize)
+void XFileMesh::BindingStreamSource(UINT _inputLayoutSize)
 {
 }
 

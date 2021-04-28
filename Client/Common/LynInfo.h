@@ -21,12 +21,18 @@ private:
 	virtual void Update() override;
 
 public:
+	LYN_STATE m_state;
+
 	float m_runForwardSpeed;
 	float m_runBackwardSpeed;
 	float m_jumpPower;
 	float m_turningSpeed;
 	float m_halfHeight;
 	float m_jumpHalfHeight;
+public:
+	void EquipeWeapon(GameObject* _weapon);
 
+private:
+	GameObject* m_weapon;
 };
 

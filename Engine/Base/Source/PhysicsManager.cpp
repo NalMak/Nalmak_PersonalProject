@@ -180,12 +180,12 @@ void PhysicsManager::SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _
 	_shape->setSimulationFilterData(filterData);
 }
 
-void PhysicsManager::AddActorToScene(PxRigidDynamic * _rigid)
+void PhysicsManager::AddActorToScene(PxActor * _rigid)
 {
 	m_scene->addActor(*_rigid);
 }
 
-void PhysicsManager::RemoveActorFromScene(PxRigidDynamic * _rigid)
+void PhysicsManager::RemoveActorFromScene(PxActor * _rigid)
 {
 	if(_rigid)
 		m_scene->removeActor(*_rigid);

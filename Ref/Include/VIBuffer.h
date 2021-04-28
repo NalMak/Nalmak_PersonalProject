@@ -19,7 +19,7 @@ private:
 	virtual void Release() override;
 public:
 	virtual void Draw(UINT meshContainerIndex = 0, UINT subset = 0) override;
-	virtual void BindingStreamSource(unsigned int _inputLayoutSize) override;
+	virtual void BindingStreamSource(UINT _inputLayoutSize) override;
 
 protected:
 	PDIRECT3DVERTEXBUFFER9	m_vBuffer = nullptr;

@@ -4,10 +4,13 @@
 #define __IRENDERER_H__
 
 #include "Nalmak_Include.h"
+#include "RenderInfo.h"
 #include "Component.h"
 #include "Material.h"
 #include "VIBuffer.h"
+
 BEGIN(Nalmak)
+
 
 class NALMAK_DLL IRenderer :
 	public Component
@@ -24,9 +27,9 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override = 0;
 public:
-	void OnRender(ConstantBuffer& _cBuffer);
+	void OnRender(ConstantBuffer& _cBuffer,UINT _containerIndex, UINT _subsetIndex);
 protected:
-	virtual void Render(ConstantBuffer& _cBuffer) = 0;
+	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) = 0;
 public:
 	virtual void RenderForShadow(Shader* _shader);
 	virtual void BindingStreamSource() = 0;
@@ -42,7 +45,7 @@ public:
 protected:
 	PDIRECT3DDEVICE9 m_device;
 	RENDERER_TYPE  m_type;
-	bool m_isFrustumCulling = true;
+	FRUSTUM_CULLING_STATE m_frustumculling = FRUSTUM_CULLING_STATE_READY;
 	bool m_isPicking = true;
 	bool m_isCastShadow = false;
 public:
@@ -50,15 +53,15 @@ public:
 	virtual Vector3 GetBoundingCenter();
 public:
 	bool IsPickingEnable() { return m_isPicking; }
-	bool IsFrustumCulling() { return m_isFrustumCulling; }
+	FRUSTUM_CULLING_STATE GetFrustumCullingState() { return m_frustumculling; }
 	bool IsCastShadow() { return m_isCastShadow; }
 public:
 	const RENDERER_TYPE& GetType() { return m_type; }
 public:
-	void SetFrustumCulling(bool _culling) { m_isFrustumCulling = _culling; }
+	void SetFrustumCullingState(FRUSTUM_CULLING_STATE _culling) { m_frustumculling = _culling; }
+	void ResetFrustumCulling();
 	void SetPickingEnable(bool _pick) { m_isPicking = _pick; }
 	void SetCastShadow(bool _isCast) { m_isCastShadow = _isCast; }
-	void UpdateEachAnimation();
 protected:
 	class RenderManager* m_renderManager = nullptr;
 };

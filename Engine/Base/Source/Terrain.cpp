@@ -68,7 +68,7 @@ void Terrain::Release()
 	SAFE_DELETE_ARR(m_vertexInfo);
 }
 
-void Terrain::Render(ConstantBuffer& _cBuffer)
+void Terrain::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	BindingStreamSource();
 

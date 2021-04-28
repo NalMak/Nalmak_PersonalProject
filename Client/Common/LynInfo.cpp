@@ -25,3 +25,8 @@ void LynInfo::Initialize()
 void LynInfo::Update()
 {
 }
+
+void LynInfo::EquipeWeapon(GameObject * _weapon)
+{
+	m_weapon = _weapon;
+}

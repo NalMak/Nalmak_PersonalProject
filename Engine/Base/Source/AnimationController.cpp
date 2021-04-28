@@ -67,9 +67,6 @@ void AnimationController::Update()
 			CheckNextAnimation(transition);
 		}
 	}
-
-
-
 }
 
 void AnimationController::EachRender()

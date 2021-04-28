@@ -31,7 +31,7 @@ GameObject * GameObject::Instantiate(USHORT _tag, USHORT _layer, const wstring& 
 	obj->m_layer = _layer;
 	obj->m_name = _name;
 	obj->m_dontDestroy = false;
-
+	obj->m_isRendered = false;
 
 	ObjectManager::GetInstance()->AddObject(obj);
 
@@ -49,6 +49,7 @@ GameObject * GameObject::Instantiate(wstring _name)
 	obj->m_layer = 0;
 	obj->m_name = _name;
 	obj->m_dontDestroy = false;
+	obj->m_isRendered = false;
 
 	ObjectManager::GetInstance()->AddObject(obj);
 
@@ -266,7 +267,6 @@ void GameObject::Update()
 {
 	InitializeComponents();
 
-
 	for (auto iter = m_components.begin(); iter != m_components.end();)
 	{
 		Component* component = (*iter).second;
@@ -309,6 +309,10 @@ void GameObject::PreRender()
 
 void GameObject::EachRender()
 {
+	if (m_isRendered)
+		return;
+
+	m_isRendered = true;
 	for (auto& component : m_components)
 	{
 		if (component.second->m_isActive)
@@ -316,6 +320,11 @@ void GameObject::EachRender()
 			component.second->EachRender();
 		}
 	}
+}
+
+void GameObject::ResetRender()
+{
+	m_isRendered = false;
 }
 
 void GameObject::PostRender()

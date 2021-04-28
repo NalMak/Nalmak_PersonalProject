@@ -20,6 +20,8 @@
 #include "FrustumCulling.h"
 #include "LightManager.h"
 #include "DirectionalLight.h"
+#include "XFileMesh.h"
+#include "SkinnedMeshRenderer.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(RenderManager)
@@ -223,14 +225,14 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 
 	for (auto& renderList : m_renderLists[RENDERING_MODE_OPAQUE])
 	{
-		for (auto& renderer : renderList.second)
+		for (auto& renderInfo : renderList.second)
 		{
-			if (!renderer->IsCastShadow())
+			if (!renderInfo.renderer->IsCastShadow())
 				continue;
 
-			if (lightCam->IsInFrustumCulling(renderer))
+			if (lightCam->IsInFrustumCulling(renderInfo.renderer))
 			{
-				Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
+				Shader* newShader = renderInfo.renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
 				if (currentShader != newShader)
 				{
 					currentShader->EndPass();
@@ -238,24 +240,24 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 					currentShader->BeginPass();
 				}
 
-				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
-				currentShader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
+				ThrowIfFailed(m_device->SetVertexDeclaration(renderInfo.renderer->GetMaterial()->GetShader()->GetDeclartion()));
+				currentShader->SetMatrix("g_world", renderInfo.renderer->GetTransform()->GetWorldMatrix());
 				currentShader->CommitChanges();
-				renderer->RenderForShadow(currentShader);
+				renderInfo.renderer->RenderForShadow(currentShader);
 			}
 		
 		}
 	}
 	for (auto& renderList : m_renderLists[RENDERING_MODE_CUTOUT])
 	{
-		for (auto& renderer : renderList.second)
+		for (auto& renderInfo : renderList.second)
 		{
-			if (!renderer->IsCastShadow())
+			if (!renderInfo.renderer->IsCastShadow())
 				continue;
 
-			if (lightCam->IsInFrustumCulling(renderer))
+			if (lightCam->IsInFrustumCulling(renderInfo.renderer))
 			{
-				Shader* newShader = renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
+				Shader* newShader = renderInfo.renderer->GetType() == RENDERER_TYPE_SKINNED_MESH ? shader[1] : shader[0];
 				if (currentShader != newShader)
 				{
 					currentShader->EndPass();
@@ -263,10 +265,10 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 					currentShader->BeginPass();
 				}
 
-				ThrowIfFailed(m_device->SetVertexDeclaration(renderer->GetMaterial()->GetShader()->GetDeclartion()));
-				currentShader->SetMatrix("g_world", renderer->GetTransform()->GetWorldMatrix());
+				ThrowIfFailed(m_device->SetVertexDeclaration(renderInfo.renderer->GetMaterial()->GetShader()->GetDeclartion()));
+				currentShader->SetMatrix("g_world", renderInfo.renderer->GetTransform()->GetWorldMatrix());
 				currentShader->CommitChanges();
-				renderer->RenderForShadow(currentShader);
+				renderInfo.renderer->RenderForShadow(currentShader);
 			}
 
 		}
@@ -468,13 +470,13 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	for (auto& renderList : m_renderLists[RENDERING_MODE_TRANSPARENT])
 	{
-		for (auto& renderer : renderList.second)
+		for (auto& renderInfo : renderList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
+			if (_cam->CompareLayer(renderInfo.renderer->GetGameObject()->GetLayer()))
 			{
-				if (_cam->IsInFrustumCulling(renderer))
+				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderer->OnRender(_cBuffer);
+					renderInfo.renderer->OnRender(_cBuffer,renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -501,13 +503,13 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 
 	for (auto& MeshRendererList : m_renderLists[RENDERING_MODE_OVERLAY])
 	{
-		for (auto& renderer : MeshRendererList.second)
+		for (auto& renderInfo : MeshRendererList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
+			if (_cam->CompareLayer(renderInfo.renderer->GetGameObject()->GetLayer()))
 			{
-				if (_cam->IsInFrustumCulling(renderer))
+				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderer->OnRender(_cBuffer);
+					renderInfo.renderer->OnRender(_cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -539,7 +541,7 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 		{
 			if (_cam->IsInFrustumCulling(renderer))
 			{
-				renderer->OnRender(_cBuffer);
+				renderer->OnRender(_cBuffer,0,0);
 			}
 		}
 	}
@@ -598,13 +600,13 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 
 	for (auto& MeshRendererList : m_renderLists[_mode])
 	{
-		for (auto& renderer : MeshRendererList.second)
+		for (auto& renderInfo : MeshRendererList.second)
 		{
-			if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
+			if (_cam->CompareLayer(renderInfo.renderer->GetGameObject()->GetLayer()))
 			{
-				if (_cam->IsInFrustumCulling(renderer))
+				if (_cam->IsInFrustumCulling(renderInfo.renderer))
 				{
-					renderer->OnRender(_cBuffer);
+					renderInfo.renderer->OnRender(_cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -623,6 +625,11 @@ void RenderManager::Reset()
 	for (int i = 0; i < RENDERING_MODE_MAX; ++i)
 		for (auto& renderList : m_renderLists[i])
 		{
+			for (auto& renderInfo : renderList.second)
+			{
+				renderInfo.renderer->ResetFrustumCulling();
+				renderInfo.renderer->GetGameObject()->ResetRender();
+			}
 			renderList.second.clear();
 		}
 	m_renderUILists.clear();
@@ -707,10 +714,54 @@ ConstantBuffer RenderManager::GetConstantBufferByCam(Camera * _cam)
 void RenderManager::RenderRequest(IRenderer * _render)
 {
 	auto mtrl = _render->GetMaterial();
-	if (_render->GetType() == RENDERER_TYPE::RENDERER_TYPE_CANVAS)
+
+	switch (_render->GetType())
+	{
+	case RENDERER_TYPE::RENDERER_TYPE_CANVAS:
 		m_renderUILists.emplace_back(_render);
-	else
-		m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(_render);
+		break;
+	case RENDERER_TYPE::RENDERER_TYPE_MESH:
+	{
+		UINT mtrlCount = ((MeshRenderer*)_render)->GetMaterialCount();
+		for (UINT i = 0; i < mtrlCount; ++i)
+		{
+			RenderInfo renderInfo;
+			renderInfo.renderer = _render;
+			renderInfo.subsetNum = i;
+			m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+		}
+		break;
+	}
+	case RENDERER_TYPE::RENDERER_TYPE_SKINNED_MESH:
+	{
+		XFileMesh* mesh = ((SkinnedMeshRenderer*)_render)->GetMesh();
+		UINT containerCount = mesh->GetMeshContainerSize();
+		for (UINT i = 0; i < containerCount; ++i)
+		{
+			UINT mtrlCount = mesh->GetSubsetCount(i);
+			for (UINT j = 0; j < mtrlCount; ++j)
+			{
+				RenderInfo renderInfo;
+				renderInfo.renderer = _render;
+				renderInfo.containerNum = i;
+				renderInfo.subsetNum = j;
+				m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+			}
+		}
+		break;
+	}
+	case RENDERER_TYPE::RENDERER_TYPE_PARTICLE:
+	case RENDERER_TYPE::RENDERER_TYPE_TRAIL:
+	{
+		RenderInfo renderInfo;
+		renderInfo.renderer = _render;
+		m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+		break;
+	}
+	default:
+		break;
+	}
+
 
 }
 

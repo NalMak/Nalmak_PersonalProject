@@ -184,6 +184,7 @@ private:
 	void OnCollisionExit(Collisions& _col) override;
 public:
 	void EachRender() override;
+	void ResetRender();
 private:
 	vector<pair<string, Component*>> m_components;
 	vector<pair<string, Component*>> m_newComponents;
@@ -197,6 +198,7 @@ private:
 	bool m_dead;
 	bool m_static;
 	bool m_dontDestroy;
+	bool m_isRendered;
 	wstring m_name;
 	USHORT m_tag;
 	USHORT m_layer;

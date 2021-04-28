@@ -1,5 +1,6 @@
 #pragma once
 #include "afxwin.h"
+#include "afxcolorbutton.h"
 
 
 class ObjectInstallTool : public CDialogEx
@@ -138,4 +139,13 @@ public:
 	CComboBox m_meshRenderer_selectedMesh;
 public:
 	void UpdateMaterial();
+	afx_msg void OnBnClickedCheckPointLight();
+	afx_msg void OnBnClickedMfccolorPointLight();
+	afx_msg void OnEnChangeEditDiffuseIntensity();
+	afx_msg void OnEnChangeEditAmbientIntensity();
+	afx_msg void OnEnChangeEditRadius();
+	CEdit m_pointLightDiffuseIntensity;
+	CEdit m_pointLightAmbientIntensity;
+	CEdit m_pointLightRadius;
+	CMFCColorButton m_pointLightColor;
 };

@@ -40,6 +40,8 @@
 #define IDC_EDIT19                      1024
 #define IDC_EDIT20                      1025
 #define IDC_EDIT21                      1026
+#define IDC_EDIT37                      1027
+#define IDC_EDIT38                      1028
 #define IDC_TAB1                        1030
 #define IDC_EDIT22                      1030
 #define IDC_COMBO2                      1031
@@ -73,16 +75,18 @@
 #define IDC_COMBO5                      1059
 #define IDC_BUTTON4                     1060
 #define IDC_BUTTON5                     1061
+#define IDC_CHECK10                     1061
 #define IDC_BUTTON6                     1062
 #define IDC_TREE1                       1063
+#define IDC_MFCCOLORBUTTON1             1064
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        320
+#define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1064
+#define _APS_NEXT_CONTROL_VALUE         1065
 #define _APS_NEXT_SYMED_VALUE           313
 #endif
 #endif

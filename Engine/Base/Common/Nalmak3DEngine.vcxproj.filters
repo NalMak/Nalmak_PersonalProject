@@ -570,6 +570,7 @@
     <ClCompile Include="..\Source\LOD_Group.cpp" />
     <ClCompile Include="..\Source\NavMeshData.cpp" />
     <ClCompile Include="..\Source\NavCollider.cpp" />
+    <ClCompile Include="..\Source\RenderInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -914,6 +915,7 @@
     <ClInclude Include="..\Include\LOD_Group.h" />
     <ClInclude Include="..\Include\NavMeshData.h" />
     <ClInclude Include="..\Include\NavCollider.h" />
+    <ClInclude Include="..\Include\RenderInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

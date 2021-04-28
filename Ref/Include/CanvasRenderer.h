@@ -27,7 +27,7 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 public:
-	virtual void Render(ConstantBuffer& _cBuffer) override;
+	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 private:
 	virtual void BindingStreamSource() override;
 private:
@@ -39,7 +39,6 @@ public:	// IRenderer을(를) 통해 상속됨
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) override;
 public:
-	void Render_Image();
 	void Render_Text();
 	void Render_Number();
 public:

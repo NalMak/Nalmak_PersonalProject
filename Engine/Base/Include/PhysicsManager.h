@@ -50,8 +50,8 @@ private:
 	void AdjustCollisionLayer(PxShape * _shape, Collider * collider);
 	void SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _filterMask);
 public:
-	void AddActorToScene(PxRigidDynamic* _rigid);
-	void RemoveActorFromScene(PxRigidDynamic* _rigid);
+	void AddActorToScene(PxActor* _rigid);
+	void RemoveActorFromScene(PxActor* _rigid);
 	const PxRenderBuffer& GetDebugRenderBuffer();
 public:
 	PxRigidDynamic* CreateRigidDynamic(RigidBody* _rigid);

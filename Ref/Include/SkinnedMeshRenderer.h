@@ -28,16 +28,15 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 private:
-	void RenderSW(ConstantBuffer & _cBuffer);
-	void RenderHW_ConstantBuffer(ConstantBuffer & _cBuffer);
-	void RenderHW_FetchTex(ConstantBuffer & _cBuffer);
+	//void RenderSW(ConstantBuffer & _cBuffer);
+	//void RenderHW_ConstantBuffer(ConstantBuffer & _cBuffer);
+	void RenderHW_FetchTex(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex);
 
 public:
-	virtual void Render(ConstantBuffer & _cBuffer) override;
+	virtual void Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 	virtual void RenderForShadow(Shader* _shader) override;
 	virtual void BindingStreamSource() override;
 public:
-	void ReserveMaterial(UINT _index);
 	void AddMaterial(const wstring& _mtrl);
 	void AddMaterial(Material* _mtrl);
 	virtual int GetMaterialCount() override;

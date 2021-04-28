@@ -10,7 +10,8 @@ public:
 	virtual ~Collider();
 
 private:
-	// Component을(를) 통해 상속됨
+	virtual void OnEnable();
+	virtual void OnDisable();
 	virtual void Initialize() = 0;
 	virtual void Update()  = 0;
 	virtual void Release();

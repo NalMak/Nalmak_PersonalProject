@@ -40,43 +40,46 @@ void MeshRenderer::Release()
 {
 }
 
-void MeshRenderer::Render(ConstantBuffer& _cBuffer)
+
+void MeshRenderer::Render(ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	BindingStreamSource();
 
-	UINT meshContainerSize = m_mesh->GetMeshContainerSize();
 	Shader* currentShader = nullptr;
 	Material* currentMaterial = nullptr;
 
 	UINT materialIndex = 0;
-	for (UINT i = 0; i < meshContainerSize; ++i)
+	for (UINT i = 0; i < _containerIndex; ++i)
 	{
 		UINT subsetCount = m_mesh->GetSubsetCount(i);
 		for (UINT j = 0; j < subsetCount; ++j)
 		{
-
-			if (m_materials.size() > materialIndex)
-				currentMaterial = m_materials[materialIndex];
-			else
-				currentMaterial = m_materials.back();
-			m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
-			m_renderManager->UpdateRenderTarget();
-
-			Shader* shader = currentMaterial->GetShader();
-			assert("Current Shader is nullptr! " && shader);
-
-			if (currentShader != shader)
-			{
-				currentShader = shader;
-
-				currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
-
-			}
-			currentShader->CommitChanges();
-			m_mesh->Draw(i,j);
 			++materialIndex;
 		}
 	}
+	materialIndex += _subsetIndex;
+
+	if (m_materials.size() > materialIndex)
+		currentMaterial = m_materials[materialIndex];
+	else
+		currentMaterial = m_materials.back();
+
+
+	m_renderManager->UpdateMaterial(currentMaterial, _cBuffer);
+	m_renderManager->UpdateRenderTarget();
+
+	Shader* shader = currentMaterial->GetShader();
+	assert("Current Shader is nullptr! " && shader);
+
+	if (currentShader != shader)
+	{
+		currentShader = shader;
+
+		currentShader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+	}
+	currentShader->CommitChanges();
+	m_mesh->Draw(_containerIndex, _subsetIndex);
+			
 	
 }
 

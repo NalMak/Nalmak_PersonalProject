@@ -10,12 +10,7 @@ USING(Nalmak)
 
 Material::Material()
 {
-	/*SetShader(L"default");
-	m_renderQueue = 0;
-	m_renderingMode = RENDERING_MODE_OPAQUE;
-	m_blendingMode = BLENDING_MODE_DEFAULT;
-	m_fillMode = FILL_MODE_SOLID;
-	m_alphaTest = 0;*/
+	
 }
 
 

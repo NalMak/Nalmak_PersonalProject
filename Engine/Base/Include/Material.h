@@ -31,9 +31,6 @@ public:
 	Shader* GetShader()const { return m_shader; }
 private:
 	Shader* m_shader;
-
-	char* tex;
-
 public:
 	void SetDataToShader();
 
@@ -58,10 +55,10 @@ private:
 	vector<pair<string, Vector4>> m_vector4Values;
 	vector<pair<string, IDirect3DBaseTexture9*>> m_texValues;
 	vector<pair<string, pair<void*, UINT>>> m_values;
-
+	
 private:
 	_RENDER_QUEUE m_renderQueue = 1000;
-
+	
 public:
 	void SetRenderQueue(_RENDER_QUEUE _renderQueue);
 	_RENDER_QUEUE GetRenderQueue() { return m_renderQueue; }
@@ -73,14 +70,10 @@ public:
 	RENDERING_MODE GetRenderingMode() { return m_renderingMode; }
 	BLENDING_MODE GetBlendingMode() { return m_blendingMode; }
 	FILL_MODE GetFillMode() { return m_fillMode; }
-
-	int GetAlphaTest() { return m_alphaTest; }
 private:
 	RENDERING_MODE m_renderingMode = RENDERING_MODE_BACKGROUND;
 	BLENDING_MODE m_blendingMode;
 	FILL_MODE m_fillMode;
-
-	int m_alphaTest;
 };
 
 END
