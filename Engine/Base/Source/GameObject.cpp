@@ -97,7 +97,10 @@ GameObject* GameObject::MakeStatic(wstring _name)
 	{
 		obj->AddComponent<MeshCollider>(&(data->GetData().meshDesc));
 	}
-
+	if (data->GetData().isExistPointLight)
+	{
+		obj->AddComponent<PointLight>(&(data->GetData().pointDesc));
+	}
 	return obj;
 }
 

@@ -58,7 +58,12 @@ AnimationController::~AnimationController()
 
 void AnimationController::Update()
 {
+	D3DXTRACK_DESC trackInfo;
+	m_animController->GetTrackDesc(m_currentTrack,&trackInfo);
 
+	m_totalTime = trackInfo.Position;
+
+	DEBUG_LOG(L"anim current time", m_totalTime);
 }
 
 void AnimationController::EachRender()
@@ -69,8 +74,6 @@ void AnimationController::EachRender()
 		return;
 
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
-	m_totalTime += time;
-
 	if (m_totalTime < m_animPlayTime - 0.001f)
 	{
 		m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
@@ -247,7 +250,6 @@ void AnimationController::PlayBlending(AnimationClip * _clip)
 	m_animController->UnkeyAllTrackEvents(m_nextTrack);
 
 	
-
 	
 	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + m_transitionTime);
 	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, m_transitionTime, m_transtionType);

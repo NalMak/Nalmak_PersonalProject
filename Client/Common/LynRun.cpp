@@ -31,7 +31,7 @@ void LynRun::UpdateState()
 
 	if (m_moveDirection == 0)
 	{
-		m_animController->SetBlendOption(0.7f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}
@@ -45,6 +45,7 @@ void LynRun::UpdateState()
 	m_preDirection = m_moveDirection;
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_SPACE))
 	{
+		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idleToJump");
 		return;
 	}

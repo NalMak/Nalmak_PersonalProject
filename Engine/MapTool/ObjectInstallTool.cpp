@@ -150,11 +150,11 @@ BOOL ObjectInstallTool::OnInitDialog()
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e1);
 	MapToolManager::GetInstance()->GetDebuggingObject()->AddEvent(e2);
 
-	EventHandler e = [=]()
+	/*EventHandler e = [=]()
 	{
 		this->UpdateMaterial();
 	};
-	MapToolManager::GetInstance()->GetDebuggingObject()->AddUpdateMaterialEvent(e);
+	MapToolManager::GetInstance()->GetDebuggingObject()->AddUpdateMaterialEvent(e);*/
 
 	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
 	m_materialList.ResetContent();
@@ -482,15 +482,6 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 	if (!obj)
 		return;
 
-	vector<wstring> mtrlList;
-	int materialCount = _obj->GetComponent<MeshRenderer>()->GetMaterialCount();
-	//WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
-
-	for (int i = 0; i < materialCount; ++i)
-	{
-		mtrlList.emplace_back(_obj->GetComponent<MeshRenderer>()->GetMaterial(i)->GetName());
-	}
-
 
 	CFileDialog dlg
 	(
@@ -509,7 +500,7 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 	dlg.m_ofn.lpstrInitialDir = fp;
 
 
-	if (dlg.DoModal())
+	if (IDOK ==  dlg.DoModal())
 	{
 		HANDLE handle = CreateFile(dlg.GetPathName(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 		if (INVALID_HANDLE_VALUE == handle)
@@ -546,16 +537,27 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 			WriteFile(handle, &meshNameLength, sizeof(DWORD), &byte, nullptr);
 			WriteFile(handle, meshName.c_str(), meshNameLength * sizeof(wchar_t), &byte, nullptr);
 
-			int materialCount = (int)mtrlList.size();
-			WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
 
-			for (int i = 0; i < materialCount; ++i)
+			if (_obj->GetComponent<MeshRenderer>())
 			{
-				wstring materialName = mtrlList[i];
-				DWORD mtrlNameLength = (DWORD)materialName.length();
-				WriteFile(handle, &mtrlNameLength, sizeof(DWORD), &byte, nullptr);
-				WriteFile(handle, materialName.c_str(), mtrlNameLength * sizeof(wchar_t), &byte, nullptr);
+				int materialCount = _obj->GetComponent<MeshRenderer>()->GetMaterialCount();
+				//WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
+				WriteFile(handle, &materialCount, sizeof(int), &byte, nullptr);
+
+				for (int i = 0; i < materialCount; ++i)
+				{
+					wstring name = _obj->GetComponent<MeshRenderer>()->GetMaterial(i)->GetName();
+					if (name == L"")
+					{
+						assert(L"Material name is null!" && 0);
+					}
+					DWORD mtrlNameLength = (DWORD)name.length();
+					WriteFile(handle, &mtrlNameLength, sizeof(DWORD), &byte, nullptr);
+					WriteFile(handle, name.c_str(), mtrlNameLength * sizeof(wchar_t), &byte, nullptr);
+				}
 			}
+
+			
 		}
 		auto sphereCollider = obj->GetComponent<SphereCollider>();
 		if (sphereCollider)
@@ -621,7 +623,28 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 			mesh.isTrigger = meshCollider->IsTrigger();
 			WriteFile(handle, &mesh, sizeof(MeshCollider::Desc), &byte, nullptr);
 		}
+
+
+		auto pointLight = obj->GetComponent<PointLight>();
+		if (pointLight)
+			isExist = true;
+		else
+			isExist = false;
+		WriteFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+
+		if (isExist)
+		{
+			PointLight::Desc point;
+			point.color = pointLight->GetLightInfo().base.color;
+			point.diffuseIntensity = pointLight->GetLightInfo().base.diffuseIntensity;
+			point.ambientIntensity = pointLight->GetLightInfo().base.ambientIntensity;
+			point.radius = pointLight->GetLightInfo().radius;
+
+			WriteFile(handle, &point, sizeof(PointLight::Desc), &byte, nullptr);
+		}
+
 		CloseHandle(handle);
+
 		AfxMessageBox(L"Succeeded to Save File");
 	}
 }
@@ -704,12 +727,16 @@ END_MESSAGE_MAP()
 
 void ObjectInstallTool::OnLbnSelchangeObjectList()
 {
+	m_mapToolManager->PickObject(nullptr);
+
 	int objectIndex = m_objectList.GetCurSel();
 
 	if (-1 == objectIndex)
 		return;
 
 	m_mapToolManager->SeleteObject(objectIndex);
+
+
 }
 
 
@@ -724,6 +751,9 @@ void ObjectInstallTool::OnBnClickedButtonCreateObject()
 	int count = m_objectList.GetCount();
 	m_objectList.SetCurSel(count - 1);
 	m_mapToolManager->SelectObject(newObj);
+	m_mapToolManager->PickObject(newObj);
+
+
 }
 
 
@@ -736,6 +766,8 @@ void ObjectInstallTool::OnBnClickedButtonDeleteObject()
 
 	m_objectList.DeleteString(objectIndex);
 	m_mapToolManager->DeleteObject(objectIndex);
+
+
 }
 
 
@@ -897,6 +929,7 @@ void ObjectInstallTool::OnEnChangeEditScaleZ()
 void ObjectInstallTool::OnBnClickedButtonSave()
 {
 	auto obj = m_mapToolManager->GetSelectedObject();
+
 	SaveObject(obj);
 }
 
@@ -965,18 +998,20 @@ void ObjectInstallTool::OnBnClickedButtonLoadAll()
 {
 	CString sceneName;
 	m_sceneName.GetWindowTextW(sceneName);
-
+	GameObject* staticObj = nullptr;
 	for (auto& staticObjInfo : ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>())
 	{
-		auto staticObj = MAKE_STATIC(staticObjInfo.first);
+		staticObj = MAKE_STATIC(staticObjInfo.first);
 
 		m_mapToolManager->CreateObject(staticObj);
 		m_objectList.InsertString(m_objectList.GetCount(), staticObj->GetName().c_str());
 		int objCount = m_objectList.GetCount();
 		m_objectList.SetCurSel(objCount - 1);
 
-		m_mapToolManager->SelectObject(staticObj);
+		
 	}
+	if(staticObj)
+		m_mapToolManager->SelectObject(staticObj);
 }
 
 
@@ -1069,6 +1104,8 @@ void ObjectInstallTool::OnBnClickedButtonChangeMaterial()
 	m_materialRenderList.DeleteString(renderIndex);
 	m_materialRenderList.InsertString(renderIndex, mtrlName);
 	m_materialRenderList.SetCurSel(renderIndex);
+
+
 }
 
 
@@ -1449,11 +1486,13 @@ void ObjectInstallTool::OnEnChangeEditCylinderColliderZ()
 
 void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 {
+	m_mapToolManager->DeleteAllObject();
+	m_objectList.ResetContent();
+
+
 	CString sceneName;
 	m_sceneName.GetLBText(m_sceneName.GetCurSel(), sceneName);
 	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
-
-
 
 	path += L"/" + sceneName;
 	ResourceManager::GetInstance()->ReleaseSceneResouce();
@@ -1471,6 +1510,8 @@ void ObjectInstallTool::OnCbnSelchangeComboSceneName()
 		m_meshList.AddString(mesh.first.c_str());
 		m_meshRenderer_selectedMesh.AddString(mesh.first.c_str());
 	}
+
+
 }
 
 
@@ -1488,6 +1529,7 @@ void ObjectInstallTool::OnCbnSelchangeComboMeshRendererToMesh()
 
 void ObjectInstallTool::UpdateMaterial()
 {
+
 	auto materials = ResourceManager::GetInstance()->GetAllResource<Material>();
 	m_materialList.ResetContent();
 	for (auto& mtrl : materials)
@@ -1497,7 +1539,9 @@ void ObjectInstallTool::UpdateMaterial()
 			continue;
 		if (inputLayout == VERTEX_INPUT_LAYOUT::VERTEX_INPUT_LAYOUT_SKYBOX)
 			continue;
-		m_materialList.AddString(mtrl.second->GetName().c_str());
+		if (mtrl.first == L"")
+			assert(L"Material name is null!" && 0);
+		m_materialList.AddString(mtrl.first.c_str());
 	}
 }
 

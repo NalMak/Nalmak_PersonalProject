@@ -24,6 +24,26 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 
+	MAKE_STATIC(L"column");
+	MAKE_STATIC(L"floor");
+	MAKE_STATIC(L"plane");
+	MAKE_STATIC(L"roof");
+	MAKE_STATIC(L"mainLight");
+	MAKE_STATIC(L"wall");
+
+
+	INSTANTIATE()->AddComponent<ParticleRenderer>()->SetPosition(0,3,0);
+
+	for (int i = 0; i < 30; ++i)
+	{
+		PointLight::Desc point;
+		point.diffuseIntensity = 15.f;
+		point.radius = 30.f;
+		point.color = Vector3(Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f));
+		INSTANTIATE()->AddComponent<PointLight>(&point)->SetPosition(Nalmak_Math::RandDirection() * Nalmak_Math::Rand(0.f,100.f));
+	}
+	
+
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.6f;
 	light.ambientIntensity = 0.1f;
@@ -33,7 +53,7 @@ void TitleScene::Initialize()
 	
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
-	auto obj =INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
+	auto obj = INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
 	//MAKE_STATIC(L"musin_boss_floor");
 	{
 		MeshRenderer::Desc mesh;
@@ -41,21 +61,16 @@ void TitleScene::Initialize()
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
-		auto plane = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, -10, 0);
+		auto plane = INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, 0.5f, 0);
 		plane->SetLayer(OBJECT_LAYER_BACKGROUND);
 	}
 
 	
 
-	
-	MAKE_STATIC(L"column");
-	//MAKE_STATIC(L"floor");
-	////MAKE_STATIC(L"plane");
-	MAKE_STATIC(L"roof");
-	MAKE_STATIC(L"wall");
+
 
 	NavCollider::Desc navCollider;
-	navCollider.navName = L"gwimyeon";
+	navCollider.navName = L"default";
 	INSTANTIATE()->AddComponent<NavCollider>(&navCollider);
 
 
@@ -75,16 +90,17 @@ void TitleScene::Initialize()
 	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.1f,0.1f,0.1f);
 
 	lyn->AddComponent<LynStateControl>();
-	lyn->GetComponent<LynStateControl>()->AddState<LynIdle>(L"idle");
-	lyn->GetComponent<LynStateControl>()->AddState<LynRun>(L"run");
-	lyn->GetComponent<LynStateControl>()->AddState<LynTurning>(L"turning");
-	lyn->GetComponent<LynStateControl>()->AddState<LynIdleToJump>(L"idleToJump");
-	lyn->GetComponent<LynStateControl>()->AddState<LynJump>(L"jump");
-	lyn->GetComponent<LynStateControl>()->AddState<LynJumpToIdle>(L"jumpToIdle");
-	lyn->GetComponent<LynStateControl>()->AddState<LynJumpToMove>(L"jumpToMove");
+	//lyn->AddComponent<LynStateControl>();
 
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdle>(L"idle");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynRun>(L"run");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynTurning>(L"turning");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdleToJump>(L"idleToJump");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJump>(L"jump");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToIdle>(L"jumpToIdle");
+	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToMove>(L"jumpToMove");
 
-	lyn->GetComponent<LynStateControl>()->InitState(L"idle");
+	lyn->GetComponents<LynStateControl>()[0]->InitState(L"idle");
 
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body",0);
@@ -117,9 +133,9 @@ void TitleScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightFront", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftFront", 1.f, true);
 
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Right", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.1f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.1f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Right", 1.1f, false);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpFront", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpLeft", 1.f, false);
@@ -141,8 +157,10 @@ void TitleScene::Initialize()
 		bnsCam.player = lyn;
 		SphereCollider::Desc sphere;
 		sphere.isTrigger = true;
-		sphere.radius = 1.f;
-		cam->AddComponent<Camera>()->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>();
+		sphere.radius = 2.f;
+		RigidBody::Desc rigid;
+		rigid.isGravity = false;
+		cam->AddComponent<Camera>()->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid);
 	}
 
 	//controller->AddAnimationClip("lyn_idle", 1.f, true);

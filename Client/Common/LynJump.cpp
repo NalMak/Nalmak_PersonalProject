@@ -87,6 +87,6 @@ void LynJump::UpdateState()
 
 void LynJump::ExitState()
 {
-	m_animController->SetBlendOption(0.7f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+	m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 	m_character->SetVelocity(0,0,0);
 }

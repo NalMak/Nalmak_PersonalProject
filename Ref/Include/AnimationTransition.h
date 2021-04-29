@@ -60,10 +60,13 @@ public:
 private:
 	float m_transitionTime;
 	float m_weight;
+
 	bool m_hasExitTime;
 	D3DXTRANSITION_TYPE m_transitionType;
+
 	AnimationClip* m_firstClip = nullptr;
 	AnimationClip* m_SecondClip = nullptr;
+
 	vector<TransitionCondition*> m_conditions;
 public:
 	AnimationTransition* AddConditionFloat(const string& _name, float _value, ANIM_COMPARE_TYPE _type);

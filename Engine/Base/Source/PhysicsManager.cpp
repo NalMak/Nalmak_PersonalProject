@@ -46,11 +46,15 @@ void PhysicsManager::Release()
 
 void PhysicsManager::Update()
 {
-	if(dTime > 0.0166666666666667f)
-		m_scene->simulate(0.0166666666666667f);
+	if (dTime > 0.0166666666666667f)
+	{
+
+	}
 	else
+	{
 		m_scene->simulate(dTime);
-	m_scene->fetchResults(true);
+		m_scene->fetchResults(true);
+	}
 }
 
 void PhysicsManager::CreatePhysicsEngine()

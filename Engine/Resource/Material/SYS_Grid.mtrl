@@ -6,7 +6,9 @@ shader "SYS_Grid"
 
 int "g_uvRepeat" "200"
 texture "g_mainTex" "grid"
-vector4 "g_mainTexColor" "0.3,0.3,0.3,0.2"
+//texture "g_mainTex" "default"
+
+vector4 "g_mainTexColor" "0.3,0.3,0.3,1.f"
 
 renderQueue "3000"
 

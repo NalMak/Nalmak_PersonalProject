@@ -43,7 +43,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _input)
 
 	float4x4 wvp = mul(g_world, g_cBuffer.viewProj);
 	o.position = mul(float4(_input.position,1), wvp);
-	o.uv = _input.uv * g_uvRepeat;
+	o.uv = _input.uv  * g_uvRepeat;
 	//o.normal = float3(0, 0, 1);
 	
 	
@@ -55,9 +55,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 {
 	PS_OUTPUT o = (PS_OUTPUT)0;
 	float4 diffuse = tex2D(mainSampler, _input.uv);
-	float4 final = diffuse;
 	
-	o.diffuse0 = final;
+	//o.diffuse0 = float4(frac(_input.uv),1,0.2f);
+	o.diffuse0 = diffuse;
 
 
 	return o;
@@ -74,6 +74,8 @@ technique DefaultTechnique
 		//ZEnable = true;
 		//ZWriteEnable = true;
 		CullMode = NONE;
+	
+		
 		VertexShader = compile vs_3_0 VS_Main_Default();
 		PixelShader = compile ps_3_0 PS_Main_Default();
 

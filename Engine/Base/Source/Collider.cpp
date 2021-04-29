@@ -17,12 +17,12 @@ Collider::~Collider()
 
 void Collider::OnEnable()
 {
-	PhysicsManager::GetInstance()->RemoveActorFromScene(m_shape->getActor());
+	//PhysicsManager::GetInstance()->RemoveActorFromScene(m_shape->getActor());
 }
 
 void Collider::OnDisable()
 {
-	PhysicsManager::GetInstance()->AddActorToScene(m_shape->getActor());
+	//PhysicsManager::GetInstance()->AddActorToScene(m_shape->getActor());
 }
 
 void Collider::Initialize()
@@ -35,7 +35,11 @@ void Collider::Update()
 
 void Collider::Release()
 {
-	m_shape->getActor()->detachShape(*m_shape);
+	if (m_shape)
+	{
+		m_shape->getActor()->detachShape(*m_shape);
+		m_shape = nullptr;
+	}
 }
 
 

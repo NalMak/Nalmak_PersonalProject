@@ -57,6 +57,11 @@ void MainTabFormView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
+//#if defined(DEBUG) | defined(_DEBUG)
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//#endif
+//	_CrtSetBreakAlloc(288803);
+
 	m_mainTab.InsertItem(1, L"Object");
 	m_mainTab.InsertItem(2, L"Nav Mesh");
 	m_mainTab.InsertItem(3, L"Animation");

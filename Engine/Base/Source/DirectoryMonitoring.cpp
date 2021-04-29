@@ -43,6 +43,7 @@ void DirectoryMonitoring::Release()
 	CloseHandle(m_thread);
 	DeleteCriticalSection(&m_crt);
 
+	m_event.Release();
 }
 
 void DirectoryMonitoring::StopMonitoring()

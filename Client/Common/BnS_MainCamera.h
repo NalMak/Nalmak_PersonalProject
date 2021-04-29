@@ -7,7 +7,11 @@ public:
 	struct Desc
 	{
 		GameObject* player = nullptr;
-		float MouseSensitive = 10.f;
+
+		float minDistance = 5.f;
+		float maxDistance = 25.f;
+		float mouseSensitive = 10.f;
+		float wheelSensitive = 0.5f;
 	};
 public:
 	BnS_MainCamera(Desc* _desc);
@@ -22,9 +26,12 @@ public:
 private:
 	GameObject* m_player;
 	float m_distance;
+	float m_minDistance;
+	float m_maxDistance;
 	Vector2 m_mouseAngle;
 	Vector3 m_offset;
 	float m_mouseSensitive;
+	float m_wheelSensitive;
 	bool m_triggerOn;
 };
 

@@ -5,6 +5,7 @@
 #include "BoxCollider.h"
 #include "CapsuleCollider.h"
 #include "MeshCollider.h"
+#include "PointLight.h"
 
 struct NALMAK_DLL StaticObjectInfoData
 {
@@ -28,6 +29,9 @@ struct NALMAK_DLL StaticObjectInfoData
 
 	bool isExistMeshCollider = false;
 	MeshCollider::Desc meshDesc;
+
+	bool isExistPointLight = false;
+	PointLight::Desc pointDesc;
 
 };
 

@@ -35,8 +35,9 @@ void LynIdleToJump::EnterState()
 
 void LynIdleToJump::UpdateState()
 {
-	if (!m_animController->IsPlay())
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"jump");
 		return;
 	}

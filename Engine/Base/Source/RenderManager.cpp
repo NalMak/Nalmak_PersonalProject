@@ -125,12 +125,14 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 	
 	GBufferPass(_cam, _cBuffer);
 
-	
 
+	// 라이트연산
 	LightPass(_cam, _cBuffer);
 
+	// 요기
 	RenderByShaderToScreen(L"SCR_Geometry_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
 
+	// 투명객체 그리기
 	TransparentPass(_cam, _cBuffer); // transparent object
 
 	RenderByShaderToScreen(L"SCR_Emission_Pass", _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
@@ -319,7 +321,7 @@ void RenderManager::GBufferPass(Camera * _cam, ConstantBuffer& _cBuffer)
 void RenderManager::LightPass(Camera* _cam, ConstantBuffer& _cBuffer)
 {
 	DirectionalLightPass(_cBuffer);
-
+	
 	PointLightPass(_cam, _cBuffer);
 }
 
@@ -332,7 +334,8 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	Mesh* mesh = m_resourceManager->GetResource<Mesh>(L"sphere");
 	Shader* mtrlStencilLight = m_resourceManager->GetResource<Shader>(L"SCR_PointLight_Stencil");
 	Shader* mtrlLight = m_resourceManager->GetResource<Shader>(L"SCR_PointLight");
-
+	mtrlStencilLight->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	mtrlLight->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_STENCILENABLE, true));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP::D3DSTENCILOP_KEEP));
@@ -340,6 +343,7 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_CCW_STENCILPASS, D3DSTENCILOP::D3DSTENCILOP_KEEP));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_CCW_STENCILZFAIL, D3DSTENCILOP::D3DSTENCILOP_INCR));
 
+	m_blendingMode = BLENDING_MODE_ADDITIVE;
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP::D3DBLENDOP_ADD));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND::D3DBLEND_ONE));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND::D3DBLEND_ONE));
@@ -348,6 +352,8 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 
 	//ThrowIfFailed(m_device->SetStreamSource(0, viBuffer->GetVertexBuffer(), 0, sizeof(INPUT_LAYOUT_POSITION_NORMAL_UV)));
 	//ThrowIfFailed(m_device->SetIndices(viBuffer->GetIndexBuffer()));
+	
+
 
 	m_currentShader = nullptr;
 	m_currentMaterial = nullptr;
@@ -356,24 +362,27 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	{
 		auto pointLight = m_lightManager->GetPointLight(i);
 
-		Matrix world;
 		Vector3 pos = pointLight->GetTransform()->GetWorldPosition();
 		float scale = pointLight->GetRadius() * 2;
 		pointLight->SetLightPosition(pos);
 
-		Matrix matTrs, matScale;
-		D3DXMatrixTranslation(&matTrs, pos.x, pos.y, pos.z);
-		D3DXMatrixScaling(&matScale, scale, scale, scale);
-		world = matScale * matTrs;
+		Matrix world =
+		{
+			scale,0,0,0,
+			0,scale,0,0,
+			0,0,scale,0,
+			pos.x, pos.y, pos.z,1
+		};
 
 		if (_cam->IsInFrustumCulling(pos, scale))
 		{
-			PointLightPass(world, pointLight->GetLightInfo(), mesh, _cBuffer, mtrlStencilLight, mtrlLight);
+			PointLightPass(world, pointLight->GetLightInfo(), mesh, mtrlStencilLight, mtrlLight);
 			m_device->Clear(0, nullptr, D3DCLEAR_STENCIL, 0, 1, 0);
 		}
 	}
 	if (m_currentShader)
 		m_currentShader->EndPass();
+
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_STENCILENABLE, false));
@@ -381,11 +390,16 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 }
 
-void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _lightInfo, Mesh* _mesh, ConstantBuffer & _cBuffer, Shader* _mtrlStencilLight, Shader* _mtrlLight)
+void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _lightInfo, Mesh* _mesh,  Shader* _mtrlStencilLight, Shader* _mtrlLight)
 {
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 
-	UpdateShader(_mtrlStencilLight, _cBuffer);
+	if(m_currentShader)
+		m_currentShader->EndPass();
+	m_currentShader = _mtrlStencilLight;
+	m_currentShader->BeginPass();
+
+	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
 	UpdateRenderTarget();
 
 	m_device->SetRenderState(D3DRS_ZENABLE, true);
@@ -403,8 +417,11 @@ void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _ligh
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
+	m_currentShader->EndPass();
+	m_currentShader = _mtrlLight;
+	m_currentShader->BeginPass();
 
-	UpdateShader(_mtrlLight, _cBuffer);
+	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
 	UpdateRenderTarget();
 
 	m_device->SetRenderState(D3DRS_ZENABLE, false);
@@ -453,9 +470,7 @@ void RenderManager::DirectionalLightPass(ConstantBuffer& _cBuffer)
 
 	RenderByShaderToScreen(L"SCR_DirectionalLight", _cBuffer, BLENDING_MODE_ADDITIVE);
 
-
 	ShadowPass(_cBuffer, info);
-	
 }
 
 void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
@@ -540,7 +555,9 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZENABLE, false));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
 
-
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP::D3DBLENDOP_ADD));
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND::D3DBLEND_SRCALPHA));
+	ThrowIfFailed(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND::D3DBLEND_INVSRCALPHA));
 	for (auto& renderer : m_renderUILists)
 	{
 		if (_cam->CompareLayer(renderer->GetGameObject()->GetLayer()))
@@ -653,8 +670,8 @@ void RenderManager::RenderByShaderToScreen(const wstring & _shaderName, Constant
 {
 	Shader* shader = ResourceManager::GetInstance()->GetResource<Shader>(_shaderName);
 	shader->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
-	shader->BeginPass();
 	UpdateRenderTarget(shader);
+	shader->BeginPass();
 	UpdateBlendingMode(_blendMode);
 	UpdateFillMode(FILL_MODE_SOLID);
 
@@ -952,7 +969,6 @@ void RenderManager::UpdateFillMode(FILL_MODE _fillMode)
 
 void RenderManager::UpdateRenderTarget()
 {
-
 	for (int i = 0; i < 4; ++i)
 	{
 		RenderTarget* newRendertarget = m_currentShader->GetRenderTarget(i);

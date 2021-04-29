@@ -28,6 +28,11 @@ void MapToolManager::ActiveAnimationObject(bool _active)
 	}
 }
 
+void MapToolManager::PickObject(GameObject * _obj)
+{
+	m_debugHelper->PickObject(_obj);
+}
+
 void MapToolManager::SetDebuggingMode(DebuggingMode * _debuggingMode)
 {
 	m_debugHelper = _debuggingMode;
@@ -158,4 +163,6 @@ void MapToolManager::SetAnimationObjectMesh(const wstring & _meshName)
 
 	//m_animationObject->GetComponent<Animator>()->
 }
+
+
 

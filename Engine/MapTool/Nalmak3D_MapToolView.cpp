@@ -67,6 +67,7 @@ void CNalmak3D_MapToolView::OnDraw(CDC* /*pDC*/)
 	{
 		Vector2 window = MFC_Utility::GetMFCWindowSize(m_myView);
 		Core::GetInstance()->SetWindowSize((UINT)window.x, (UINT)window.y);
+		//MapToolManager::GetInstance()->CheckNullMaterialName();
 	}
 	Core::GetInstance()->Run();
 }

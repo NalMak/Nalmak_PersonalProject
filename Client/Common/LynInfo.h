@@ -8,7 +8,7 @@ public:
 	{
 		float runForwardSpeed = 14.f;
 		float runBackwardSpeed = 6.5f;
-		float airSpeed = 5.5f;
+		float airSpeed = 10.5f;
 		float jumpPower = 15.f;
 		float turningSpeed = 7.f;
 		float halfHeight = 3.2f;

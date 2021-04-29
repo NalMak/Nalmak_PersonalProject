@@ -89,7 +89,7 @@ private:
 	void DebugPass(ConstantBuffer& _cBuffer);
 	void LightPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PointLightPass(Camera* _cam, ConstantBuffer& _cBuffer);
-	void PointLightPass(const Matrix& _matWorld, PointLightInfo _lightInfo, Mesh* _mesh, ConstantBuffer& _cBuffer, Shader* _mtrlStencilLight, Shader* _mtrlLight);
+	void PointLightPass(const Matrix& _matWorld, PointLightInfo _lightInfo, Mesh* _mesh, Shader* _mtrlStencilLight, Shader* _mtrlLight);
 	void DirectionalLightPass(ConstantBuffer& _cBuffer);
 	void TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PostProcessPass(Camera* _cam, ConstantBuffer& _cBuffer);

@@ -17,6 +17,13 @@ public:
 
 		return value;
 	}
+	inline static string WStringToString(const wstring& _value)
+	{
+		string value = "";
+		value.assign(_value.begin(), _value.end());
+
+		return value;
+	}
 	inline static wstring GetVectorToWstring(const Vector3& _vec)
 	{
 		wstring value = to_wstring(_vec.x) + L", " + to_wstring(_vec.y) + L", " + to_wstring(_vec.z);

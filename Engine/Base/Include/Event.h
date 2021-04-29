@@ -5,7 +5,7 @@
 
 #include "EventHandler.h"
 
-
+// Please Call Release!
 class NALMAK_DLL Event
 {
 public:

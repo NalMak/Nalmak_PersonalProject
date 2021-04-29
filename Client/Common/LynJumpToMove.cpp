@@ -62,11 +62,11 @@ void LynJumpToMove::UpdateState()
 
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		velocity *= m_info->m_runBackwardSpeed;
+		velocity *= m_info->m_airSpeed;
 	}
 	else
 	{
-		velocity *= m_info->m_runForwardSpeed;
+		velocity *= m_info->m_airSpeed;
 	}
 	m_character->SetVelocityX(velocity.x);
 	m_character->SetVelocityZ(velocity.z);

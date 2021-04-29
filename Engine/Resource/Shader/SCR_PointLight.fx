@@ -44,7 +44,7 @@ struct PS_INPUT
 
 struct PS_OUTPUT
 {
-	float4 emission : COLOR0;
+	float4 specular : COLOR0;
 	float4 light : COLOR1;
 };
 
@@ -87,7 +87,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 	float specular = LightingGGX_Ref(_N, _V, _L, _F0, _Roughness);
 	
-	o.emission = light * specular;
+	o.specular = light * specular;
 	o.light = float4(diffuse, 1) * light;
 	//o.diffuse = worldPos;
 	return o;

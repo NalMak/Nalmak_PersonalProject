@@ -24,7 +24,9 @@ void BaseScene::Initialize()
 	light.ambientIntensity = 0.1f;
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(60, 180, 0);
 
-	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f);
+	Camera::Desc camera;
+	camera.zFar = 1000;
+	auto cam = INSTANTIATE()->AddComponent<Camera>(&camera)->SetPosition(2, 1, -10.f);
 
 
 	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>()->AddComponent<StateControl>();

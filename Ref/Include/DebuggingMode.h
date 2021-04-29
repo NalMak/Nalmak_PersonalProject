@@ -34,6 +34,7 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void Release() override;
 
 private:
 	BitFlag<DEBUGGING_MODE> m_debuggingMode;
@@ -79,6 +80,5 @@ public:
 	GameObject* GetPickingObject();
 	void SetDebugModeActive(DEBUGGING_MODE _mode, bool _active);
 
-	GameObject* m_test;
 };
 

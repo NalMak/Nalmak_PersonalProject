@@ -48,12 +48,11 @@ void StaticObjectInfo::Initialize(wstring _fp)
 		int materialCount;
 		ReadFile(handle, &materialCount, sizeof(int), &byte, nullptr);
 
-		/*for (int i = 0; i < materialCount; ++i)
+		for (int i = 0; i < materialCount; ++i)
 		{
 			wstring mtrlName = Nalmak_String::ReadWString_ReadEachCharacter_FromFile(handle);
 			m_data.materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(mtrlName));
-		}*/
-		m_data.materials.emplace_back(ResourceManager::GetInstance()->GetResource<Material>(meshName));
+		}
 	}
 
 	ReadFile(handle, &isExist, sizeof(bool), &byte, nullptr);
@@ -95,6 +94,17 @@ void StaticObjectInfo::Initialize(wstring _fp)
 		ReadFile(handle, &mesh, sizeof(MeshCollider::Desc), &byte, nullptr);
 		m_data.meshDesc = mesh;
 	}
+
+	ReadFile(handle, &isExist, sizeof(bool), &byte, nullptr);
+	m_data.isExistPointLight = isExist;
+
+	if (isExist)
+	{
+		PointLight::Desc point;
+		ReadFile(handle, &point, sizeof(PointLight::Desc), &byte, nullptr);
+		m_data.pointDesc = point;
+	}
+
 
 	CloseHandle(handle);
 }

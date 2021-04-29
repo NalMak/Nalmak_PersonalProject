@@ -20,7 +20,7 @@ private:
 	DebuggingMode* m_debugHelper;
 public:
 	void ActiveAnimationObject(bool _active);
-
+	void PickObject(GameObject* _obj);
 	void SetDebuggingMode(DebuggingMode* _debuggingMode);
 	void SetToolStateControl(StateControl* _state);
 	void SetToolState(const wstring& _str);

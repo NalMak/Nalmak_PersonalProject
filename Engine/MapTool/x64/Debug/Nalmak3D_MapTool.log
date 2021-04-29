@@ -1,0 +1,8 @@
+﻿  ObjectInstallTool.cpp
+c:\users\jun\desktop\nalmak3d_personal\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1282): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak3d_personal\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1291): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak3d_personal\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1300): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak3d_personal\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1309): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+     C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.lib 라이브러리 및 C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exp 개체를 생성하고 있습니다.
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exe
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.pdb (Partial PDB)

@@ -258,10 +258,64 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_Bloom.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Debug_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_DirectionalLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Final_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_GaussianBlur.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Geometry_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_PointLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_PointLight_Stencil.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_Shadow_Pass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Debug.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Diffuse.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Emission.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_GrabPass.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Grid.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_HWSkinning_ConstantBuffer.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_LightDepth_Animation.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Line.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_OutLine.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Particle.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_PhysX.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_PickingDebug.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_SkyBox.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_UI.fx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resource\Shader\SCR_Bloom.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Debug_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Final_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_GaussianBlur.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Geometry_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SCR_PointLight.sd" />
+    <None Include="..\..\Resource\Shader\SCR_PointLight_Stencil.sd" />
+    <None Include="..\..\Resource\Shader\SCR_Shadow_Pass.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Debug.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Diffuse.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Emission.sd" />
+    <None Include="..\..\Resource\Shader\SYS_GrabPass.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Grid.sd" />
+    <None Include="..\..\Resource\Shader\SYS_HWSkinning_ConstantBuffer.sd" />
+    <None Include="..\..\Resource\Shader\SYS_HWSkinning_FetchTex.sd" />
+    <None Include="..\..\Resource\Shader\SYS_LightDepth.sd" />
+    <None Include="..\..\Resource\Shader\SYS_LightDepth_Animation.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Line.sd" />
+    <None Include="..\..\Resource\Shader\SYS_OutLine.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Particle.sd" />
+    <None Include="..\..\Resource\Shader\SYS_PhysX.sd" />
+    <None Include="..\..\Resource\Shader\SYS_PickingDebug.sd" />
+    <None Include="..\..\Resource\Shader\SYS_SkyBox.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />
+    <None Include="..\..\Resource\Shader\SYS_UI.sd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4FD6877-6BA3-4EC9-827C-E402E4199F76}</ProjectGuid>

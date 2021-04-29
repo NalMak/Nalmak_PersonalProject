@@ -57,7 +57,7 @@ void LynIdle::UpdateState()
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_SPACE))
 	{
-		m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idleToJump");
 		return;
 	}

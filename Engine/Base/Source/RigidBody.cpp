@@ -55,12 +55,12 @@ void RigidBody::Release()
 
 void RigidBody::OnEnable()
 {
-	PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
+	//PhysicsManager::GetInstance()->RemoveActorFromScene(m_rigid);
 }
 
 void RigidBody::OnDisable()
 {
-	PhysicsManager::GetInstance()->AddActorToScene(m_rigid);
+	//PhysicsManager::GetInstance()->AddActorToScene(m_rigid);
 }
 
 void RigidBody::AddForce(const Vector3 & _force)

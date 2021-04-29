@@ -39,12 +39,6 @@ DebuggingMode::~DebuggingMode()
 
 void DebuggingMode::Initialize()
 {
-	MeshRenderer::Desc render;
-	render.mtrlName = L"SYS_Diffuse_Green";
-	m_test = INSTANTIATE()->AddComponent<MeshRenderer>(&render);
-	m_test->GetComponent<MeshRenderer>()->SetPickingEnable(false);
-	m_test->SetScale(0.1f, 0.1f, 0.1f);
-
 
 	m_input = InputManager::GetInstance();
 	m_render = RenderManager::GetInstance();
@@ -67,7 +61,7 @@ void DebuggingMode::Initialize()
 		MeshRenderer::Desc render;
 		render.meshName = L"quadNoneNormal";
 		render.mtrlName = L"SYS_Grid";
-		m_grid = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(90, 0, 0)->SetScale(1000, 1000, 1000)->SetPosition(0,0.01f,0);
+		m_grid = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetRotation(90, 0, 0)->SetScale(1000, 1000, 1000)->SetPosition(0, 0.01f, 0);
 		m_grid->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 	}
 #pragma endregion Grid
@@ -103,6 +97,7 @@ void DebuggingMode::Initialize()
 		auto obj = INSTANTIATE(L"OutLine")->AddComponent<MeshRenderer>(&render)->SetScale(0, 0, 0)->SetPosition(0, 0, 0);
 		m_pickingOutLine = obj->GetComponent<MeshRenderer>();
 		m_pickingOutLine->SetPickingEnable(false);
+		m_pickingOutLine->SetActive(false);
 	}
 #pragma endregion OutLine
 #pragma region Picking Gizmo
@@ -130,7 +125,7 @@ void DebuggingMode::Initialize()
 
 
 	m_debuggingMode.Off(DEBUGGING_MODE_RENDERTARGET);
-	m_debuggingMode.On(DEBUGGING_MODE_FREE_CAMERA);
+	m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA);
 	m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA_ROCK);
 	m_debuggingMode.On(DEBUGGING_MODE_DEBUG_LOG);
 	m_debuggingMode.On(DEBUGGING_MODE_COLLIDER);
@@ -166,18 +161,6 @@ void DebuggingMode::Update()
 		UpdateMaterial();
 	}
 
-	if (m_input->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
-	{
-		Vector3 pos;
-		if (Core::GetInstance()->PickObjectByMouse(&pos))
-		{
-			m_test->SetPosition(pos);
-		}
-		else
-		{
-			DEBUG_LOG(L"ww", L"ww");
-		}
-	}
 
 	if (m_debuggingMode.Check(DEBUGGING_MODE_PICKING))
 	{
@@ -280,6 +263,12 @@ void DebuggingMode::Update()
 	
 	//DEBUGGING_MODE_GIZMO
 }
+
+
+void  DebuggingMode::Release()
+{
+	m_event.Release();
+};
 
 void DebuggingMode::ToggleMode(DEBUGGING_MODE _mode)
 {
@@ -460,15 +449,18 @@ void DebuggingMode::PickObject()
 			PickObject(pickObj);
 		}
 	}
-	else if (m_pickingObj)
+	else 
 	{
-		DeletePicking();
+		if (m_pickingObj)
+		{
+			DeletePicking();
+		}
+		m_pickingObj = nullptr;
 	}
 }
 
 void DebuggingMode::DeletePicking()
 {
-	
 	if (IsValid(m_pickingObj))
 	{
 		m_pickingObj->DeleteComponent<DebugObject>();
@@ -481,8 +473,6 @@ void DebuggingMode::DeletePicking()
 		if (handler)
 			m_event.DoEvent(0);
 	}
-	
-	m_pickingObj = nullptr;
 }
 
 void DebuggingMode::UpdateOutLine()
@@ -635,11 +625,24 @@ void DebuggingMode::AddUpdateMaterialEvent(EventHandler _e)
 
 void DebuggingMode::PickObject(GameObject * _obj)
 {
-	if (m_pickingObj)
+	if (IsValid(m_pickingObj))
 	{
-		m_pickingObj->DeleteComponent<DebugObject>();
-		m_pickingObj = nullptr;
+		if (m_pickingObj)
+		{
+			m_pickingObj->DeleteComponent<DebugObject>();
+			m_pickingObj = nullptr;
+		}
 	}
+
+	if (!_obj)
+	{
+		m_pickingGizmoBase->SetActive(false);
+		m_pickingOutLine->SetActive(false);
+
+		return;
+	}
+
+	m_pickingOutLine->SetActive(true);
 
 	m_pickingObj = _obj;
 	m_pickingObj->AddComponent<DebugObject>();
