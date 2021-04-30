@@ -34,6 +34,9 @@ public:
 	float m_halfHeight;
 	float m_jumpHalfHeight;
 public:
+	float m_currentSpeed;
+	bool m_isGround;
+public:
 	void EquipeWeapon(GameObject* _weapon);
 
 private:

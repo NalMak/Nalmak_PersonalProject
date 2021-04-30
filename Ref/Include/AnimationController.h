@@ -42,6 +42,8 @@ public:
 	void PlayBlending(AnimationClip* _clip);
 	void PlayBlending(const string&  _clipName);
 
+	void PlayBlending(AnimationClip* _clip1, AnimationClip* _clip2, float _weight);
+	void PlayBlending(const string& _clip1, const string& _clip2, float _weight);
 
 	void Stop();
 	bool IsPlay();
@@ -51,6 +53,7 @@ public:
 	float GetTotalPlayTime();
 	double GetPlayRemainTime();
 	float GetPlayRatio();
+	const string& GetCurrentPlayAnimationName();
 	void SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type);
 private:
 	//void CheckNextAnimation(AnimationTransition* _transition);
@@ -93,8 +96,8 @@ private:
 	UINT m_currentTrack;
 	UINT m_nextTrack;
 
-	double m_totalTime;
-	double m_animPlayTime;
+	double m_currentPlayTime;
+	double m_totalPlayTime;
 
 	bool m_isStop;
 };

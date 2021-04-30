@@ -12,6 +12,9 @@
 #include "LynJump.h"
 #include "LynJumpToIdle.h"
 #include "LynJumpToMove.h"
+
+#include "LynMove.h"
+
 TitleScene::TitleScene()
 {
 }
@@ -23,6 +26,12 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	/*INSTANTIATE()->AddComponent<Camera>()->SetPosition(0,0,-5);
+	INSTANTIATE()->AddComponent<DebuggingMode>();
+	MeshRenderer::Desc homework;
+	homework.mtrlName = L"homework";
+	INSTANTIATE()->AddComponent<MeshRenderer>(&homework);*/
+
 
 	MAKE_STATIC(L"column");
 	MAKE_STATIC(L"floor");
@@ -34,14 +43,14 @@ void TitleScene::Initialize()
 
 	INSTANTIATE()->AddComponent<ParticleRenderer>()->SetPosition(0,3,0);
 
-	for (int i = 0; i < 30; ++i)
+	/*for (int i = 0; i < 70; ++i)
 	{
 		PointLight::Desc point;
-		point.diffuseIntensity = 15.f;
-		point.radius = 30.f;
-		point.color = Vector3(Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f));
-		INSTANTIATE()->AddComponent<PointLight>(&point)->SetPosition(Nalmak_Math::RandDirection() * Nalmak_Math::Rand(0.f,100.f));
-	}
+		point.diffuseIntensity = Nalmak_Math::Rand(10.f, 30.f);
+		point.radius = Nalmak_Math::Rand(10.f, 60.f);
+		point.color = Nalmak_Math::RandColor();
+		INSTANTIATE()->AddComponent<PointLight>(&point)->SetPosition(Nalmak_Math::RandDirection() * Nalmak_Math::Rand(0.f, 100.f));
+	}*/
 	
 
 	DirectionalLight::Desc light;
@@ -77,6 +86,8 @@ void TitleScene::Initialize()
 	auto lyn = INSTANTIATE();// ->SetRotation(0, -90, 0);
 	auto cam = INSTANTIATE();
 
+	lyn->AddComponent<LynMove>();
+
 	SkinnedMeshRenderer::Desc skin;
 	skin.meshName = L"Lyn_Model2";
 	skin.mtrlName = L"lyn_hair";
@@ -89,18 +100,18 @@ void TitleScene::Initialize()
 	anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
 	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.1f,0.1f,0.1f);
 
-	lyn->AddComponent<LynStateControl>();
 	//lyn->AddComponent<LynStateControl>();
+	////lyn->AddComponent<LynStateControl>();
 
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdle>(L"idle");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynRun>(L"run");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynTurning>(L"turning");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdleToJump>(L"idleToJump");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJump>(L"jump");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToIdle>(L"jumpToIdle");
-	lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToMove>(L"jumpToMove");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdle>(L"idle");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynRun>(L"run");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynTurning>(L"turning");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynIdleToJump>(L"idleToJump");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynJump>(L"jump");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToIdle>(L"jumpToIdle");
+	//lyn->GetComponents<LynStateControl>()[0]->AddState<LynJumpToMove>(L"jumpToMove");
 
-	lyn->GetComponents<LynStateControl>()[0]->InitState(L"idle");
+	//lyn->GetComponents<LynStateControl>()[0]->InitState(L"idle");
 
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body",0);
@@ -120,8 +131,8 @@ void TitleScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event3", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event4", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_P_Std_Mov_LeftToRight", 1.4f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RightToLeft", 1.4f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_LeftToRight", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RightToLeft", 1.f, false);
 
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRight", 1.3f, true);
@@ -130,17 +141,17 @@ void TitleScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightBack", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftBack", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunBack", 1.2f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightFront", 1.f, true);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftFront", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightFront", 1.3f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftFront", 1.3f, true);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.1f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.1f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Right", 1.1f, false);
 
-	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpFront", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpLeft", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpRight", 1.f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToIdle", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpFront", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpLeft", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpRight", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToIdle", 1.f, true);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Back", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Front", 1.f, false);

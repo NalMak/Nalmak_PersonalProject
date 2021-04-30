@@ -70,7 +70,10 @@ public:
 	{
 		return Nalmak_Math::Normalize(Vector3(Rand(-1.f, 1.f), Rand(-1.f, 1.f), Rand(-1.f, 1.f)));
 	}
-
+	inline static Vector3 RandColor()
+	{
+		return Vector3(Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f), Nalmak_Math::Rand(0.f, 1.f));
+	}
 	inline static bool Equal(const float& _a, const float& _b)
 	{
 		return abs(_a - _b) <= EPSILON;

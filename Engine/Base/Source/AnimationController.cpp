@@ -12,8 +12,8 @@ AnimationController::AnimationController(Desc * _desc)
 {
 	m_currentTrack = 0;
 	m_nextTrack = 1;
-	m_totalTime = 0.f;
-	m_animPlayTime = 0.0;
+	m_currentPlayTime = 0.f;
+	m_totalPlayTime = 0.0;
 	m_transitionTime = 1.f;
 	m_blendWeight = 1.f;
 	m_transtionType = D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR;
@@ -61,9 +61,9 @@ void AnimationController::Update()
 	D3DXTRACK_DESC trackInfo;
 	m_animController->GetTrackDesc(m_currentTrack,&trackInfo);
 
-	m_totalTime = trackInfo.Position;
+	m_currentPlayTime = trackInfo.Position;
 
-	DEBUG_LOG(L"anim current time", m_totalTime);
+	DEBUG_LOG(L"anim current time", m_currentPlayTime);
 }
 
 void AnimationController::EachRender()
@@ -74,7 +74,7 @@ void AnimationController::EachRender()
 		return;
 
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
-	if (m_totalTime < m_animPlayTime - 0.001f)
+	if (m_currentPlayTime < m_totalPlayTime - 0.001f)
 	{
 		m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
 		UpdateBoneMatrix();
@@ -82,14 +82,14 @@ void AnimationController::EachRender()
 	else if (m_currentAnimationClip->loop)
 	{
 		m_animController->ResetTime();
-		m_totalTime = 0;
+		m_currentPlayTime = 0;
 		m_animController->SetTrackPosition(m_currentTrack, 0);
 		//m_animController->AdvanceTime(time, NULL);	
 		UpdateBoneMatrix();
 	}
 	else
 	{
-		m_totalTime = m_animPlayTime;
+		m_currentPlayTime = m_totalPlayTime;
 		m_isStop = true;
 	}
 
@@ -214,8 +214,8 @@ void AnimationController::Play(AnimationClip * _clip)
 	m_animController->SetTrackSpeed(m_currentTrack, _clip->speed);
 
 	m_animController->ResetTime();
-	m_totalTime = 0.0;
-	m_animPlayTime = anim->GetPeriod();
+	m_currentPlayTime = 0.0;
+	m_totalPlayTime = anim->GetPeriod();
 
 	m_animController->SetTrackPosition(m_currentTrack, 0.0);
 	m_animController->SetTrackEnable(m_currentTrack, true);
@@ -251,19 +251,19 @@ void AnimationController::PlayBlending(AnimationClip * _clip)
 
 	
 	
-	m_animController->KeyTrackEnable(m_currentTrack, false, m_totalTime + m_transitionTime);
-	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_totalTime, m_transitionTime, m_transtionType);
-	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, m_totalTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_currentPlayTime + m_transitionTime);
+	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_currentPlayTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, m_currentPlayTime, m_transitionTime, m_transtionType);
 
 	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_totalTime, m_transitionTime, m_transtionType);
-	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, m_totalTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_currentPlayTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, m_currentPlayTime, m_transitionTime, m_transtionType);
 
 
 	// 내부에 누적된 시간값 초기화
 	m_animController->ResetTime();
-	m_animPlayTime = anim->GetPeriod();
-	m_totalTime = 0.0;
+	m_totalPlayTime = anim->GetPeriod();
+	m_currentPlayTime = 0.0;
 
 	m_animController->SetTrackPosition(m_nextTrack, 0.0);
 
@@ -276,6 +276,31 @@ void AnimationController::PlayBlending(const string & _clipName)
 	PlayBlending(GetAnimationClip(_clipName));
 
 
+}
+
+void AnimationController::PlayBlending(AnimationClip * _clip0, AnimationClip * _clip1, float _weight)
+{
+	m_totalPlayTime = _clip0->animationSet->GetPeriod();
+	m_currentAnimationClip = _clip0;
+
+	m_currentTrack = 0;
+	m_nextTrack = 1;
+
+	m_animController->SetTrackAnimationSet(0, _clip0->animationSet);
+	m_animController->SetTrackAnimationSet(1, _clip1->animationSet);
+
+	m_animController->KeyTrackWeight(0, _weight, m_currentPlayTime, m_totalPlayTime, D3DXTRANSITION_LINEAR);
+	m_animController->KeyTrackWeight(1, 1 - _weight, m_currentPlayTime, m_totalPlayTime, D3DXTRANSITION_LINEAR);
+
+	m_animController->SetTrackEnable(0, true);
+	m_animController->SetTrackEnable(1, true);
+
+	
+}
+
+void AnimationController::PlayBlending(const string & _clip1, const string & _clip2, float _weight)
+{
+	PlayBlending(GetAnimationClip(_clip1), GetAnimationClip(_clip2),_weight);
 }
 
 void AnimationController::Stop()
@@ -309,12 +334,17 @@ float AnimationController::GetTotalPlayTime()
 
 double AnimationController::GetPlayRemainTime()
 {
-	return m_animPlayTime - m_totalTime;
+	return m_totalPlayTime - m_currentPlayTime;
 }
 
 float AnimationController::GetPlayRatio()
 {
-	return (float)(m_totalTime / m_animPlayTime);
+	return (float)(m_currentPlayTime / m_totalPlayTime);
+}
+
+const string & AnimationController::GetCurrentPlayAnimationName()
+{
+	return m_currentAnimationClip->animationName;
 }
 
 void AnimationController::SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type)

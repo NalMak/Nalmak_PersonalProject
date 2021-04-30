@@ -113,6 +113,7 @@
     </ClInclude>
     <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="Lyn_Attack_Basic1.h" />
+    <ClInclude Include="LynMove.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -168,6 +169,7 @@
     </ClCompile>
     <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="Lyn_Attack_Basic1.cpp" />
+    <ClCompile Include="LynMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -206,6 +208,9 @@
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd">
       <Filter>03.Shader</Filter>
     </None>
+    <None Include="..\Resource\static\Shader\homework.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
@@ -224,6 +229,9 @@
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\homework.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

@@ -8,11 +8,10 @@ texture "g_mainTex" "GW_GwimyeonGeukDan_wall_001_D"
 texture "g_normalTex" "GW_GwimyeonGeukDan_wall_001_N"
 
 
-vector4 "g_mainTexColor" "1.2f,1.f,1.f,1.f"
-float "g_f0" "0.9f"
-float "g_roughness" "0.65f"
+vector4 "g_mainTexColor" "1.3f,1.f,1.f,1.f"
+float "g_f0" "0.6"
+float "g_roughness" "0.65"
 float "g_normalPower" "1.f"
-
 renderQueue "1000"
 
 blendingMode "0"
@@ -23,7 +22,7 @@ fillMode "0"
 ##  ---------------------------------------------------------------------------------------
 ##    shader  "name" 
 ##  ---------------------------------------------------------------------------------------
-##   2. Constant Buffer // Îã§Ï§ë ÏÑ†ÌÉù Í∞ÄÎä•
+##   2. Constant Buffer // ¥Ÿ¡ﬂ º±≈√ ∞°¥…
 ##  ---------------------------------------------------------------------------------------
 ##    bool      "handle"   "x"
 ##    int         "handle"   "x"

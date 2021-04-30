@@ -28,6 +28,7 @@ private:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
+	virtual void PreRender() override;
 	virtual void Release() override;
 public:
 	void SetVelocity(const Vector3& _velocity);
@@ -43,6 +44,8 @@ public:
 	void SetHalfHeight(float _height);
 	void Move(const Vector3& _velocity);
 	void Move(float _x, float _y, float _z);
+public:
+	const Vector3& GetVelocity();
 private:
 	float m_radius;
 	float m_height;
@@ -53,7 +56,6 @@ private:
 	float m_skinWidth;
 	float m_stepOffset;
 	float m_stepLimit;
-	bool m_isGravity;
 	PxCapsuleClimbingMode::Enum m_climbingMode;
 
 	PxCapsuleController* m_controller;

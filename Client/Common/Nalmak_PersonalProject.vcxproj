@@ -190,6 +190,7 @@
     <ClInclude Include="LynJump.h" />
     <ClInclude Include="LynJumpToIdle.h" />
     <ClInclude Include="LynJumpToMove.h" />
+    <ClInclude Include="LynMove.h" />
     <ClInclude Include="LynRun.h" />
     <ClInclude Include="LynState.h" />
     <ClInclude Include="LynStateControl.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="LynJump.cpp" />
     <ClCompile Include="LynJumpToIdle.cpp" />
     <ClCompile Include="LynJumpToMove.cpp" />
+    <ClCompile Include="LynMove.cpp" />
     <ClCompile Include="LynRun.cpp" />
     <ClCompile Include="LynState.cpp" />
     <ClCompile Include="LynStateControl.cpp" />
@@ -244,6 +246,7 @@
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd" />
+    <None Include="..\Resource\static\Shader\homework.sd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
@@ -252,6 +255,7 @@
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx" />
+    <FxCompile Include="..\Resource\static\Shader\homework.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

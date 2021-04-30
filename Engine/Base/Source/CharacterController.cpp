@@ -14,7 +14,6 @@ CharacterController::CharacterController(Desc * _desc)
 	m_skinWidth = _desc->skinWidth;
 	m_stepOffset = _desc->stepOffset;
 	m_climbingMode = _desc->climbingMode;
-	m_isGravity = _desc->isGravity;
 	m_velocity = { 0,0,0 };
 }
 
@@ -29,20 +28,20 @@ void CharacterController::Initialize()
 
 void CharacterController::Update()
 {
-	if(m_isGravity)
-	{
-		if (!IsGround())
-			m_velocity += Vector3(0, -30.f * dTime, 0);
-	}
-	Move(m_velocity);
-	DEBUG_LOG(L"Character velocity", m_velocity);
+	
 	//m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
 }
 
 void CharacterController::LateUpdate()
 {
+	Move(m_velocity);
+	DEBUG_LOG(L"Character velocity", m_velocity);
+}
+
+void CharacterController::PreRender()
+{
 	PxExtendedVec3 pos = m_controller->getPosition();
-	m_transform->position = Vector3{ (float)pos.x,(float)pos.y,(float)pos.z } - m_center;
+	m_transform->position = Vector3{ (float)pos.x,(float)pos.y,(float)pos.z } -m_center;
 }
 
 void CharacterController::Release()
@@ -108,4 +107,9 @@ void CharacterController::Move(float _x,float _y, float _z)
 
 	PxControllerFilters filter;
 	m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
+}
+
+const Vector3 & CharacterController::GetVelocity()
+{
+	return m_velocity;
 }

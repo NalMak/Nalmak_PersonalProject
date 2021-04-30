@@ -12,6 +12,8 @@ LynInfo::LynInfo(Desc * _desc)
 	m_jumpHalfHeight = _desc->jumpHalfHeight;
 	m_halfHeight = _desc->halfHeight;
 	m_turningSpeed = _desc->turningSpeed;
+
+	m_currentSpeed = 0;
 }
 
 LynInfo::~LynInfo()
