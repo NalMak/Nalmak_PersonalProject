@@ -219,14 +219,19 @@ void GameObject::InitializeComponents()
 {
 	if (m_newComponents.size() > 0)
 	{
+		vector<Component*> newComponents;
 		for (int i = 0; i < m_newComponents.size(); ++i)
 		{
-
-			m_newComponents[i].second->Initialize();
+			newComponents.emplace_back(m_newComponents[i].second);
 			m_components.emplace_back(m_newComponents[i]);
 		}
 		
 		m_newComponents.clear();
+
+		for (auto& component : newComponents)
+		{
+			component->Initialize();
+		}
 	}
 }
 

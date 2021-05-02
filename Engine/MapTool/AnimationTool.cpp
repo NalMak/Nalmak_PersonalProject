@@ -144,12 +144,6 @@ void AnimationTool::OnLbnSelchangeMeshList()
 
 	MapToolManager::GetInstance()->SetAnimationObjectMesh(name.GetString());
 
-
-
-
-
-
-
 	m_boneList.DeleteAllItems();
 
 	XFileMesh* mesh = (XFileMesh*)ResourceManager::GetInstance()->GetResource<Mesh>(name.GetString());

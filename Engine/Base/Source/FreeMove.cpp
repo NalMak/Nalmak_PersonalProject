@@ -27,12 +27,13 @@ void FreeMove::Initialize()
 void FreeMove::Update()
 {
 	//DEBUG_LOG(L"Free Move", m_transform);
+	if (!m_input->GetKeyPress(KEY_STATE_ALT))
+		return;
 
-	if (m_input->GetKeyPress(KEY_STATE_ALT))
+	/*if (m_input->GetKeyPress(KEY_STATE_ALT))
 		MouseInput_Alt();
-	else
-		MouseInput();
-
+	else*/
+	MouseInput();
 	WheelInput();
 	ArrowInput();
 }

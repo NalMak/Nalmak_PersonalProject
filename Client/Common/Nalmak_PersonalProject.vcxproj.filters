@@ -34,8 +34,14 @@
     <Filter Include="03.Shader">
       <UniqueIdentifier>{4c9be8bc-184b-41dd-980a-2516cdd0fcf9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Component\Camera">
+      <UniqueIdentifier>{2e1ec202-de7d-4ba8-b3f5-0669bb01984e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="04.Lyn">
       <UniqueIdentifier>{e83a7808-1be1-4d56-aaea-a945024fc96b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\VerticalCut">
+      <UniqueIdentifier>{2e336b08-1f92-4b12-b050-ead36cd8585d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,13 +87,7 @@
     <ClInclude Include="PublicData.h">
       <Filter>98.PreCompile</Filter>
     </ClInclude>
-    <ClInclude Include="LynIdle.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
     <ClInclude Include="LynInfo.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynRun.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
     <ClInclude Include="LynState.h">
@@ -96,24 +96,46 @@
     <ClInclude Include="LynStateControl.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynIdleToJump.h">
+    <ClInclude Include="BnS_MainCamera.h">
+      <Filter>02.Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LynMove.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynJump.h">
+    <ClInclude Include="Lyn_Attack_Basic1.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynJumpToIdle.h">
+    <ClInclude Include="LynVerticalCut_L0.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynVerticalCut_L1.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynVerticalCut_L2.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynVerticalCut_R0.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynVerticalCut_R1.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynVerticalCut_R2.h">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClInclude>
+    <ClInclude Include="LynIdle.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynJumpToMove.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynTurning.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="BnS_MainCamera.h" />
-    <ClInclude Include="Lyn_Attack_Basic1.h" />
-    <ClInclude Include="LynMove.h" />
+    <ClInclude Include="LynBattleToPeace.h" />
+    <ClInclude Include="LynBackStep.h" />
+    <ClInclude Include="LynSpinSlash_Start.h" />
+    <ClInclude Include="LynSpinSlash_Combo.h" />
+    <ClInclude Include="LynSpinSlash_End.h" />
+    <ClInclude Include="BnS_Enemy.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="BnS_DamageFont.h" />
+    <ClInclude Include="StageScene.h" />
+    <ClInclude Include="TitleToStage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -137,13 +159,7 @@
     <ClCompile Include="homeworkScene.cpp">
       <Filter>97.HomeWork</Filter>
     </ClCompile>
-    <ClCompile Include="LynIdle.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
     <ClCompile Include="LynInfo.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynRun.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
     <ClCompile Include="LynState.cpp">
@@ -152,24 +168,46 @@
     <ClCompile Include="LynStateControl.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynIdleToJump.cpp">
+    <ClCompile Include="BnS_MainCamera.cpp">
+      <Filter>02.Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Lyn_Attack_Basic1.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynJump.cpp">
+    <ClCompile Include="LynMove.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynJumpToIdle.cpp">
+    <ClCompile Include="LynVerticalCut_L0.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynVerticalCut_L1.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynVerticalCut_L2.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynVerticalCut_R0.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynVerticalCut_R1.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynVerticalCut_R2.cpp">
+      <Filter>04.Lyn\VerticalCut</Filter>
+    </ClCompile>
+    <ClCompile Include="LynIdle.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynJumpToMove.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynTurning.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="BnS_MainCamera.cpp" />
-    <ClCompile Include="Lyn_Attack_Basic1.cpp" />
-    <ClCompile Include="LynMove.cpp" />
+    <ClCompile Include="LynBattleToPeace.cpp" />
+    <ClCompile Include="LynBackStep.cpp" />
+    <ClCompile Include="LynSpinSlash_Start.cpp" />
+    <ClCompile Include="LynSpinSlash_Combo.cpp" />
+    <ClCompile Include="LynSpinSlash_End.cpp" />
+    <ClCompile Include="BnS_Enemy.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="BnS_DamageFont.cpp" />
+    <ClCompile Include="StageScene.cpp" />
+    <ClCompile Include="TitleToStage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

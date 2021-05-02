@@ -121,11 +121,10 @@ void Core::AddScene(const wstring& _name, Scene * _scene)
 	m_sceneManager->AddScene(_name, _scene);
 }
 
-
-
-void Core::LoadScene(const wstring& _name)
+void Core::LoadScene(const wstring & _name, SCENE_LOAD_TYPE _type)
 {
-	m_sceneManager->Load(_name);
+	m_sceneManager->Load(_name, _type);
+
 }
 
 

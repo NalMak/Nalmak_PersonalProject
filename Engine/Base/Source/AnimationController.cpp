@@ -17,42 +17,100 @@ AnimationController::AnimationController(Desc * _desc)
 	m_transitionTime = 1.f;
 	m_blendWeight = 1.f;
 	m_transtionType = D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR;
-	m_rootMatrix = _desc->rootMatrix;
-
 	m_isStop = false;
-
 	m_currentAnimationClip = nullptr;
+	m_isRootAnimation = false;
+	m_fixedBone = nullptr;
 
+	LPD3DXANIMATIONCONTROLLER originController;
+	if (_desc->cloneAnimationController)
+	{
+		m_rootMatrix = _desc->cloneAnimationController->m_rootMatrix;
+		m_root = _desc->cloneAnimationController->m_root;
+		originController = _desc->cloneAnimationController->m_animController;
+		m_isSeparte = true;
+		_desc->cloneAnimationController->m_isSeparte = true;
+		m_subRoot = _desc->cloneAnimationController->m_subRoot;
 
-	Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+		m_isSub = true;
+		m_mesh = _desc->cloneAnimationController->m_mesh;
+		_desc->cloneAnimationController->m_isSub = false;
 
-	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
-		assert(L"This Animation Controller mesh must be of animation type!" && 0);
-	XFileMesh* xMesh = (XFileMesh*)mesh;
-	m_root = xMesh->GetRoot();
+		LPD3DXANIMATIONCONTROLLER clone;
+		originController->CloneAnimationController(
+			originController->GetMaxNumAnimationOutputs(),
+			originController->GetMaxNumAnimationSets(),
+			originController->GetMaxNumTracks(),
+			originController->GetMaxNumEvents(),
+			&clone
+		);
 
-	LPD3DXANIMATIONCONTROLLER originController = xMesh->GetAnimationController();
+		m_animController = clone;
+		int i = 0;
+		for (auto& clip : _desc->cloneAnimationController->m_animationClips)
+		{
 
-	if (!originController)
-		return;
+			m_animationClips.emplace_back(clip);
+			//m_animController->RegisterAnimationSet(clip->animationSet);
 
-	LPD3DXANIMATIONCONTROLLER clone;
-	originController->CloneAnimationController(
-		originController->GetMaxNumAnimationOutputs(),
-		originController->GetMaxNumAnimationSets(),
-		originController->GetMaxNumTracks(),
-		originController->GetMaxNumEvents(),
-		&clone
-	);
+			LPD3DXANIMATIONSET animSet;
+			_desc->cloneAnimationController->m_animController->GetAnimationSet(i, &animSet);
+			m_animController->RegisterAnimationSet(animSet);
 
-	m_animController = clone;
+			/*AnimationClip* clip = new AnimationClip();
+			clip->animationName = animSet->GetName();
+			clip->speed = _speed;
+			clip->loop = _loop;
 
+			clip->animationSet = animSet;*/
+
+			animSet->Release();
+			++i;
+		}
+	
+	}
+	else
+	{
+		m_rootMatrix = _desc->rootMatrix;
+		Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
+
+		if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
+			assert(L"This Animation Controller mesh must be of animation type!" && 0);
+		XFileMesh* xMesh = (XFileMesh*)mesh;
+		m_root = xMesh->GetRoot();
+		m_mesh = xMesh;
+		originController = xMesh->GetAnimationController();
+
+		if (!originController)
+			return;
+
+		m_isSeparte = false;
+		m_subRoot = nullptr;
+
+		LPD3DXANIMATIONCONTROLLER clone;
+		originController->CloneAnimationController(
+			originController->GetMaxNumAnimationOutputs(),
+			originController->GetMaxNumAnimationSets(),
+			originController->GetMaxNumTracks(),
+			originController->GetMaxNumEvents(),
+			&clone
+		);
+
+		m_animController = clone;
+	}
+	
+	
 
 }
 
 AnimationController::~AnimationController()
 {
 
+}
+
+void AnimationController::Initialize()
+{
+	
 }
 
 
@@ -63,7 +121,10 @@ void AnimationController::Update()
 
 	m_currentPlayTime = trackInfo.Position;
 
-	DEBUG_LOG(L"anim current time", m_currentPlayTime);
+	if (m_currentAnimationClip)
+	{
+		DEBUG_LOG(L"anim current time", m_currentAnimationClip->animationName);
+	}
 }
 
 void AnimationController::EachRender()
@@ -74,33 +135,28 @@ void AnimationController::EachRender()
 		return;
 
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
-	if (m_currentPlayTime < m_totalPlayTime - 0.001f)
+	if (m_currentPlayTime < m_totalPlayTime - time)
 	{
 		m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
 		UpdateBoneMatrix();
 	}
 	else if (m_currentAnimationClip->loop)
 	{
+		m_animController->AdvanceTime(time, NULL);	
 		m_animController->ResetTime();
 		m_currentPlayTime = 0;
 		m_animController->SetTrackPosition(m_currentTrack, 0);
-		//m_animController->AdvanceTime(time, NULL);	
 		UpdateBoneMatrix();
 	}
 	else
 	{
 		m_currentPlayTime = m_totalPlayTime;
+		m_animController->AdvanceTime(m_totalPlayTime - m_currentPlayTime, NULL);
 		m_isStop = true;
 	}
-
 }
 
 
-void AnimationController::Initialize()
-{
-
-
-}
 
 //1. 애니메이션컨트롤러로 부터 애니메이션셋을 받아와야한다.
 //2. 애니메이션셋을 트랙에 셋팅해야 한다.
@@ -156,9 +212,12 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 	{
 		animController->GetAnimationSet(animCount, &animSet);
 		m_animController->RegisterAnimationSet(animSet);
-		UINT num =  m_animController->GetNumAnimationSets();
 
-		AnimationClip* clip = new AnimationClip();
+		wstring animName = Nalmak_String::StringToWString(animSet->GetName());
+		
+		AnimationClip* clip = ResourceManager::GetInstance()->GetResourceIfExist<AnimationClip>(animName);
+		if (!clip)
+			clip = ResourceManager::GetInstance()->AddResource<AnimationClip, AnimationClip>(animName);
 		clip->animationName = animSet->GetName();
 		clip->speed = _speed;
 		clip->loop = _loop;
@@ -170,9 +229,6 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 		animSet->Release();
 
 	}
-
-
-	
 }
 
 
@@ -195,13 +251,14 @@ void AnimationController::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & 
 {
 	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
 
-	DEBUG_LOG(L"bone", Vector3(_bone->boneCombinedMatrix._11, _bone->boneCombinedMatrix._21, _bone->boneCombinedMatrix._31));
 	if (_bone->pFrameFirstChild)
 		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
 
 	if (_bone->pFrameSibling)
 		UpdateBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
 }
+
+
 
 
 void AnimationController::Play(AnimationClip * _clip)
@@ -220,6 +277,8 @@ void AnimationController::Play(AnimationClip * _clip)
 	m_animController->SetTrackPosition(m_currentTrack, 0.0);
 	m_animController->SetTrackEnable(m_currentTrack, true);
 	m_animController->SetTrackAnimationSet(m_currentTrack, anim);
+
+	//m_animController->SetTrackEnable(m_nextTrack, false);
 }
 
 
@@ -259,6 +318,46 @@ void AnimationController::PlayBlending(AnimationClip * _clip)
 	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, m_currentPlayTime, m_transitionTime, m_transtionType);
 	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, m_currentPlayTime, m_transitionTime, m_transtionType);
 
+
+	// 내부에 누적된 시간값 초기화
+	m_animController->ResetTime();
+	m_totalPlayTime = anim->GetPeriod();
+	m_currentPlayTime = 0.0;
+
+	m_animController->SetTrackPosition(m_nextTrack, 0.0);
+
+	m_currentTrack = m_nextTrack;
+	m_currentAnimationClip = nextClip;
+}
+
+void AnimationController::PlayBlending(AnimationClip * _clip, double _otherTime)
+{
+	if (!m_currentAnimationClip)
+	{
+		Play(_clip);
+		return;
+	}
+
+	m_isStop = false;
+
+	AnimationClip* nextClip = _clip;
+
+	m_nextTrack = (m_currentTrack == 0 ? 1 : 0); // 0이면 시작
+
+	LPD3DXANIMATIONSET anim = nextClip->animationSet;
+
+	m_animController->SetTrackAnimationSet(m_nextTrack, anim);
+
+	m_animController->UnkeyAllTrackEvents(m_currentTrack);
+	m_animController->UnkeyAllTrackEvents(m_nextTrack);
+
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_currentPlayTime + m_transitionTime);
+	m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_currentPlayTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, m_currentPlayTime, m_transitionTime, m_transtionType);
+
+	m_animController->SetTrackEnable(m_nextTrack, true);
+	m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, _otherTime, m_transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, _otherTime, m_transitionTime, m_transtionType);
 
 	// 내부에 누적된 시간값 초기화
 	m_animController->ResetTime();
@@ -342,9 +441,30 @@ float AnimationController::GetPlayRatio()
 	return (float)(m_currentPlayTime / m_totalPlayTime);
 }
 
+void AnimationController::SetFixedAnimationBoneName(string _boneName, bool _xAxis, bool _yAxis, bool _zAxis)
+{
+	m_fixedBone = D3DXFrameFind(m_root, _boneName.c_str());
+	assert(L"Can't find bone! " && m_fixedBone);
+
+	m_rootMotion_fixXAxis = _xAxis;
+	m_rootMotion_fixYAxis = _yAxis;
+	m_rootMotion_fixZAxis = _zAxis;
+}
+
+
+void AnimationController::SetRootMotion(bool _isRootAnim)
+{
+	m_isRootAnimation = _isRootAnim;
+}
+
 const string & AnimationController::GetCurrentPlayAnimationName()
 {
 	return m_currentAnimationClip->animationName;
+}
+
+AnimationClip * AnimationController::GetCurrentPlayAnimation()
+{
+	return m_currentAnimationClip;
 }
 
 void AnimationController::SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type)
@@ -354,11 +474,137 @@ void AnimationController::SetBlendOption(float _blendTime, float _weight, D3DXTR
 	m_transtionType = _type;
 }
 
+void AnimationController::SeparateBone(const string & _refBone)
+{
+	m_isSeparte = true;
 
+	m_subRoot = D3DXFrameFind(m_root, _refBone.c_str());
+	assert(L"Can't find separte bone!" && m_subRoot);
+}
+void AnimationController::SetSeparate(bool _separate)
+{
+	m_isSeparte = _separate;
+}
 void AnimationController::UpdateBoneMatrix()
 {
-	UpdateBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
+	if (m_isSeparte)
+	{
+		if (m_isRootAnimation)
+		{
+			assert(L"Please set bone to fix pos!" && m_fixedBone);
+			UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, m_rootMatrix, m_isSub);
+		}
+		else
+			UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, m_rootMatrix, m_isSub);
+	}
+	else
+	{
+		if (m_isRootAnimation)
+		{
+			assert(L"Please set bone to fix pos!" && m_fixedBone);
+			UpdateFixedBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
+		}
+		else
+			UpdateBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
+	}
+	
 }
+
+
+void AnimationController::UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub)
+{
+	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+
+	if (_bone == m_subRoot)
+	{
+		if (_isSub)
+		{
+
+			if (_bone->pFrameFirstChild)
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+		}
+		else
+		{
+			if (_bone->pFrameSibling)
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+		}
+		return;
+	}
+
+	if (_bone->pFrameFirstChild)
+		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+
+	if (_bone->pFrameSibling)
+		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+}
+
+void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub)
+{
+	
+	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+	if (_bone == m_fixedBone)
+	{
+		if (m_rootMotion_fixXAxis)
+			_bone->boneCombinedMatrix._41 = 0;
+		if (m_rootMotion_fixYAxis)
+			_bone->boneCombinedMatrix._42 = 0;
+		if (m_rootMotion_fixZAxis)
+			_bone->boneCombinedMatrix._43 = 0;
+	}
+	if (_bone == m_subRoot)
+	{
+		if (_isSub)
+		{
+
+			if (_bone->pFrameFirstChild)
+				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+		}
+		else
+		{
+			if (_bone->pFrameSibling)
+				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+		}
+		return;
+	}
+
+	if (_bone->pFrameFirstChild)
+		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+
+	if (_bone->pFrameSibling)
+		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+}
+
+void AnimationController::UpdateFixedBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
+{
+	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+	if (_bone == m_fixedBone)
+	{
+		if(m_rootMotion_fixXAxis)
+			_bone->boneCombinedMatrix._41 = 0;
+		if (m_rootMotion_fixYAxis)
+			_bone->boneCombinedMatrix._42 = 0;
+		if (m_rootMotion_fixZAxis)
+			_bone->boneCombinedMatrix._43 = 0;
+	}
+
+	if (_bone->pFrameFirstChild)
+		UpdateFixedBoneMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
+
+	if (_bone->pFrameSibling)
+		UpdateFixedBoneMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
+}
+
+const Matrix & AnimationController::GetRootMatrix()
+{
+	return ((Nalmak_Frame*)m_root->pFrameFirstChild)->boneCombinedMatrix;
+}
+
+void AnimationController::PlayBlending(AnimationController * _otherController)
+{
+	PlayBlending(_otherController->GetCurrentPlayAnimation(), _otherController->m_currentPlayTime);
+}
+
+
 
 void AnimationController::AddFloatParameter(const string & _param, float _value)
 {
@@ -459,12 +705,6 @@ void AnimationController::SetInt(const string & _param, int _value)
 
 void AnimationController::Release()
 {
-
-	for (auto& clip : m_animationClips)
-	{
-		SAFE_DELETE(clip);
-	}
-
 	m_animationClips.clear();
 
 	SAFE_RELEASE(m_animController);

@@ -15,6 +15,7 @@ class NALMAK_DLL AnimationController : public Component
 public:
 	struct Desc
 	{
+		AnimationController* cloneAnimationController = nullptr;
 		wstring meshName = L"";
 		Matrix rootMatrix = 
 		{
@@ -35,11 +36,20 @@ public:
 	virtual void Release() override;
 public:
 	static void UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
+	void UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub);
+	void UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub);
+	void UpdateFixedBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
+
+	const Matrix& GetRootMatrix();
+
 public:
+	void PlayBlending(AnimationController* _otherController);
+
 	void Play(AnimationClip* _clip);
 	void Play(const string& _animName);
 
 	void PlayBlending(AnimationClip* _clip);
+	void PlayBlending(AnimationClip* _clip, double _otherTime);
 	void PlayBlending(const string&  _clipName);
 
 	void PlayBlending(AnimationClip* _clip1, AnimationClip* _clip2, float _weight);
@@ -53,18 +63,34 @@ public:
 	float GetTotalPlayTime();
 	double GetPlayRemainTime();
 	float GetPlayRatio();
+	void SetFixedAnimationBoneName(string _boneName,bool _xAxis, bool _yAxis, bool _zAxis);
+	void SetRootMotion(bool _isFixed);
 	const string& GetCurrentPlayAnimationName();
+	AnimationClip* GetCurrentPlayAnimation();
+
 	void SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type);
+	void SeparateBone(const string& _refBone);
+	void SetSeparate(bool _separate);
 private:
 	//void CheckNextAnimation(AnimationTransition* _transition);
 	void UpdateBoneMatrix();
 private:
 	class SkinnedMeshRenderer* m_renderer;
 	LPD3DXANIMATIONCONTROLLER m_animController;
+
 	LPD3DXFRAME m_root;
+	LPD3DXFRAME m_subRoot;
+	LPD3DXFRAME m_fixedBone;
 	XFileMesh* m_mesh;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
 	Matrix m_rootMatrix;
+	bool m_isSeparte;
+	bool m_isSub;
+	bool m_isRootAnimation;
+	bool m_rootMotion_fixXAxis;
+	bool m_rootMotion_fixYAxis;
+	bool m_rootMotion_fixZAxis;
+
 private:
 	vector<AnimationClip*> m_animationClips;
 	AnimationClip* m_currentAnimationClip;

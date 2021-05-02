@@ -2,7 +2,10 @@
 #include "MainGame.h"
 #include "Core.h"
 #include "TitleScene.h"
+#include "StageScene.h"
+
 #include "homeworkScene.h"
+#include "UIManager.h"
 
 TimeManager* g_time;
 
@@ -14,12 +17,13 @@ MainGame::MainGame()
 MainGame::~MainGame()
 {
 	Core::DestroyInstance();
+	UIManager::DestroyInstance();
 }
 
 void MainGame::ApplicationSetting()
 {
 	Core::Desc core;
-	core.OBJECT_TAG_COUNT = 1;
+	core.OBJECT_TAG_COUNT = OBJECT_TAG_MAX;
 	core.OBJECT_LAYER_COUNT = OBJECT_LAYER_MAX;
 	core.wincx = WINCX;
 	core.wincy = WINCY;
@@ -34,12 +38,12 @@ void MainGame::SystemSetting()
 {
 	g_time = TimeManager::GetInstance();
 
-	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_DEFAULT, OBJECT_LAYER_BACKGROUND);
-	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_DEFAULT, OBJECT_LAYER_DEFAULT);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_NAVIMESH, OBJECT_LAYER_PLAYER);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_NAVIMESH, OBJECT_LAYER_ENEMY);
+
 
 	m_engine->AddScene(L"title", Scene::Instantiate<TitleScene>());
-	m_engine->AddScene(L"homework", Scene::Instantiate<homeworkScene>());
-
+	m_engine->AddScene(L"stage", Scene::Instantiate<StageScene>());
 
 	m_engine->SetStartScene(L"title");
 }

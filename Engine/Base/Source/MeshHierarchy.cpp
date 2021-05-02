@@ -131,7 +131,6 @@ HRESULT MeshHierarchy::CreateMeshContainer(
 		*ppNewMeshContainer = meshContainer;
 		return S_OK;
 	}
-	
 
 	meshContainer->pSkinInfo = pSkinInfo;
 	meshContainer->pSkinInfo->AddRef(); // !!

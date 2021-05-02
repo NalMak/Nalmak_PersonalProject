@@ -177,6 +177,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BnS_DamageFont.h" />
+    <ClInclude Include="BnS_Enemy.h" />
     <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
@@ -184,46 +186,62 @@
     <ClInclude Include="homeworkScene.h" />
     <ClInclude Include="homework_enemy.h" />
     <ClInclude Include="Homework_Player.h" />
+    <ClInclude Include="LynBackStep.h" />
+    <ClInclude Include="LynBattleToPeace.h" />
     <ClInclude Include="LynIdle.h" />
-    <ClInclude Include="LynIdleToJump.h" />
     <ClInclude Include="LynInfo.h" />
-    <ClInclude Include="LynJump.h" />
-    <ClInclude Include="LynJumpToIdle.h" />
-    <ClInclude Include="LynJumpToMove.h" />
     <ClInclude Include="LynMove.h" />
-    <ClInclude Include="LynRun.h" />
+    <ClInclude Include="LynSpinSlash_Combo.h" />
+    <ClInclude Include="LynSpinSlash_End.h" />
+    <ClInclude Include="LynSpinSlash_Start.h" />
     <ClInclude Include="LynState.h" />
     <ClInclude Include="LynStateControl.h" />
-    <ClInclude Include="LynTurning.h" />
+    <ClInclude Include="LynVerticalCut_L0.h" />
+    <ClInclude Include="LynVerticalCut_L1.h" />
+    <ClInclude Include="LynVerticalCut_L2.h" />
+    <ClInclude Include="LynVerticalCut_R0.h" />
+    <ClInclude Include="LynVerticalCut_R1.h" />
+    <ClInclude Include="LynVerticalCut_R2.h" />
     <ClInclude Include="Lyn_Attack_Basic1.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
     <ClInclude Include="PublicData.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="StageScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleToStage.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BnS_DamageFont.cpp" />
+    <ClCompile Include="BnS_Enemy.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
+    <ClCompile Include="LynBackStep.cpp" />
+    <ClCompile Include="LynBattleToPeace.cpp" />
     <ClCompile Include="LynIdle.cpp" />
-    <ClCompile Include="LynIdleToJump.cpp" />
     <ClCompile Include="LynInfo.cpp" />
-    <ClCompile Include="LynJump.cpp" />
-    <ClCompile Include="LynJumpToIdle.cpp" />
-    <ClCompile Include="LynJumpToMove.cpp" />
     <ClCompile Include="LynMove.cpp" />
-    <ClCompile Include="LynRun.cpp" />
+    <ClCompile Include="LynSpinSlash_Combo.cpp" />
+    <ClCompile Include="LynSpinSlash_End.cpp" />
+    <ClCompile Include="LynSpinSlash_Start.cpp" />
     <ClCompile Include="LynState.cpp" />
     <ClCompile Include="LynStateControl.cpp" />
-    <ClCompile Include="LynTurning.cpp" />
+    <ClCompile Include="LynVerticalCut_L0.cpp" />
+    <ClCompile Include="LynVerticalCut_L1.cpp" />
+    <ClCompile Include="LynVerticalCut_L2.cpp" />
+    <ClCompile Include="LynVerticalCut_R0.cpp" />
+    <ClCompile Include="LynVerticalCut_R1.cpp" />
+    <ClCompile Include="LynVerticalCut_R2.cpp" />
     <ClCompile Include="Lyn_Attack_Basic1.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
+    <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -231,6 +249,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleToStage.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak_PersonalProject.rc" />

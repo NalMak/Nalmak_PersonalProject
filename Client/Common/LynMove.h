@@ -22,8 +22,6 @@ class LynMove :
 		LYN_MOVE_DIR_STATE_BACK,
 		LYN_MOVE_DIR_STATE_BACKRIGHT,
 		LYN_MOVE_DIR_STATE_BACKLEFT,
-		LYN_MOVE_DIR_STATE_LEFTTORIGHT,
-		LYN_MOVE_DIR_STATE_RIGHTTOLEFT,
 		LYN_MOVE_DIR_STATE_NONE,
 		LYN_MOVE_DIR_STATE_MAX
 	};
@@ -42,11 +40,12 @@ private:
 	Vector3 m_inputDir;
 	Vector3 m_targetInput;
 	LynInfo* m_info;
-	LYN_MOVE_DIR_STATE m_moveDirState;
 	LYN_MOVE_STATE m_moveState;
 	CharacterController* m_charcterController;
-	AnimationController* m_animController;
-	Vector3 m_directionState[10] = {
+	AnimationController* m_animController_upper;
+	AnimationController* m_animController_lower;
+
+	Vector3 m_directionState[9] = {
 							{ 0, 0, 1 },
 							{ 1,0,0 },
 							Nalmak_Math::Normalize({ 1,0,1 }),
@@ -55,8 +54,7 @@ private:
 							{ 0,0,-1 },
 							Nalmak_Math::Normalize({ 1,0,-1 }),
 							Nalmak_Math::Normalize({ -1,0,-1 }),
-							{ -0.6f,0,0 },
-							{ 0.6f,0,0 }
+							{ 0,0,0 }
 	};
 private:
 	void UpdateMoveState();

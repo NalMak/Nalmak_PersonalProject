@@ -10,6 +10,8 @@
 #include "DirectoryMonitoring.h"
 #include "InputManager.h"
 #include "Transform.h"
+#include "DrawGizmo.h"
+
 DebuggingMode::DebuggingMode(Desc * _desc)
 {
 	m_input = nullptr;
@@ -102,22 +104,8 @@ void DebuggingMode::Initialize()
 #pragma endregion OutLine
 #pragma region Picking Gizmo
 	{
-		m_pickingGizmoBase = INSTANTIATE()->AddComponent<DrawGizmo>();
-
-		MeshRenderer::Desc render;
-		render.meshName = L"pyramid";
-		render.mtrlName = L"SYS_Picking_Red";
-		m_pickingGizmo[0] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(2, 0, 0)->SetScale(0.3f, 0.3f, 0.3f)->SetRotation(0,0,-90);
-		m_pickingGizmo[0]->SetParents(m_pickingGizmoBase);
-
-		render.mtrlName = L"SYS_Picking_Green";
-		m_pickingGizmo[1] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 2, 0)->SetScale(0.3f, 0.3f, 0.3f);
-		m_pickingGizmo[1]->SetParents(m_pickingGizmoBase);
-
-		render.mtrlName = L"SYS_Picking_Blue";
-		m_pickingGizmo[2] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 0, 2)->SetScale(0.3f, 0.3f, 0.3f)->SetRotation(90, 0, 0);
-		m_pickingGizmo[2]->SetParents(m_pickingGizmoBase);
-
+		auto gizmo = INSTANTIATE()->AddComponent<DrawGizmo>();
+		m_pickingGizmoBase  = gizmo->GetComponent<DrawGizmo>();
 		m_pickingGizmoBase->SetActive(false);
 		
 	}
@@ -148,7 +136,8 @@ void DebuggingMode::Initialize()
 
 void DebuggingMode::Update()
 {
-
+	if (m_input->GetKeyPress(KEY_STATE_ALT))
+		return;
 
 	if (m_input->GetKeyDown(KEY_STATE_F1))
 	{
@@ -167,35 +156,34 @@ void DebuggingMode::Update()
 		if (m_input->GetKeyDown(KEY_STATE_1))
 		{
 			m_gizmoType = GIZMO_TYPE_POSITION;
-			for (int i = 0; i < 3; ++i)
-			{
-				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"pyramid");
-			}
+			m_pickingGizmoBase->ChangeGizmoType(m_gizmoType);
 		}
 		if (m_input->GetKeyDown(KEY_STATE_2))
 		{
 			m_gizmoType = GIZMO_TYPE_ROTATION;
-			for (int i = 0; i < 3; ++i)
-			{
-				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"sphere");
-			}
+			m_pickingGizmoBase->ChangeGizmoType(m_gizmoType);
 		}
 		if (m_input->GetKeyDown(KEY_STATE_3))
 		{
 			m_gizmoType = GIZMO_TYPE_SCALE;
-			for (int i = 0; i < 3; ++i)
-			{
-				m_pickingGizmo[i]->GetComponent<MeshRenderer>()->SetMesh(L"box");
-			}
+			m_pickingGizmoBase->ChangeGizmoType(m_gizmoType);
 		}
 
-		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
+		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
 		{
 			PickObject();
 		}
 
+		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
+		{
+			m_pickingType = m_pickingGizmoBase->PickGizmo();
+			if (m_pickingType != PICKING_TYPE_NONE)
+				return;
+		}
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 		{
+		
+
 			if (m_pickingObj)
 			{
 				if (m_pickingType != PICKING_TYPE_NONE)
@@ -436,9 +424,8 @@ void DebuggingMode::UpdateDesc()
 
 void DebuggingMode::PickObject()
 {
-	m_pickingType = IsGizmoPicking();
-	if (m_pickingType !=  DebuggingMode::PICKING_TYPE_NONE)
-		return;
+
+	
 
 	GameObject* pickObj = Core::GetInstance()->PickObjectByMouse(&Vector3());
 
@@ -516,7 +503,7 @@ void DebuggingMode::UpdatePickingObject()
 
 	switch (m_gizmoType)
 	{
-	case DebuggingMode::GIZMO_TYPE_POSITION:
+	case GIZMO_TYPE_POSITION:
 	{
 		m_pickingObj->SetPosition(result.start - dir * 2);
 		if (rigid)
@@ -527,7 +514,7 @@ void DebuggingMode::UpdatePickingObject()
 		}
 		break;
 	}
-	case DebuggingMode::GIZMO_TYPE_ROTATION:
+	case GIZMO_TYPE_ROTATION:
 	{
 		Vector3 rotDir = result.start - (m_pickingObj->GetTransform()->GetWorldPosition() + dir * 2);
 
@@ -546,7 +533,7 @@ void DebuggingMode::UpdatePickingObject()
 		}
 		break;
 	}
-	case DebuggingMode::GIZMO_TYPE_SCALE:
+	case GIZMO_TYPE_SCALE:
 	{
 		Vector3 scaleDir = result.start - (m_pickingObj->GetTransform()->GetWorldPosition() + dir * 2);
 
@@ -579,35 +566,6 @@ void DebuggingMode::UpdatePickingObject()
 	}
 }
 
-DebuggingMode::PICKING_TYPE DebuggingMode::IsGizmoPicking()
-{
-	if (!m_pickingObj)
-		return PICKING_TYPE::PICKING_TYPE_NONE;
-
-	Camera* cam = RenderManager::GetInstance()->GetMainCamera();
-	Vector3 camPos = cam->GetTransform()->GetWorldPosition();
-	Vector3 dir = cam->GetCamToMouseWorldDirection();
-
-
-	vector<MeshRenderer*> renderList;
-	for (int i = 0; i < 3; ++i)
-		renderList.emplace_back(m_pickingGizmo[i]->GetComponent<MeshRenderer>());
-	auto obj = PhysicsManager::GetInstance()->Raycast(&Vector3(),camPos, camPos + dir * 1000, renderList);
-
-	if (obj)
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			if (m_pickingGizmo[i] == obj)
-			{
-				return (PICKING_TYPE)i;
-			}
-		}
-		return PICKING_TYPE::PICKING_TYPE_NONE;
-	}
-	else
-		return PICKING_TYPE::PICKING_TYPE_NONE;
-}
 
 
 
@@ -651,7 +609,7 @@ void DebuggingMode::PickObject(GameObject * _obj)
 	if (handler)
 		m_event.DoEvent(0);
 
-	m_pickingGizmoBase->SetParents(_obj);
+	m_pickingGizmoBase->GetTransform()->SetParents(_obj);
 	m_pickingGizmoBase->GetTransform()->SetPosition(0, 0, 0);
 	m_pickingGizmoBase->GetTransform()->rotation = { 0, 0, 0, 1 };
 

@@ -117,7 +117,7 @@ public:
 public:
 	void SetStartScene(const wstring& _name);
 	void AddScene(const wstring& _name, Scene* _scene);
-	void LoadScene(const wstring& _name);
+	void LoadScene(const wstring& _name, SCENE_LOAD_TYPE _type);
 public:
 	void DrawLine(const Vector3& _start, const Vector3& _end, DEBUG_COLOR = DEBUG_COLOR_GREEN);
 public:

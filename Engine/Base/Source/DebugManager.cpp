@@ -43,6 +43,14 @@ void DebugManager::DebugLog(const wstring & _name, const wstring& _string)
 	m_debugLog += L"\n   " + _string;
 }
 
+void DebugManager::DebugLog(const wstring & _name, const string & _string)
+{
+;
+	m_debugLog += L"\n-----------------------------------";
+	m_debugLog += L"\n   " + _name;
+	m_debugLog += L"\n   " + Nalmak_String::StringToWString(_string);
+}
+
 void DebugManager::EraseTheRecord()
 {
 	m_debugLog = L"";

@@ -15,21 +15,50 @@ void LynMove::Initialize()
 {
 	m_info = GetComponent<LynInfo>();
 	m_charcterController = GetComponent<CharacterController>();
-	m_animController = GetComponent<AnimationController>();
+	m_animController_lower = GetComponents<AnimationController>()[0];
+	m_animController_upper = GetComponents<AnimationController>()[1];
+
 
 	m_moveState = LYN_MOVE_STATE_RUN;
-	m_moveDirState = LYN_MOVE_DIR_STATE_NONE;
 	m_inputDir = { 0,0,0 };
 
-	m_animController->Play("Lyn_P_Std_Mov_RunFront");
+	//m_animController_upper->Play("Lyn_P_Std_Mov_RunFront");
+	//m_animController_upper->SetActive(false);
+	//m_animController_lower->Play("Lyn_P_Std_Mov_RunFront");
+	//m_animController_lower->Play("Lyn_P_Std_Mov_RunFront");
+
 
 }
 
 void LynMove::Update()
 {
+	m_info->UpdateWeapon();
+
+	string animName = "";
+
 	UpdateMoveState();
 	UpdateDirectionByKey();
 	m_inputDir = Nalmak_Math::Lerp(m_inputDir, m_targetInput, dTime * 10);
+
+	
+	
+	////////////////////////////////////////////////////////////// 현재 방향 갱신
+	LYN_MOVE_DIR_STATE moveDirState = LYN_MOVE_DIR_STATE_NONE;
+	float shortLength = INFINITY;
+	int index = 0;
+	for (int i = 0; i < 9; ++i)
+	{
+		float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
+		if (length < shortLength)
+		{
+			index = i;
+			shortLength = length;
+		}
+	}
+	moveDirState = (LYN_MOVE_DIR_STATE)index;
+	DEBUG_LOG(L"moveDir", moveDirState);
+
+	////////////////////////////////////////////////////////////// 현재 속도 갱신
 
 	float targetSpeed = 0;
 	switch (m_moveState)
@@ -38,119 +67,134 @@ void LynMove::Update()
 		targetSpeed = 0;
 		break;
 	case LynMove::LYN_MOVE_STATE_RUN:
-		targetSpeed = m_info->m_runForwardSpeed;
+		if(moveDirState == LYN_MOVE_DIR_STATE_BACK || moveDirState == LYN_MOVE_DIR_STATE_BACKRIGHT || moveDirState == LYN_MOVE_DIR_STATE_BACKLEFT)
+			targetSpeed = m_info->m_runBackwardSpeed;
+		else
+			targetSpeed = m_info->m_runForwardSpeed;
 		break;
 	case LynMove::LYN_MOVE_STATE_JUMP:
 		targetSpeed = m_info->m_airSpeed;
 		break;
 	}
-
 	Vector3 velocity = { 0,0,0 };
 	velocity += m_inputDir.x * m_transform->GetRight() * targetSpeed;
 	velocity += m_inputDir.z * m_transform->GetForward() * targetSpeed;
 
 	m_charcterController->SetVelocityX(velocity.x);
 	m_charcterController->SetVelocityZ(velocity.z);
+	if(m_moveState == LYN_MOVE_STATE_JUMP)
+		m_charcterController->AddVelocity(0, -30.f * dTime, 0);
+	////////////////////////////////////////////////////////////// 상하체 다를 시 조건
 
-	LYN_MOVE_DIR_STATE moveDirState = LYN_MOVE_DIR_STATE_NONE;
+	auto lowerAnim = m_animController_lower->GetCurrentPlayAnimation();
+	auto upperAnim = m_animController_upper->GetCurrentPlayAnimation();
 
-	if (m_moveState != LYN_MOVE_STATE_JUMP)
+
+	if (lowerAnim != upperAnim)
 	{
-		if (m_targetInput == Vector3(0, 0, 0))
+		
+		if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_UPPER))
 		{
-			moveDirState = LYN_MOVE_DIR_STATE_NONE;
-		}
-		else
-		{
-			float shortLength = INFINITY;
-			int index = 0;
-			for (int i = 0; i < 10; ++i)
+			if (moveDirState == LYN_MOVE_DIR_STATE_NONE)
 			{
-				float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
-				if (length < shortLength)
+				if (m_moveState != LYN_MOVE_STATE_JUMP)
 				{
-					index = i;
-					shortLength = length;
+					m_animController_lower->PlayBlending(upperAnim);
+					return;
 				}
 			}
-			moveDirState = (LYN_MOVE_DIR_STATE)index;
 		}
-		if (m_moveDirState != moveDirState)
-		{
-			m_animController->SetBlendOption(0.2f, 0.8f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		else
+			m_animController_upper->PlayBlending(lowerAnim);
+	}
+	
+	////////////////////////////////////////////////////////////// 점프 시 조건
+	if (m_moveState != LYN_MOVE_STATE_JUMP)
+	{
+		
 
-			switch (moveDirState)
-			{
-			case LynMove::LYN_MOVE_DIR_STATE_FRONT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunFront");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_RIGHT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunRight");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_FRONTRIGHT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunRightFront");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_LEFT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunLeft");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_FRONTLEFT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunLeftFront");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_BACK:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunBack");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_BACKRIGHT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunRightBack");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_BACKLEFT:
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RunLeftBack");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_NONE:
-				m_animController->PlayBlending("Lyn_P_Std_Idle_Event1");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_LEFTTORIGHT:
-				m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-				m_animController->PlayBlending("Lyn_P_Std_Mov_LeftToRight");
-				break;
-			case LynMove::LYN_MOVE_DIR_STATE_RIGHTTOLEFT:
-				m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-				m_animController->PlayBlending("Lyn_P_Std_Mov_RightToLeft");
-				break;
-			default:
-				break;
-			}
+		m_animController_lower->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+
+		switch (moveDirState)
+		{
+		case LynMove::LYN_MOVE_DIR_STATE_FRONT:
+			animName = "Mov_RunFront";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_RIGHT:
+			animName = "Mov_RunRight";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_FRONTRIGHT:
+			animName = "Mov_RunRightFront";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_LEFT:
+			animName = "Mov_RunLeft";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_FRONTLEFT:
+			animName = "Mov_RunLeftFront";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_BACK:
+			animName = "Mov_RunBack";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_BACKRIGHT:
+			animName = "Mov_RunRightBack";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_BACKLEFT:
+			animName = "Mov_RunLeftBack";
+			break;
+		case LynMove::LYN_MOVE_DIR_STATE_NONE:
+			animName = "Mov_Idle";
+			break;
+		default:
+			break;
 		}
 
 		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
 		{
-			m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_animController_lower->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			m_charcterController->SetVelocityY(m_info->m_jumpPower);
-			if(m_inputDir.x < -0.5f)
-				m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Left");
+			if (m_inputDir.x < -0.5f)
+				animName = "Mov_IdleToJump_Left";
 			else if(m_inputDir.x > 0.5f)
-				m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Right");
+				animName = "Mov_IdleToJump_Right";
 			else
-				m_animController->PlayBlending("Lyn_P_Std_Mov_IdleToJump_Front");
+				animName = "Mov_IdleToJump_Front";
 		}
 	}
 	else
 	{
 		
-		if (m_animController->GetPlayRemainTime() < 0.1f)
+		if (m_animController_lower->GetPlayRemainTime() < 0.1f)
 		{
-			m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-			if (m_inputDir.x < -0.5f)
-				m_animController->PlayBlending("Lyn_P_Std_Mov_JumpLeft");
-			else if (m_inputDir.x > 0.5f)
-				m_animController->PlayBlending("Lyn_P_Std_Mov_JumpRight");
-			else
-				m_animController->PlayBlending("Lyn_P_Std_Mov_JumpFront");
+			m_animController_lower->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		}
 		
-		m_charcterController->AddVelocity(0, -30.f * dTime, 0);
+		
 	}
-	m_moveDirState = moveDirState;
 	
+	if (animName == "")
+		return;
+
+	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER) && m_info->m_animFixPart.Check(ANIMATION_FIX_PART_UPPER))
+		return;
+
+	switch (m_info->m_state)
+	{
+	case LYN_STATE::LYN_STATE_PEACE_STANDARD:
+		animName = "Lyn_P_Std_" + animName;
+		break;
+	case LYN_STATE::LYN_STATE_BATTLE_STANDARD:
+		animName = "Lyn_B_Std_" + animName;
+		break;
+	case LYN_STATE::LYN_STATE_BATTLE_HIDEBLADE:
+		break;
+	default:
+		break;
+	}
+	
+	if (m_animController_lower->GetCurrentPlayAnimationName() != animName)
+	{
+		m_animController_lower->PlayBlending(animName);
+	}
 }
 
 void LynMove::UpdateMoveState()

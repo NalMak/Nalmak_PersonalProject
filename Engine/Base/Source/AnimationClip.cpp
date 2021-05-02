@@ -12,3 +12,7 @@ AnimationClip::~AnimationClip()
 void AnimationClip::Release()
 {
 }
+
+void AnimationClip::Initialize(wstring _fp)
+{
+}

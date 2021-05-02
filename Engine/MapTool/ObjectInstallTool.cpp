@@ -645,7 +645,7 @@ void ObjectInstallTool::SaveObject(GameObject * _obj)
 
 		CloseHandle(handle);
 
-		AfxMessageBox(L"Succeeded to Save File");
+		//AfxMessageBox(L"Succeeded to Save File");
 	}
 }
 
@@ -713,6 +713,7 @@ BEGIN_MESSAGE_MAP(ObjectInstallTool, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT20, &ObjectInstallTool::OnEnChangeEditDiffuseIntensity)
 	ON_EN_CHANGE(IDC_EDIT37, &ObjectInstallTool::OnEnChangeEditAmbientIntensity)
 	ON_EN_CHANGE(IDC_EDIT38, &ObjectInstallTool::OnEnChangeEditRadius)
+	ON_BN_CLICKED(IDC_BUTTON18, &ObjectInstallTool::OnBnClickedButtonCopyObject)
 END_MESSAGE_MAP()
 
 
@@ -1606,4 +1607,34 @@ void ObjectInstallTool::OnEnChangeEditRadius()
 	float res;
 	GetFloatByEditBox(res, IDC_EDIT38);
 	obj->GetComponent<PointLight>()->SetRadius(res);
+}
+
+
+void ObjectInstallTool::OnBnClickedButtonCopyObject()
+{
+	auto obj = m_mapToolManager->GetSelectedObject();
+	if (!obj)
+		return;
+
+	auto newObj = INSTANTIATE(obj->GetTag(),obj->GetLayer(), obj->GetName());
+	newObj->SetPosition(obj->GetTransform()->GetWorldPosition());
+	newObj->GetTransform()->rotation = obj->GetTransform()->GetWorldRotation();
+	newObj->SetScale(obj->GetTransform()->scale);
+	
+	m_mapToolManager->CreateObject(newObj);
+
+	if (obj->GetComponent<MeshRenderer>())
+	{
+		MeshRenderer::Desc mesh;
+		mesh.mtrl = obj->GetComponent<MeshRenderer>()->GetMaterial();
+		mesh.meshName = obj->GetComponent<MeshRenderer>()->GetMesh()->GetName();
+		newObj->AddComponent<MeshRenderer>(&mesh);
+	}
+
+
+	m_objectList.InsertString(m_objectList.GetCount(), newObj->GetName().c_str());
+	int count = m_objectList.GetCount();
+	m_objectList.SetCurSel(count - 1);
+	m_mapToolManager->SelectObject(newObj);
+	m_mapToolManager->PickObject(newObj);
 }

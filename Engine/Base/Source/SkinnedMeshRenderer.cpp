@@ -305,9 +305,13 @@ Material * SkinnedMeshRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIn
 	UINT mtrlIndex = 0;
 	for (UINT i = 0; i < _containerIndex; ++i)
 	{
-		mtrlIndex += m_mesh->GetMeshContainer(i)->NumMaterials;
+		mtrlIndex += (m_mesh->GetMeshContainer(i)->NumMaterials);
 	}
 	mtrlIndex += _subsetIndex;
+	UINT totalCount = (UINT)m_materials.size();
+
+	if (mtrlIndex >= totalCount)
+		mtrlIndex = totalCount - 1;
 
 	return m_materials[mtrlIndex];
 }
@@ -349,12 +353,17 @@ void SkinnedMeshRenderer::SetMesh(const wstring & _meshName)
 
 }
 
-Matrix * SkinnedMeshRenderer::GetBoneWorldMatrix(const string & _boneName)
+Matrix * SkinnedMeshRenderer::GetBoneCombinedMatrix(const string & _boneName)
 {
 	LPD3DXFRAME frame = D3DXFrameFind(m_mesh->GetRoot(), _boneName.c_str());
 	assert(L"Can't find bone!" && frame);
 
 	return &((Nalmak_Frame*)frame)->boneCombinedMatrix;
+}
+
+Matrix * SkinnedMeshRenderer::GetRootWorldMatrix()
+{
+	return m_boneWorldMatrices[0];
 }
 
 

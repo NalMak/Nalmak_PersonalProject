@@ -477,9 +477,6 @@
     <ClCompile Include="..\Source\AudioListener.cpp">
       <Filter>05.Component\12.Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp">
-      <Filter>05.Component\13.Thread</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Nalmak_Function.cpp">
       <Filter>99.PreCompile\10.Function</Filter>
     </ClCompile>
@@ -571,6 +568,9 @@
     <ClCompile Include="..\Source\NavMeshData.cpp" />
     <ClCompile Include="..\Source\NavCollider.cpp" />
     <ClCompile Include="..\Source\RenderInfo.cpp" />
+    <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp">
+      <Filter>05.Component\13.Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -819,9 +819,6 @@
     <ClInclude Include="..\Include\AudioListener.h">
       <Filter>05.Component\12.Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\LoadResourcesUsingThread.h">
-      <Filter>05.Component\13.Thread</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Nalmak_Function.h">
       <Filter>99.PreCompile\10.Function</Filter>
     </ClInclude>
@@ -916,6 +913,9 @@
     <ClInclude Include="..\Include\NavMeshData.h" />
     <ClInclude Include="..\Include\NavCollider.h" />
     <ClInclude Include="..\Include\RenderInfo.h" />
+    <ClInclude Include="..\Include\LoadResourcesUsingThread.h">
+      <Filter>05.Component\13.Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

@@ -45,7 +45,8 @@ public:
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
 	XFileMesh* GetMesh();
 	void SetMesh(const wstring& _meshName);
-	Matrix* GetBoneWorldMatrix(const string& _boneName);
+	Matrix* GetBoneCombinedMatrix(const string& _boneName);
+	Matrix* GetRootWorldMatrix();
 private:
 	vector<Material*> m_materials;
 	XFileMesh * m_mesh = nullptr;

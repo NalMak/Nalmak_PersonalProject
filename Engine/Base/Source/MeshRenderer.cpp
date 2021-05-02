@@ -111,6 +111,11 @@ Material * MeshRenderer::GetMaterial(UINT _containerIndex, UINT _subsetIndex)
 	}
 	mtrlIndex += _subsetIndex;
 
+	UINT totalCount = (UINT)m_materials.size();
+
+	if (mtrlIndex >= totalCount)
+		mtrlIndex = totalCount - 1;
+
 	return m_materials[mtrlIndex];
 }
 

@@ -34,7 +34,9 @@ public:
 		return this;
 	}
 private:
-	AnimationController* m_animController;
+	AnimationController* m_animController_lower;
+	AnimationController* m_animController_upper;
+
 	CharacterController* m_character;
 	LynInfo* m_info;
 };

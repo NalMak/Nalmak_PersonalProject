@@ -48,6 +48,7 @@
     <ClCompile Include="..\Source\DrawGizmo.cpp" />
     <ClCompile Include="..\Source\DrawGizmo_2D.cpp" />
     <ClCompile Include="..\Source\DynamicInstanceBuffer.cpp" />
+    <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp" />
     <ClCompile Include="..\Source\LOD_Group.cpp" />
     <ClCompile Include="..\Source\MeshHierarchy.cpp" />
     <ClCompile Include="..\Source\Nalmak_Animation.cpp" />
@@ -66,7 +67,6 @@
     <ClCompile Include="..\Source\Grid.cpp" />
     <ClCompile Include="..\Source\IAnimation.cpp" />
     <ClCompile Include="..\Source\ICycle.cpp" />
-    <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp" />
     <ClCompile Include="..\Source\InputManager.cpp" />
     <ClCompile Include="..\Source\IRenderer.cpp" />
     <ClCompile Include="..\Source\IResource.cpp" />
@@ -159,6 +159,7 @@
     <ClInclude Include="..\Include\DrawGizmo.h" />
     <ClInclude Include="..\Include\DrawGizmo_2D.h" />
     <ClInclude Include="..\Include\DynamicInstanceBuffer.h" />
+    <ClInclude Include="..\Include\LoadResourcesUsingThread.h" />
     <ClInclude Include="..\Include\LOD_Group.h" />
     <ClInclude Include="..\Include\MeshHierarchy.h" />
     <ClInclude Include="..\Include\Nalmak_Animation.h" />
@@ -177,7 +178,6 @@
     <ClInclude Include="..\Include\Grid.h" />
     <ClInclude Include="..\Include\IAnimation.h" />
     <ClInclude Include="..\Include\ICycle.h" />
-    <ClInclude Include="..\Include\LoadResourcesUsingThread.h" />
     <ClInclude Include="..\Include\InputManager.h" />
     <ClInclude Include="..\Include\IRenderer.h" />
     <ClInclude Include="..\Include\IResource.h" />

@@ -15,7 +15,7 @@ public:
 		Vector3 center = { 0,0,0 };
 
 		float slopeLimit = 45;
-		float skinWidth = 0.01f;
+		float skinWidth = 0.001f;
 		float stepOffset = 0.1f;
 		bool isGravity = true;
 		PxCapsuleClimbingMode::Enum climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
@@ -31,6 +31,8 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override;
 public:
+	void SetFootPosition(const Vector3& _pos);
+
 	void SetVelocity(const Vector3& _velocity);
 	void SetVelocity(float _x,float _y, float _z);
 	void AddVelocity(float _x, float _y, float _z);
@@ -41,7 +43,9 @@ public:
 
 
 	bool IsGround();
+	bool IsSide();
 	void SetHalfHeight(float _height);
+private:
 	void Move(const Vector3& _velocity);
 	void Move(float _x, float _y, float _z);
 public:
@@ -56,8 +60,10 @@ private:
 	float m_skinWidth;
 	float m_stepOffset;
 	float m_stepLimit;
+	PxControllerCollisionFlags m_preFlag;
+	PxControllerCollisionFlags m_curFlag;
 	PxCapsuleClimbingMode::Enum m_climbingMode;
-
+	PxFilterData m_filterData;
 	PxCapsuleController* m_controller;
 };
 

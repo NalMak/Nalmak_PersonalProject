@@ -5,6 +5,7 @@
 #include "LightManager.h"
 IMPLEMENT_SINGLETON(SceneManager)
 
+mutex g_mutex;
 // 모든 Scene의 정보를 생성,보관,삭제
 // AddScene :새로운 Scene등록
 // Load : 다음 Scene이동 가능
@@ -12,19 +13,59 @@ IMPLEMENT_SINGLETON(SceneManager)
 // SetFirstScene : 진입 Scene설정
 void SceneManager::LoadNextScene()
 {
-	if (m_isLoad)
+	if (m_isLoad != SCENE_LOAD_TYPE_NONE)
 	{
 		assert("Next Scene is Empty" && m_nextScene);
 		m_currentScene = m_nextScene;
 
-		m_isLoad = false;
+		if (m_isLoad == SCENE_LOAD_TYPE_DEFAULT)
+		{
+			ResourceManager::GetInstance()->ReleaseSceneResouce();
+			ResourceManager::GetInstance()->LoadResourcesBySceneFoloderName(m_currentScene->GetSceneName(), false);
+			ObjectManager::GetInstance()->ReleaseScene();
+			LightManager::GetInstance()->ResetSkyBox();
+			m_isLoad = SCENE_LOAD_TYPE_NONE;
+			m_currentScene->Initialize();
+		}
+		else if(m_isLoad == SCENE_LOAD_TYPE_THREAD)
+		{
+			ResourceManager::GetInstance()->ReleaseSceneResouce();
+			InitializeCriticalSection(&m_crt);
+			m_thread = (HANDLE)_beginthreadex(nullptr, 0, ExecuteFunc, this, 0, nullptr);
+			m_isLoad = SCENE_LOAD_TYPE_NONE;
+		}
+	}
+	if (m_isOver)
+	{
 		ObjectManager::GetInstance()->ReleaseScene();
 		LightManager::GetInstance()->ResetSkyBox();
-		ResourceManager::GetInstance()->ReleaseSceneResouce();
-
-		ResourceManager::GetInstance()->LoadResourcesBySceneFoloderName(m_currentScene->GetSceneName(), false);
+		m_isOver = false;
+		WaitForSingleObject(m_thread, INFINITE);
+		CloseHandle(m_thread);
+		DeleteCriticalSection(&m_crt);
 		m_currentScene->Initialize();
 	}
+}
+
+void SceneManager::CleanUpScene()
+{
+	ResourceManager::GetInstance()->LoadResourcesBySceneFoloderName(m_currentScene->GetSceneName(), false);
+}
+
+
+unsigned SceneManager::ExecuteFunc(LPVOID pArg)
+{
+	SceneManager* instance = (SceneManager*)pArg;
+
+	EnterCriticalSection(&instance->m_crt);
+
+	instance->CleanUpScene();
+
+	instance->m_isOver = true;
+
+	LeaveCriticalSection(&instance->m_crt);
+	_endthreadex(0);
+	return 0;
 }
 
 SceneManager::~SceneManager()
@@ -34,7 +75,8 @@ SceneManager::~SceneManager()
 
 HRESULT SceneManager::Initialize()
 {
-	m_isLoad = false;
+	m_isLoad = SCENE_LOAD_TYPE_NONE;
+	m_sceneLoadProgressPercentage = 0;
 	return S_OK;
 }
 
@@ -58,8 +100,12 @@ void SceneManager::Release()
 	for (auto& scene : m_sceneList)
 		SAFE_DELETE(scene.second);
 
+
+
 	ObjectManager::GetInstance()->Release();
 	RenderManager::GetInstance()->Release();
+
+	
 }
 
 void SceneManager::PreRender()
@@ -96,12 +142,13 @@ void SceneManager::SetFirstScene(const wstring&  _name)
 	m_currentScene->Initialize();
 }
 
-void SceneManager::Load(const wstring& _name)
+void SceneManager::Load(const wstring & _name, SCENE_LOAD_TYPE _loadType)
 {
 	m_nextScene = m_sceneList[_name];
-	m_isLoad = true;
+	m_isLoad = _loadType;
 	assert("Load Scene Fail! Please Check Scene name or Create Scene in mainGame!" && m_nextScene);
 }
+
 
 void SceneManager::AddScene(const wstring&  _name, Scene* _scene)
 {

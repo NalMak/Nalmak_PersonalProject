@@ -4,7 +4,7 @@
 
 class RenderManager;
 class MeshRenderer;
-
+class DrawGizmo;
 class NALMAK_DLL DebuggingMode :
 	public Component
 {
@@ -13,21 +13,8 @@ public:
 	{
 		bool createDirectoryMonitor = false;
 	};
-	enum PICKING_TYPE
-	{
-		PICKING_TYPE_NONE = -1,
-		PICKING_TYPE_RIGHT,
-		PICKING_TYPE_UP,
-		PICKING_TYPE_LOOK,
-		PICKING_TYPE_MAX
-	};
-	enum GIZMO_TYPE
-	{
-		GIZMO_TYPE_POSITION,
-		GIZMO_TYPE_ROTATION,
-		GIZMO_TYPE_SCALE,
-		GIZMO_TYPE_MAX
-	};
+	
+
 public:
 	DebuggingMode(Desc* _desc);
 	~DebuggingMode();
@@ -52,8 +39,8 @@ private:
 	class Text* m_debugModeDescObject;
 	GameObject* m_pickingObj;
 	MeshRenderer* m_pickingOutLine;
-	class GameObject* m_pickingGizmo[3];
-	class GameObject* m_pickingGizmoBase;
+
+	DrawGizmo* m_pickingGizmoBase;
 	PICKING_TYPE m_pickingType;
 	GIZMO_TYPE m_gizmoType;
 	Event m_event;
@@ -72,7 +59,6 @@ private:
 	void DeletePicking();
 	void UpdateOutLine();
 	void UpdatePickingObject();
-	DebuggingMode::PICKING_TYPE IsGizmoPicking();
 public:
 	void AddUpdateMaterialEvent(EventHandler _e);
 	void PickObject(GameObject* _obj);

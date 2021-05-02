@@ -24,29 +24,38 @@ CharacterController::~CharacterController()
 void CharacterController::Initialize()
 {
 	m_controller = PhysicsManager::GetInstance()->CreateCharacterController(this);
+	
 }
 
 void CharacterController::Update()
 {
 	
-	//m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
 }
 
 void CharacterController::LateUpdate()
 {
-	Move(m_velocity);
+	PxVec3 vec(m_velocity.x, m_velocity.y, m_velocity.z);
+
+	m_preFlag = m_curFlag;
+	m_curFlag = m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
 	DEBUG_LOG(L"Character velocity", m_velocity);
 }
 
 void CharacterController::PreRender()
 {
 	PxExtendedVec3 pos = m_controller->getPosition();
-	m_transform->position = Vector3{ (float)pos.x,(float)pos.y,(float)pos.z } -m_center;
+	m_transform->position = Vector3{ (float)pos.x,(float)pos.y,(float)pos.z } - m_center;
 }
 
 void CharacterController::Release()
 {
 	Safe_release(m_controller);
+}
+
+void CharacterController::SetFootPosition(const Vector3 & _pos)
+{
+	PxExtendedVec3 vec3 = { _pos.x,_pos.y,_pos.z };
+	m_controller->setFootPosition(vec3);
 }
 
 void CharacterController::SetVelocity(const Vector3 & _velocity)
@@ -81,32 +90,17 @@ void CharacterController::SetVelocityZ(float _z)
 
 bool CharacterController::IsGround()
 {
-	PxControllerState state;
-	m_controller->getState(state);
-	if (state.touchedShape)
-		return true;
-	return false;
+	return m_curFlag & PxControllerCollisionFlag::eCOLLISION_DOWN;
+}
+
+bool CharacterController::IsSide()
+{
+	return  m_curFlag & PxControllerCollisionFlag::eCOLLISION_SIDES;
 }
 
 void CharacterController::SetHalfHeight(float _height)
 {
 	m_controller->setHeight(_height);
-}
-
-void CharacterController::Move(const Vector3 & _velocity)
-{
-	PxVec3 vec(_velocity.x, _velocity.y, _velocity.z);
-
-	PxControllerFilters filter;
-	m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
-}
-
-void CharacterController::Move(float _x,float _y, float _z)
-{
-	PxVec3 vec(_x, _y, _z);
-
-	PxControllerFilters filter;
-	m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
 }
 
 const Vector3 & CharacterController::GetVelocity()

@@ -84,15 +84,18 @@ void ResourceManager::ReleaseSceneResouce()
 	{
 		for (auto iter = resources.second.begin(); iter != resources.second.end();)
 		{
-			if ((*iter).second->m_isStatic)
+			if ((*iter).second)
 			{
-				++iter;
-				continue;
+				if ((*iter).second->m_isStatic)
+				{
+					++iter;
+					continue;
+				}
+				auto resource = (*iter).second;
+				iter = resources.second.erase(iter);
+				resource->Release();
+				SAFE_DELETE(resource);
 			}
-			auto resource = (*iter).second;
-			iter = resources.second.erase(iter);
-			resource->Release();
-			SAFE_DELETE(resource);
 		}
 	}
 

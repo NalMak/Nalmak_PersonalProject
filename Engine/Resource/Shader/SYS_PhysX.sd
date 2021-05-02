@@ -4,6 +4,6 @@
 
 outputRT "GBuffer_Debug"
 
-inputLayout "0"
+inputLayout "6"
 
 

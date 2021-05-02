@@ -61,7 +61,38 @@ void RenderManager::Initialize()
 	D3DVIEWPORT9 vp = { 0,0,m_wincx,m_wincy,0,1 };
 	m_device->SetViewport(&vp);
 
+
+	m_GBuffer_Diffuse = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Diffuse");
+	m_GBuffer_Normal = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Normal");
+	m_GBuffer_Depth_CookTorrance = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Depth_CookTorrance");
+	m_GBuffer_Light = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Light");
+	m_GBuffer_Debug = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Debug");
+	m_GBuffer_Final = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Final");
+	m_GBuffer_Emission = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Emission");
+	m_GBuffer_Specular = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular");
+	m_GBuffer_Shadow = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Shadow");
+	m_GBuffer_LightDepth = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_LightDepth");
+
 	m_screenImageMesh = ResourceManager::GetInstance()->GetResource<Mesh>(L"screenQuad");
+	m_sphere = ResourceManager::GetInstance()->GetResource<Mesh>(L"sphere");
+
+	m_SCR_Geometry_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Geometry_Pass");
+	m_SCR_Emission_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Emission_Pass");
+	m_SCR_Final_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Final_Pass");
+	m_SCR_Shadow_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
+	m_SCR_Debug_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Debug_Pass");
+	m_SCR_DirectionalLight = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_DirectionalLight");
+	m_SCR_PointLight_Stencil = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_PointLight_Stencil");
+	m_SCR_PointLight = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_PointLight");
+	m_SYS_LightDepth = ResourceManager::GetInstance()->GetResource<Shader>(L"SYS_LightDepth");
+	m_SYS_LightDepth_Animation = ResourceManager::GetInstance()->GetResource<Shader>(L"SYS_LightDepth_Animation");
+	m_SCR_GaussianBlur = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_GaussianBlur");
+	m_SYS_PhysX = ResourceManager::GetInstance()->GetResource<Shader>(L"SYS_PhysX");
+
+	m_DepthStencil_Shadow = ResourceManager::GetInstance()->GetResource<DepthStencil>(L"DepthStencil_Shadow");
+
+
+
 }
 
 void RenderManager::Render()
@@ -87,15 +118,17 @@ void RenderManager::Render(Camera * _cam)
 {
 	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0, 1, 0));
 
-	ClearRenderTarget(L"GBuffer_Diffuse");
-	ClearRenderTarget(L"GBuffer_Normal");
-	ClearRenderTarget(L"GBuffer_Depth_CookTorrance");
-	ClearRenderTarget(L"GBuffer_Light");
-	ClearRenderTarget(L"GBuffer_Debug");
-	ClearRenderTarget(L"GBuffer_Final");
-	ClearRenderTarget(L"GBuffer_Emission");
-	ClearRenderTarget(L"GBuffer_Specular");
-	ClearRenderTarget(L"GBuffer_Shadow");
+
+
+	m_GBuffer_Diffuse->Clear();
+	m_GBuffer_Normal->Clear();
+	m_GBuffer_Depth_CookTorrance->Clear();
+	m_GBuffer_Light->Clear();
+	m_GBuffer_Debug->Clear();
+	m_GBuffer_Final->Clear();
+	m_GBuffer_Emission->Clear();
+	m_GBuffer_Specular->Clear();
+	m_GBuffer_Shadow->Clear();
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur512");
@@ -130,12 +163,12 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 	LightPass(_cam, _cBuffer);
 
 	// 요기
-	RenderByShaderToScreen(L"SCR_Geometry_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+	RenderByShaderToScreen(m_SCR_Geometry_Pass, _cBuffer, BLENDING_MODE_DEFAULT);
 
 	// 투명객체 그리기
 	TransparentPass(_cam, _cBuffer); // transparent object
 
-	RenderByShaderToScreen(L"SCR_Emission_Pass", _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
+	RenderByShaderToScreen(m_SCR_Emission_Pass, _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
 	
 	DebugPass(_cBuffer);
 
@@ -152,7 +185,7 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	EndRenderTarget();
 
-	RenderByShaderToScreen(L"SCR_Final_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+	RenderByShaderToScreen(m_SCR_Final_Pass, _cBuffer, BLENDING_MODE_DEFAULT);
 
 	UIPass(_cam, _cBuffer);
 
@@ -199,8 +232,7 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	if (!m_lightManager->IsExistDirectionalLight())
 		return;
 
-	ClearRenderTarget(L"GBuffer_LightDepth");
-
+	m_GBuffer_LightDepth->Clear();
 	Camera* lightCam = m_lightManager->GetLightCamera();
 	DirectionalLightInfo info = m_lightManager->GetDirectionalLightInfo();
 
@@ -209,10 +241,10 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	Shader* currentShader = nullptr;
 	Shader* shader[2] = { nullptr,nullptr };
 
-	shader[0] = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth");
+	shader[0] = m_SYS_LightDepth;
 	shader[0]->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
 	shader[0]->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
-	shader[1] = m_resourceManager->GetResource<Shader>(L"SYS_LightDepth_Animation");
+	shader[1] = m_SYS_LightDepth_Animation;
 	shader[1]->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
 	shader[1]->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
 	
@@ -221,8 +253,8 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	UpdateRenderTarget(currentShader);
 	currentShader->BeginPass();
 
-	DepthStencil* depthStencil = ResourceManager::GetInstance()->GetResource<DepthStencil>(L"DepthStencil_Shadow");
-	depthStencil->StartRecord();
+
+	m_DepthStencil_Shadow->StartRecord();
 	ThrowIfFailed(m_device->Clear(0, NULL, D3DCLEAR_ZBUFFER, 0, 1, 0));
 
 	for (auto& renderList : m_renderLists[RENDERING_MODE_OPAQUE])
@@ -278,19 +310,17 @@ void RenderManager::LightDepthPass(ConstantBuffer & _cBuffer)
 	EndRenderTarget();
 	currentShader->EndPass();
 	
-	depthStencil->EndRecord();
+	m_DepthStencil_Shadow->EndRecord();
 
 }
 
 void RenderManager::ShadowPass(ConstantBuffer & _cBuffer, DirectionalLightInfo& _info)
 {
-
-	Shader* shadow = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
-	shadow->SetValue("g_directionalLight", &_info, sizeof(DirectionalLightInfo));
-	RenderByShaderToScreen(L"SCR_Shadow_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+	
+	m_SCR_Shadow_Pass->SetValue("g_directionalLight", &_info, sizeof(DirectionalLightInfo));
+	RenderByShaderToScreen(m_SCR_Shadow_Pass, _cBuffer, BLENDING_MODE_DEFAULT);
 
 	//BlurPass(L"GBuffer_Shadow", L"GBuffer_Shadow_blur512", L"GBuffer_Shadow_blur512_out", 512, 512);
-
 	//BlurPass(L"GBuffer_Shadow", L"GBuffer_Shadow_blur128", L"GBuffer_Shadow_blur128_out", 128, 128);
 }
 
@@ -331,11 +361,8 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	if (count == 0)
 		return;
 
-	Mesh* mesh = m_resourceManager->GetResource<Mesh>(L"sphere");
-	Shader* mtrlStencilLight = m_resourceManager->GetResource<Shader>(L"SCR_PointLight_Stencil");
-	Shader* mtrlLight = m_resourceManager->GetResource<Shader>(L"SCR_PointLight");
-	mtrlStencilLight->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
-	mtrlLight->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	m_SCR_PointLight_Stencil->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
+	m_SCR_PointLight->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_STENCILENABLE, true));
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP::D3DSTENCILOP_KEEP));
@@ -376,7 +403,7 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 
 		if (_cam->IsInFrustumCulling(pos, scale))
 		{
-			PointLightPass(world, pointLight->GetLightInfo(), mesh, mtrlStencilLight, mtrlLight);
+			PointLightPass(world, pointLight->GetLightInfo(), m_sphere, m_SCR_PointLight_Stencil, m_SCR_PointLight);
 			m_device->Clear(0, nullptr, D3DCLEAR_STENCIL, 0, 1, 0);
 		}
 	}
@@ -453,7 +480,7 @@ void RenderManager::DebugPass(ConstantBuffer & _cBuffer)
 	if (m_isRenderDebug)
 	{
 		UpdateBlendingMode(BLENDING_MODE_DEFAULT);
-		RenderByShaderToScreen(L"SCR_Debug_Pass", _cBuffer, BLENDING_MODE_DEFAULT);
+		RenderByShaderToScreen(m_SCR_Debug_Pass, _cBuffer, BLENDING_MODE_DEFAULT);
 	}
 }
 
@@ -465,10 +492,9 @@ void RenderManager::DirectionalLightPass(ConstantBuffer& _cBuffer)
 
 	DirectionalLightInfo info = m_lightManager->GetDirectionalLightInfo();
 
-	Shader* shader = m_resourceManager->GetResource<Shader>(L"SCR_DirectionalLight");
-	shader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
+	m_SCR_DirectionalLight->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
 
-	RenderByShaderToScreen(L"SCR_DirectionalLight", _cBuffer, BLENDING_MODE_ADDITIVE);
+	RenderByShaderToScreen(m_SCR_DirectionalLight, _cBuffer, BLENDING_MODE_ADDITIVE);
 
 	ShadowPass(_cBuffer, info);
 }
@@ -581,38 +607,34 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZENABLE, true));
 }
 
-void RenderManager::BlurPass(const wstring & _inputRT, const wstring& _middleRT, const wstring & _outputRT, float _rtSizeX, float _rtSizeY)
+void RenderManager::BlurPass(RenderTarget* _inRT, RenderTarget* _middleRT, RenderTarget* _outRT, float _rtSizeX, float _rtSizeY)
 {
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
 
-	Shader* shader = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_GaussianBlur");
-	m_currentShader = shader;
+	m_currentShader = m_SCR_GaussianBlur;
 
-	RenderTarget* inputRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_inputRT);
-	RenderTarget* middleRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_middleRT);
-	RenderTarget* outputRT = ResourceManager::GetInstance()->GetResource<RenderTarget>(_outputRT);
 
 	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
 	m_screenImageMesh->BindingStreamSource(sizeof(INPUT_LAYOUT_POSITION_UV));
 
-	shader->BeginPass(0);
-	UpdateRenderTarget(middleRT);
-	shader->SetTexture("g_mainTex", inputRT->GetTexture());
-	shader->SetFloat("g_RTperPixelX", 0.5f / _rtSizeX);
-	shader->SetFloat("g_RTperPixelY", 0.5f / _rtSizeY);
-	shader->CommitChanges();
+	m_currentShader->BeginPass(0);
+	UpdateRenderTarget(_middleRT);
+	m_currentShader->SetTexture("g_mainTex", _inRT->GetTexture());
+	m_currentShader->SetFloat("g_RTperPixelX", 0.5f / _rtSizeX);
+	m_currentShader->SetFloat("g_RTperPixelY", 0.5f / _rtSizeY);
+	m_currentShader->CommitChanges();
 	m_screenImageMesh->Draw();
-	shader->EndPass();
+	m_currentShader->EndPass();
 	EndRenderTarget();
 
 
 	////////////////////////////////////////////////////////////////////////////
-	shader->BeginPass(1);
-	UpdateRenderTarget(outputRT);
-	shader->SetTexture("g_mainTex", middleRT->GetTexture());
-	shader->CommitChanges();
+	m_currentShader->BeginPass(1);
+	UpdateRenderTarget(_outRT);
+	m_currentShader->SetTexture("g_mainTex", _middleRT->GetTexture());
+	m_currentShader->CommitChanges();
 	m_screenImageMesh->Draw();
-	shader->EndPass();
+	m_currentShader->EndPass();
 	EndRenderTarget();
 
 	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, true));
@@ -664,29 +686,6 @@ void RenderManager::Reset()
 	m_renderUILists.clear();
 
 	m_debugManager->EraseTheRecord();
-}
-
-void RenderManager::RenderByShaderToScreen(const wstring & _shaderName, ConstantBuffer& _cBuffer,BLENDING_MODE _blendMode)
-{
-	Shader* shader = ResourceManager::GetInstance()->GetResource<Shader>(_shaderName);
-	shader->SetValue("g_cBuffer", &_cBuffer, sizeof(ConstantBuffer));
-	UpdateRenderTarget(shader);
-	shader->BeginPass();
-	UpdateBlendingMode(_blendMode);
-	UpdateFillMode(FILL_MODE_SOLID);
-
-	ThrowIfFailed(m_device->SetVertexDeclaration(shader->GetDeclartion()));
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
-
-	m_screenImageMesh->BindingStreamSource(sizeof(INPUT_LAYOUT_POSITION_UV));
-
-	shader->CommitChanges();
-	m_screenImageMesh->Draw();
-
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ZWRITEENABLE, true));
-
-	shader->EndPass();
-	EndRenderTarget();
 }
 
 void RenderManager::RenderByShaderToScreen(Shader * _shader, ConstantBuffer & _cBuffer, BLENDING_MODE _blendMode)
@@ -742,8 +741,6 @@ ConstantBuffer RenderManager::GetConstantBufferByCam(Camera * _cam)
 
 void RenderManager::RenderRequest(IRenderer * _render)
 {
-
-
 	switch (_render->GetType())
 	{
 	case RENDERER_TYPE::RENDERER_TYPE_CANVAS:
@@ -772,6 +769,7 @@ void RenderManager::RenderRequest(IRenderer * _render)
 			UINT mtrlCount = mesh->GetSubsetCount(i);
 			for (UINT j = 0; j < mtrlCount; ++j)
 			{
+			
 				auto mtrl = _render->GetMaterial(mtrlIndex);
 				RenderInfo renderInfo;
 				renderInfo.renderer = _render;
@@ -1064,12 +1062,10 @@ void RenderManager::RenderPhysX(ConstantBuffer& _cBuffer)
 	m_currentShader = nullptr;
 	m_currentMaterial = nullptr;
 
-	Shader* shader = m_resourceManager->GetResource<Shader>(L"SYS_PhysX");
-	
 	UpdateBlendingMode(BLENDING_MODE_DEFAULT);
 	UpdateFillMode(FILL_MODE_WIREFRAME);
-	UpdateShader(shader, _cBuffer);
-	UpdateRenderTarget(shader);
+	UpdateShader(m_SYS_PhysX, _cBuffer);
+	UpdateRenderTarget(m_SYS_PhysX);
 	m_currentShader->CommitChanges();
 
 	RenderPhysXLine();
@@ -1090,7 +1086,7 @@ void RenderManager::RenderPhysXTriangle()
 
 	if (nbTriangleCount)
 	{
-		INPUT_LAYOUT_POSITION* vertex = new INPUT_LAYOUT_POSITION[nbTriangleCount * 3];
+		INPUT_LAYOUT_POSITION_COLOR* vertex = new INPUT_LAYOUT_POSITION_COLOR[nbTriangleCount * 3];
 
 		const PxDebugTriangle* triangles = renderData.getTriangles();
 
@@ -1098,18 +1094,21 @@ void RenderManager::RenderPhysXTriangle()
 		while (nbTriangleCount--)
 		{
 			vertex[vertexIndex].position = { triangles->pos0.x,triangles->pos0.y, triangles->pos0.z };
+			vertex[vertexIndex].color = { 255,0,255 };
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { triangles->pos1.x,triangles->pos1.y, triangles->pos1.z };
+			vertex[vertexIndex].color = { 255,0,255 };
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { triangles->pos2.x,triangles->pos2.y, triangles->pos2.z };
+			vertex[vertexIndex].color = { 255,0,255 };
 			++vertexIndex;
 
 			++triangles;
 		}
 
-		m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, renderData.getNbTriangles(), vertex, sizeof(INPUT_LAYOUT_POSITION));
+		m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, renderData.getNbTriangles(), vertex, sizeof(INPUT_LAYOUT_POSITION_COLOR));
 		SAFE_DELETE_ARR(vertex);
 	}
 }
@@ -1122,7 +1121,7 @@ void RenderManager::RenderPhysXLine()
 
 	if (nbLineCount)
 	{
-		INPUT_LAYOUT_POSITION* vertex = new INPUT_LAYOUT_POSITION[nbLineCount * 2];
+		INPUT_LAYOUT_POSITION_COLOR* vertex = new INPUT_LAYOUT_POSITION_COLOR[nbLineCount * 2];
 
 		const PxDebugLine* lines = renderData.getLines();
 
@@ -1130,38 +1129,22 @@ void RenderManager::RenderPhysXLine()
 		while (nbLineCount--)
 		{
 			vertex[vertexIndex].position = { lines->pos0.x,lines->pos0.y, lines->pos0.z };
+			vertex[vertexIndex].color = { 255,0,255 };
+
 			++vertexIndex;
 
 			vertex[vertexIndex].position = { lines->pos1.x,lines->pos1.y, lines->pos1.z };
+			vertex[vertexIndex].color = { 255,0,255 };
+
 			++vertexIndex;
 
 			++lines;
 
 		}
 
-		m_device->DrawPrimitiveUP(D3DPT_LINELIST, renderData.getNbLines(), vertex, sizeof(INPUT_LAYOUT_POSITION));
+		m_device->DrawPrimitiveUP(D3DPT_LINELIST, renderData.getNbLines(), vertex, sizeof(INPUT_LAYOUT_POSITION_COLOR));
 		SAFE_DELETE_ARR(vertex);
 	}
-}
-
-void RenderManager::RecordRenderTarget(UINT _index, const wstring & _name)
-{
-	m_resourceManager->GetResource<RenderTarget>(_name)->StartRecord(_index);
-}
-
-void RenderManager::EndRenderTarget(const wstring & _name)
-{
-	m_resourceManager->GetResource<RenderTarget>(_name)->EndRecord();
-}
-
-void RenderManager::RecordDepthStencil(const wstring & _name)
-{
-	m_resourceManager->GetResource<DepthStencil>(_name)->StartRecord();
-}
-
-void RenderManager::EndDepthStencil(const wstring & _name)
-{
-	m_resourceManager->GetResource<DepthStencil>(_name)->EndRecord();
 }
 
 void RenderManager::SetWindowSize(UINT _x, UINT _y)
@@ -1208,16 +1191,6 @@ void RenderManager::DeleteCamera(Camera * _cam)
 			return;
 		}
 	}
-}
-
-void RenderManager::ClearRenderTarget(const wstring & _targetName)
-{
-	m_resourceManager->GetResource<RenderTarget>(_targetName)->Clear();
-}
-
-void RenderManager::ClearDepthStencil(const wstring & _targetName)
-{
-	m_resourceManager->GetResource<DepthStencil>(_targetName)->Clear();
 }
 
 void RenderManager::SetDebugRender(bool _render)

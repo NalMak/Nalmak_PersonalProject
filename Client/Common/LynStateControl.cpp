@@ -16,14 +16,16 @@ void LynStateControl::Initialize()
 {
 	m_character = GetComponent<CharacterController>();
 	m_info = GetComponent<LynInfo>();
-	m_animController = GetComponent<AnimationController>();
+	m_animController_lower = GetComponents<AnimationController>()[0];
+	m_animController_upper = GetComponents<AnimationController>()[1];
 
 	for(auto& state : m_stateList)
 	{
 		LynState* lynState = (LynState*)(state.second);
 		lynState->m_character = m_character;
 		lynState->m_info = m_info;
-		lynState->m_animController = m_animController;
+		lynState->m_animController_lower = m_animController_lower;
+		lynState->m_animController_upper = m_animController_upper;
 	}
 	
 	StateControl::Initialize();

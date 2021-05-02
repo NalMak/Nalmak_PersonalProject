@@ -149,4 +149,5 @@ public:
 	CEdit m_pointLightRadius;
 	CMFCColorButton m_pointLightColor;
 	CButton m_usePointLight;
+	afx_msg void OnBnClickedButtonCopyObject();
 };

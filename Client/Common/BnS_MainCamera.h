@@ -9,9 +9,9 @@ public:
 		GameObject* player = nullptr;
 
 		float minDistance = 5.f;
-		float maxDistance = 25.f;
+		float maxDistance = 45.f;
 		float mouseSensitive = 10.f;
-		float wheelSensitive = 0.5f;
+		float wheelSensitive = 4.f;
 	};
 public:
 	BnS_MainCamera(Desc* _desc);
@@ -26,10 +26,11 @@ public:
 private:
 	GameObject* m_player;
 	float m_distance;
+	float m_targetDisance;
 	float m_minDistance;
 	float m_maxDistance;
 	Vector2 m_mouseAngle;
-	Vector3 m_offset;
+	float m_offsetY;
 	float m_mouseSensitive;
 	float m_wheelSensitive;
 	bool m_triggerOn;

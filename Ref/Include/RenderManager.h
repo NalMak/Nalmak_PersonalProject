@@ -17,6 +17,7 @@ class Camera;
 class DebugManager;
 class MeshRenderer;
 class LightManager;
+class DepthStencil;
 BEGIN(Nalmak)
 
 
@@ -94,11 +95,10 @@ private:
 	void TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void PostProcessPass(Camera* _cam, ConstantBuffer& _cBuffer);
 	void UIPass(Camera* _cam, ConstantBuffer& _cBuffer);
-	void BlurPass(const wstring& _inRT,const wstring& _middleRT, const wstring& _outRT, float _rtSizeX, float _rtSizeY);
+	void BlurPass(RenderTarget* _inRT, RenderTarget* _middleRT, RenderTarget* _outRT, float _rtSizeX, float _rtSizeY);
 private:
 	void RenderNoneAlpha(Camera * _cam, ConstantBuffer& _cBuffer, RENDERING_MODE _mode);
 private:
-	void RenderByShaderToScreen(const wstring& _shaderName, ConstantBuffer& _cBuffer, BLENDING_MODE _blendMode);
 	void RenderByShaderToScreen(Shader* _shader, ConstantBuffer& _cBuffer, BLENDING_MODE _blendMode);
 private:
 	ConstantBuffer GetConstantBufferByCam(Camera* _cam);
@@ -150,10 +150,10 @@ private:
 	void RenderPhysXTriangle();
 	void RenderPhysXLine();
 private:
-	void RecordRenderTarget(UINT _index, const wstring& _name);
+	/*void RecordRenderTarget(UINT _index, const wstring& _name);
 	void EndRenderTarget(const wstring& _name);
 	void RecordDepthStencil(const wstring& _name);
-	void EndDepthStencil(const wstring& _name);
+	void EndDepthStencil(const wstring& _name);*/
 public:
 	void SetWindowSize(UINT _x, UINT _y);
 public:
@@ -174,16 +174,41 @@ private:
 	LightManager* m_lightManager;
 	ResourceManager* m_resourceManager;
 
-private:
-	void ClearRenderTarget(const wstring& _targetName);
-	void ClearDepthStencil(const wstring& _targetName);
 public:
 	void SetDebugRender(bool _render);
 	void SetColliderRender(bool _render);
 private:
 	bool m_isRenderDebug = true;
 	bool m_isRenderCollider = false;
+private:
+	RenderTarget* m_GBuffer_Diffuse;
+	RenderTarget* m_GBuffer_Normal;
+	RenderTarget* m_GBuffer_Depth_CookTorrance;
+	RenderTarget* m_GBuffer_Light;
+	RenderTarget* m_GBuffer_Debug;
+	RenderTarget* m_GBuffer_Final;
+	RenderTarget* m_GBuffer_Emission;
+	RenderTarget* m_GBuffer_Specular;
+	RenderTarget* m_GBuffer_Shadow;
+	RenderTarget* m_GBuffer_LightDepth;
 
+private:
+	Shader* m_SCR_Geometry_Pass;
+	Shader* m_SCR_Emission_Pass;
+	Shader* m_SCR_Final_Pass;
+	Shader* m_SCR_Shadow_Pass;
+	Shader* m_SCR_Debug_Pass;
+	Shader* m_SCR_DirectionalLight;
+private:
+	Mesh* m_sphere;
+	Shader* m_SCR_PointLight_Stencil;
+	Shader* m_SCR_PointLight;
+	Shader* m_SYS_LightDepth;
+	Shader* m_SYS_LightDepth_Animation;
+	Shader* m_SCR_GaussianBlur;
+	Shader* m_SYS_PhysX;
+
+	DepthStencil* m_DepthStencil_Shadow;
 };
 
 END

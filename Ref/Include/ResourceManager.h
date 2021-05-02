@@ -23,7 +23,17 @@ public:
 	void Update();
 	HRESULT Release();
 	void ReleaseSceneResouce();
+	template <typename TYPE, typename T>
+	T* AddResource(const wstring& _name,bool _isStatic = false)
+	{
+		TYPE* resource = new T();
+		resource->m_isStatic = _isStatic;
+		((IResource*)resource)->m_name = _name;
+		resource->Initialize(L"");
+		m_resoucreContainers[typeid(TYPE).name()][_name] = resource;
 
+		return (T*)resource;
+	}
 	template<typename T>
 	T* GetResource(const wstring& _name)
 	{

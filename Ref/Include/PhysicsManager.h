@@ -45,9 +45,10 @@ private:
 
 	vector<unsigned long long>  m_collisionLayer;
 public:
+	PxFilterData GetFilterData(_OBJECT_LAYER _layer);
 	void ActiveCollisionLayer(_OBJECT_LAYER _layer1, _OBJECT_LAYER _layer2);
 private:
-	void AdjustCollisionLayer(PxShape * _shape, Collider * collider);
+	void AdjustCollisionLayer(PxShape * _shape, USHORT _layer);
 	void SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _filterMask);
 public:
 	void AddActorToScene(PxActor* _rigid);

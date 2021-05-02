@@ -17,7 +17,7 @@ LightManager::~LightManager()
 
 void LightManager::Initialize()
 {
-	m_isSkyBoxRender = true;
+	m_isSkyBoxRender = false;
 	m_skyBoxMesh = ResourceManager::GetInstance()->GetResource<Mesh>(L"skyBox");
 	m_skyBoxMtrl = ResourceManager::GetInstance()->GetResource<Material>(L"SYS_SkyBox");
 	m_skyBoxMtrl->SetTexture("g_skyBox", L"skyBox_default");

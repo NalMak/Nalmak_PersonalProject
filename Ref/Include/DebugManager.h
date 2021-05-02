@@ -64,6 +64,7 @@ public:
 	void DebugLog(const wstring&  _name, Transform* _trs);
 	void DebugLog(const wstring&  _name, GameObject* _obj);
 	void DebugLog(const wstring&  _name, const wstring& _string);
+	void DebugLog(const wstring&  _name, const string & _string);
 
 	template <typename T>
 	void DebugLog(const wstring&  _name, const T& _log)

@@ -42,6 +42,7 @@
 #define IDC_EDIT21                      1026
 #define IDC_EDIT37                      1027
 #define IDC_EDIT38                      1028
+#define IDC_BUTTON18                    1029
 #define IDC_TAB1                        1030
 #define IDC_EDIT22                      1030
 #define IDC_COMBO2                      1031

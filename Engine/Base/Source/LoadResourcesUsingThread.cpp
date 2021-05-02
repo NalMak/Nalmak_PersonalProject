@@ -21,7 +21,6 @@ void LoadResourcesUsingThread::Initialize()
 {
 	InitializeCriticalSection(&m_crt);
 	m_thread = (HANDLE)_beginthreadex(nullptr, 0, DoThreadFunc, this, 0, nullptr);
-
 }
 
 void LoadResourcesUsingThread::Update()

@@ -12,9 +12,10 @@ BnS_MainCamera::BnS_MainCamera(Desc * _desc)
 
 	m_player = _desc->player;
 
-	m_distance = 25;
+	m_distance = 25.f;
+	m_targetDisance = 25.f;
 	m_mouseAngle = { 30.f,0 };
-	m_offset = { 0,3.f,0 };
+	m_offsetY = 12.f;
 
 	m_triggerOn = false;
 }
@@ -30,14 +31,14 @@ void BnS_MainCamera::Initialize()
 void BnS_MainCamera::Update()
 {
 
-	m_distance -= InputManager::GetInstance()->GetMouseDT(MOUSE_MOVE_STATE_Z) *  dTime * m_wheelSensitive;
+	m_targetDisance -= InputManager::GetInstance()->GetMouseDT(MOUSE_MOVE_STATE_Z) *  dTime * m_wheelSensitive;
 	if (m_triggerOn)
 	{
-		m_distance -= dTime * 15.f;
+		m_targetDisance -= dTime * 15.f;
 	}
 	
-	m_distance = Nalmak_Math::Clamp(m_distance, m_minDistance, m_maxDistance);
-
+	m_targetDisance = Nalmak_Math::Clamp(m_targetDisance, m_minDistance, m_maxDistance);
+	m_distance = Nalmak_Math::Lerp(m_distance, m_targetDisance, dTime * 2);
 	
 	Vector2 mouseDT = InputManager::GetInstance()->GetMouseMoveDir();
 	m_mouseAngle += Vector2(mouseDT.y, mouseDT.x) * dTime * m_mouseSensitive;
@@ -51,7 +52,9 @@ void BnS_MainCamera::Update()
 
 	D3DXVec3TransformNormal(&dir, &dir, &rot);
 	D3DXQuaternionRotationMatrix(&qRot, &rot);
-	m_transform->position = m_player->GetTransform()->GetWorldPosition() - dir * m_distance + m_offset;
+	float offsetY =  m_offsetY * (m_distance / m_maxDistance);
+	offsetY = Nalmak_Math::Clamp(offsetY, 3.f, 12.f);
+	m_transform->position = m_player->GetTransform()->GetWorldPosition() - dir * m_distance + Vector3(0,offsetY,0);
 	m_transform->rotation = qRot;
 
 	if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_WHEEL_MOUSE))

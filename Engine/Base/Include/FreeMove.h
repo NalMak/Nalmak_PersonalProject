@@ -38,10 +38,10 @@ class NALMAK_DLL FreeMove :
 public:
 	struct	Desc
 	{
-		float keyMoveSpeed = 10.f;
-		float wheelMoveSpeed = 1.f;
-		float mouseSensitive = 0.1f;
-		float scrollSpeed = 1.f;
+		float keyMoveSpeed = 15.f;
+		float wheelMoveSpeed = 1.5f;
+		float mouseSensitive = 0.15f;
+		float scrollSpeed = 1.5f;
 	};
 	FreeMove(Desc* _desc);
 private:

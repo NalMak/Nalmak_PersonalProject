@@ -1,15 +1,17 @@
 #pragma once
 #include "Component.h"
+class LynStateControl;
+
 class LynInfo :
 	public Component
 {
 public:
 	struct Desc
 	{
-		float runForwardSpeed = 14.f;
-		float runBackwardSpeed = 6.5f;
+		float runForwardSpeed = 14.5f;
+		float runBackwardSpeed = 8.f;
 		float airSpeed = 10.5f;
-		float jumpPower = 15.f;
+		float jumpPower = 16.f;
 		float turningSpeed = 7.f;
 		float halfHeight = 3.2f;
 		float jumpHalfHeight = 0.9f;
@@ -20,7 +22,13 @@ public:
 private:
 	virtual void Initialize() override;
 	virtual void Update() override;
+	void OnTriggerEnter(Collisions& _col) override;
+	void OnTriggerStay(Collisions& _col) override;
+	void OnTriggerExit(Collisions& _col) override;
 
+	void OnCollisionEnter(Collisions& _col) override;
+	void OnCollisionStay(Collisions& _col) override;
+	void OnCollisionExit(Collisions& _col) override;
 public:
 	void SetState(LYN_STATE _state);
 	LYN_STATE m_state;
@@ -33,14 +41,32 @@ public:
 	float m_turningSpeed;
 	float m_halfHeight;
 	float m_jumpHalfHeight;
+	BitFlag<ANIMATION_FIX_PART> m_animFixPart;
+
 public:
 	float m_currentSpeed;
 	bool m_isGround;
 public:
 	void EquipeWeapon(GameObject* _weapon);
-
+	void UpdateWeapon();
 private:
 	GameObject* m_weapon;
-	AnimationController* m_animController;
+	AnimationController* m_animController_lower;
+	AnimationController* m_animController_upper;
+	LynStateControl* m_stateControll;
+	CharacterController* m_characterController;
+	SkinnedMeshRenderer* m_skinRenderer;
+	bool m_followingAnimationPosition;
+private:
+	Matrix* m_matPeaceStandard;
+	Matrix* m_matBattleStandard;
+	Matrix* m_matBattleHide;
+private:
+	Vector3 m_preAnimPos;
+
+
+private:
+	GameObject* m_target;
+
 };
 
