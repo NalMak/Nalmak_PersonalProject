@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MapTool_NavMeshState.h"
 #include "NavPointDraw.h"
-
+#include "NavSelectedPoint.h"
 
 MapTool_NavMeshState::MapTool_NavMeshState()
 {
@@ -22,7 +22,7 @@ void MapTool_NavMeshState::Initialize()
 	render.mtrlName = L"SYS_Diffuse_Red";
 	for (int i = 0; i < 2; ++i)
 	{
-		m_pickingPointsForDebug[i] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.22f,0.22f,0.22f);
+		m_pickingPointsForDebug[i] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.22f,0.22f,0.22f)->AddComponent<NavSelectedPoint>();
 		m_pickingPointsForDebug[i]->SetActive(false);
 	}
 
@@ -65,6 +65,10 @@ void MapTool_NavMeshState::UpdateState()
 		}
 	}
 
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_X))
+	{
+
+	}
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
 	{
@@ -112,6 +116,9 @@ void MapTool_NavMeshState::UpdateState()
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
 	{
 		m_currentSelectMovePoint = nullptr;
+
+		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_ALT))
+			return;
 
 		if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
 		{

@@ -12,6 +12,7 @@ public:
 	struct Desc
 	{
 		bool createDirectoryMonitor = false;
+		bool freeCamera = false;
 	};
 	
 
@@ -40,6 +41,8 @@ private:
 	GameObject* m_pickingObj;
 	MeshRenderer* m_pickingOutLine;
 
+
+	bool m_startOn_freeCamera;
 	DrawGizmo* m_pickingGizmoBase;
 	PICKING_TYPE m_pickingType;
 	GIZMO_TYPE m_gizmoType;

@@ -210,6 +210,7 @@
     <ClInclude Include="Nalmak3D_MapToolView.h" />
     <ClInclude Include="NavMeshTool.h" />
     <ClInclude Include="NavPointDraw.h" />
+    <ClInclude Include="NavSelectedPoint.h" />
     <ClInclude Include="ObjectInstallTool.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="Nalmak3D_MapToolView.cpp" />
     <ClCompile Include="NavMeshTool.cpp" />
     <ClCompile Include="NavPointDraw.cpp" />
+    <ClCompile Include="NavSelectedPoint.cpp" />
     <ClCompile Include="ObjectInstallTool.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

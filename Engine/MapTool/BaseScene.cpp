@@ -29,7 +29,9 @@ void BaseScene::Initialize()
 	auto cam = INSTANTIATE()->AddComponent<Camera>(&camera)->SetPosition(2, 1, -10.f);
 
 
-	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>()->AddComponent<StateControl>();
+	DebuggingMode::Desc debugDesc;
+	debugDesc.freeCamera = true;
+	auto debug = INSTANTIATE()->AddComponent<DebuggingMode>(&debugDesc)->AddComponent<StateControl>();
 	debug->GetComponent<StateControl>()->AddState<MapTool_ObjectState>(L"object");
 	debug->GetComponent<StateControl>()->AddState<MapTool_NavMeshState>(L"navMesh");
 	debug->GetComponent<StateControl>()->AddState<MapTool_AnimationState>(L"animation");

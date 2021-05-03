@@ -39,7 +39,7 @@ public:
 	struct	Desc
 	{
 		float keyMoveSpeed = 15.f;
-		float wheelMoveSpeed = 1.5f;
+		float wheelMoveSpeed = 3.f;
 		float mouseSensitive = 0.15f;
 		float scrollSpeed = 1.5f;
 	};
@@ -61,9 +61,7 @@ private:
 	void ArrowInput();
 
 	void Move(Vector3 _dir);
-
 	void Rotate(Vector2 _dir);
-
 	void Zoom(float _dir);
 private:
 	class InputManager* m_input;

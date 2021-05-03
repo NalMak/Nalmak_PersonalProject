@@ -19,6 +19,7 @@ void LynStateControl::Initialize()
 	m_animController_lower = GetComponents<AnimationController>()[0];
 	m_animController_upper = GetComponents<AnimationController>()[1];
 
+	auto stateControls = GetComponents<LynStateControl>();
 	for(auto& state : m_stateList)
 	{
 		LynState* lynState = (LynState*)(state.second);
@@ -26,6 +27,8 @@ void LynStateControl::Initialize()
 		lynState->m_info = m_info;
 		lynState->m_animController_lower = m_animController_lower;
 		lynState->m_animController_upper = m_animController_upper;
+		lynState->m_lynMoveControl = stateControls[0];
+		lynState->m_lynSkillControl = stateControls[1];
 	}
 	
 	StateControl::Initialize();
@@ -67,7 +70,7 @@ void LynStateControl::UpdatePosition()
 	m_character->SetVelocityZ(velocity.z);
 }
 
-LynStateControl::LYN_MOVE_DIR_STATE LynStateControl::UpdateDirection()
+LYN_MOVE_DIR_STATE LynStateControl::UpdateDirection()
 {
 	m_targetInput = { 0,0,0 };
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
@@ -106,7 +109,7 @@ LynStateControl::LYN_MOVE_DIR_STATE LynStateControl::UpdateDirection()
 	return m_dirState;
 }
 
-LynStateControl::LYN_MOVE_DIR_STATE LynStateControl::GetDirectionState()
+LYN_MOVE_DIR_STATE LynStateControl::GetDirectionState()
 {
 	return m_dirState;
 }

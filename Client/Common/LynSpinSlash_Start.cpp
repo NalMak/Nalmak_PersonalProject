@@ -50,4 +50,6 @@ void LynSpinSlash_Start::ExitState()
 
 	m_animController_upper->SetSeparate(true);
 	m_animController_lower->SetActive(true);//->Play("Lyn_B_Std_SpinSlash_01_1");
+
+	SetInteger(L"IsBlend", 0);
 }

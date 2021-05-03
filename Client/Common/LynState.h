@@ -10,21 +10,7 @@ class LynState :
 	friend class LynStateControl;
 public:
 	LynState();
-	~LynState();
-public:
-	enum LYN_MOVE_DIR_STATE
-	{
-		LYN_MOVE_DIR_STATE_FRONT,
-		LYN_MOVE_DIR_STATE_RIGHT,
-		LYN_MOVE_DIR_STATE_FRONTRIGHT,
-		LYN_MOVE_DIR_STATE_LEFT,
-		LYN_MOVE_DIR_STATE_FRONTLEFT,
-		LYN_MOVE_DIR_STATE_BACK,
-		LYN_MOVE_DIR_STATE_BACKRIGHT,
-		LYN_MOVE_DIR_STATE_BACKLEFT,
-		LYN_MOVE_DIR_STATE_NONE,
-		LYN_MOVE_DIR_STATE_MAX
-	};
+	~LynState();	
 protected:
 	// IState을(를) 통해 상속됨
 	virtual void Initialize() = 0;
@@ -37,7 +23,9 @@ protected:
 
 	CharacterController* m_character;
 	LynInfo* m_info;
-	LynStateControl* m_lynControl;
+	LynStateControl* m_lynMoveControl;
+	LynStateControl* m_lynSkillControl;
+
 private:
 
 };

@@ -513,6 +513,9 @@ size_t Transform::GetChildCount()
 
 void Transform::SetParents(Transform * _parents, Matrix * _bone)
 {
+	if(_parents == this)
+		assert("parents are themselves" && 0);
+
 	if (m_parents)
 		m_parents->DeleteChild(this);
 
@@ -526,7 +529,8 @@ void Transform::SetParents(Transform * _parents, Matrix * _bone)
 void Transform::SetParents(Transform * _parents)
 {
 	assert("parents is nullptr" && _parents);
-	assert("parents are themselves" && !(_parents == this));
+	if (_parents == this)
+		assert("parents are themselves" && 0);
 	if (m_boneParents)
 		m_boneParents = nullptr;
 

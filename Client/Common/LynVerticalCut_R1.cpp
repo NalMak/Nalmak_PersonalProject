@@ -41,7 +41,7 @@ void LynVerticalCut_R1::UpdateState()
 		}
 		else
 		{
-			SetState(L"idle");
+			SetState(L"wait");
 			return;
 		}
 	}

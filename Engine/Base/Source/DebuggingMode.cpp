@@ -25,7 +25,7 @@ DebuggingMode::DebuggingMode(Desc * _desc)
 	m_pickingOutLine = nullptr;
 	m_pickingType = PICKING_TYPE_NONE;
 	m_gizmoType = GIZMO_TYPE_POSITION;
-
+	m_startOn_freeCamera = _desc->freeCamera;
 	if (_desc->createDirectoryMonitor)
 	{
 		DirectoryMonitoring::Desc directory;
@@ -113,7 +113,11 @@ void DebuggingMode::Initialize()
 
 
 	m_debuggingMode.Off(DEBUGGING_MODE_RENDERTARGET);
-	m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA);
+	if(!m_startOn_freeCamera)
+		m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA);
+	else
+		m_debuggingMode.On(DEBUGGING_MODE_FREE_CAMERA);
+
 	m_debuggingMode.Off(DEBUGGING_MODE_FREE_CAMERA_ROCK);
 	m_debuggingMode.On(DEBUGGING_MODE_DEBUG_LOG);
 	m_debuggingMode.On(DEBUGGING_MODE_COLLIDER);

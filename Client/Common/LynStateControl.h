@@ -11,20 +11,6 @@ public:
 
 	};
 public:
-	enum LYN_MOVE_DIR_STATE
-	{
-		LYN_MOVE_DIR_STATE_FRONT,
-		LYN_MOVE_DIR_STATE_RIGHT,
-		LYN_MOVE_DIR_STATE_FRONTRIGHT,
-		LYN_MOVE_DIR_STATE_LEFT,
-		LYN_MOVE_DIR_STATE_FRONTLEFT,
-		LYN_MOVE_DIR_STATE_BACK,
-		LYN_MOVE_DIR_STATE_BACKRIGHT,
-		LYN_MOVE_DIR_STATE_BACKLEFT,
-		LYN_MOVE_DIR_STATE_NONE,
-		LYN_MOVE_DIR_STATE_MAX
-	};
-public:
 	LynStateControl(Desc* _desc);
 	~LynStateControl();
 private:
@@ -43,7 +29,6 @@ public:
 		
 
 		state->m_stateControl = this;
-		state->m_lynControl = this;
 		m_stateList[_stateName] = state;
 
 		return this;

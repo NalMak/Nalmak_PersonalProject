@@ -195,7 +195,6 @@
     <ClInclude Include="LynJump.h" />
     <ClInclude Include="LynLand.h" />
     <ClInclude Include="LynMove.h" />
-    <ClInclude Include="LynMoving.h" />
     <ClInclude Include="LynSpinSlash_Combo.h" />
     <ClInclude Include="LynSpinSlash_End.h" />
     <ClInclude Include="LynSpinSlash_Start.h" />
@@ -207,6 +206,7 @@
     <ClInclude Include="LynVerticalCut_R0.h" />
     <ClInclude Include="LynVerticalCut_R1.h" />
     <ClInclude Include="LynVerticalCut_R2.h" />
+    <ClInclude Include="LynWait.h" />
     <ClInclude Include="Lyn_Attack_Basic1.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
@@ -236,7 +236,6 @@
     <ClCompile Include="LynJump.cpp" />
     <ClCompile Include="LynLand.cpp" />
     <ClCompile Include="LynMove.cpp" />
-    <ClCompile Include="LynMoving.cpp" />
     <ClCompile Include="LynSpinSlash_Combo.cpp" />
     <ClCompile Include="LynSpinSlash_End.cpp" />
     <ClCompile Include="LynSpinSlash_Start.cpp" />
@@ -248,6 +247,7 @@
     <ClCompile Include="LynVerticalCut_R0.cpp" />
     <ClCompile Include="LynVerticalCut_R1.cpp" />
     <ClCompile Include="LynVerticalCut_R2.cpp" />
+    <ClCompile Include="LynWait.cpp" />
     <ClCompile Include="Lyn_Attack_Basic1.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />

@@ -57,21 +57,21 @@ void DrawGizmo::Update()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		m_pickingGizmo[i]->SetScale(distance * 0.05f, distance * 0.05f, distance * 0.05f);
+		m_pickingGizmo[i]->SetScale(distance * 0.04f, distance * 0.04f, distance * 0.04f);
 	}
-	m_pickingGizmo[0]->SetPosition(distance * 0.05f, 0, 0);
-	m_pickingGizmo[1]->SetPosition(0, distance *  0.05f, 0);
-	m_pickingGizmo[2]->SetPosition(0, 0, distance *  0.05f);
+	m_pickingGizmo[0]->SetPosition(distance * 0.08f, 0, 0);
+	m_pickingGizmo[1]->SetPosition(0, distance *  0.08f, 0);
+	m_pickingGizmo[2]->SetPosition(0, 0, distance *  0.08f);
 
 }
 
 void DrawGizmo::LateUpdate()
 {
-	Matrix world = m_transform->GetNoneScaleWorldMatrix();
+	Matrix world = m_transform->GetWorldMatrix();
 	Vector3 pos = { world._41,world._42,world._43 };
-	m_line->DrawLine(pos, pos + Vector3(world._11, world._12, world._13) * 2, DEBUG_COLOR_RED);		// right
-	m_line->DrawLine(pos, pos + Vector3(world._21, world._22, world._23) * 2, DEBUG_COLOR_GREEN);	// up
-	m_line->DrawLine(pos, pos + Vector3(world._31, world._32, world._33) * 2, DEBUG_COLOR_BLUE);	// forward
+	m_line->DrawLine(pos, pos + Vector3(world._11, world._12, world._13), DEBUG_COLOR_RED);		// right
+	m_line->DrawLine(pos, pos + Vector3(world._21, world._22, world._23), DEBUG_COLOR_GREEN);	// up
+	m_line->DrawLine(pos, pos + Vector3(world._31, world._32, world._33), DEBUG_COLOR_BLUE);	// forward
 
 }
 

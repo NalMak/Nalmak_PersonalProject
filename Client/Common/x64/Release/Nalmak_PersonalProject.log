@@ -1,11 +1,5 @@
-﻿C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Resource\static\Shader\BnS_StaticObject_DN.fx(95,9-56): warning X3206: implicit truncation of vector type
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Bin\x64\Release\BnS_StaticObject_DN.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Bin\x64\Release\homework.cso
-  stdafx.cpp
+﻿  stdafx.cpp
+  AttackInfo.cpp
   BnS_DamageFont.cpp
   BnS_Enemy.cpp
   BnS_MainCamera.cpp
@@ -13,22 +7,27 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   homework_enemy.cpp
   Homework_Player.cpp
   LynBackStep.cpp
+LynBackStep.cpp(43): warning C4244: '인수': 'double'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   LynBattleToPeace.cpp
+  LynFall.cpp
   LynIdle.cpp
   LynInfo.cpp
+  LynJump.cpp
+  LynLand.cpp
   LynMove.cpp
   LynSpinSlash_Combo.cpp
   LynSpinSlash_End.cpp
   LynSpinSlash_Start.cpp
   LynState.cpp
   LynStateControl.cpp
+  컴파일하고 있습니다...
   LynVerticalCut_L0.cpp
   LynVerticalCut_L1.cpp
   LynVerticalCut_L2.cpp
   LynVerticalCut_R0.cpp
-  컴파일하고 있습니다...
   LynVerticalCut_R1.cpp
   LynVerticalCut_R2.cpp
+  LynWait.cpp
   Lyn_Attack_Basic1.cpp
   MainGame.cpp
   Nalmak_PersonalProject.cpp
@@ -38,9 +37,9 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   UIManager.cpp
      ../Bin/x64\Release\Nalmak_PersonalProject.lib 라이브러리 및 ../Bin/x64\Release\Nalmak_PersonalProject.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  1191 of 4934 functions (24.1%) were compiled, the rest were copied from previous compilation.
-    766 functions were new in current compilation
-    327 functions had inline decision re-evaluated but remain unchanged
+  936 of 5227 functions (17.9%) were compiled, the rest were copied from previous compilation.
+    303 functions were new in current compilation
+    457 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   Nalmak_PersonalProject.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Common\../Bin/x64\Release\Nalmak_PersonalProject.exe
   Nalmak_PersonalProject.vcxproj -> ../Bin/x64\Release\Nalmak_PersonalProject.pdb (Full PDB)

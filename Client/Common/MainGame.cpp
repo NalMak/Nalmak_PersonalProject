@@ -40,6 +40,9 @@ void MainGame::SystemSetting()
 
 	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_NAVIMESH, OBJECT_LAYER_PLAYER);
 	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_NAVIMESH, OBJECT_LAYER_ENEMY);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_CAMERA, OBJECT_LAYER_NAVIMESH);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_ENEMY_HITBOX, OBJECT_LAYER_PLAYER);
+	m_engine->ActivateCollisionByLayer(OBJECT_LAYER_PLAYER, OBJECT_LAYER_ENEMY);
 
 
 	m_engine->AddScene(L"title", Scene::Instantiate<TitleScene>());

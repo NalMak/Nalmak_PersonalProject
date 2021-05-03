@@ -31,12 +31,12 @@ void LynVerticalCut_L0::UpdateState()
 	if (m_animController_upper->IsOverTime(0.5f))
 	{
 		AttackInfo::Desc attack;
-		attack.height = 4;
-		attack.depth = 8;
-		attack.width = 2;
-		INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_NAVIMESH, L"vertical")
+		attack.height = 12;
+		attack.depth = 20;
+		attack.width = 6;
+		INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
 			->AddComponent<AttackInfo>()
-			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 4.f + Vector3(0, 1.5f, 0))
+			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 6.f + Vector3(0, 1.5f, 0))
 			->SetRotation(m_transform->GetWorldRotation());
 	}
 

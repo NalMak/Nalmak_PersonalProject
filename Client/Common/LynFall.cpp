@@ -17,28 +17,27 @@ void LynFall::Initialize()
 
 void LynFall::EnterState()
 {
+	m_lynMoveControl->SetSpeed(m_info->m_airSpeed);
 
-	m_lynControl->SetSpeed(m_info->m_airSpeed);
 
-
-	auto dir = m_lynControl->UpdateDirection();
+	auto dir = m_lynMoveControl->UpdateDirection();
 
 	string anim = "";
 	switch (dir)
 	{
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACK:
-	case LynStateControl::LYN_MOVE_DIR_STATE_NONE:
+	case LYN_MOVE_DIR_STATE_FRONT:
+	case LYN_MOVE_DIR_STATE_BACK:
+	case LYN_MOVE_DIR_STATE_NONE:
 		anim = "Mov_JumpFront";
 		break;
-	case LynStateControl::LYN_MOVE_DIR_STATE_RIGHT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONTRIGHT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACKRIGHT:
+	case LYN_MOVE_DIR_STATE_RIGHT:
+	case LYN_MOVE_DIR_STATE_FRONTRIGHT:
+	case LYN_MOVE_DIR_STATE_BACKRIGHT:
 		anim = "Mov_JumpRight";
 		break;
-	case LynStateControl::LYN_MOVE_DIR_STATE_LEFT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONTLEFT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACKLEFT:
+	case LYN_MOVE_DIR_STATE_LEFT:
+	case LYN_MOVE_DIR_STATE_FRONTLEFT:
+	case LYN_MOVE_DIR_STATE_BACKLEFT:
 		anim = "Mov_JumpLeft";
 		break;
 	default:
@@ -59,16 +58,19 @@ void LynFall::EnterState()
 	default:
 		break;
 	}
-	m_animController_lower->PlayBlending(anim);
+	m_animController_lower->Play(anim);
 }
 
 void LynFall::UpdateState()
 {
-	m_lynControl->UpdatePosition();
+	m_lynMoveControl->UpdatePosition();
+
+	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER))
+		return;
 
 	if (m_character->IsGround())
 	{
-		SetState(L"land");
+		SetState(L"move");
 		return;
 	}
 	m_character->AddVelocity(0, -30 * dTime, 0);

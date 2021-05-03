@@ -33,16 +33,17 @@ void LynBackStep::EnterState()
 
 void LynBackStep::UpdateState()
 {
-	if (m_animController_lower->GetPlayRemainTime() < 0.1f && m_animController_upper->GetPlayRemainTime() < 0.1f)
+	if (!m_animController_lower->IsPlay())
 	{
-		m_animController_lower->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-		SetState(L"idle");
+		SetState(L"wait");
 		return;
 	}
-	if(m_animController_lower->GetPlayRemainTime() > 0.4f)
-		m_character->SetVelocity(-m_transform->GetForward() * 60);
+	float ratio = m_animController_lower->GetPlayRatio();
+	if(ratio < 0.7f)
+		m_character->SetVelocity(-m_transform->GetForward() * 140 * (0.7 - ratio));
 	else
-		m_character->SetVelocity(0, 0, 0);
+		m_character->AddVelocity(0, -30 * dTime, 0);
+
 }
 
 void LynBackStep::ExitState()
@@ -52,6 +53,7 @@ void LynBackStep::ExitState()
 
 	m_animController_upper->SetRootMotion(false);
 	m_animController_lower->SetRootMotion(false);
-	m_character->SetVelocity(0, 0, 0);
+	m_character->AddVelocity(0, -30 * dTime, 0);
+
 	SetInteger(L"IsBlend", 0);
 }

@@ -24,6 +24,8 @@ private:
 	bool m_isCritical;
 	DAMAGE_FONT_ANIMATION_TYPE m_animationType;
 	float m_lifeTime;
-	vector<GameObject*> m_fontData;
+	vector<SingleImage*> m_fontData;
+
+	Vector3 m_velocity;
 };
 

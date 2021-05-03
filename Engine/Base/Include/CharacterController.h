@@ -15,7 +15,7 @@ public:
 		Vector3 center = { 0,0,0 };
 
 		float slopeLimit = 45;
-		float skinWidth = 0.001f;
+		float skinWidth = 0.1f;
 		float stepOffset = 0.1f;
 		PxCapsuleClimbingMode::Enum climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 	};

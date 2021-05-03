@@ -28,9 +28,11 @@ void LynSpinSlash_End::EnterState()
 
 void LynSpinSlash_End::UpdateState()
 {
-	if (!m_animController_upper->IsPlay())
+	if (!m_animController_upper->IsPlay() && !m_animController_lower->IsPlay())
 	{
-		SetState(L"idle");
+		//m_animController_lower->PlayBlending()
+		m_lynMoveControl->SetState(L"idle");
+		SetState(L"wait");
 		return;
 	}
 }
@@ -40,6 +42,6 @@ void LynSpinSlash_End::ExitState()
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_LOWER);
 
-	SetInteger(L"IsBlend", 1);
+	SetInteger(L"IsBlend", 0);
 
 }

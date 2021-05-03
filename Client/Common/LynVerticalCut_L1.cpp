@@ -27,12 +27,8 @@ void LynVerticalCut_L1::EnterState()
 
 void LynVerticalCut_L1::UpdateState()
 {
-	
-
 	if (m_animController_upper->GetPlayRemainTime() < 0.2f)
 	{
-		
-
 		m_animController_upper->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
@@ -41,7 +37,7 @@ void LynVerticalCut_L1::UpdateState()
 		}
 		else
 		{
-			SetState(L"idle");
+			SetState(L"wait");
 			return;
 		}
 	}

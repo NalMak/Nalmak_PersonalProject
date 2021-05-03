@@ -128,7 +128,7 @@ Vector2 Camera::WorldToScreenPos(const Vector3 & _pos)
 	D3DXVec3TransformCoord(&temp, &temp, &GetProjMatrix());
 	D3DXVec3TransformCoord(&temp, &temp, &GetViewportMatrix());
 
-	return Vector2(temp.x - halfWincx, halfWincy - temp.y);
+	return Vector2(temp.x , temp.y);
 }
 
 Vector3 Camera::ScreenPosToWorld(const Vector2 & _screenPos, float Distance_FromCam)

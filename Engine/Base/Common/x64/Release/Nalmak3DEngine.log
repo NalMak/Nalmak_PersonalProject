@@ -1,7 +1,6 @@
 ﻿  Nalmak_String.cpp
   AnimationClip.cpp
   AnimationController.cpp
-..\Source\AnimationController.cpp(125): warning C4390: ';': 제어된 빈 문이 있습니다. 이 문이 필요합니까?
   AnimationTransition.cpp
   Animator.cpp
   AudioClip.cpp
@@ -12,17 +11,17 @@
   BoxCollider.cpp
   Button.cpp
   Camera.cpp
-  CanvasPicking.cpp
   CanvasRenderer.cpp
   CapsuleCollider.cpp
   CharacterController.cpp
   Collider.cpp
+  Collision.cpp
   Component.cpp
   Core.cpp
   컴파일하고 있습니다...
+  DebuggingMode.cpp
   DebugManager.cpp
   DebugObject.cpp
-  DebuggingMode.cpp
   DepthStencil.cpp
   DeviceManager.cpp
   DirectionalLight.cpp
@@ -30,6 +29,18 @@
   DrawGizmo.cpp
   DrawGizmo_2D.cpp
   DynamicInstanceBuffer.cpp
+  LoadResourcesUsingThread.cpp
+  LOD_Group.cpp
+  MeshHierarchy.cpp
+  Nalmak_Animation.cpp
+  NavCollider.cpp
+  NavMeshData.cpp
+  RenderInfo.cpp
+  Shader.cpp
+  SkinnedMeshRenderer.cpp
+  SplineCurve.cpp
+  컴파일하고 있습니다...
+  StaticObjectInfo.cpp
   Event.cpp
   EventHandler.cpp
   Exception.cpp
@@ -39,32 +50,26 @@
   Grid.cpp
   IAnimation.cpp
   ICycle.cpp
-  IRenderer.cpp
-  컴파일하고 있습니다...
-  IResource.cpp
-  IState.cpp
   InputManager.cpp
-  LOD_Group.cpp
+  IRenderer.cpp
+  IResource.cpp
+  MeshCollider.cpp
+  NalmakPxEventCallBack.cpp
+  Nalmak_Function.cpp
+  IState.cpp
   Light.cpp
   LightManager.cpp
   LineManager.cpp
+  컴파일하고 있습니다...
   LineVI.cpp
-  LoadResourcesUsingThread.cpp
   Material.cpp
   Mesh.cpp
-  MeshCollider.cpp
-  MeshHierarchy.cpp
+  CanvasPicking.cpp
   MeshRenderer.cpp
-  NalmakPxEventCallBack.cpp
-  Nalmak_Animation.cpp
   Nalmak_DirectXMath.cpp
-  Nalmak_Function.cpp
   NavCell.cpp
-  NavCollider.cpp
-  컴파일하고 있습니다...
   NavLine.cpp
   NavMesh.cpp
-  NavMeshData.cpp
   NavPoint.cpp
   Number.cpp
   ObjectManager.cpp
@@ -76,34 +81,29 @@
   PositionHandle.cpp
   PositionHandle_2D.cpp
   PrototypeManager.cpp
+  컴파일하고 있습니다...
   Quad.cpp
   QuadNoneNormal.cpp
-  RenderInfo.cpp
   RenderManager.cpp
   RenderTarget.cpp
   ResourceManager.cpp
-  컴파일하고 있습니다...
   RigidBody.cpp
   ScaleHandle_2D.cpp
   Scene.cpp
   SceneManager.cpp
   ScreenQuad.cpp
-  Shader.cpp
   ShaderCompileInclude.cpp
   SingleImage.cpp
-  SkinnedMeshRenderer.cpp
   SkyBox.cpp
   Slider.cpp
   SoundManager.cpp
   SphereCollider.cpp
-  SplineCurve.cpp
   StateControl.cpp
-  StaticObjectInfo.cpp
   SystemInfo.cpp
   SystemManager.cpp
   Terrain.cpp
-  Text.cpp
   컴파일하고 있습니다...
+  Text.cpp
   Texture.cpp
   TimeManager.cpp
   Toggle.cpp
@@ -115,9 +115,9 @@
   XFileMesh.cpp
      ../Bin/Nalmak3D_Engine.lib 라이브러리 및 ../Bin/Nalmak3D_Engine.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  658 of 9700 functions ( 6.8%) were compiled, the rest were copied from previous compilation.
-    44 functions were new in current compilation
-    438 functions had inline decision re-evaluated but remain unchanged
+  530 of 9684 functions ( 5.5%) were compiled, the rest were copied from previous compilation.
+    36 functions were new in current compilation
+    183 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
 PhysX3Extensions.lib(ExtCpuWorkerThread.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtCpuWorkerThread.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: 'PhysX3Extensions.pdb' PDB를 'PhysX3Extensions.lib(ExtDefaultCpuDispatcher.obj)' 또는 'C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Bin\PhysX3Extensions.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
@@ -143,6 +143,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\CapsuleCollider.h
   ..\Include\CharacterController.h
   ..\Include\Collider.h
+  ..\Include\Collision.h
   ..\Include\Component.h
   ..\Include\Core.h
   ..\Include\CubeMap.h
@@ -264,7 +265,7 @@ PhysX3Extensions.lib(ExtDefaultStreams.obj) : warning LNK4099: 'PhysX3Extensions
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
   ..\Include\XFileMesh.h
-  139개 파일이 복사되었습니다.
+  140개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

@@ -15,9 +15,8 @@ public:
 		Vector3 center = { 0,0,0 };
 
 		float slopeLimit = 45;
-		float skinWidth = 0.001f;
+		float skinWidth = 0.1f;
 		float stepOffset = 0.1f;
-		bool isGravity = true;
 		PxCapsuleClimbingMode::Enum climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 	};
 public:
@@ -45,9 +44,7 @@ public:
 	bool IsGround();
 	bool IsSide();
 	void SetHalfHeight(float _height);
-private:
-	void Move(const Vector3& _velocity);
-	void Move(float _x, float _y, float _z);
+
 public:
 	const Vector3& GetVelocity();
 private:

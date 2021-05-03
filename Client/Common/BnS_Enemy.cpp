@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "BnS_Enemy.h"
-
+#include "BnS_DamageFont.h"
 
 
 BnS_Enemy::BnS_Enemy(Desc * _desc)
@@ -34,7 +34,16 @@ void BnS_Enemy::Update()
 
 void BnS_Enemy::OnTriggerEnter(Collision & _col)
 {
-	m_hp -= _col.hitObj->GetComponent<AttackInfo>()->m_power;
+	if (_col.hitObj->GetTag() == OBJECT_TAG_ATTACKINFO)
+	{
+		m_hp -= _col.hitObj->GetComponent<AttackInfo>()->m_power;
+		
+
+		BnS_DamageFont::Desc damageFont;
+		damageFont.damage = Nalmak_Math::Rand(80, 120);
+		damageFont.isCritical = Nalmak_Math::Random<bool>(true,true,true,false,false);
+		INSTANTIATE()->AddComponent<BnS_DamageFont>(&damageFont)->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 6, 0));
+	}
 }
 
 void BnS_Enemy::OnTriggerExit(Collision & _col)

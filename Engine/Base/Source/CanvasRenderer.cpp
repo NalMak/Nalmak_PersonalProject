@@ -116,30 +116,11 @@ void CanvasRenderer::Render_Number()
 
 void CanvasRenderer::UpdateBoundary()
 {
-	if (m_transform->GetParents())
-	{
-		auto worldMatrix = m_transform->GetWorldMatrix();
-		Vector3 position = { worldMatrix.m[3][0], worldMatrix.m[3][1], worldMatrix.m[3][2] };
-
-		float half_wincx = (float)m_renderManager->GetWindowWidth() * 0.5f;
-		float half_wincy = (float)m_renderManager->GetWindowHeight() * 0.5f;
-
-		position.x = half_wincx + position.x * half_wincx;
-		position.y = half_wincy - position.y * half_wincy;
-
-		m_boundary.left = LONG(position.x - m_transform->scale.x * 0.5f);
-		m_boundary.top = LONG(position.y - m_transform->scale.y * 0.5f);
-		m_boundary.right = LONG(position.x + m_transform->scale.x * 0.5f);
-		m_boundary.bottom = LONG(position.y + m_transform->scale.y * 0.5f);
-	}
-	else
-	{
-		m_boundary.left = LONG(m_transform->position.x - m_transform->scale.x * 0.5f);
-		m_boundary.top = LONG(m_transform->position.y - m_transform->scale.y * 0.5f);
-		m_boundary.right = LONG(m_transform->position.x + m_transform->scale.x * 0.5f);
-		m_boundary.bottom = LONG(m_transform->position.y + m_transform->scale.y * 0.5f);
-	}
-
+	Vector3 position = m_transform->GetWorldPosition();
+	m_boundary.left = LONG(position.x - m_transform->scale.x * 0.5f);
+	m_boundary.top = LONG(position.y - m_transform->scale.y * 0.5f);
+	m_boundary.right = LONG(position.x + m_transform->scale.x * 0.5f);
+	m_boundary.bottom = LONG(position.y + m_transform->scale.y * 0.5f);
 }
 
 bool CanvasRenderer::IsCursorOnRect()

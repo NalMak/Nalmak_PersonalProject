@@ -21,5 +21,6 @@ void TitleToStage::Update()
 	{
 		GetComponent<SingleImage>()->SetTexture(L"loading");
 		Core::GetInstance()->LoadScene(L"stage", SCENE_LOAD_TYPE_THREAD);
+		SetActive(false);
 	}
 }

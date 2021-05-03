@@ -11,40 +11,23 @@ LynIdle::~LynIdle()
 
 void LynIdle::Initialize()
 {
-	
 	m_animController_upper->PlayBlending("Lyn_P_Std_Mov_Idle");
 	m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
 
-	SetInteger(L"IsBlend", 1);
+	SetString(L"preState", L"");
 }
 
 void LynIdle::EnterState()
 {
+	m_idleTime = 0.5f;
+	m_eventStart = false;
 	switch (m_info->m_state)
 	{
 	case LYN_STATE_BATTLE_STANDARD:
-		if (GetInteger(L"IsBlend") == 1)
-		{
-			m_animController_upper->PlayBlending("Lyn_B_Std_Mov_Idle");
-			m_animController_lower->PlayBlending("Lyn_B_Std_Mov_Idle");
-		}
-		else 
-		{
-			m_animController_upper->Play("Lyn_B_Std_Mov_Idle");
-			m_animController_lower->Play("Lyn_B_Std_Mov_Idle");
-		}
+		m_animController_lower->PlayBlending("Lyn_B_Std_Mov_Idle");
 		break;
 	case LYN_STATE_PEACE_STANDARD:
-		if (GetInteger(L"IsBlend") == 1)
-		{
-			m_animController_upper->PlayBlending("Lyn_P_Std_Mov_Idle");
-			m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
-		}
-		else
-		{
-			m_animController_upper->Play("Lyn_P_Std_Mov_Idle");
-			m_animController_lower->Play("Lyn_P_Std_Mov_Idle");
-		}
+		m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
 		break;
 	case LYN_STATE_BATTLE_HIDEBLADE:
 		break;
@@ -53,67 +36,74 @@ void LynIdle::EnterState()
 	}
 
 
-	m_sKeyTimer = 0;
 }
 
 void LynIdle::UpdateState()
 {
+	/*if (m_eventStart)
+	{
+		if (m_animController_upper->GetPlayRemainTime() < 0.3f)
+		{
+			m_animController_lower->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+
+			string anim = Nalmak_Math::Random<string>("Lyn_P_Std_Idle_Event1", "Lyn_P_Std_Idle_Event2", "Lyn_P_Std_Idle_Event3", "Lyn_P_Std_Idle_Event4");
+			m_animController_lower->PlayBlending(anim);
+		}
+	}
+	else
+	{
+		if (m_idleTime < 0.f)
+		{
+			m_animController_lower->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+
+			string anim = Nalmak_Math::Random<string>("Lyn_P_Std_Idle_Event1", "Lyn_P_Std_Idle_Event2", "Lyn_P_Std_Idle_Event3", "Lyn_P_Std_Idle_Event4");
+			m_animController_lower->PlayBlending(anim);
+			m_eventStart = true;
+		}
+
+		m_idleTime -= dTime;
+	}*/
+
+
+
+
+
+	m_lynMoveControl->UpdatePosition();
+
+	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER))
+		return;
+
+	LYN_MOVE_DIR_STATE state = m_lynMoveControl->GetDirectionState();
+	if (state != LYN_MOVE_DIR_STATE_NONE)
+	{
+		SetState(L"move");
+		return;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
+	{
+		SetState(L"jump");
+		return;
+	}
 	
-	if (m_sKeyTimer > 0.f)
+	if (!m_character->IsGround())
 	{
-		m_sKeyTimer -= dTime;
-		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-		{
-			SetState(L"backStep");
-			return;
-		}
-	}
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-	{
-		m_sKeyTimer = 0.5f;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
-	{
-		SetState(L"verticalCut_l0");
+		SetState(L"fall");
 		return;
 	}
 
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_TAB))
-	{
-		SetState(L"spinSlash_start");
-		return;
-	}
 
-	switch (m_info->m_state)
+	AnimationClip* lowerClip = m_animController_lower->GetCurrentPlayAnimation();
+	AnimationClip* upperClip = m_animController_upper->GetCurrentPlayAnimation();
+
+	if (lowerClip != upperClip)
 	{
-	case LYN_STATE_PEACE_STANDARD:
-		break;
-	case LYN_STATE_BATTLE_STANDARD:
-	{
-		if (m_info->m_battleToPeaceTimer > 0.f && m_info->m_battleToPeaceTimer - dTime <= 0.f)
-		{
-			SetState(L"battleToPeace");
-			return;
-		}
-		m_info->m_battleToPeaceTimer -= dTime;
-		break;
-	}
-	case LYN_STATE_BATTLE_HIDEBLADE:
-	{
-		if (m_info->m_battleToPeaceTimer > 0.f && m_info->m_battleToPeaceTimer - dTime <= 0.f)
-		{
-			SetState(L"battleToPeace");
-			return;
-		}
-		m_info->m_battleToPeaceTimer -= dTime;
-		break;
-	}
-	default:
-		break;
+		double playTime = m_animController_upper->GetPlayTime();
+		m_animController_lower->PlayBlending(upperClip, playTime);
 	}
 }
 
 void LynIdle::ExitState()
 {
+	m_lynSkillControl->SetInteger(L"IsBlend",0);
 }

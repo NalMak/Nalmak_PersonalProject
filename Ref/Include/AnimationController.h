@@ -45,12 +45,11 @@ public:
 public:
 	void PlayBlending(AnimationController* _otherController);
 
-	void Play(AnimationClip* _clip);
-	void Play(const string& _animName);
+	void Play(AnimationClip* _clip, double _startTime = 0);
+	void Play(const string& _animName, double _otherTime = 0);
 
-	void PlayBlending(AnimationClip* _clip);
-	void PlayBlending(AnimationClip* _clip, double _otherTime);
-	void PlayBlending(const string&  _clipName);
+	void PlayBlending(AnimationClip* _clip, double _otherTime = 0);
+	void PlayBlending(const string&  _clipName, double _otherTime = 0);
 
 	void PlayBlending(AnimationClip* _clip1, AnimationClip* _clip2, float _weight);
 	void PlayBlending(const string& _clip1, const string& _clip2, float _weight);
@@ -59,8 +58,8 @@ public:
 	bool IsPlay();
 	void SetSpeed();
 	float GetSpeed();
-	float GetPlayTime();
-	float GetTotalPlayTime();
+	double GetPlayTime();
+	double GetTotalPlayTime();
 	double GetPlayRemainTime();
 	float GetPlayRatio();
 	bool IsOverTime(double _time);

@@ -17,32 +17,16 @@ void LynLand::Initialize()
 
 void LynLand::EnterState()
 {
-	auto dir = m_lynControl->UpdateDirection();
+	m_lynMoveControl->SetSpeed(m_info->m_runForwardSpeed);
+	auto dir = m_lynMoveControl->UpdateDirection();
 
-	string anim = "";
-	switch (dir)
+	string anim = "Mov_JumpToIdle";
+
+	if (dir != LYN_MOVE_DIR_STATE_NONE)
 	{
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_NONE:
-		anim = "Mov_JumpToMove_Front";
-		break;
-	case LynStateControl::LYN_MOVE_DIR_STATE_RIGHT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONTRIGHT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACKRIGHT:
-		anim = "Mov_JumpToMove_Right";
-		break;
-	case LynStateControl::LYN_MOVE_DIR_STATE_LEFT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_FRONTLEFT:
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACKLEFT:
-		anim = "Mov_JumpToMove_Left";
-		break;
-	case LynStateControl::LYN_MOVE_DIR_STATE_BACK:
-		anim = "Mov_JumpToMove_Back";
-		break;
-	default:
-		break;
+		SetState(L"move");
+		return;
 	}
-
 	switch (m_info->m_state)
 	{
 	case LYN_STATE_PEACE_STANDARD:
@@ -57,16 +41,26 @@ void LynLand::EnterState()
 	default:
 		break;
 	}
+	
+	m_animController_lower->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 	m_animController_lower->PlayBlending(anim);
 }
 
 void LynLand::UpdateState()
 {
-	if (m_animController_lower->GetPlayRemainTime() < 0.2f)
+	m_lynMoveControl->UpdatePosition();
+
+	m_character->SetVelocity(0, 0, 0);
+	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER))
+		return;
+	
+	if (m_animController_lower->GetPlayRemainTime() < 0.3f)
 	{
-		SetState(L"move");
+		m_animController_lower->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		SetState(L"idle");
 		return;
 	}
+
 }
 
 void LynLand::ExitState()
