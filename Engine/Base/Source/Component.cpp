@@ -50,27 +50,27 @@ void Component::PostRender()
 {
 }
 
-void Component::OnTriggerEnter(Collisions & _col)
+void Component::OnTriggerEnter(Collision & _col)
 {
 }
 
-void Component::OnTriggerStay(Collisions & _col)
+void Component::OnTriggerStay(Collision & _col)
 {
 }
 
-void Component::OnTriggerExit(Collisions & _col)
+void Component::OnTriggerExit(Collision & _col)
 {
 }
 
-void Component::OnCollisionEnter(Collisions & _col)
+void Component::OnCollisionEnter(Collision & _col)
 {
 }
 
-void Component::OnCollisionStay(Collisions & _col)
+void Component::OnCollisionStay(Collision & _col)
 {
 }
 
-void Component::OnCollisionExit(Collisions & _col)
+void Component::OnCollisionExit(Collision & _col)
 {
 }
 

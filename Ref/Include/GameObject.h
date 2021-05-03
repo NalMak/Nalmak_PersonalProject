@@ -176,13 +176,13 @@ private:
 	void PostRender() override;
 	void Release() override;
 
-	void OnTriggerEnter(Collisions& _col) override;
-	void OnTriggerStay(Collisions& _col) override;
-	void OnTriggerExit(Collisions& _col) override;
+	void OnTriggerEnter(Collision& _col) override;
+	void OnTriggerStay(Collision& _col) override;
+	void OnTriggerExit(Collision& _col) override;
 
-	void OnCollisionEnter(Collisions& _col) override;
-	void OnCollisionStay(Collisions& _col) override;
-	void OnCollisionExit(Collisions& _col) override;
+	void OnCollisionEnter(Collision& _col) override;
+	void OnCollisionStay(Collision& _col) override;
+	void OnCollisionExit(Collision& _col) override;
 public:
 	void EachRender() override;
 	void ResetRender();
@@ -227,6 +227,7 @@ public:
 	GameObject* SetScale(float _x, float _y, float _z);
 	GameObject* SetScale(float _x, float _y);
 	GameObject* SetRotation(float _xAngle, float _yAngle, float _zAngle);
+	GameObject* SetRotation(const Quaternion& _rot);
 
 public:
 	const wstring GetName() const { return m_name; }

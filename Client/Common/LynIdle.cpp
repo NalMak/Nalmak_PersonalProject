@@ -11,8 +11,11 @@ LynIdle::~LynIdle()
 
 void LynIdle::Initialize()
 {
+	
 	m_animController_upper->PlayBlending("Lyn_P_Std_Mov_Idle");
 	m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
+
+	SetInteger(L"IsBlend", 1);
 }
 
 void LynIdle::EnterState()
@@ -20,14 +23,28 @@ void LynIdle::EnterState()
 	switch (m_info->m_state)
 	{
 	case LYN_STATE_BATTLE_STANDARD:
-		m_animController_upper->Play("Lyn_B_Std_Mov_Idle");
-		m_animController_lower->Play("Lyn_B_Std_Mov_Idle");
-
+		if (GetInteger(L"IsBlend") == 1)
+		{
+			m_animController_upper->PlayBlending("Lyn_B_Std_Mov_Idle");
+			m_animController_lower->PlayBlending("Lyn_B_Std_Mov_Idle");
+		}
+		else 
+		{
+			m_animController_upper->Play("Lyn_B_Std_Mov_Idle");
+			m_animController_lower->Play("Lyn_B_Std_Mov_Idle");
+		}
 		break;
 	case LYN_STATE_PEACE_STANDARD:
-		m_animController_upper->Play("Lyn_P_Std_Mov_Idle");
-		m_animController_lower->Play("Lyn_P_Std_Mov_Idle");
-
+		if (GetInteger(L"IsBlend") == 1)
+		{
+			m_animController_upper->PlayBlending("Lyn_P_Std_Mov_Idle");
+			m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
+		}
+		else
+		{
+			m_animController_upper->Play("Lyn_P_Std_Mov_Idle");
+			m_animController_lower->Play("Lyn_P_Std_Mov_Idle");
+		}
 		break;
 	case LYN_STATE_BATTLE_HIDEBLADE:
 		break;

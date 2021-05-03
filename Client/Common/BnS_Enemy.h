@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "AttackInfo.h"
+
 class BnS_Enemy :
 	public Component
 {
@@ -19,8 +21,8 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 
-	void OnTriggerEnter(Collisions& _col) override;
-	void OnTriggerExit(Collisions& _col) override;
+	void OnTriggerEnter(Collision& _col) override;
+	void OnTriggerExit(Collision& _col) override;
 private:
 	UINT m_hp;
 	UINT m_power;

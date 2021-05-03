@@ -36,6 +36,7 @@
     <ClCompile Include="..\Source\CapsuleCollider.cpp" />
     <ClCompile Include="..\Source\CharacterController.cpp" />
     <ClCompile Include="..\Source\Collider.cpp" />
+    <ClCompile Include="..\Source\Collision.cpp" />
     <ClCompile Include="..\Source\Component.cpp" />
     <ClCompile Include="..\Source\Core.cpp" />
     <ClCompile Include="..\Source\DebuggingMode.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="..\Source\RenderInfo.cpp" />
     <ClCompile Include="..\Source\Shader.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
+    <ClCompile Include="..\Source\SplineCurve.cpp" />
     <ClCompile Include="..\Source\StaticObjectInfo.cpp" />
     <ClCompile Include="..\Source\Event.cpp" />
     <ClCompile Include="..\Source\EventHandler.cpp" />
@@ -113,7 +115,6 @@
     <ClCompile Include="..\Source\Slider.cpp" />
     <ClCompile Include="..\Source\SoundManager.cpp" />
     <ClCompile Include="..\Source\SphereCollider.cpp" />
-    <ClCompile Include="..\Source\SplineCurve.cpp" />
     <ClCompile Include="..\Source\StateControl.cpp" />
     <ClCompile Include="..\Source\SystemInfo.cpp" />
     <ClCompile Include="..\Source\SystemManager.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="..\Include\CapsuleCollider.h" />
     <ClInclude Include="..\Include\CharacterController.h" />
     <ClInclude Include="..\Include\Collider.h" />
+    <ClInclude Include="..\Include\Collision.h" />
     <ClInclude Include="..\Include\Component.h" />
     <ClInclude Include="..\Include\Core.h" />
     <ClInclude Include="..\Include\DebuggingMode.h" />
@@ -168,6 +170,7 @@
     <ClInclude Include="..\Include\RenderInfo.h" />
     <ClInclude Include="..\Include\Shader.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
+    <ClInclude Include="..\Include\SplineCurve.h" />
     <ClInclude Include="..\Include\StaticObjectInfo.h" />
     <ClInclude Include="..\Include\Event.h" />
     <ClInclude Include="..\Include\EventHandler.h" />
@@ -232,7 +235,6 @@
     <ClInclude Include="..\Include\Slider.h" />
     <ClInclude Include="..\Include\SoundManager.h" />
     <ClInclude Include="..\Include\SphereCollider.h" />
-    <ClInclude Include="..\Include\SplineCurve.h" />
     <ClInclude Include="..\Include\StateControl.h" />
     <ClInclude Include="..\Include\SystemInfo.h" />
     <ClInclude Include="..\Include\SystemManager.h" />

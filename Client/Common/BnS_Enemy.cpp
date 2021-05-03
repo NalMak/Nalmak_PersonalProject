@@ -29,14 +29,14 @@ void BnS_Enemy::Initialize()
 
 void BnS_Enemy::Update()
 {
-
+	DEBUG_LOG(L"enemy hp", m_hp);
 }
 
-void BnS_Enemy::OnTriggerEnter(Collisions & _col)
+void BnS_Enemy::OnTriggerEnter(Collision & _col)
 {
-	int a = 5;
+	m_hp -= _col.hitObj->GetComponent<AttackInfo>()->m_power;
 }
 
-void BnS_Enemy::OnTriggerExit(Collisions & _col)
+void BnS_Enemy::OnTriggerExit(Collision & _col)
 {
 }

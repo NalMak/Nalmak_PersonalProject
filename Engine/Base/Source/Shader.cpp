@@ -366,8 +366,8 @@ void Shader::BeginPass(UINT _pass)
 
 void Shader::EndPass()
 {
-	ThrowIfFailed(m_effect->End());
 	ThrowIfFailed(m_effect->EndPass());
+	ThrowIfFailed(m_effect->End());
 }
 
 

@@ -136,6 +136,7 @@
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="TitleToStage.h" />
+    <ClInclude Include="AttackInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -208,6 +209,7 @@
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
+    <ClCompile Include="AttackInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

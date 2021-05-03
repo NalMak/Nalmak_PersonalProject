@@ -20,9 +20,9 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
-	virtual void OnTriggerEnter(Collisions& _col) override;
-	virtual void OnTriggerStay(Collisions& _col) override;
-	virtual void OnTriggerExit(Collisions& _col) override;
+	virtual void OnTriggerEnter(Collision& _col) override;
+	virtual void OnTriggerStay(Collision& _col) override;
+	virtual void OnTriggerExit(Collision& _col) override;
 private:
 	GameObject* m_player;
 	float m_distance;

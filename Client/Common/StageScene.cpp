@@ -94,6 +94,7 @@ void StageScene::Initialize()
 		capsule.height = 3.2f;
 		capsule.isTrigger = false;
 		boss->AddComponent<CapsuleCollider>(&capsule);
+		boss->AddComponent<RigidBody>();
 		boss->AddComponent<BnS_Enemy>();
 	}
 

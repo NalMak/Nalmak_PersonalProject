@@ -18,9 +18,12 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 private:
+	void DestroyFont();
+private:
 	UINT m_damage;
 	bool m_isCritical;
 	DAMAGE_FONT_ANIMATION_TYPE m_animationType;
 	float m_lifeTime;
+	vector<GameObject*> m_fontData;
 };
 

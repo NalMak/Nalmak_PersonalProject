@@ -32,13 +32,13 @@ protected:
 	virtual void EachRender()override;
 	virtual void PostRender()override;
 
-	void OnTriggerEnter(Collisions& _col) override;
-	void OnTriggerStay(Collisions& _col) override;
-	void OnTriggerExit(Collisions& _col) override;
+	void OnTriggerEnter(Collision& _col) override;
+	void OnTriggerStay(Collision& _col) override;
+	void OnTriggerExit(Collision& _col) override;
 
-	void OnCollisionEnter(Collisions& _col) override;
-	void OnCollisionStay(Collisions& _col) override;
-	void OnCollisionExit(Collisions& _col) override;
+	void OnCollisionEnter(Collision& _col) override;
+	void OnCollisionStay(Collision& _col) override;
+	void OnCollisionExit(Collision& _col) override;
 public:
 	template <typename T>
 	static Component* Create(typename T::Desc* _desc)

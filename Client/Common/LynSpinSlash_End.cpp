@@ -40,5 +40,6 @@ void LynSpinSlash_End::ExitState()
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_LOWER);
 
+	SetInteger(L"IsBlend", 1);
 
 }

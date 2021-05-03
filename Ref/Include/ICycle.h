@@ -7,7 +7,7 @@
 
 BEGIN(Nalmak)
 
-typedef vector<int> Collisions;
+
 class NALMAK_DLL ICycle
 {
 public:
@@ -24,13 +24,13 @@ protected:
 	virtual void PostRender();
 	virtual void Release() = 0;
 
-	virtual void OnTriggerEnter(Collisions& _col);
-	virtual void OnTriggerStay(Collisions& _col);
-	virtual void OnTriggerExit(Collisions& _col);
+	virtual void OnTriggerEnter(Collision& _col);
+	virtual void OnTriggerStay(Collision& _col);
+	virtual void OnTriggerExit(Collision& _col);
 
-	virtual void OnCollisionEnter(Collisions& _col);
-	virtual void OnCollisionStay(Collisions& _col);
-	virtual void OnCollisionExit(Collisions& _col);
+	virtual void OnCollisionEnter(Collision& _col);
+	virtual void OnCollisionStay(Collision& _col);
+	virtual void OnCollisionExit(Collision& _col);
 
 
 };

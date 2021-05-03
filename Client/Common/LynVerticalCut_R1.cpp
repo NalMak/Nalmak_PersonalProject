@@ -27,8 +27,11 @@ void LynVerticalCut_R1::EnterState()
 
 void LynVerticalCut_R1::UpdateState()
 {
+	
 	if (m_animController_upper->GetPlayRemainTime() < 0.1f)
 	{
+		
+
 		m_animController_upper->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 	
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
@@ -47,6 +50,7 @@ void LynVerticalCut_R1::UpdateState()
 void LynVerticalCut_R1::ExitState()
 {
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
+	SetInteger(L"IsBlend", 1);
 
 
 }

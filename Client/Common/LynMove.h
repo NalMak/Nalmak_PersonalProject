@@ -10,6 +10,7 @@ class LynMove :
 		LYN_MOVE_STATE_IDLE,
 		LYN_MOVE_STATE_RUN,
 		LYN_MOVE_STATE_JUMP,
+		LYN_MOVE_STATE_LAND,
 		LYN_MOVE_STATE_MAX
 	};
 	enum LYN_MOVE_DIR_STATE
@@ -41,6 +42,8 @@ private:
 	Vector3 m_targetInput;
 	LynInfo* m_info;
 	LYN_MOVE_STATE m_moveState;
+	LYN_MOVE_STATE m_preState;
+
 	CharacterController* m_charcterController;
 	AnimationController* m_animController_upper;
 	AnimationController* m_animController_lower;

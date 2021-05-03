@@ -63,6 +63,7 @@ public:
 	float GetTotalPlayTime();
 	double GetPlayRemainTime();
 	float GetPlayRatio();
+	bool IsOverTime(double _time);
 	void SetFixedAnimationBoneName(string _boneName,bool _xAxis, bool _yAxis, bool _zAxis);
 	void SetRootMotion(bool _isFixed);
 	const string& GetCurrentPlayAnimationName();
@@ -123,6 +124,7 @@ private:
 	UINT m_nextTrack;
 
 	double m_currentPlayTime;
+	double m_prePlayTime;
 	double m_totalPlayTime;
 
 	bool m_isStop;

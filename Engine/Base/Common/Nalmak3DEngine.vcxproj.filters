@@ -417,9 +417,6 @@
     <ClCompile Include="..\Source\CanvasRenderer.cpp">
       <Filter>05.Component\01.Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\SplineCurve.cpp">
-      <Filter>99.PreCompile\99.Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\SingleImage.cpp">
       <Filter>05.Component\08.UI\01.SingleImage</Filter>
     </ClCompile>
@@ -543,7 +540,6 @@
     <ClCompile Include="..\Source\StaticObjectInfo.cpp">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\AnimationController.cpp" />
     <ClCompile Include="..\Source\XFileMesh.cpp">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClCompile>
@@ -559,17 +555,36 @@
     <ClCompile Include="..\Source\AnimationTransition.cpp">
       <Filter>11.Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\AnimationClip.cpp" />
     <ClCompile Include="..\Source\Shader.cpp">
       <Filter>06.Resource\03.Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\CharacterController.cpp" />
-    <ClCompile Include="..\Source\LOD_Group.cpp" />
-    <ClCompile Include="..\Source\NavMeshData.cpp" />
-    <ClCompile Include="..\Source\NavCollider.cpp" />
-    <ClCompile Include="..\Source\RenderInfo.cpp" />
     <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp">
       <Filter>05.Component\13.Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\AnimationClip.cpp">
+      <Filter>11.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavMeshData.cpp">
+      <Filter>06.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\RenderInfo.cpp">
+      <Filter>06.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CharacterController.cpp">
+      <Filter>05.Component\03.Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\AnimationController.cpp">
+      <Filter>05.Component\05.Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NavCollider.cpp">
+      <Filter>05.Component\04.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LOD_Group.cpp">
+      <Filter>05.Component\01.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Collision.cpp" />
+    <ClCompile Include="..\Source\SplineCurve.cpp">
+      <Filter>99.PreCompile\99.Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -756,9 +771,6 @@
     <ClInclude Include="..\Include\CanvasRenderer.h">
       <Filter>05.Component\01.Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\SplineCurve.h">
-      <Filter>99.PreCompile\99.Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\SingleImage.h">
       <Filter>05.Component\08.UI\01.SingleImage</Filter>
     </ClInclude>
@@ -888,7 +900,6 @@
     <ClInclude Include="..\Include\StaticObjectInfo.h">
       <Filter>06.Resource\08.StaticObjectInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\AnimationController.h" />
     <ClInclude Include="..\Include\XFileMesh.h">
       <Filter>06.Resource\01.Mesh\02.XFileMesh</Filter>
     </ClInclude>
@@ -904,17 +915,36 @@
     <ClInclude Include="..\Include\AnimationTransition.h">
       <Filter>11.Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\AnimationClip.h" />
     <ClInclude Include="..\Include\Shader.h">
       <Filter>06.Resource\03.Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\CharacterController.h" />
-    <ClInclude Include="..\Include\LOD_Group.h" />
-    <ClInclude Include="..\Include\NavMeshData.h" />
-    <ClInclude Include="..\Include\NavCollider.h" />
-    <ClInclude Include="..\Include\RenderInfo.h" />
     <ClInclude Include="..\Include\LoadResourcesUsingThread.h">
       <Filter>05.Component\13.Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\AnimationClip.h">
+      <Filter>11.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavMeshData.h">
+      <Filter>06.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\RenderInfo.h">
+      <Filter>06.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\CharacterController.h">
+      <Filter>05.Component\03.Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\AnimationController.h">
+      <Filter>05.Component\05.Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NavCollider.h">
+      <Filter>05.Component\04.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LOD_Group.h">
+      <Filter>05.Component\01.Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Collision.h" />
+    <ClInclude Include="..\Include\SplineCurve.h">
+      <Filter>99.PreCompile\99.Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

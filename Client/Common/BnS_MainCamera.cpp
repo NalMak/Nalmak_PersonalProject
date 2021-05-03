@@ -66,16 +66,16 @@ void BnS_MainCamera::Update()
 
 }
 
-void BnS_MainCamera::OnTriggerEnter(Collisions & _col)
+void BnS_MainCamera::OnTriggerEnter(Collision & _col)
 {
 	m_triggerOn = true;
 }
 
-void BnS_MainCamera::OnTriggerStay(Collisions & _col)
+void BnS_MainCamera::OnTriggerStay(Collision & _col)
 {
 }
 
-void BnS_MainCamera::OnTriggerExit(Collisions & _col)
+void BnS_MainCamera::OnTriggerExit(Collision & _col)
 {
 	m_triggerOn = false;
 }

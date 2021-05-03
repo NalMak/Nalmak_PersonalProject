@@ -363,7 +363,7 @@ void GameObject::Release()
 	m_components.clear();
 }
 
-void GameObject::OnTriggerEnter(Collisions & _col)
+void GameObject::OnTriggerEnter(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -374,7 +374,7 @@ void GameObject::OnTriggerEnter(Collisions & _col)
 	}
 }
 
-void GameObject::OnTriggerStay(Collisions & _col)
+void GameObject::OnTriggerStay(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -385,7 +385,7 @@ void GameObject::OnTriggerStay(Collisions & _col)
 	}
 }
 
-void GameObject::OnTriggerExit(Collisions & _col)
+void GameObject::OnTriggerExit(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -396,7 +396,7 @@ void GameObject::OnTriggerExit(Collisions & _col)
 	}
 }
 
-void GameObject::OnCollisionEnter(Collisions & _col)
+void GameObject::OnCollisionEnter(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -407,7 +407,7 @@ void GameObject::OnCollisionEnter(Collisions & _col)
 	}
 }
 
-void GameObject::OnCollisionStay(Collisions & _col)
+void GameObject::OnCollisionStay(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -418,7 +418,7 @@ void GameObject::OnCollisionStay(Collisions & _col)
 	}
 }
 
-void GameObject::OnCollisionExit(Collisions & _col)
+void GameObject::OnCollisionExit(Collision & _col)
 {
 	for (auto& component : m_components)
 	{
@@ -546,6 +546,13 @@ GameObject * GameObject::SetScale(float _x, float _y)
 GameObject* GameObject::SetRotation(float _xAngle, float _yAngle, float _zAngle)
 {
 	D3DXQuaternionRotationYawPitchRoll(&m_transform->rotation, Deg2Rad * _yAngle, Deg2Rad * _xAngle, Deg2Rad *_zAngle);
+
+	return this;
+}
+
+GameObject * GameObject::SetRotation(const Quaternion & _rot)
+{
+	m_transform->rotation = _rot;
 
 	return this;
 }

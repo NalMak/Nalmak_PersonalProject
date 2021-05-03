@@ -1,6 +1,8 @@
 #pragma once
 #include "IState.h"
 #include "LynInfo.h"
+#include "AttackInfo.h"
+
 
 class LynState :
 	public IState

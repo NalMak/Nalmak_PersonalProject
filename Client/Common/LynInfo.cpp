@@ -62,31 +62,31 @@ void LynInfo::Update()
 	//DEBUG_LOG(L"root pos", Vector3(worldMat->_41, worldMat->_42, worldMat->_43));
 }
 
-void LynInfo::OnTriggerEnter(Collisions & _col)
+void LynInfo::OnTriggerEnter(Collision & _col)
 {
 	DEBUG_LOG(L"Lyn Trigger!", L"enter");
 
 }
 
-void LynInfo::OnTriggerStay(Collisions & _col)
+void LynInfo::OnTriggerStay(Collision & _col)
 {
 }
 
-void LynInfo::OnTriggerExit(Collisions & _col)
+void LynInfo::OnTriggerExit(Collision & _col)
 {
 	DEBUG_LOG(L"Lyn Trigger!", L"exit");
 }
 
-void LynInfo::OnCollisionEnter(Collisions & _col)
+void LynInfo::OnCollisionEnter(Collision & _col)
 {
 }
 
-void LynInfo::OnCollisionStay(Collisions & _col)
+void LynInfo::OnCollisionStay(Collision & _col)
 {
 	DEBUG_LOG(L"Lyn Collision!" , L"stay");
 }
 
-void LynInfo::OnCollisionExit(Collisions & _col)
+void LynInfo::OnCollisionExit(Collision & _col)
 {
 }
 

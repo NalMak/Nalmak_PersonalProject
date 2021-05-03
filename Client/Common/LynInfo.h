@@ -22,13 +22,13 @@ public:
 private:
 	virtual void Initialize() override;
 	virtual void Update() override;
-	void OnTriggerEnter(Collisions& _col) override;
-	void OnTriggerStay(Collisions& _col) override;
-	void OnTriggerExit(Collisions& _col) override;
+	void OnTriggerEnter(Collision& _col) override;
+	void OnTriggerStay(Collision& _col) override;
+	void OnTriggerExit(Collision& _col) override;
 
-	void OnCollisionEnter(Collisions& _col) override;
-	void OnCollisionStay(Collisions& _col) override;
-	void OnCollisionExit(Collisions& _col) override;
+	void OnCollisionEnter(Collision& _col) override;
+	void OnCollisionStay(Collision& _col) override;
+	void OnCollisionExit(Collision& _col) override;
 public:
 	void SetState(LYN_STATE _state);
 	LYN_STATE m_state;

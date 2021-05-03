@@ -13,6 +13,7 @@ AnimationController::AnimationController(Desc * _desc)
 	m_currentTrack = 0;
 	m_nextTrack = 1;
 	m_currentPlayTime = 0.f;
+	m_prePlayTime = 0.f;
 	m_totalPlayTime = 0.0;
 	m_transitionTime = 1.f;
 	m_blendWeight = 1.f;
@@ -116,10 +117,7 @@ void AnimationController::Initialize()
 
 void AnimationController::Update()
 {
-	D3DXTRACK_DESC trackInfo;
-	m_animController->GetTrackDesc(m_currentTrack,&trackInfo);
-
-	m_currentPlayTime = trackInfo.Position;
+	
 
 	if (m_currentAnimationClip)
 	{
@@ -133,6 +131,7 @@ void AnimationController::EachRender()
 		return;
 	if (!m_currentAnimationClip)
 		return;
+
 
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
 	if (m_currentPlayTime < m_totalPlayTime - time)
@@ -154,6 +153,10 @@ void AnimationController::EachRender()
 		m_animController->AdvanceTime(m_totalPlayTime - m_currentPlayTime, NULL);
 		m_isStop = true;
 	}
+	D3DXTRACK_DESC trackInfo;
+	m_animController->GetTrackDesc(m_currentTrack, &trackInfo);
+	m_prePlayTime = m_currentPlayTime;
+	m_currentPlayTime = trackInfo.Position;
 }
 
 
@@ -439,6 +442,14 @@ double AnimationController::GetPlayRemainTime()
 float AnimationController::GetPlayRatio()
 {
 	return (float)(m_currentPlayTime / m_totalPlayTime);
+}
+
+bool AnimationController::IsOverTime(double _time)
+{
+	if (m_prePlayTime < _time && m_currentPlayTime >= _time)
+		return true;
+
+	return false;
 }
 
 void AnimationController::SetFixedAnimationBoneName(string _boneName, bool _xAxis, bool _yAxis, bool _zAxis)

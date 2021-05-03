@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\AnimationClip.h
   ..\Include\AnimationController.h
@@ -18,6 +18,7 @@
   ..\Include\CapsuleCollider.h
   ..\Include\CharacterController.h
   ..\Include\Collider.h
+  ..\Include\Collision.h
   ..\Include\Component.h
   ..\Include\Core.h
   ..\Include\CubeMap.h
@@ -139,7 +140,7 @@
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
   ..\Include\XFileMesh.h
-  139개 파일이 복사되었습니다.
+  140개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

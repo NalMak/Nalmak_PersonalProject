@@ -52,5 +52,5 @@ void LynBackStep::ExitState()
 	m_animController_upper->SetRootMotion(false);
 	m_animController_lower->SetRootMotion(false);
 	m_character->SetVelocity(0, 0, 0);
-
+	SetInteger(L"IsBlend", 0);
 }

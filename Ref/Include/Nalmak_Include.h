@@ -103,8 +103,7 @@ using namespace std;
 #include "Exception.h"
 #include "FileIO.h"
 #include "SplineCurve.h"
-
-
+#include "Collision.h"
 
 
 

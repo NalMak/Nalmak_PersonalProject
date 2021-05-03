@@ -39,27 +39,27 @@ void ICycle::PostRender()
 {
 }
 
-void ICycle::OnTriggerEnter(Collisions & _col)
+void ICycle::OnTriggerEnter(Collision & _col)
 {
 }
 
-void ICycle::OnTriggerStay(Collisions & _col)
+void ICycle::OnTriggerStay(Collision & _col)
 {
 }
 
-void ICycle::OnTriggerExit(Collisions & _col)
+void ICycle::OnTriggerExit(Collision & _col)
 {
 }
 
-void ICycle::OnCollisionEnter(Collisions & _col)
+void ICycle::OnCollisionEnter(Collision & _col)
 {
 }
 
-void ICycle::OnCollisionStay(Collisions & _col)
+void ICycle::OnCollisionStay(Collision & _col)
 {
 }
 
-void ICycle::OnCollisionExit(Collisions & _col)
+void ICycle::OnCollisionExit(Collision & _col)
 {
 }
 

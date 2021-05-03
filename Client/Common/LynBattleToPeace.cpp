@@ -46,7 +46,7 @@ void LynBattleToPeace::UpdateState()
 void LynBattleToPeace::ExitState()
 {
 	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
-
+	SetInteger(L"IsBlend", 1);
 
 	//m_info->SetState(LYN_STATE_PEACE_STANDARD);
 }

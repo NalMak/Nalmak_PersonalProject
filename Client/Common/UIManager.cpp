@@ -41,3 +41,12 @@ void UIManager::CreateMainUI()
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(128, 128);
 	}
 }
+
+void UIManager::SetDamageFont()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		m_damageFont[i] = ResourceManager::GetInstance()->GetResource<Texture>(L"UI_DamageFont" + to_wstring(i));
+		m_criticalDamageFont[i] = ResourceManager::GetInstance()->GetResource<Texture>(L"UI_CriticalDamageFont" + to_wstring(i));
+	}
+}

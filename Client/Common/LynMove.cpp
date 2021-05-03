@@ -111,53 +111,78 @@ void LynMove::Update()
 	////////////////////////////////////////////////////////////// 점프 시 조건
 	if (m_moveState != LYN_MOVE_STATE_JUMP)
 	{
-		
-
-		m_animController_lower->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-
-		switch (moveDirState)
+		if(m_preState == LYN_MOVE_STATE_JUMP)
 		{
-		case LynMove::LYN_MOVE_DIR_STATE_FRONT:
-			animName = "Mov_RunFront";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_RIGHT:
-			animName = "Mov_RunRight";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_FRONTRIGHT:
-			animName = "Mov_RunRightFront";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_LEFT:
-			animName = "Mov_RunLeft";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_FRONTLEFT:
-			animName = "Mov_RunLeftFront";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_BACK:
-			animName = "Mov_RunBack";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_BACKRIGHT:
-			animName = "Mov_RunRightBack";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_BACKLEFT:
-			animName = "Mov_RunLeftBack";
-			break;
-		case LynMove::LYN_MOVE_DIR_STATE_NONE:
-			animName = "Mov_Idle";
-			break;
-		default:
-			break;
-		}
+			switch (moveDirState)
+			{
+			case LynMove::LYN_MOVE_DIR_STATE_FRONT:
+				animName = "Mov_JumpToMove_Front";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_BACK:
+				animName = "Mov_JumpToMove_Back";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_FRONTLEFT:
+			case LynMove::LYN_MOVE_DIR_STATE_LEFT:
+				animName = "Mov_JumpToMove_Left";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_FRONTRIGHT:
+			case LynMove::LYN_MOVE_DIR_STATE_RIGHT:
+				animName = "Mov_JumpToMove_Right";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_NONE:
+				animName = "Mov_JumpToIdle";
+				break;
 
-		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
+			}
+		}
+		else
 		{
 			m_animController_lower->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-			m_charcterController->SetVelocityY(m_info->m_jumpPower);
-			if (m_inputDir.x < -0.5f)
-				animName = "Mov_IdleToJump_Left";
-			else if(m_inputDir.x > 0.5f)
-				animName = "Mov_IdleToJump_Right";
-			else
-				animName = "Mov_IdleToJump_Front";
+
+			switch (moveDirState)
+			{
+			case LynMove::LYN_MOVE_DIR_STATE_FRONT:
+				animName = "Mov_RunFront";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_RIGHT:
+				animName = "Mov_RunRight";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_FRONTRIGHT:
+				animName = "Mov_RunRightFront";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_LEFT:
+				animName = "Mov_RunLeft";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_FRONTLEFT:
+				animName = "Mov_RunLeftFront";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_BACK:
+				animName = "Mov_RunBack";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_BACKRIGHT:
+				animName = "Mov_RunRightBack";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_BACKLEFT:
+				animName = "Mov_RunLeftBack";
+				break;
+			case LynMove::LYN_MOVE_DIR_STATE_NONE:
+				animName = "Mov_Idle";
+				break;
+			default:
+				break;
+			}
+
+			if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
+			{
+				m_animController_lower->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+				m_charcterController->SetVelocityY(m_info->m_jumpPower);
+				if (m_inputDir.x < -0.5f)
+					animName = "Mov_IdleToJump_Left";
+				else if (m_inputDir.x > 0.5f)
+					animName = "Mov_IdleToJump_Right";
+				else
+					animName = "Mov_IdleToJump_Front";
+			}
 		}
 	}
 	else
@@ -199,6 +224,7 @@ void LynMove::Update()
 
 void LynMove::UpdateMoveState()
 {
+	m_preState = m_moveState;
 	if (!m_charcterController->IsGround())
 	{
 		m_moveState = LYN_MOVE_STATE_JUMP;

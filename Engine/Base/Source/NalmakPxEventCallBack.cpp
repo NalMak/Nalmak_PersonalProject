@@ -33,21 +33,34 @@ void NalmakPxEventCallBack::onContact(const PxContactPairHeader & pairHeader, co
 
 		GameObject* obj0 = (GameObject*)(pairHeader.actors[0]->userData);
 		GameObject* obj1 = (GameObject*)(pairHeader.actors[1]->userData);
-		vector<int> a;
+		
 		if (cp.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
-			obj0->OnCollisionEnter(a);
-			obj1->OnCollisionEnter(a);
+			Collision collision0;
+			Collision collision1;
+			collision0.hitObj = obj1;
+			collision1.hitObj = obj0;
+			obj0->OnCollisionEnter(collision0);
+			obj1->OnCollisionEnter(collision1);
 		}
 		if (cp.events & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 		{
-			obj0->OnCollisionStay(a);
-			obj1->OnCollisionStay(a);
+			Collision collision0;
+			Collision collision1;
+			collision0.hitObj = obj1;
+			collision1.hitObj = obj0;
+			obj0->OnCollisionEnter(collision0);
+			obj1->OnCollisionEnter(collision1);
 		}
 		if (cp.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
 		{
-			obj0->OnCollisionExit(a);
-			obj1->OnCollisionExit(a);
+			Collision collision0;
+			Collision collision1;
+			collision0.hitObj = obj1;
+			collision1.hitObj = obj0;
+
+			obj0->OnCollisionExit(collision0);
+			obj1->OnCollisionExit(collision1);
 		}
 	}
 }
@@ -63,16 +76,27 @@ void NalmakPxEventCallBack::onTrigger(PxTriggerPair * pairs, PxU32 count)
 		if (!obj0 || !obj1)
 			continue;
 
-		vector<int> a;
+		
+
 		if (tp.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
-			obj0->OnTriggerEnter(a);
-			obj1->OnTriggerEnter(a);
+			Collision collision0;
+			Collision collision1;
+			collision0.hitObj = obj1;
+			collision1.hitObj = obj0;
+
+			obj0->OnTriggerEnter(collision0);
+			obj1->OnTriggerEnter(collision1);
 		}
 		if (tp.status & PxPairFlag::eNOTIFY_TOUCH_LOST)
 		{
-			obj0->OnTriggerExit(a);
-			obj1->OnTriggerExit(a);
+			Collision collision0;
+			Collision collision1;
+			collision0.hitObj = obj1;
+			collision1.hitObj = obj0;
+
+			obj0->OnTriggerExit(collision0);
+			obj1->OnTriggerExit(collision1);
 		}
 	}
 }

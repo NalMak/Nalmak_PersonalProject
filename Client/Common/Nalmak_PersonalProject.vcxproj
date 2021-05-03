@@ -177,6 +177,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackInfo.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
     <ClInclude Include="BnS_MainCamera.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AttackInfo.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
