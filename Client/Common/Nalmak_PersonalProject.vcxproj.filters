@@ -99,9 +99,6 @@
     <ClInclude Include="BnS_MainCamera.h">
       <Filter>02.Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="LynMove.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
     <ClInclude Include="Lyn_Attack_Basic1.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
@@ -137,6 +134,13 @@
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="TitleToStage.h" />
     <ClInclude Include="AttackInfo.h" />
+    <ClInclude Include="LynMoving.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynMove.h" />
+    <ClInclude Include="LynFall.h" />
+    <ClInclude Include="LynJump.h" />
+    <ClInclude Include="LynLand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -175,9 +179,6 @@
     <ClCompile Include="Lyn_Attack_Basic1.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynMove.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
     <ClCompile Include="LynVerticalCut_L0.cpp">
       <Filter>04.Lyn\VerticalCut</Filter>
     </ClCompile>
@@ -210,6 +211,13 @@
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
     <ClCompile Include="AttackInfo.cpp" />
+    <ClCompile Include="LynMoving.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynMove.cpp" />
+    <ClCompile Include="LynFall.cpp" />
+    <ClCompile Include="LynJump.cpp" />
+    <ClCompile Include="LynLand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

@@ -33,6 +33,8 @@ struct NALMAK_DLL StaticObjectInfoData
 	bool isExistPointLight = false;
 	PointLight::Desc pointDesc;
 
+
+	
 };
 
 class NALMAK_DLL StaticObjectInfo : public IResource

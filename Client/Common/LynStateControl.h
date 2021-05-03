@@ -11,6 +11,20 @@ public:
 
 	};
 public:
+	enum LYN_MOVE_DIR_STATE
+	{
+		LYN_MOVE_DIR_STATE_FRONT,
+		LYN_MOVE_DIR_STATE_RIGHT,
+		LYN_MOVE_DIR_STATE_FRONTRIGHT,
+		LYN_MOVE_DIR_STATE_LEFT,
+		LYN_MOVE_DIR_STATE_FRONTLEFT,
+		LYN_MOVE_DIR_STATE_BACK,
+		LYN_MOVE_DIR_STATE_BACKRIGHT,
+		LYN_MOVE_DIR_STATE_BACKLEFT,
+		LYN_MOVE_DIR_STATE_NONE,
+		LYN_MOVE_DIR_STATE_MAX
+	};
+public:
 	LynStateControl(Desc* _desc);
 	~LynStateControl();
 private:
@@ -29,6 +43,7 @@ public:
 		
 
 		state->m_stateControl = this;
+		state->m_lynControl = this;
 		m_stateList[_stateName] = state;
 
 		return this;
@@ -39,5 +54,27 @@ private:
 
 	CharacterController* m_character;
 	LynInfo* m_info;
+
+	Vector3 m_inputDir;
+	Vector3 m_targetInput;
+	LYN_MOVE_DIR_STATE m_dirState;
+	float m_targetSpeed;
+public:
+	void SetSpeed(float _speed);
+	void UpdatePosition();
+	LYN_MOVE_DIR_STATE UpdateDirection();
+	LYN_MOVE_DIR_STATE GetDirectionState();
+private:
+	Vector3 m_directionState[9] = {
+		{ 0, 0, 1 },
+		{ 1,0,0 },
+		Nalmak_Math::Normalize({ 1,0,1 }),
+		{ -1,0,0 },
+		Nalmak_Math::Normalize({ -1,0,1 }),
+		{ 0,0,-1 },
+		Nalmak_Math::Normalize({ 1,0,-1 }),
+		Nalmak_Math::Normalize({ -1,0,-1 }),
+		{ 0,0,0 }
+	};
 };
 

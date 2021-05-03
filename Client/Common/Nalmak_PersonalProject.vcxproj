@@ -189,9 +189,13 @@
     <ClInclude Include="Homework_Player.h" />
     <ClInclude Include="LynBackStep.h" />
     <ClInclude Include="LynBattleToPeace.h" />
+    <ClInclude Include="LynFall.h" />
     <ClInclude Include="LynIdle.h" />
     <ClInclude Include="LynInfo.h" />
+    <ClInclude Include="LynJump.h" />
+    <ClInclude Include="LynLand.h" />
     <ClInclude Include="LynMove.h" />
+    <ClInclude Include="LynMoving.h" />
     <ClInclude Include="LynSpinSlash_Combo.h" />
     <ClInclude Include="LynSpinSlash_End.h" />
     <ClInclude Include="LynSpinSlash_Start.h" />
@@ -226,9 +230,13 @@
     <ClCompile Include="Homework_Player.cpp" />
     <ClCompile Include="LynBackStep.cpp" />
     <ClCompile Include="LynBattleToPeace.cpp" />
+    <ClCompile Include="LynFall.cpp" />
     <ClCompile Include="LynIdle.cpp" />
     <ClCompile Include="LynInfo.cpp" />
+    <ClCompile Include="LynJump.cpp" />
+    <ClCompile Include="LynLand.cpp" />
     <ClCompile Include="LynMove.cpp" />
+    <ClCompile Include="LynMoving.cpp" />
     <ClCompile Include="LynSpinSlash_Combo.cpp" />
     <ClCompile Include="LynSpinSlash_End.cpp" />
     <ClCompile Include="LynSpinSlash_Start.cpp" />

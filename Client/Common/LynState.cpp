@@ -10,3 +10,4 @@ LynState::LynState()
 LynState::~LynState()
 {
 }
+

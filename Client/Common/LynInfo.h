@@ -45,7 +45,6 @@ public:
 
 public:
 	float m_currentSpeed;
-	bool m_isGround;
 public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();

@@ -45,3 +45,68 @@ void LynStateControl::Update()
 	DEBUG_LOG(L"Current State", GetCurStateString());
 	StateControl::Update();
 }
+
+void LynStateControl::SetSpeed(float _speed)
+{
+	m_targetSpeed = _speed;
+}
+
+void LynStateControl::UpdatePosition()
+{
+	m_info->UpdateWeapon();
+
+	UpdateDirection();
+
+	DEBUG_LOG(L"moveDir", m_dirState);
+
+	Vector3 velocity = { 0,0,0 };
+	velocity += m_inputDir.x * m_transform->GetRight() * m_targetSpeed;
+	velocity += m_inputDir.z * m_transform->GetForward() * m_targetSpeed;
+
+	m_character->SetVelocityX(velocity.x);
+	m_character->SetVelocityZ(velocity.z);
+}
+
+LynStateControl::LYN_MOVE_DIR_STATE LynStateControl::UpdateDirection()
+{
+	m_targetInput = { 0,0,0 };
+	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
+	{
+		m_targetInput += {0, 0, 1};
+	}
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
+	{
+		m_targetInput -= {0, 0, 1};
+	}
+	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
+	{
+		m_targetInput -= {1, 0, 0};
+	}
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+	{
+		m_targetInput += {1, 0, 0};
+	}
+	m_targetInput = Nalmak_Math::Normalize(m_targetInput);
+
+	m_inputDir = Nalmak_Math::Lerp(m_inputDir, m_targetInput, dTime * 10);
+
+	float shortLength = INFINITY;
+	int index = 0;
+	for (int i = 0; i < 9; ++i)
+	{
+		float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
+		if (length < shortLength)
+		{
+			index = i;
+			shortLength = length;
+		}
+	}
+	m_dirState = (LYN_MOVE_DIR_STATE)index;
+
+	return m_dirState;
+}
+
+LynStateControl::LYN_MOVE_DIR_STATE LynStateControl::GetDirectionState()
+{
+	return m_dirState;
+}

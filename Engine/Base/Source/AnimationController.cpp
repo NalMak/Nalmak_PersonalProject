@@ -149,8 +149,8 @@ void AnimationController::EachRender()
 	}
 	else
 	{
-		m_currentPlayTime = m_totalPlayTime;
 		m_animController->AdvanceTime(m_totalPlayTime - m_currentPlayTime, NULL);
+		m_currentPlayTime = m_totalPlayTime;
 		m_isStop = true;
 	}
 	D3DXTRACK_DESC trackInfo;
@@ -340,6 +340,7 @@ void AnimationController::PlayBlending(AnimationClip * _clip, double _otherTime)
 		Play(_clip);
 		return;
 	}
+
 
 	m_isStop = false;
 

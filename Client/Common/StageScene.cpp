@@ -22,6 +22,12 @@
 #include "StaticObjectInfo.h"
 
 #include "LynMove.h"
+#include "LynFall.h"
+#include "LynJump.h"
+#include "LynLand.h"
+
+
+
 #include "BnS_Enemy.h"
 #include "UIManager.h"
 
@@ -44,6 +50,7 @@ void StageScene::Initialize()
 		MAKE_STATIC(obj.first);
 	}
 
+	
 
 	INSTANTIATE()->AddComponent<ParticleRenderer>()->SetPosition(0, 3, 0);
 
@@ -104,11 +111,17 @@ void StageScene::Initialize()
 	navCollider.navName = L"default";
 	INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
 
+	{
+		NavCollider::Desc navCollider;
+		navCollider.navName = L"floor";
+		INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
+	}
+	
 
+	
 	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER,L"Player")->SetPosition(0, 10, 0);
 	auto cam = INSTANTIATE();
 
-	lyn->AddComponent<LynMove>();
 
 	SkinnedMeshRenderer::Desc skin;
 	skin.meshName = L"Lyn_Model2";
@@ -123,27 +136,37 @@ void StageScene::Initialize()
 	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.1f, 0.1f, 0.1f);
 
 	lyn->AddComponent<LynStateControl>();
+	lyn->AddComponent<LynStateControl>();
+
+	LynStateControl* moveControl = lyn->GetComponents<LynStateControl>()[0];
+	LynStateControl* skillControl = lyn->GetComponents<LynStateControl>()[1];
+
 	//lyn->AddComponent<LynStateControl>();
 
-	lyn->GetComponent<LynStateControl>()->AddState<LynIdle>(L"idle");
-	lyn->GetComponent<LynStateControl>()->AddState<LynBattleToPeace>(L"battleToPeace");
+	moveControl->AddState<LynMove>(L"move");
+	moveControl->AddState<LynFall>(L"fall");
+	moveControl->AddState<LynLand>(L"land");
+	moveControl->AddState<LynJump>(L"jump");
 
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_L0>(L"verticalCut_l0");
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_L1>(L"verticalCut_l1");
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_L2>(L"verticalCut_l2");
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_R0>(L"verticalCut_r0");
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_R1>(L"verticalCut_r1");
-	lyn->GetComponent<LynStateControl>()->AddState<LynVerticalCut_R2>(L"verticalCut_r2");
+	moveControl->InitState(L"move");
 
-	lyn->GetComponent<LynStateControl>()->AddState<LynBackStep>(L"backStep");
+	skillControl->AddState<LynIdle>(L"idle");
+	skillControl->AddState<LynBattleToPeace>(L"battleToPeace");
 
-	lyn->GetComponent<LynStateControl>()->AddState<LynSpinSlash_Start>(L"spinSlash_start");
-	lyn->GetComponent<LynStateControl>()->AddState<LynSpinSlash_End>(L"spinSlash_end");
-	lyn->GetComponent<LynStateControl>()->AddState<LynSpinSlash_Combo>(L"spinSlash_combo");
+	skillControl->AddState<LynVerticalCut_L0>(L"verticalCut_l0");
+	skillControl->AddState<LynVerticalCut_L1>(L"verticalCut_l1");
+	skillControl->AddState<LynVerticalCut_L2>(L"verticalCut_l2");
+	skillControl->AddState<LynVerticalCut_R0>(L"verticalCut_r0");
+	skillControl->AddState<LynVerticalCut_R1>(L"verticalCut_r1");
+	skillControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2");
 
+	skillControl->AddState<LynBackStep>(L"backStep");
 
+	skillControl->AddState<LynSpinSlash_Start>(L"spinSlash_start");
+	skillControl->AddState<LynSpinSlash_End>(L"spinSlash_end");
+	skillControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo");
 
-	lyn->GetComponent<LynStateControl>()->InitState(L"idle");
+	skillControl->InitState(L"idle");
 
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body", 0);
@@ -175,9 +198,9 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunRightFront", 1.3f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RunLeftFront", 1.3f, true);
 
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.1f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.1f, false);
-	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Right", 1.1f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Front", 1.1f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Left", 1.1f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_IdleToJump_Right", 1.1f, true);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpFront", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpLeft", 1.f, true);

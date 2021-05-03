@@ -18,6 +18,7 @@ void LynBackStep::Initialize()
 void LynBackStep::EnterState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
+
 	m_animController_upper->Play("Lyn_B_Std_BackStep");
 	m_animController_lower->Play("Lyn_B_Std_BackStep");
 
