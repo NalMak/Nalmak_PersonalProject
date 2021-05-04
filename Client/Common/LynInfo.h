@@ -62,8 +62,9 @@ private:
 	Matrix* m_matBattleHide;
 private:
 	Vector3 m_preAnimPos;
-
-
+public:
+	void SetTarget(GameObject* _obj);
+	GameObject* GetTarget();
 private:
 	GameObject* m_target;
 

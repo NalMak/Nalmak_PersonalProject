@@ -641,9 +641,7 @@ GameObject * PhysicsManager::RaycastCamToMouse(Vector3 * _hitPoint, const vector
 
 	for (auto& render : _renderList)
 	{
-
 		Vector3 center = render->GetTransform()->GetWorldPosition();
-
 
 		float rayDx = (endRayPos.x - startRayPos.x) / rayLength;
 		float rayDy = (endRayPos.y - startRayPos.y) / rayLength;

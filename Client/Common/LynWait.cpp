@@ -69,6 +69,15 @@ void LynWait::EnterState()
 
 void LynWait::UpdateState()
 {
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_X))
+	{
+		if (m_info->GetTarget())
+		{
+			SetState(L"thunderSlash");
+			return;
+		}
+	}
+
 	if (m_sKeyTimer > 0.f)
 	{
 		m_sKeyTimer -= dTime;

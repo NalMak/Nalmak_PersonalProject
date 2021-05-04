@@ -138,3 +138,13 @@ void LynInfo::UpdateWeapon()
 	}
 
 }
+
+void LynInfo::SetTarget(GameObject * _obj)
+{
+	m_target = _obj;
+}
+
+GameObject * LynInfo::GetTarget()
+{
+	return m_target;
+}

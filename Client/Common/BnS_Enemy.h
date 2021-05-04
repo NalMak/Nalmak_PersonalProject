@@ -12,6 +12,7 @@ public:
 		float hitRadius = 3.f;
 		UINT power = 1500;
 		float detectionRadius = 10.f;
+		Vector4 volumeRect = { 5,10,5,0};
 	};
 public:
 	BnS_Enemy(Desc* _desc);
@@ -23,7 +24,11 @@ public:
 
 	void OnTriggerEnter(Collision& _col) override;
 	void OnTriggerExit(Collision& _col) override;
+
+public:
+	const Vector4& GetVolume();
 private:
+	Vector4 m_volumeRect;
 	UINT m_hp;
 	UINT m_power;
 	float m_hitRadius;

@@ -150,6 +150,14 @@ public:
 
 		return sqrtf(Nalmak_Math::Dot(dP, dP));
 	}
+
+	static bool IsInPointInRect(const Vector2& _point, const Vector4& _rect)
+	{
+		if (_point.x >= _rect.x && _point.x <= _rect.z && _point.y >= _rect.y && _point.y <= _rect.w)
+			return true;
+		return false;
+	}
+
 	static float GetDistance_PointToInfinityLine(const Vector3& P1, const Line& L1)
 	{
 		Vector3 AB = L1.end - L1.start;

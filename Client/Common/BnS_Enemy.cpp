@@ -13,7 +13,7 @@ BnS_Enemy::BnS_Enemy(Desc * _desc)
 	m_isAggro = false;
 	m_target = nullptr;
 
-
+	m_volumeRect = _desc->volumeRect;
 }
 
 BnS_Enemy::~BnS_Enemy()
@@ -48,4 +48,9 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 
 void BnS_Enemy::OnTriggerExit(Collision & _col)
 {
+}
+
+const Vector4 & BnS_Enemy::GetVolume()
+{
+	return m_volumeRect;	
 }

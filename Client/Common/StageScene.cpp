@@ -15,6 +15,8 @@
 #include "LynIdle.h"
 #include "LynBattleToPeace.h"
 #include "LynBackStep.h"
+#include "LynSkillTest.h"
+#include "LynThunderSlash.h"
 
 #include "LynSpinSlash_Combo.h"
 #include "LynSpinSlash_End.h"
@@ -146,6 +148,7 @@ void StageScene::Initialize()
 
 	moveControl->InitState(L"idle");
 
+
 	skillControl->AddState<LynWait>(L"wait");
 	skillControl->AddState<LynBattleToPeace>(L"battleToPeace");
 
@@ -161,6 +164,10 @@ void StageScene::Initialize()
 	skillControl->AddState<LynSpinSlash_Start>(L"spinSlash_start");
 	skillControl->AddState<LynSpinSlash_End>(L"spinSlash_end");
 	skillControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo");
+
+	skillControl->AddState<LynSkillTest>(L"skillTest");
+	skillControl->AddState<LynThunderSlash>(L"thunderSlash");
+
 
 	skillControl->InitState(L"wait");
 
@@ -246,6 +253,11 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_2", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.f, false);
+
+	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_End", 4.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Exec", 0.8f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Swing", 0.8f, false);
+
 
 	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.4f, false);
 

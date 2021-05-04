@@ -11,6 +11,7 @@ LynIdle::~LynIdle()
 
 void LynIdle::Initialize()
 {
+
 	m_animController_upper->PlayBlending("Lyn_P_Std_Mov_Idle");
 	m_animController_lower->PlayBlending("Lyn_P_Std_Mov_Idle");
 
@@ -36,11 +37,12 @@ void LynIdle::EnterState()
 	}
 
 
+
 }
 
 void LynIdle::UpdateState()
 {
-	/*if (m_eventStart)
+	if (m_eventStart)
 	{
 		if (m_animController_upper->GetPlayRemainTime() < 0.3f)
 		{
@@ -62,7 +64,7 @@ void LynIdle::UpdateState()
 		}
 
 		m_idleTime -= dTime;
-	}*/
+	}
 
 
 
@@ -106,4 +108,5 @@ void LynIdle::UpdateState()
 void LynIdle::ExitState()
 {
 	m_lynSkillControl->SetInteger(L"IsBlend",0);
+
 }

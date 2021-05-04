@@ -1,5 +1,8 @@
+
 #pragma once
 #include "Component.h"
+class LynInfo;
+
 class BnS_MainCamera :
 	public Component
 {
@@ -24,7 +27,13 @@ public:
 	virtual void OnTriggerStay(Collision& _col) override;
 	virtual void OnTriggerExit(Collision& _col) override;
 private:
-	GameObject* m_player;
+	void Move();
+	GameObject* CheckTarget();
+private:
+	LynInfo* m_player;
+	GameObject* m_targetOutline;
+	Camera* m_cam;
+private:
 	float m_distance;
 	float m_targetDisance;
 	float m_minDistance;
@@ -34,5 +43,6 @@ private:
 	float m_mouseSensitive;
 	float m_wheelSensitive;
 	bool m_triggerOn;
+	Vector4 m_targetVolume;
 };
 

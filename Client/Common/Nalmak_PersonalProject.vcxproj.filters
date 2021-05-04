@@ -185,6 +185,11 @@
     <ClInclude Include="BnS_DamageFont.h">
       <Filter>02.Component\Battle</Filter>
     </ClInclude>
+    <ClInclude Include="LynHideSlash1.h" />
+    <ClInclude Include="LynHideSlash2.h" />
+    <ClInclude Include="LynHideSlash3.h" />
+    <ClInclude Include="LynSkillTest.h" />
+    <ClInclude Include="LynThunderSlash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -288,6 +293,11 @@
     <ClCompile Include="BnS_DamageFont.cpp">
       <Filter>02.Component\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="LynHideSlash1.cpp" />
+    <ClCompile Include="LynHideSlash2.cpp" />
+    <ClCompile Include="LynHideSlash3.cpp" />
+    <ClCompile Include="LynSkillTest.cpp" />
+    <ClCompile Include="LynThunderSlash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
