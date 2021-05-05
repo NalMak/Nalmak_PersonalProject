@@ -25,6 +25,7 @@ public:
 	explicit Bezier(const Vector2& _p1, const Vector2& _p2, const Vector2& _p3, const Vector2& _p4);
 	~Bezier();
 public:
+	void SetPoint(int _pointIndex, const Vector2& _vec);
 	void SetInterpolationType(INTERPOLATION_TYPE _type);
 	Vector2 GetPoint(float _t) const;
 	float GetYvalue(float _t) const;

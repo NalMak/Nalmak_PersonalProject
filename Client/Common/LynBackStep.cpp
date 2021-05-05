@@ -19,28 +19,25 @@ void LynBackStep::EnterState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 
-	m_animController_upper->Play("Lyn_B_Std_BackStep");
-	m_animController_lower->Play("Lyn_B_Std_BackStep");
-
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_LOWER);
+	m_animController->Play("Lyn_B_Std_BackStep");
 
 
-	m_animController_upper->SetRootMotion(true);
-	m_animController_lower->SetRootMotion(true);
+
+	m_animController->SetRootMotion(true);
+
 
 }
 
 void LynBackStep::UpdateState()
 {
-	if (!m_animController_lower->IsPlay())
+	if (m_animController->GetPlayRemainTime() < 0.1f)
 	{
-		SetState(L"wait");
+		SetState(L"idle");
 		return;
 	}
-	float ratio = m_animController_lower->GetPlayRatio();
+	float ratio = m_animController->GetPlayRatio();
 	if(ratio < 0.7f)
-		m_character->SetVelocity(-m_transform->GetForward() * 140 * (0.7 - ratio));
+		m_character->SetVelocity(-m_transform->GetForward() * 140 * (0.7f - ratio));
 	else
 		m_character->AddVelocity(0, -30 * dTime, 0);
 
@@ -48,11 +45,8 @@ void LynBackStep::UpdateState()
 
 void LynBackStep::ExitState()
 {
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_LOWER);
+	m_animController->SetRootMotion(false);
 
-	m_animController_upper->SetRootMotion(false);
-	m_animController_lower->SetRootMotion(false);
 	m_character->AddVelocity(0, -30 * dTime, 0);
 
 	SetInteger(L"IsBlend", 0);

@@ -17,18 +17,17 @@ void LynVerticalCut_L2::Initialize()
 
 void LynVerticalCut_L2::EnterState()
 {
+	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_UPPER);
 
-
-	m_animController_upper->Play("Lyb_B_Std_VerticalCul_01_3");
+	m_animController->Play("Lyb_B_Std_VerticalCul_01_3");
 
 
 }
 
 void LynVerticalCut_L2::UpdateState()
 {
-	if (m_animController_upper->IsOverTime(0.2f))
+	if (m_animController->IsOverTime(0.2f))
 	{
 		AttackInfo::Desc attack;
 		attack.height = 12;
@@ -42,7 +41,7 @@ void LynVerticalCut_L2::UpdateState()
 			->SetRotation(m_transform->GetWorldRotation());
 	}
 
-	if (m_animController_upper->GetPlayRemainTime() < 0.35f)
+	if (m_animController->GetPlayRemainTime() < 0.35f)
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
@@ -51,7 +50,7 @@ void LynVerticalCut_L2::UpdateState()
 		}
 		else
 		{
-			SetState(L"wait");
+			SetState(L"idle");
 			return;
 		}
 	}
@@ -59,7 +58,7 @@ void LynVerticalCut_L2::UpdateState()
 
 void LynVerticalCut_L2::ExitState()
 {
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
+	m_info->EndSkill();
 	SetInteger(L"IsBlend", 1);
 
 

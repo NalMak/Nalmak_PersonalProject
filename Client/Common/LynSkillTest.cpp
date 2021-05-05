@@ -18,38 +18,31 @@ void LynSkillTest::Initialize()
 void LynSkillTest::EnterState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-	m_animController_upper->Play("Lyn_B_Hide_SwordFlash_Swing");
-	m_animController_lower->Play("Lyn_B_Hide_SwordFlash_Swing");
-
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_LOWER);
-
+	m_animController->Play("Lyn_B_Hide_BattoCombo2_Exec");
 }
 
 void LynSkillTest::UpdateState()
 {
-	if (m_animController_upper->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_Swing")
+	if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_BattoCombo2_Exec")
 	{
-		if (!m_animController_upper->IsPlay())
+		if (!m_animController->IsPlay())
 		{
-			m_animController_upper->Play("Lyn_B_Hide_SwordFlash_Exec");
-			m_animController_lower->Play("Lyn_B_Hide_SwordFlash_Exec");
+			m_animController->Play("Lyn_B_Hide_BattoCombo2_Swing");
 		}
 	}
-	else if (m_animController_upper->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_Exec")
+	else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_BattoCombo2_Swing")
 	{
-		if (!m_animController_upper->IsPlay())
+		if (!m_animController->IsPlay())
 		{
-
-			m_animController_upper->Play("Lyn_B_Hide_SwordFlash_End");
-			m_animController_lower->Play("Lyn_B_Hide_SwordFlash_End");
+			SetState(L"idle");
+			return;
 		}
 	}
-	else if (m_animController_upper->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_End")
+	else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_End")
 	{
-		if (!m_animController_upper->IsPlay())
+		if (!m_animController->IsPlay())
 		{
-			SetState(L"wait");
+			SetState(L"idle");
 			return;
 		}
 	}
@@ -59,6 +52,4 @@ void LynSkillTest::UpdateState()
 
 void LynSkillTest::ExitState()
 {
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_LOWER);
 }

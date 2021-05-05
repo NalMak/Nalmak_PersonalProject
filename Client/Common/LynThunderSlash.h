@@ -14,7 +14,7 @@ public:
 	virtual void ExitState() override;
 private:
 	float m_distanceToTarget;
-	float m_animPlayTime;
+	double m_animPlayTime;
 	Vector3 m_toTargetDirection;
 };
 

@@ -18,14 +18,11 @@ protected:
 	virtual void UpdateState() = 0;
 	virtual void ExitState() = 0;
 protected:
-	AnimationController* m_animController_lower;
-	AnimationController* m_animController_upper;
-
+	AnimationController* m_animController;
 	CharacterController* m_character;
 	LynInfo* m_info;
-	LynStateControl* m_lynMoveControl;
-	LynStateControl* m_lynSkillControl;
-
+	
+	bool m_isUpper;
 private:
 
 };

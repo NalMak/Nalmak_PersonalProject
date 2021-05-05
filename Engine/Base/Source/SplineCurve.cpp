@@ -21,18 +21,18 @@ void SplineCurve::AddPoint(Vector3 _point)
 
 void SplineCurve::CalcDistanceRatio()
 {
-	float totlaDistance = 0;
+	float totalDistance = 0;
 	m_distanceRatio.clear();
 	vector<float> distantList;
 	for (int i = 1; i < m_points.size() - 2; ++i)
 	{
-		totlaDistance += Nalmak_Math::Distance(m_points[i], m_points[i + 1]);
-		distantList.emplace_back(totlaDistance);
+		totalDistance += Nalmak_Math::Distance(m_points[i], m_points[i + 1]);
+		distantList.emplace_back(totalDistance);
 	}
 
 	for (auto& distance : distantList)
 	{
-		m_distanceRatio.emplace_back(distance / totlaDistance);
+		m_distanceRatio.emplace_back(distance / totalDistance);
 	}
 
 }

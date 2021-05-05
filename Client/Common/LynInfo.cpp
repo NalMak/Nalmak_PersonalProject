@@ -2,7 +2,6 @@
 #include "LynInfo.h"
 #include "LynStateControl.h"
 
-
 LynInfo::LynInfo(Desc * _desc)
 {
 	m_runForwardSpeed = _desc->runForwardSpeed;
@@ -14,7 +13,7 @@ LynInfo::LynInfo(Desc * _desc)
 	m_turningSpeed = _desc->turningSpeed;
 
 	m_currentSpeed = 0;
-	m_animFixPart = 0;
+	
 	m_followingAnimationPosition = false;
 }
 
@@ -24,15 +23,18 @@ LynInfo::~LynInfo()
 
 void LynInfo::Initialize()
 {
+
+	m_sKeyTimer = 0.f;
 	m_battleToPeaceTimer = 0;
 	m_animController_lower = GetComponents<AnimationController>()[0];
 	m_animController_upper = GetComponents<AnimationController>()[1];
-	m_stateControll = GetComponent<LynStateControl>();
+	m_stateControl_lower = GetComponents<LynStateControl>()[0];
+	m_stateControl_upper = GetComponents<LynStateControl>()[1];
 	m_characterController = GetComponent<CharacterController>();
 	m_skinRenderer = GetComponent<SkinnedMeshRenderer>();
 
 	m_state = LYN_STATE_PEACE_STANDARD;
-
+	UpdateWeapon();
 	auto skin = GetComponent<SkinnedMeshRenderer>();
 	m_matBattleStandard = skin->GetBoneCombinedMatrix("WeaponR");
 	m_matBattleHide = skin->GetBoneCombinedMatrix("WeaponL");
@@ -42,24 +44,161 @@ void LynInfo::Initialize()
 
 void LynInfo::Update()
 {
-	//if (m_followingAnimationPosition)
-	//{
-	//	Matrix* boneMat = m_skinRenderer->GetBoneCombinedMatrix("Bip01Spine2");
-	//	Matrix worldMat = m_transform->GetWorldMatrix();
-	//	/*	worldMat._41 = m_recordedPos.x;
-	//		worldMat._42 = m_recordedPos.x;
-	//		worldMat._43 = m_recordedPos.x;*/
-	//	Vector3 movePos = Vector3(boneMat->_41, boneMat->_42, boneMat->_43);
-	//	D3DXVec3TransformNormal(&movePos, &movePos, &worldMat);
-	//	m_characterController->SetFootPosition(m_recordedPos);
-	//}
-	//else
-	//{
+	m_targetInput = { 0,0,0 };
+	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
+	{
+		m_targetInput += {0, 0, 1};
+	}
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
+	{
+		m_targetInput -= {0, 0, 1};
+	}
+	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_A))
+	{
+		m_targetInput -= {1, 0, 0};
+	}
+	else if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+	{
+		m_targetInput += {1, 0, 0};
+	}
+	m_targetInput = Nalmak_Math::Normalize(m_targetInput);
 
-	//}
-	//m_characterController->SetVelocity(0, 0, 0);
-	//
-	//DEBUG_LOG(L"root pos", Vector3(worldMat->_41, worldMat->_42, worldMat->_43));
+	m_inputDir = Nalmak_Math::Lerp(m_inputDir, m_targetInput, dTime * 10);
+
+	float shortLength = INFINITY;
+	int index = 0;
+	for (int i = 0; i < 9; ++i)
+	{
+		float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
+		if (length < shortLength)
+		{
+			index = i;
+			shortLength = length;
+		}
+	}
+	m_dirState = (LYN_MOVE_DIR_STATE)index;
+	Vector3 velocity = { 0,0,0 };
+
+	float speedRatio = 1.f;
+	switch (m_state)
+	{
+	case LYN_STATE_PEACE_STANDARD:
+		speedRatio = 1.f;
+		break;
+	case LYN_STATE_BATTLE_STANDARD:
+		speedRatio = 1.1f;
+		break;
+	case LYN_STATE_BATTLE_HIDEBLADE:
+		speedRatio = 1.15f;
+		break;
+	default:
+		break;
+	}
+	velocity += m_inputDir.x * m_transform->GetRight() * m_targetSpeed * speedRatio;
+	velocity += m_inputDir.z * m_transform->GetForward() * m_targetSpeed * speedRatio;
+
+	m_characterController->SetVelocityX(velocity.x);
+	m_characterController->SetVelocityZ(velocity.z);
+	
+	if (!m_characterController->IsGround())
+	{
+		m_characterController->AddVelocity(0, -60 * dTime, 0);
+	}
+
+	if (m_state != LYN_STATE_PEACE_STANDARD)
+	{
+		m_battleToPeaceTimer -= dTime;
+		if (m_battleToPeaceTimer <= 0.f)
+		{
+			m_battleToPeaceTimer = INFINITY;
+			
+			m_stateControl_upper->SetInteger(L"IsBlend", 1);
+			m_stateControl_upper->SetState(L"battleToPeace");
+			return;
+		}
+	}
+	if (m_isProgressSkill)
+		return;
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_X))
+	{
+		if (m_target)
+		{
+			m_stateControl_lower->SetState(L"thunderSlash");
+			m_stateControl_upper->SetState(L"thunderSlash");
+			return;
+		}
+	}
+
+	if (m_sKeyTimer > 0.f)
+	{
+		m_sKeyTimer -= dTime;
+		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
+		{
+			m_stateControl_lower->SetState(L"backStep");
+			m_stateControl_upper->SetState(L"backStep");
+			return;
+		}
+	}
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
+	{
+		m_sKeyTimer = 0.5f;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
+	{
+		if (m_state == LYN_STATE_BATTLE_HIDEBLADE)
+		{
+			if(m_dirState == LYN_MOVE_DIR_STATE_NONE)
+				m_stateControl_lower->SetState(L"baldo");
+			m_stateControl_upper->SetState(L"baldo");
+		}
+		else
+		{
+			m_stateControl_lower->SetState(L"slash1");
+			m_stateControl_upper->SetState(L"slash1");
+		}
+	
+		return;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
+	{
+		if (m_dirState == LYN_MOVE_DIR_STATE_NONE)
+			m_stateControl_lower->SetState(L"verticalCut_l0");
+		m_stateControl_upper->SetState(L"verticalCut_l0");
+		return;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_Q))
+	{
+		m_stateControl_upper->SetState(L"sideDashQ");
+		m_stateControl_lower->SetState(L"sideDashQ");
+		return;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_E))
+	{
+		m_stateControl_upper->SetState(L"sideDashE");
+		m_stateControl_lower->SetState(L"sideDashE");
+		return;
+	}
+
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_TAB))
+	{
+		m_stateControl_lower->SetState(L"spinSlash_start");
+		m_stateControl_upper->SetState(L"spinSlash_start");
+		return;
+	}
+
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_C))
+	{
+		m_stateControl_lower->SetState(L"lightningSlash");
+		m_stateControl_upper->SetState(L"lightningSlash");
+		return;
+	}
+
 }
 
 void LynInfo::OnTriggerEnter(Collision & _col)
@@ -95,7 +234,7 @@ void LynInfo::SetState(LYN_STATE _state)
 	switch (_state)
 	{
 	case LYN_STATE_PEACE_STANDARD:
-		m_battleToPeaceTimer = 0.f;
+		m_battleToPeaceTimer =INFINITY;
 		break;
 	case LYN_STATE_BATTLE_STANDARD:
 		m_battleToPeaceTimer = 5.f;
@@ -106,9 +245,15 @@ void LynInfo::SetState(LYN_STATE _state)
 	default:
 		break;
 	}
-	
+	UpdateWeapon();
 	m_state = _state;
 }
+
+LYN_STATE LynInfo::GetState()
+{
+	return m_state;
+}
+
 
 
 void LynInfo::EquipeWeapon(GameObject * _weapon)
@@ -132,11 +277,37 @@ void LynInfo::UpdateWeapon()
 		break;
 	case LYN_STATE_BATTLE_HIDEBLADE:
 		m_weapon->SetParents(m_transform, m_matBattleHide);
+		m_weapon->SetRotation(0, 0, 0);
+		m_weapon->SetPosition(0, 0, 0);
 		break;
 	default:
 		break;
 	}
 
+}
+
+void LynInfo::UpdateWeapon(LYN_STATE _state)
+{
+	switch (_state)
+	{
+	case LYN_STATE_PEACE_STANDARD:
+		m_weapon->SetParents(m_transform, m_matPeaceStandard);
+		m_weapon->SetRotation(0, 0, 65);
+		m_weapon->SetPosition(7, -4.5f, -4.f);
+		break;
+	case LYN_STATE_BATTLE_STANDARD:
+		m_weapon->SetParents(m_transform, m_matBattleStandard);
+		m_weapon->SetRotation(0, 0, 0);
+		m_weapon->SetPosition(0, 0, 0);
+		break;
+	case LYN_STATE_BATTLE_HIDEBLADE:
+		m_weapon->SetParents(m_transform, m_matBattleHide);
+		m_weapon->SetRotation(0, 0, 0);
+		m_weapon->SetPosition(0, 0, 0);
+		break;
+	default:
+		break;
+	}
 }
 
 void LynInfo::SetTarget(GameObject * _obj)
@@ -147,4 +318,25 @@ void LynInfo::SetTarget(GameObject * _obj)
 GameObject * LynInfo::GetTarget()
 {
 	return m_target;
+}
+
+LYN_MOVE_DIR_STATE LynInfo::GetDirectionState()
+{
+	return m_dirState;
+}
+
+void LynInfo::StartSkill()
+{
+	m_isProgressSkill = true;
+	m_battleToPeaceTimer = 5.f;
+}
+
+void LynInfo::EndSkill()
+{
+	m_isProgressSkill = false;
+}
+
+void LynInfo::SetSpeed(float _speed)
+{
+	m_targetSpeed = _speed;
 }

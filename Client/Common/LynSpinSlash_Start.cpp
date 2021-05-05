@@ -18,38 +18,21 @@ void LynSpinSlash_Start::Initialize()
 void LynSpinSlash_Start::EnterState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-	m_animController_upper->Play("Lyn_B_Std_SpinSlash_01");
-	m_animController_lower->Play("Lyn_B_Std_SpinSlash_01");
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_LOWER);
-
+	m_animController->Play("Lyn_B_Std_SpinSlash_01");
+	m_info->StartSkill();
+	m_animController->SetAnimatinoOffsetByBeizer({ 0,0,0 }, { 0,-0.5f,0 }, 0.75f, { 0,0 }, { 0.179f,0.01f }, { 0.82f,0.75f }, { 1,0 });
 }
 
 void LynSpinSlash_Start::UpdateState()
 {
-	if (!m_animController_upper->IsPlay())
+
+	if (!m_animController->IsPlay())
 	{
-		
-		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_TAB))
-		{
-			SetState(L"spinSlash_combo");
-			return;
-		}
-		else
-		{
-			SetState(L"spinSlash_end");
-			return;
-		}
+		SetState(L"spinSlash_combo");
 	}
 }
 
 void LynSpinSlash_Start::ExitState()
 {
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_LOWER);
-
-	m_animController_upper->SetSeparate(true);
-	m_animController_lower->SetActive(true);//->Play("Lyn_B_Std_SpinSlash_01_1");
-
-	SetInteger(L"IsBlend", 0);
+	m_info->EndSkill();
 }

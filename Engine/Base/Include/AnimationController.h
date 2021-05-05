@@ -5,7 +5,7 @@
 #include "Nalmak_Animation.h"
 #include "AnimationTransition.h"
 #include "AnimationClip.h"
-
+#include "Bezier.h"
 // 트랙 -> 애니메이션 셋 -> 키 프레임
 
 // 트랙 -> 재생도구 
@@ -127,4 +127,23 @@ private:
 	double m_totalPlayTime;
 
 	bool m_isStop;
+private:
+	//0 0  0 1  1 1 1 0
+	bool m_useCurve;
+	Bezier m_bezier;
+	Vector3 m_startOffset;
+	Vector3 m_endOffset;
+	Vector3 m_curretOffset;
+	float m_bezierRatio;
+	float m_bezierTotalTime;
+	float m_bezierCurrentTime;
+public:
+	void SetAnimatinoOffsetByBeizer(
+		const Vector3& _startOffset,
+		const Vector3& _endOffset,
+		float _time,
+		const Vector2& _p1,
+		const Vector2& _p2, 
+		const Vector2& _p3,
+		const Vector2& _p4);
 };

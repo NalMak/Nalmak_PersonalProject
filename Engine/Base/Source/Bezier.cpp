@@ -44,6 +44,11 @@ Bezier::~Bezier()
 
 }
 
+void Bezier::SetPoint(int _pointIndex,const Vector2 & _vec)
+{
+	m_bezierPoints[_pointIndex] = _vec;
+}
+
 void Bezier::SetInterpolationType(INTERPOLATION_TYPE _type)
 {
 	switch (_type)

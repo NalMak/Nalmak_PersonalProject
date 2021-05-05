@@ -18,7 +18,7 @@ public:
 		UINT height = 21;
 		UINT weight = 500; // 0 ~ 1000
 		DWORD option = DT_CENTER | DT_WORDBREAK;
-		const TCHAR* fontName = L"Astrolab";
+		const TCHAR* fontName = L"NanumGothicBold";
 		wstring text = L"default";
 		RECT boundary = { 0,0,200,50 };
 		D3DCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255);

@@ -29,12 +29,12 @@ ResourceManager::~ResourceManager()
 HRESULT ResourceManager::Initialize(bool _allLoad, const wstring & _path)
 {
 
+	AddFontResource(L"../../Engine/Resource/Client/NanumGothicBold.ttf");
 	// Font
-	//AddFontResource(L"../../Resource/Client/Font/Selected/Astrolab.ttf");
 	m_clientDirectoryPath = _path;
 
 	LoadAllResources(L"../Engine/Resource",true);
-	LoadAllResources(L"../../Engine/Resource",true);
+	LoadAllResources(L"../../Engine/Resource",true); // for client
 	LoadAllResources(L"../../../../Engine/Resource",true);
 	if (!_allLoad)
 		return S_OK;
@@ -72,7 +72,7 @@ HRESULT ResourceManager::Release()
 
 
 	// Font
-	//RemoveFontResource(L"../../Resource/Client/Font/Selected/Astrolab.ttf");
+	RemoveFontResource(L"../../Engine/Resource/Client/NanumGothicBold.ttf");
 	
 
 	return S_OK;

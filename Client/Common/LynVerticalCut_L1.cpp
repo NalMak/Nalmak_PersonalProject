@@ -17,19 +17,17 @@ void LynVerticalCut_L1::Initialize()
 
 void LynVerticalCut_L1::EnterState()
 {
-	m_info->m_animFixPart.On(ANIMATION_FIX_PART_UPPER);
-
-
+	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-	m_animController_upper->Play("Lyb_B_Std_VerticalCul_01_2");
+	m_animController->Play("Lyb_B_Std_VerticalCul_01_2");
 
 }
 
 void LynVerticalCut_L1::UpdateState()
 {
-	if (m_animController_upper->GetPlayRemainTime() < 0.2f)
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
-		m_animController_upper->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
 			SetState(L"verticalCut_r2");
@@ -37,7 +35,7 @@ void LynVerticalCut_L1::UpdateState()
 		}
 		else
 		{
-			SetState(L"wait");
+			SetState(L"idle");
 			return;
 		}
 	}
@@ -45,7 +43,6 @@ void LynVerticalCut_L1::UpdateState()
 
 void LynVerticalCut_L1::ExitState()
 {
-	m_info->m_animFixPart.Off(ANIMATION_FIX_PART_UPPER);
+	m_info->EndSkill();
 	SetInteger(L"IsBlend", 1);
-
 }

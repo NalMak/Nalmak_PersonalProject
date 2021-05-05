@@ -17,134 +17,112 @@ void LynMove::Initialize()
 
 void LynMove::EnterState()
 {
-	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
-	{
-		m_lynMoveControl->SetSpeed(m_info->m_runBackwardSpeed);
-	}
-	else
-	{
-		m_lynMoveControl->SetSpeed(m_info->m_runForwardSpeed);
-	}
+	m_dirState = LYN_MOVE_DIR_STATE_MAX;
+	PlayAnimationByDirection();
 }
 
 void LynMove::UpdateState()
 {
-	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
-		m_lynMoveControl->SetSpeed(m_info->m_runBackwardSpeed);
-	else
-		m_lynMoveControl->SetSpeed(m_info->m_runForwardSpeed);
+	PlayAnimationByDirection();
 
-	m_lynMoveControl->UpdatePosition();
-
-	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER))
-		return;
-
-	
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
+	if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
-		SetState(L"jump");
-		return;
+		m_info->SetSpeed(m_info->m_runForwardSpeed);
 	}
-
+	else
+	{
+		m_info->SetSpeed(m_info->m_runBackwardSpeed);
+	}
+	
 	if (!m_character->IsGround())
 	{
 		SetState(L"fall");
 		return;
 	}
 
-	/*auto lowerAnim = m_animController_lower->GetCurrentPlayAnimation();
-	auto upperAnim = m_animController_upper->GetCurrentPlayAnimation();
-
-	if (lowerAnim != upperAnim)
+	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
 	{
-		if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_UPPER))
-		{
-			if (m_lynControl->GetDirectionState() == LYN_MOVE_DIR_STATE_NONE)
-			{
-				m_animController_lower->PlayBlending(upperAnim);
-				return;
-			}
-		}
-		else
-			m_animController_upper->PlayBlending(lowerAnim);
-	}*/
-
-	
-
-	string animName = "";
-	switch (m_lynMoveControl->GetDirectionState())
-	{
-	case LYN_MOVE_DIR_STATE_FRONT:
-		animName = "Mov_RunFront";
-		break;
-	case LYN_MOVE_DIR_STATE_RIGHT:
-		animName = "Mov_RunRight";
-		break;
-	case LYN_MOVE_DIR_STATE_FRONTRIGHT:
-		animName = "Mov_RunRightFront";
-		break;
-	case LYN_MOVE_DIR_STATE_LEFT:
-		animName = "Mov_RunLeft";
-		break;
-	case LYN_MOVE_DIR_STATE_FRONTLEFT:
-		animName = "Mov_RunLeftFront";
-		break;
-	case LYN_MOVE_DIR_STATE_BACK:
-		animName = "Mov_RunBack";
-		break;
-	case LYN_MOVE_DIR_STATE_BACKRIGHT:
-		animName = "Mov_RunRightBack";
-		break;
-	case LYN_MOVE_DIR_STATE_BACKLEFT:
-		animName = "Mov_RunLeftBack";
-		break;
-	case LYN_MOVE_DIR_STATE_NONE:
-		m_animController_lower->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-		SetState(L"idle");
+		SetState(L"jump");
 		return;
-		
-	default:
-		break;
-	}
-
-	
-
-	if (animName == "")
-		return;
-
-	if (m_info->m_animFixPart.Check(ANIMATION_FIX_PART_LOWER) && m_info->m_animFixPart.Check(ANIMATION_FIX_PART_UPPER))
-		return;
-
-	switch (m_info->m_state)
-	{
-	case LYN_STATE::LYN_STATE_PEACE_STANDARD:
-		animName = "Lyn_P_Std_" + animName;
-		break;
-	case LYN_STATE::LYN_STATE_BATTLE_STANDARD:
-		animName = "Lyn_B_Std_" + animName;
-		break;
-	case LYN_STATE::LYN_STATE_BATTLE_HIDEBLADE:
-		break;
-	default:
-		break;
-	}
-
-	if (m_animController_lower->GetCurrentPlayAnimationName() != animName)
-	{
-		m_animController_lower->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-
-		m_animController_lower->PlayBlending(animName);
-		if (!m_info->m_animFixPart.Check(ANIMATION_FIX_PART_UPPER))
-		{
-			m_animController_upper->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-			m_lynSkillControl->SetInteger(L"IsBlend", 1);
-			m_animController_upper->PlayBlending(animName);
-
-		}
 	}
 }
 
 void LynMove::ExitState()
 {
+}
+
+void LynMove::PlayAnimationByDirection()
+{
+	auto dir = m_info->GetDirectionState();
+	auto state = m_info->GetState();
+	if (dir != m_dirState || state != m_state)
+	{
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+
+		m_dirState = dir;
+		string animName = "";
+		switch (m_dirState)
+		{
+		case LYN_MOVE_DIR_STATE_FRONT:
+			animName = "Mov_RunFront";
+			break;
+		case LYN_MOVE_DIR_STATE_RIGHT:
+			animName = "Mov_RunRight";
+			break;
+		case LYN_MOVE_DIR_STATE_FRONTRIGHT:
+			animName = "Mov_RunRightFront";
+			break;
+		case LYN_MOVE_DIR_STATE_LEFT:
+			animName = "Mov_RunLeft";
+			break;
+		case LYN_MOVE_DIR_STATE_FRONTLEFT:
+			animName = "Mov_RunLeftFront";
+			break;
+		case LYN_MOVE_DIR_STATE_BACK:
+			animName = "Mov_RunBack";
+			break;
+		case LYN_MOVE_DIR_STATE_BACKRIGHT:
+			animName = "Mov_RunRightBack";
+			break;
+		case LYN_MOVE_DIR_STATE_BACKLEFT:
+			animName = "Mov_RunLeftBack";
+			break;
+		case LYN_MOVE_DIR_STATE_NONE:
+		{
+			SetInteger(L"IsBlend", 1);
+			SetState(L"idle");
+			return;
+		}
+		default:
+			break;
+		}
+	
+		m_state = state;
+		if (animName != "")
+		{
+			switch (state)
+			{
+			case LYN_STATE_PEACE_STANDARD:
+				animName = "Lyn_P_Std_" + animName;
+				break;
+			case LYN_STATE_BATTLE_STANDARD:
+				animName = "Lyn_B_Std_" + animName;
+				break;
+			case LYN_STATE_BATTLE_HIDEBLADE:
+				animName = "Lyn_B_Hide_" + animName;
+				break;
+			default:
+				break;
+			}
+			if (GetInteger(L"IsBlend") == 0)
+				m_animController->Play(animName);
+			else
+				m_animController->PlayBlending(animName, m_animController->GetPlayTime());
+
+			SetInteger(L"IsBlend", 1);
+		}
+		
+	
+
+	}
 }

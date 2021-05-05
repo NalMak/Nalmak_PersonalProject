@@ -6,7 +6,7 @@
 #include "SkinnedMeshRenderer.h"
 #include "AnimationTransition.h"
 #include "AnimationController.h"
-
+#include "Transform.h"
 
 AnimationController::AnimationController(Desc * _desc)
 {
@@ -117,7 +117,20 @@ void AnimationController::Initialize()
 
 void AnimationController::Update()
 {
-	
+	if (m_useCurve)
+	{
+		if (m_bezierCurrentTime <= m_bezierTotalTime)
+		{
+			float ratio = m_bezier.GetYvalue(m_bezierCurrentTime / m_bezierTotalTime);
+			m_curretOffset = Nalmak_Math::Lerp(m_startOffset, m_endOffset, ratio);
+			DEBUG_LOG(L"offset", m_curretOffset);
+			m_bezierCurrentTime += dTime;
+		}
+		else
+		{
+			m_useCurve = false;
+		}
+	}
 
 	if (m_currentAnimationClip)
 	{
@@ -248,6 +261,31 @@ AnimationClip* AnimationController::GetAnimationClip(const string & _clipName)
 	assert(L"Can't find animation clip!" && 0);
 	return nullptr;
 }
+
+void AnimationController::SetAnimatinoOffsetByBeizer(const Vector3 & _startOffset, const Vector3 & _endOffset, float _time, const Vector2 & _p1, const Vector2 & _p2, const Vector2 & _p3, const Vector2 & _p4)
+{
+	m_useCurve = true;
+
+	m_curretOffset.x = _startOffset.x / m_transform->scale.x;
+	m_curretOffset.y = _startOffset.y / m_transform->scale.y;
+	m_curretOffset.z = _startOffset.z / m_transform->scale.z;
+
+	m_startOffset = m_curretOffset;
+
+	m_endOffset.x = _endOffset.x / m_transform->scale.x;
+	m_endOffset.y = _endOffset.y / m_transform->scale.y;
+	m_endOffset.z = _endOffset.z / m_transform->scale.z;
+
+	m_bezierTotalTime = _time;
+	m_bezierCurrentTime = 0.f;
+
+	m_bezier.SetPoint(0, _p1);
+	m_bezier.SetPoint(1, _p2);
+	m_bezier.SetPoint(2, _p3);
+	m_bezier.SetPoint(3, _p4);
+
+}
+
 
 
 void AnimationController::UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
@@ -456,25 +494,31 @@ void AnimationController::SetSeparate(bool _separate)
 }
 void AnimationController::UpdateBoneMatrix()
 {
+	Matrix root = m_rootMatrix;
+	if (m_useCurve)
+	{
+		memcpy(&root._41, m_curretOffset, sizeof(Vector3));
+	}
+
 	if (m_isSeparte)
 	{
 		if (m_isRootAnimation)
 		{
 			assert(L"Please set bone to fix pos!" && m_fixedBone);
-			UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, m_rootMatrix, m_isSub);
+			UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, root, m_isSub);
 		}
 		else
-			UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, m_rootMatrix, m_isSub);
+			UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, root, m_isSub);
 	}
 	else
 	{
 		if (m_isRootAnimation)
 		{
 			assert(L"Please set bone to fix pos!" && m_fixedBone);
-			UpdateFixedBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
+			UpdateFixedBoneMatrix((Nalmak_Frame*)m_root, root);
 		}
 		else
-			UpdateBoneMatrix((Nalmak_Frame*)m_root, m_rootMatrix);
+			UpdateBoneMatrix((Nalmak_Frame*)m_root, root);
 	}
 	
 }

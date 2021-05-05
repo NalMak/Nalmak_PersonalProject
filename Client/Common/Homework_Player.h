@@ -16,8 +16,7 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 public:
-	float m_xAxis;
-	float m_yAxis;
+	float m_yAxisAngle;
 
 };
 

@@ -49,7 +49,6 @@ public:
 
 	bool Check(Enum _flag) // 0 -> false  1 -> true
 	{
-
 		return ((m_flag & (1 << _flag)) != 0);
 	}
 	template <typename Enum, typename... Enums>

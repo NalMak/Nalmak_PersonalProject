@@ -14,6 +14,7 @@ private:
 
 private:
 	void SetDamageFont();
+	void CreateSkillIcon(const wstring& _texName, UINT _x, UINT _y);
 private:
 	Texture* m_damageFont[10];
 	Texture* m_criticalDamageFont[10];

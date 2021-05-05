@@ -18,9 +18,15 @@
 #include "LynSkillTest.h"
 #include "LynThunderSlash.h"
 
+#include "LynLightningSlash.h"
 #include "LynSpinSlash_Combo.h"
 #include "LynSpinSlash_End.h"
 #include "LynSpinSlash_Start.h"
+
+#include "LynSlash1.h"
+#include "LynSlash2.h"
+#include "LynSlash3.h"
+#include "LynBaldo.h"
 
 #include "StaticObjectInfo.h"
 
@@ -28,6 +34,9 @@
 #include "LynFall.h"
 #include "LynJump.h"
 #include "LynLand.h"
+
+#include "LynSideDashE.h"
+#include "LynSideDashQ.h"
 
 
 #include "BnS_Enemy.h"
@@ -42,8 +51,11 @@ StageScene::~StageScene()
 {
 }
 
+
 void StageScene::Initialize()
 {
+
+
 	UIManager::GetInstance()->CreateMainUI();
 
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
@@ -93,7 +105,7 @@ void StageScene::Initialize()
 	}
 
 	{
-		auto boss = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.1f,0.1f,0.1f)->SetPosition(-5,7,0);
+		auto boss = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.07f,0.07f,0.07f)->SetPosition(-5,7,0);
 		MeshRenderer::Desc skin;
 		skin.meshName = L"Lyn_Model2";
 		boss->AddComponent<MeshRenderer>(&skin);
@@ -130,46 +142,83 @@ void StageScene::Initialize()
 	anim.meshName = L"Lyn_Model2";
 	Matrix rotMat;
 	anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
-	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.1f, 0.1f, 0.1f);
+	lyn->AddComponent<AnimationController>(&anim)->SetScale(0.06f, 0.06f, 0.06f);
 
 	lyn->AddComponent<LynStateControl>();
 	lyn->AddComponent<LynStateControl>();
 
-	LynStateControl* moveControl = lyn->GetComponents<LynStateControl>()[0];
-	LynStateControl* skillControl = lyn->GetComponents<LynStateControl>()[1];
+	LynStateControl* lowerControl = lyn->GetComponents<LynStateControl>()[0];
+	LynStateControl* upperControl = lyn->GetComponents<LynStateControl>()[1];
 
 	//lyn->AddComponent<LynStateControl>();
 
-	moveControl->AddState<LynMove>(L"move");
-	moveControl->AddState<LynFall>(L"fall");
-	moveControl->AddState<LynLand>(L"land");
-	moveControl->AddState<LynJump>(L"jump");
-	moveControl->AddState<LynIdle>(L"idle");
-
-	moveControl->InitState(L"idle");
-
-
-	skillControl->AddState<LynWait>(L"wait");
-	skillControl->AddState<LynBattleToPeace>(L"battleToPeace");
-
-	skillControl->AddState<LynVerticalCut_L0>(L"verticalCut_l0");
-	skillControl->AddState<LynVerticalCut_L1>(L"verticalCut_l1");
-	skillControl->AddState<LynVerticalCut_L2>(L"verticalCut_l2");
-	skillControl->AddState<LynVerticalCut_R0>(L"verticalCut_r0");
-	skillControl->AddState<LynVerticalCut_R1>(L"verticalCut_r1");
-	skillControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2");
-
-	skillControl->AddState<LynBackStep>(L"backStep");
-
-	skillControl->AddState<LynSpinSlash_Start>(L"spinSlash_start");
-	skillControl->AddState<LynSpinSlash_End>(L"spinSlash_end");
-	skillControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo");
-
-	skillControl->AddState<LynSkillTest>(L"skillTest");
-	skillControl->AddState<LynThunderSlash>(L"thunderSlash");
+	lowerControl->AddState<LynMove>(L"move",false);
+	upperControl->AddState<LynMove>(L"move",true);
+	lowerControl->AddState<LynFall>(L"fall", false);
+	upperControl->AddState<LynFall>(L"fall", true);
+	lowerControl->AddState<LynLand>(L"land", false);
+	upperControl->AddState<LynLand>(L"land", true);
+	lowerControl->AddState<LynJump>(L"jump", false);
+	upperControl->AddState<LynJump>(L"jump", true);
+	lowerControl->AddState<LynIdle>(L"idle", false);
+	upperControl->AddState<LynIdle>(L"idle", true);
 
 
-	skillControl->InitState(L"wait");
+	upperControl->InitState(L"idle");
+	lowerControl->InitState(L"idle");
+
+	lowerControl->AddState<LynBattleToPeace>(L"battleToPeace", false);
+	upperControl->AddState<LynBattleToPeace>(L"battleToPeace", true);
+
+	lowerControl->AddState<LynVerticalCut_L0>(L"verticalCut_l0", false);
+	upperControl->AddState<LynVerticalCut_L0>(L"verticalCut_l0", true);
+	lowerControl->AddState<LynVerticalCut_L1>(L"verticalCut_l1", false);
+	upperControl->AddState<LynVerticalCut_L1>(L"verticalCut_l1", true);
+	lowerControl->AddState<LynVerticalCut_L2>(L"verticalCut_l2", false);
+	upperControl->AddState<LynVerticalCut_L2>(L"verticalCut_l2", true);
+	lowerControl->AddState<LynVerticalCut_R0>(L"verticalCut_r0", false);
+	upperControl->AddState<LynVerticalCut_R0>(L"verticalCut_r0", true);
+	lowerControl->AddState<LynVerticalCut_R1>(L"verticalCut_r1", false);
+	upperControl->AddState<LynVerticalCut_R1>(L"verticalCut_r1", true);
+	lowerControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2", false);
+	upperControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2", true);
+
+	upperControl->AddState<LynBackStep>(L"backStep", true);
+	lowerControl->AddState<LynBackStep>(L"backStep", false);
+
+	upperControl->AddState<LynSideDashQ>(L"sideDashQ", true);
+	lowerControl->AddState<LynSideDashQ>(L"sideDashQ", false);
+	upperControl->AddState<LynSideDashE>(L"sideDashE", true);
+	lowerControl->AddState<LynSideDashE>(L"sideDashE", false);
+
+	upperControl->AddState<LynSlash1>(L"slash1", true);
+	lowerControl->AddState<LynSlash1>(L"slash1", false);
+	upperControl->AddState<LynSlash2>(L"slash2", true);
+	lowerControl->AddState<LynSlash2>(L"slash2", false);
+	upperControl->AddState<LynSlash3>(L"slash3", true);
+	lowerControl->AddState<LynSlash3>(L"slash3", false);
+
+
+	upperControl->AddState<LynSpinSlash_Start>(L"spinSlash_start", true);
+	lowerControl->AddState<LynSpinSlash_Start>(L"spinSlash_start", false);
+	upperControl->AddState<LynSpinSlash_End>(L"spinSlash_end", true);
+	lowerControl->AddState<LynSpinSlash_End>(L"spinSlash_end", false);
+	upperControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo", true);
+	lowerControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo", false);
+
+	upperControl->AddState<LynBaldo>(L"baldo", true);
+	lowerControl->AddState<LynBaldo>(L"baldo", false);
+
+	upperControl->AddState<LynThunderSlash>(L"thunderSlash", true);
+	lowerControl->AddState<LynThunderSlash>(L"thunderSlash", false);
+
+	upperControl->AddState<LynLightningSlash>(L"lightningSlash", true);
+	lowerControl->AddState<LynLightningSlash>(L"lightningSlash", false);
+
+
+
+	upperControl->AddState<LynSkillTest>(L"test", true);
+	lowerControl->AddState<LynSkillTest>(L"test", false);
 
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body", 0);
@@ -177,8 +226,8 @@ void StageScene::Initialize()
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 
 	CharacterController::Desc character;
-	character.center = { 0,2.6f,0 };
-	character.height = 3.2f;
+	character.center = { 0,2.f,0 };
+	character.height = 1.6f;
 	lyn->AddComponent<CharacterController>(&character);
 
 	AnimationController* controller = lyn->GetComponent<AnimationController>();
@@ -215,8 +264,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Left", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Right", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_P_BtoP_1", 2.f, false);
-	controller->AddAnimationClip("Lyn_P_BtoP_2", 2.f, false);
+	controller->AddAnimationClip("Lyn_P_BtoP_1", 1.2f, false);
 
 
 	controller->AddAnimationClip("Lyn_B_Std_Mov_IdleToJump_Front", 1.f, false);
@@ -246,6 +294,35 @@ void StageScene::Initialize()
 
 	controller->AddAnimationClip("Lyn_B_Std_Mov_Idle", 1.f, true);
 
+	///////////////////////////////////////////////////////////////////////
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_IdleToJump_Front", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_IdleToJump_Left", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_IdleToJump_Right", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpFront", 1.f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpLeft", 1.f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpRight", 1.f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpToIdle", 1.f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpToMove_Back", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpToMove_Front", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpToMove_Left", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_JumpToMove_Right", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_LeftToRight", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_MoveToIdle", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RightToLeft", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunRightBack", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunBack", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunLeftBack", 1.3f, true);
+
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunLeft", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunFront", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunRight", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunRightFront", 1.3f, true);
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_RunLeftFront", 1.3f, true);
+
+	controller->AddAnimationClip("Lyn_B_Hide_Mov_Idle", 1.f, true);
+	//controller->AddAnimationClip("Lyn_B_Hide_Mov_Idle", 1.f, true);
+	///////////////////////////////////////////////////////////////////////
 
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_2", 1.1f, false);
@@ -261,10 +338,32 @@ void StageScene::Initialize()
 
 	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.4f, false);
 
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.6f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01_1", 1.6f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 2.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SideMov_E", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SideMov_Q", 1.f, false);
 
+
+
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.6f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.6f, false);
+
+
+	controller->AddAnimationClip("Lyn_B_defaultSlash1", 2.f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash2", 2.f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.7f, false);
+
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 2.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01_1", 1.5f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.6f, false);
+
+	controller->AddAnimationClip("Lyn_B_Std_ThunderCut", 1.f, false);
+
+
+
+	/*controller->AddAnimationClip("Lyn_B_Hide_BattoCombo1_Dash_Exec.X", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo1_Dash_Swing.X", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo2_Exec.X", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo2_Swing.X", 1.f, false);*/
 
 	controller->SeparateBone("Bip01Spine");
 	controller->SetFixedAnimationBoneName("Bip01", true, false, true);
