@@ -29,15 +29,20 @@ BnS_MainCamera::~BnS_MainCamera()
 void BnS_MainCamera::Initialize()
 {
 	//m_targetOutline = INSTANTIATE()->AddComponent<SkinnedMeshRenderer>();
+
+	//m_cam = m_transform->GetChild(0)->GetComponent<Camera>();
 	m_cam = GetComponent<Camera>();
+
 }
 
 void BnS_MainCamera::Update()
 {
-
 	Move();
+}
+
+void BnS_MainCamera::LateUpdate()
+{
 	m_player->SetTarget(CheckTarget());
-	
 }
 
 void BnS_MainCamera::OnTriggerEnter(Collision & _col)
@@ -75,6 +80,7 @@ void BnS_MainCamera::Move()
 	D3DXMatrixRotationYawPitchRoll(&rot, m_mouseAngle.y * Deg2Rad, m_mouseAngle.x * Deg2Rad, 0);
 	D3DXQuaternionRotationYawPitchRoll(&characterRot, m_mouseAngle.y * Deg2Rad, 0, 0);
 
+	DEBUG_LOG(L"character Angle", characterRot);
 	D3DXVec3TransformNormal(&dir, &dir, &rot);
 	D3DXQuaternionRotationMatrix(&qRot, &rot);
 	float offsetY = m_offsetY * (m_distance / m_maxDistance);

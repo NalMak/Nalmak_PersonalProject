@@ -46,7 +46,7 @@ public:
 	float m_jumpHalfHeight;
 	float m_currentSpeed;
 private:
-	UINT m_energy;
+	float m_energy;
 public:
 	UINT GetEnergy();
 public:
@@ -73,6 +73,7 @@ private:
 private:
 	Vector3 m_preAnimPos;
 public:
+	bool UseEnergy(float _amount);
 	void SetTarget(GameObject* _obj);
 	GameObject* GetTarget();
 	LYN_MOVE_DIR_STATE GetDirectionState();

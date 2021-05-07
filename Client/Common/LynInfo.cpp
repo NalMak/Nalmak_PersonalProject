@@ -2,6 +2,7 @@
 #include "LynInfo.h"
 #include "LynStateControl.h"
 #include "LynSkillController.h"
+#include "UIManager.h"
 
 LynInfo::LynInfo(Desc * _desc)
 {
@@ -24,7 +25,7 @@ LynInfo::~LynInfo()
 
 void LynInfo::Initialize()
 {
-	m_energy = 10;
+	m_energy = 100;
 	m_sKeyTimer = 0.f;
 	m_battleToPeaceTimer = 0;
 	m_animController_lower = GetComponents<AnimationController>()[0];
@@ -72,6 +73,11 @@ void LynInfo::Update()
 	int index = 0;
 	for (int i = 0; i < 9; ++i)
 	{
+		if (m_targetInput != Vector3(0, 0, 0))
+		{
+			if(i == LYN_MOVE_DIR_STATE_NONE)
+				continue;
+		}
 		float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
 		if (length < shortLength)
 		{
@@ -245,6 +251,21 @@ void LynInfo::UpdateWeapon(LYN_STATE _state)
 		break;
 	default:
 		break;
+	}
+}
+
+bool LynInfo::UseEnergy(float _amount)
+{
+	if (m_energy >= 0)
+	{
+		m_energy += dTime * _amount;
+		UIManager::GetInstance()->UpdateEnergyUI(m_energy / 100.f);
+		return true;
+	}
+	else
+	{
+		m_energy = 0;
+		return false;
 	}
 }
 

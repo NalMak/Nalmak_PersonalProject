@@ -52,4 +52,5 @@ void LynSideDashE::ExitState()
 {
 	m_info->EndSkill();
 	m_animController->SetRootMotion(false);
+	SetInteger(L"IsBlend", 0);
 }

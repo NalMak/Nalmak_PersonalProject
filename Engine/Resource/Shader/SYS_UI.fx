@@ -8,6 +8,9 @@ sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
 
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	MipFilter = LINEAR;
 };
 
 struct VS_INPUT

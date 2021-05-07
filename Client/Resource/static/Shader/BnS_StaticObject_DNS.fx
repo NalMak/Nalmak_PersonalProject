@@ -100,10 +100,10 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 	float4 diffuse = tex2D(mainSampler, _in.uvAndDepth.xy);
 	o.diffuse = diffuse * g_mainTexColor;
-	float3 normal = tex2D(normalSampler, _in.uvAndDepth.xy);
+	float3 normal = tex2D(normalSampler, _in.uvAndDepth.xy).xyz;
 	normal = normal * 2 - 1;
 	normal = normalize(normal);
-	float3 specular = tex2D(specularSampler, _in.uvAndDepth.xy);
+	float3 specular = tex2D(specularSampler, _in.uvAndDepth.xy).xyz;
 	
 
 	float3x3 tbn =

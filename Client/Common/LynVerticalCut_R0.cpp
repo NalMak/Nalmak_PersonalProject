@@ -28,6 +28,12 @@ void LynVerticalCut_R0::UpdateState()
 {
 	if (m_animController->IsOverTime(0.5f))
 	{
+		/*auto shake = Core::GetInstance()->GetMainCamera()->GetComponent<CameraShake>();
+		if (shake)
+		{
+			shake->Shake(3.f, 5.f, 5, 0.2f, 10, { -1,1,0 });
+
+		}*/
 		AttackInfo::Desc attack;
 		attack.height = 12;
 		attack.depth = 20;

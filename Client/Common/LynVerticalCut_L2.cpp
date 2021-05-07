@@ -29,6 +29,12 @@ void LynVerticalCut_L2::UpdateState()
 {
 	if (m_animController->IsOverTime(0.2f))
 	{
+		/*auto shake = Core::GetInstance()->GetMainCamera()->GetComponent<CameraShake>();
+		if (shake)
+		{
+			shake->Shake(1.f, 2.f, 5, 0.15f, 2, { 1,1,0 });
+		}*/
+
 		AttackInfo::Desc attack;
 		attack.height = 12;
 		attack.depth = 20;
@@ -41,13 +47,22 @@ void LynVerticalCut_L2::UpdateState()
 			->SetRotation(m_transform->GetWorldRotation());
 	}
 
+	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE && !m_isUpper)
+	{
+		SetState(L"move");
+		return;
+	}
+
 	if (m_animController->GetPlayRemainTime() < 0.35f)
 	{
 		m_animController->SetBlendOption(0.35f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
-			SetState(L"verticalCut_r2");
-			return;
+			if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
+			{
+				SetState(L"verticalCut_r2");
+				return;
+			}
 		}
 		else
 		{

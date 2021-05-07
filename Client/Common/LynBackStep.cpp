@@ -29,7 +29,7 @@ void LynBackStep::EnterState()
 
 void LynBackStep::UpdateState()
 {
-	if (m_animController->GetPlayRemainTime() < 0.1f)
+	if (!m_animController->IsPlay())
 	{
 		SetState(L"idle");
 		return;

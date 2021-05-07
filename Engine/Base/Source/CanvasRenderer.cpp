@@ -15,7 +15,8 @@ CanvasRenderer::CanvasRenderer()
 CanvasRenderer::CanvasRenderer(Desc * _desc)
 {
 	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(L"quadNoneNormal");
-	m_material = ResourceManager::GetInstance()->GetResource<Material>(L"SYS_UI");
+
+	m_material = ResourceManager::GetInstance()->GetResource<Material>(_desc->mtrlName);
 
 	m_type = _desc->type;
 

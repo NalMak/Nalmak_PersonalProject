@@ -40,7 +40,10 @@ void LynIdle::EnterState()
 	default:
 		break;
 	}
-	m_animController->PlayBlending(animName);
+	if (GetInteger(L"IsBlend") == 0)
+		m_animController->Play(animName);
+	else
+		m_animController->PlayBlending(animName);
 
 	/*if (GetInteger(L"IsBlend") == 0)
 		m_animController->Play(animName);
@@ -50,6 +53,7 @@ void LynIdle::EnterState()
 
 void LynIdle::UpdateState()
 {
+	m_info->UseEnergy(3);
 
 	if (!m_character->IsGround())
 	{
@@ -73,6 +77,7 @@ void LynIdle::UpdateState()
 	auto state = m_info->GetState();
 	if (m_state != state)
 	{
+		m_info->UpdateWeapon(state);
 		m_state = state;
 		string animName;
 		switch (m_info->GetState())
@@ -89,7 +94,11 @@ void LynIdle::UpdateState()
 		default:
 			break;
 		}
-		m_animController->PlayBlending(animName);
+		if(GetInteger(L"IsBlend") == 0)
+			m_animController->Play(animName);
+		else
+			m_animController->PlayBlending(animName);
+
 	}
 }
 

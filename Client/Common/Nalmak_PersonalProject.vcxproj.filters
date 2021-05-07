@@ -195,6 +195,7 @@
       <Filter>05.Skill</Filter>
     </ClInclude>
     <ClInclude Include="LynSkillController.h" />
+    <ClInclude Include="CameraShake.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -311,6 +312,7 @@
       <Filter>05.Skill</Filter>
     </ClCompile>
     <ClCompile Include="LynSkillController.cpp" />
+    <ClCompile Include="CameraShake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -352,6 +354,12 @@
     <None Include="..\Resource\static\Shader\homework.sd">
       <Filter>03.Shader</Filter>
     </None>
+    <None Include="..\Resource\static\Shader\BnS_HpUI.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
@@ -373,6 +381,12 @@
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\homework.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_HpUI.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

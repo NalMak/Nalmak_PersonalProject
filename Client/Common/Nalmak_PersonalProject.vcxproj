@@ -182,6 +182,7 @@
     <ClInclude Include="BnS_Enemy.h" />
     <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="BnS_Skill.h" />
+    <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="BnS_Enemy.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="BnS_Skill.cpp" />
+    <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
@@ -295,6 +297,8 @@
     <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd" />
+    <None Include="..\Resource\static\Shader\BnS_HpUI.sd" />
+    <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd" />
@@ -304,6 +308,8 @@
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_HpUI.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx" />

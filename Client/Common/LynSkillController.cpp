@@ -7,14 +7,14 @@
 
 LynSkillController::LynSkillController(Desc * _desc)
 {
-	auto thunderCut = BnS_Skill(L"thunderSlash", L"skill_Icon33", 12.f, KEY_STATE_X, true, [](LynInfo* _info)->bool {
+	auto thunderCut = BnS_Skill(L"thunderSlash",BNS_SKILL_SLOT_X , L"skill_Icon85", 12.f, KEY_STATE_X, true, [](LynInfo* _info)->bool {
 		if (_info->m_target)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(thunderCut);
 
-	auto backStep = BnS_Skill(L"backStep", L"skill_Icon46", 2.f, KEY_STATE_S, true, [](LynInfo* _info)->bool {
+	auto backStep = BnS_Skill(L"backStep", BNS_SKILL_SLOT_SS, L"skill_Icon46", 2.f, KEY_STATE_S, true, [](LynInfo* _info)->bool {
 		if (_info->m_sKeyTimer > 0)
 		{
 			_info->m_sKeyTimer = 0;
@@ -24,35 +24,35 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 	m_skillInfo.emplace_back(backStep);
 
-	auto baldo = BnS_Skill(L"baldo", L"skill_Icon85", 0.f, KEY_STATE_LEFT_MOUSE, false, [](LynInfo* _info)->bool {
+	auto baldo = BnS_Skill(L"baldo", BNS_SKILL_SLOT_LB, L"skill_Icon69", 0.f, KEY_STATE_LEFT_MOUSE, false, [](LynInfo* _info)->bool {
 		if(_info->GetEnergy() >= 1 && _info->m_state == LYN_STATE_BATTLE_HIDEBLADE && _info->m_target)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(baldo);
 
-	auto slash1 = BnS_Skill(L"slash1", L"skill_Icon00", 0.f, KEY_STATE_LEFT_MOUSE, true, [](LynInfo* _info)->bool {
+	auto slash1 = BnS_Skill(L"slash1", BNS_SKILL_SLOT_LB, L"skill_Icon00", 0.f, KEY_STATE_LEFT_MOUSE, true, [](LynInfo* _info)->bool {
 		if(_info->m_state != LYN_STATE_BATTLE_HIDEBLADE)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(slash1);
 
-	auto verticalCut = BnS_Skill(L"verticalCut_l0", L"skill_Icon83", 0.f, KEY_STATE_RIGHT_MOUSE,false, [](LynInfo* _info)->bool {
+	auto verticalCut = BnS_Skill(L"verticalCut_l0", BNS_SKILL_SLOT_RB, L"skill_Icon83", 0.f, KEY_STATE_RIGHT_MOUSE,false, [](LynInfo* _info)->bool {
 		if (_info->GetEnergy() >= 2 && _info->m_state != LYN_STATE_BATTLE_HIDEBLADE)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(verticalCut);
 
-	auto sideDashQ = BnS_Skill(L"sideDashQ", L"skill_Icon76", 2.f, KEY_STATE_Q, true, [](LynInfo* _info)->bool {
+	auto sideDashQ = BnS_Skill(L"sideDashQ", BNS_SKILL_SLOT_Q, L"skill_Icon76", 2.f, KEY_STATE_Q, true, [](LynInfo* _info)->bool {
 		if(_info->m_target)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(sideDashQ);
 
-	auto sideDashE = BnS_Skill(L"sideDashE", L"skill_Icon27", 2.f, KEY_STATE_E,true, [](LynInfo* _info)->bool {
+	auto sideDashE = BnS_Skill(L"sideDashE", BNS_SKILL_SLOT_E, L"skill_Icon27", 2.f, KEY_STATE_E,true, [](LynInfo* _info)->bool {
 		if (_info->m_target)
 			return true;
 		return false;
@@ -60,14 +60,14 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 	m_skillInfo.emplace_back(sideDashE);
 
-	auto spinSlash = BnS_Skill(L"spinSlash_start", L"skill_Icon96", 0.f, KEY_STATE_TAB, true, [](LynInfo* _info)->bool {
+	auto spinSlash = BnS_Skill(L"spinSlash_start", BNS_SKILL_SLOT_TAB, L"skill_Icon96", 0.f, KEY_STATE_TAB, true, [](LynInfo* _info)->bool {
 		if (_info->GetEnergy() >= 2)
 			return true;
 		return false;
 	});
 	m_skillInfo.emplace_back(spinSlash);
 
-	auto lightningSlash = BnS_Skill(L"lightningSlash", L"skill_Icon85", 2.f, KEY_STATE_C,false, [](LynInfo* _info)->bool {
+	auto lightningSlash = BnS_Skill(L"lightningSlash", BNS_SKILL_SLOT_C, L"skill_Icon20", 2.f, KEY_STATE_C,false, [](LynInfo* _info)->bool {
 		return true;
 	});
 	m_skillInfo.emplace_back(lightningSlash);

@@ -28,6 +28,7 @@ void UIManager::CreateMainUI()
 	{
 		SingleImage::Desc image;
 		image.textureName = L"GameUI_energyGauge";
+		
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(340, 28)->SetPosition(HALF_WINCX, WINCY - 205);
 	}
 
@@ -40,25 +41,28 @@ void UIManager::CreateMainUI()
 	{
 		SingleImage::Desc image;
 		image.textureName = L"GameUI_energy";
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX, WINCY - 180);
+		CanvasRenderer::Desc canvas;
+		canvas.mtrlName = L"UI_Energy";
+		auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX, WINCY - 180);
+		m_energyBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
+
 	}
 
 
-	CreateSkillIcon(L"skill_Icon00", HALF_WINCX + 210, WINCY - 210); // ÁúÇ³
-	CreateSkillIcon(L"skill_Icon83", HALF_WINCX + 270, WINCY - 210); // °¡¸£±â
-	CreateSkillIcon(L"skill_Icon10", HALF_WINCX - 210, WINCY - 210); // Å»Ãâ tab
-	CreateSkillIcon(L"skill_Icon96", HALF_WINCX - 210, WINCY - 210); // ¹Ù¶÷°³ºñ tab
-	CreateSkillIcon(L"skill_Icon39", HALF_WINCX - 270, WINCY - 210); // ³ú¿¬¼¶ f
+	CreateSkillIcon(BNS_SKILL_SLOT_LB, HALF_WINCX + 210, WINCY - 210); // ÁúÇ³
+	CreateSkillIcon(BNS_SKILL_SLOT_RB, HALF_WINCX + 270, WINCY - 210); // °¡¸£±â
+	CreateSkillIcon(BNS_SKILL_SLOT_TAB, HALF_WINCX - 210, WINCY - 210); // Å»Ãâ tab
+	CreateSkillIcon(BNS_SKILL_SLOT_F, HALF_WINCX - 270, WINCY - 210); // ³ú¿¬¼¶ f
 
 	// ¹Ù¶÷°³ºñ Èí°ø 
-	CreateSkillIcon(L"skill_Icon34", HALF_WINCX - 220, WINCY - 90); // 1
-	CreateSkillIcon(L"skill_Icon22", HALF_WINCX - 160, WINCY - 90); // 2
-	CreateSkillIcon(L"skill_Icon08", HALF_WINCX - 100, WINCY - 90); // 3
-	CreateSkillIcon(L"skill_Icon95", HALF_WINCX - 40,  WINCY - 90); // 4
-	CreateSkillIcon(L"skill_Icon75", HALF_WINCX + 40,  WINCY - 90); // ±Í°Ë·É
-	CreateSkillIcon(L"skill_Icon33", HALF_WINCX + 100, WINCY - 90); // x
-	CreateSkillIcon(L"skill_Icon85", HALF_WINCX + 160, WINCY - 90); // c ÃµµÕº£±â
-	CreateSkillIcon(L"skill_Icon77", HALF_WINCX + 220, WINCY - 90); // v Âü¿ù
+	CreateSkillIcon(BNS_SKILL_SLOT_1, HALF_WINCX - 220, WINCY - 90); // 1
+	CreateSkillIcon(BNS_SKILL_SLOT_2, HALF_WINCX - 160, WINCY - 90); // 2
+	CreateSkillIcon(BNS_SKILL_SLOT_3, HALF_WINCX - 100, WINCY - 90); // 3
+	CreateSkillIcon(BNS_SKILL_SLOT_4, HALF_WINCX - 40,  WINCY - 90); // 4
+	CreateSkillIcon(BNS_SKILL_SLOT_Z, HALF_WINCX + 40,  WINCY - 90); // ±Í°Ë·É
+	CreateSkillIcon(BNS_SKILL_SLOT_X, HALF_WINCX + 100, WINCY - 90); // x
+	CreateSkillIcon(BNS_SKILL_SLOT_C, HALF_WINCX + 160, WINCY - 90); // c ÃµµÕº£±â
+	CreateSkillIcon(BNS_SKILL_SLOT_V, HALF_WINCX + 220, WINCY - 90); // v Âü¿ù
 
 
 	//CreateSkillIcon(L"skill_Icon46", 1000, 600); // ss
@@ -100,6 +104,12 @@ void UIManager::CreateMainUI()
 	}
 }
 
+void UIManager::UpdateEnergyUI(float _ratio)
+{
+	DEBUG_LOG(L"energy", _ratio);
+	m_energyBar->SetFloat("g_outputRatio",_ratio);
+}
+
 void UIManager::SetDamageFont()
 {
 	for (int i = 0; i < 10; ++i)
@@ -109,12 +119,10 @@ void UIManager::SetDamageFont()
 	}
 }
 
-void UIManager::CreateSkillIcon(const wstring & _texName, UINT _x, UINT _y)
+void UIManager::CreateSkillIcon(UINT _skillSlot, UINT _x, UINT _y)
 {
 	{
-		SingleImage::Desc image;
-		image.textureName = _texName;
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
+		m_skillSlot[_skillSlot] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>()->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
 	}
 	{
 		Text::Desc text;
@@ -125,4 +133,9 @@ void UIManager::CreateSkillIcon(const wstring & _texName, UINT _x, UINT _y)
 		image.textureName = L"GameUI_IconOutLine";
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50)->SetPosition((float)_x, (float)_y)->AddComponent<Text>(&text);
 	}
+}
+
+void UIManager::ChangeSkillSlot(BnS_Skill & _skill)
+{
+	m_skillSlot[_skill.GetSkillSlot()]->GetComponent<SingleImage>()->SetTexture(_skill.GetSkillIconTex()->GetTexure(0));
 }

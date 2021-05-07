@@ -5,7 +5,7 @@ static const int WINCX = 1920;
 static const int WINCY = 1080;
 static const float perPixelX = 0.5f / WINCX;
 static const float perPixelY = 0.5f / WINCY;
-
+static const float PI = 3.1415926535;
 
 struct cBuffer
 {

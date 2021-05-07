@@ -130,15 +130,6 @@ void AnimationController::Update()
 			m_useCurve = false;
 		}
 	}
-
-	if (m_currentAnimationClip)
-	{
-		DEBUG_LOG(L"anim current Name", m_currentAnimationClip->animationName);
-		DEBUG_LOG(L"anim play time", m_currentPlayTime);
-		DEBUG_LOG(L"anim total time", m_totalPlayTime);
-		DEBUG_LOG(L"Remain Time", GetPlayRemainTime());
-
-	}
 }
 
 void AnimationController::EachRender()
@@ -152,7 +143,7 @@ void AnimationController::EachRender()
 	m_animController->GetTrackDesc(m_currentTrack, &desc);
 	m_currentPlayTime = desc.Position;
 
-	double time = (double)TimeManager::GetInstance()->GetdeltaTime();
+	double time = (double)TimeManager::GetInstance()->GetdeltaTime() * m_currentAnimationClip->speed;
 
 	//m_animController->AdvanceTime(time, NULL);	// 내부적으로 카운딩되는 시간 값(애니메이션 동작에 따른 사운드나 이펙트에 대한 처리를 담당하는 객체 주소)
 	//UpdateBoneMatrix();
@@ -175,7 +166,7 @@ void AnimationController::EachRender()
 		m_animController->AdvanceTime(0, NULL);
 		m_animController->SetTrackPosition(m_currentTrack, m_totalPlayTime - 0.0001);
 		m_animController->ResetTime();
-		m_currentPlayTime = m_totalPlayTime;
+		m_currentPlayTime = m_totalPlayTime - 0.0001;
 		m_isStop = true;
 		UpdateBoneMatrix();
 	}
@@ -314,7 +305,7 @@ void AnimationController::Play(AnimationClip * _clip, double _startTime)
 	m_animController->SetTrackAnimationSet(m_currentTrack, anim);
 
 	m_animController->SetTrackEnable(m_currentTrack, true);
-	m_animController->SetTrackSpeed(m_currentTrack, m_currentAnimationClip->speed);
+	m_animController->SetTrackSpeed(m_currentTrack, 1);
 	m_animController->SetTrackPosition(m_currentTrack, _startTime);
 
 	m_animController->ResetTime();
@@ -358,19 +349,19 @@ void AnimationController::PlayBlending(AnimationClip * _clip, double _otherTime)
 	else
 		transitionTime = m_transitionTime;
 
-	m_animController->KeyTrackEnable(m_currentTrack, false, transitionTime);
-	m_animController->SetTrackSpeed(m_currentTrack, m_currentAnimationClip->speed);
-	//m_animController->KeyTrackSpeed(m_currentTrack, m_currentAnimationClip->speed, m_currentPlayTime, m_transitionTime, m_transtionType); // 속도를 0으로 보간
-	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, _otherTime, transitionTime, m_transtionType);
+	m_animController->KeyTrackEnable(m_currentTrack, false, m_currentPlayTime + transitionTime);
+	//m_animController->SetTrackSpeed(m_currentTrack, m_currentAnimationClip->speed);
+	m_animController->KeyTrackSpeed(m_currentTrack, 1, m_currentPlayTime, transitionTime, m_transtionType); // 속도를 0으로 보간
+	m_animController->KeyTrackWeight(m_currentTrack, 1 - m_blendWeight, m_currentPlayTime, transitionTime, m_transtionType);
 
 	m_animController->SetTrackEnable(m_nextTrack, true);
-	m_animController->SetTrackSpeed(m_nextTrack, nextClip->speed);
-	//m_animController->KeyTrackSpeed(m_nextTrack, nextClip->speed, _otherTime, m_transitionTime, m_transtionType);
-	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, _otherTime, transitionTime, m_transtionType);
+	//m_animController->SetTrackSpeed(m_nextTrack, nextClip->speed);
+	m_animController->KeyTrackSpeed(m_nextTrack, 1, m_currentPlayTime, transitionTime, m_transtionType);
+	m_animController->KeyTrackWeight(m_nextTrack, m_blendWeight, m_currentPlayTime, transitionTime, m_transtionType);
 
-	// 내부에 누적된 시간값 초기화
 	m_totalPlayTime = anim->GetPeriod();
 
+	// 내부에 누적된 시간값 초기화
 	m_animController->ResetTime();
 	m_animController->SetTrackPosition(m_nextTrack, _otherTime);
 	m_currentPlayTime = _otherTime;

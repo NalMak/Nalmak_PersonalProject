@@ -3,7 +3,7 @@
 #include "LynInfo.h"
 #include "AttackInfo.h"
 #include "LynStateControl.h"
-
+#include "CameraShake.h"
 class LynState :
 	public IState
 {

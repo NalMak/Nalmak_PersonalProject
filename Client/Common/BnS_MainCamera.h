@@ -23,6 +23,7 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void LateUpdate() override;
 	virtual void OnTriggerEnter(Collision& _col) override;
 	virtual void OnTriggerStay(Collision& _col) override;
 	virtual void OnTriggerExit(Collision& _col) override;

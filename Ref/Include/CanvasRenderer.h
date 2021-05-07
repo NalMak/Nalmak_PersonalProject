@@ -15,7 +15,7 @@ public:
 	struct Desc
 	{
 		_CANVAS_GROUP group = 0;
-
+		wstring mtrlName = L"SYS_UI";
 		RENDERER_TYPE type = RENDERER_TYPE_CANVAS;
 	};
 	CanvasRenderer();

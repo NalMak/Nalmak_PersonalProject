@@ -42,6 +42,7 @@
 
 #include "BnS_Enemy.h"
 #include "UIManager.h"
+#include "CameraShake.h"
 
 StageScene::StageScene()
 {
@@ -381,7 +382,9 @@ void StageScene::Initialize()
 		sphere.radius = 2.f;
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
-		cam->AddComponent<Camera>()->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid);
+		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>();
+		//INSTANTIATE()->AddComponent<Camera>()->AddComponent<CameraShake>()->SetParents(cam);
+			
 	}
 
 

@@ -25,6 +25,8 @@ void LynMove::UpdateState()
 {
 	PlayAnimationByDirection();
 
+	m_info->UseEnergy(-2);
+
 	if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
 	{
 		m_info->SetSpeed(m_info->m_runForwardSpeed);
@@ -88,7 +90,7 @@ void LynMove::PlayAnimationByDirection()
 			break;
 		case LYN_MOVE_DIR_STATE_NONE:
 		{
-			m_animController->SetBlendOption(0.5f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			SetInteger(L"IsBlend", 1);
 			SetState(L"idle");
 			return;
@@ -122,9 +124,13 @@ void LynMove::PlayAnimationByDirection()
 			else
 			{
 			}*/
-			m_animController->PlayBlending(animName);
-			m_animController->SetBlendOption(0.2f, 0.8f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-			SetInteger(L"IsBlend", 2);
+			if (GetInteger(L"IsBlend") == 0)
+				m_animController->Play(animName);
+			else
+				m_animController->PlayBlending(animName);
+
+			SetInteger(L"IsBlend", 1);
+			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		}
 		
 	

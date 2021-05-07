@@ -22,6 +22,16 @@ private:
 	~DebugManager();
 public:
 	wstring GetDebugLog() { return m_debugLog; }
+	void DebugLog(const wstring&  _name, const Quaternion& _log)
+	{
+		wstring type = L"Quaternion";
+		wstring value = to_wstring(_log.x) + L", " + to_wstring(_log.y) + L", " + to_wstring(_log.z) + L", " + to_wstring(_log.w);
+
+		m_debugLog += L"\n-----------------------------------";
+		m_debugLog += L"\n   " + _name;
+		m_debugLog += L"\n   " + type;
+		m_debugLog += L"\n   " + value;
+	}
 	void DebugLog(const wstring&  _name, const Vector4& _log)
 	{
 		wstring type = L"Vector4";

@@ -24,7 +24,12 @@ void LynVerticalCut_R1::EnterState()
 
 void LynVerticalCut_R1::UpdateState()
 {
-	
+	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE && !m_isUpper)
+	{
+		SetState(L"move");
+		return;
+	}
+
 	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
 		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);

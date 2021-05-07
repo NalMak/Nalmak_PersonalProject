@@ -26,6 +26,12 @@ void LynVerticalCut_R2::UpdateState()
 {
 	if (m_animController->IsOverTime(0.2f))
 	{
+		/*auto shake = Core::GetInstance()->GetMainCamera()->GetComponent<CameraShake>();
+		if (shake)
+		{
+			shake->Shake(1.f, 2.f, 5, 0.15f, 2, { -1,1,0 });
+		}*/
+
 		AttackInfo::Desc attack;
 		attack.height = 12;
 		attack.depth = 20;
@@ -35,7 +41,11 @@ void LynVerticalCut_R2::UpdateState()
 			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 6.f + Vector3(0, 1.5f, 0))
 			->SetRotation(m_transform->GetWorldRotation());
 	}
-
+	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE && !m_isUpper)
+	{
+		SetState(L"move");
+		return;
+	}
 
 	if (m_animController->GetPlayRemainTime() < 0.35f)
 	{
