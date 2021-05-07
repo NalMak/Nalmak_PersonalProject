@@ -34,7 +34,6 @@ void AudioSource::Update()
 	{
 		m_soundManager->SetSpeakerPosition(m_channelIndex, m_transform->GetWorldPosition());
 
-		DEBUG_LOG(L"playing channel", m_channelIndex);
 
 		if (!IsPlay())
 		{

@@ -49,7 +49,7 @@ void LynThunderSlash::UpdateState()
 	else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_End")
 	{
 		m_character->SetVelocity(0, 0, 0);
-		if (!m_animController->GetPlayRemainTime() < 0.2)
+		if (m_animController->GetPlayRemainTime() < 0.2)
 		{
 			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
 			SetInteger(L"IsBlend", 1);

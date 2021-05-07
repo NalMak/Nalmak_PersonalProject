@@ -23,13 +23,13 @@ void LynBattleToPeace::EnterState()
 void LynBattleToPeace::UpdateState()
 {
 	
-	if (m_animController->GetPlayRemainTime() < 1.f)
+	if (m_animController->GetPlayRemainTime() < 0.8f)
 	{
 		m_info->SetState(LYN_STATE_PEACE_STANDARD);
 	}
-	if (m_animController->GetPlayRemainTime() < 0.1f)
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
-		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}

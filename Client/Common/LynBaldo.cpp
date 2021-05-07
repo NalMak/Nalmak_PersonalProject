@@ -34,9 +34,15 @@ void LynBaldo::UpdateState()
 	}
 	else
 	{
-		if (!m_animController->IsPlay())
+
+		if (m_animController->GetPlayRemainTime() < 0.4f)
 		{
-			//SetInteger(L"IsBlend", 1);
+			m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
+		}
+
+		if (m_animController->GetPlayRemainTime() < 0.2f)
+		{
+			SetInteger(L"IsBlend", 0);
 			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			SetState(L"idle");
 			return;
@@ -47,6 +53,5 @@ void LynBaldo::UpdateState()
 
 void LynBaldo::ExitState()
 {
-	m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
 	m_info->EndSkill();
 }

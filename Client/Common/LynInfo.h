@@ -1,10 +1,12 @@
 #pragma once
 #include "Component.h"
 class LynStateControl;
+class LynSkillController;
 
 class LynInfo :
 	public Component
 {
+	friend class LynSkillController;
 public:
 	struct Desc
 	{
@@ -42,9 +44,11 @@ public:
 	float m_turningSpeed;
 	float m_halfHeight;
 	float m_jumpHalfHeight;
-
-public:
 	float m_currentSpeed;
+private:
+	UINT m_energy;
+public:
+	UINT GetEnergy();
 public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();
@@ -59,6 +63,7 @@ private:
 
 	CharacterController* m_characterController;
 	SkinnedMeshRenderer* m_skinRenderer;
+	LynSkillController* m_skillController;
 	bool m_followingAnimationPosition;
 	bool m_isProgressSkill;
 private:

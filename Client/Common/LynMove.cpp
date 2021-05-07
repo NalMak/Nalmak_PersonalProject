@@ -57,7 +57,6 @@ void LynMove::PlayAnimationByDirection()
 	auto state = m_info->GetState();
 	if (dir != m_dirState || state != m_state)
 	{
-		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 
 		m_dirState = dir;
 		string animName = "";
@@ -89,6 +88,7 @@ void LynMove::PlayAnimationByDirection()
 			break;
 		case LYN_MOVE_DIR_STATE_NONE:
 		{
+			m_animController->SetBlendOption(0.5f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			SetInteger(L"IsBlend", 1);
 			SetState(L"idle");
 			return;
@@ -114,12 +114,17 @@ void LynMove::PlayAnimationByDirection()
 			default:
 				break;
 			}
-			if (GetInteger(L"IsBlend") == 0)
-				m_animController->Play(animName);
-			else
+		
+			/*if (GetInteger(L"IsBlend") == 2)
+			{
 				m_animController->PlayBlending(animName, m_animController->GetPlayTime());
-
-			SetInteger(L"IsBlend", 1);
+			}
+			else
+			{
+			}*/
+			m_animController->PlayBlending(animName);
+			m_animController->SetBlendOption(0.2f, 0.8f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			SetInteger(L"IsBlend", 2);
 		}
 		
 	

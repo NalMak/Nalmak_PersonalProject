@@ -27,6 +27,7 @@
 #include "LynSlash2.h"
 #include "LynSlash3.h"
 #include "LynBaldo.h"
+#include "LynSkillController.h"
 
 #include "StaticObjectInfo.h"
 
@@ -131,13 +132,13 @@ void StageScene::Initialize()
 	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER,L"Player")->SetPosition(0, 10, 0);
 	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT,OBJECT_LAYER_CAMERA);
 
+	lyn->AddComponent<LynSkillController>();
 
 	SkinnedMeshRenderer::Desc skin;
 	skin.meshName = L"Lyn_Model2";
 	skin.mtrlName = L"lyn_hair";
 	lyn->AddComponent<SkinnedMeshRenderer>(&skin);
 	lyn->AddComponent<LynInfo>();
-	lyn->AddComponent<DebugObject>();
 	AnimationController::Desc anim;
 	anim.meshName = L"Lyn_Model2";
 	Matrix rotMat;
@@ -264,7 +265,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Left", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_JumpToMove_Right", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_P_BtoP_1", 1.2f, false);
+	controller->AddAnimationClip("Lyn_P_BtoP_1", 1.f, false);
 
 
 	controller->AddAnimationClip("Lyn_B_Std_Mov_IdleToJump_Front", 1.f, false);
@@ -331,7 +332,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_2", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.f, false);
 
-	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_End", 4.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_End", 3.f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Exec", 0.8f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Swing", 0.8f, false);
 
@@ -343,8 +344,8 @@ void StageScene::Initialize()
 
 
 
-	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.6f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.6f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.5f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.5f, false);
 
 
 	controller->AddAnimationClip("Lyn_B_defaultSlash1", 2.f, false);

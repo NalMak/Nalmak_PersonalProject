@@ -39,6 +39,7 @@ void LynVerticalCut_R2::UpdateState()
 
 	if (m_animController->GetPlayRemainTime() < 0.35f)
 	{
+		m_animController->SetBlendOption(0.35f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
 			SetState(L"verticalCut_l2");

@@ -64,3 +64,30 @@ bool AnimationTransition::Comparision(AnimationController * controller) const
 		return false;
 	return true;
 }
+
+TransitionConditionFloat::TransitionConditionFloat(const string & _name, float _value, ANIM_COMPARE_TYPE _type)
+{
+}
+
+bool TransitionConditionFloat::Comparision(AnimationController * anim)
+{
+	return false;
+}
+
+TransitionConditionInt::TransitionConditionInt(const string & _name, int _value, ANIM_COMPARE_TYPE _type)
+{
+}
+
+bool TransitionConditionInt::Comparision(AnimationController * anim)
+{
+	return false;
+}
+
+TransitionConditionBool::TransitionConditionBool(const string & _name, bool _value, ANIM_COMPARE_TYPE _type)
+{
+}
+
+bool TransitionConditionBool::Comparision(AnimationController * anim)
+{
+	return false;
+}

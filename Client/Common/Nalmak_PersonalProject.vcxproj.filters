@@ -55,6 +55,9 @@
     <Filter Include="04.Lyn\VerticalCut">
       <UniqueIdentifier>{2e336b08-1f92-4b12-b050-ead36cd8585d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Skill">
+      <UniqueIdentifier>{571e5f07-8286-43f7-a497-41e259c04a3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -188,7 +191,10 @@
     <ClInclude Include="LynBaldo.h" />
     <ClInclude Include="LynSideDashQ.h" />
     <ClInclude Include="LynSideDashE.h" />
-    <ClInclude Include="BnS_SkillManager.h" />
+    <ClInclude Include="BnS_Skill.h">
+      <Filter>05.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSkillController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -301,7 +307,10 @@
     <ClCompile Include="LynBaldo.cpp" />
     <ClCompile Include="LynSideDashQ.cpp" />
     <ClCompile Include="LynSideDashE.cpp" />
-    <ClCompile Include="BnS_SkillManager.cpp" />
+    <ClCompile Include="BnS_Skill.cpp">
+      <Filter>05.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSkillController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

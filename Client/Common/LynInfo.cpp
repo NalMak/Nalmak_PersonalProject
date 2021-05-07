@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LynInfo.h"
 #include "LynStateControl.h"
+#include "LynSkillController.h"
 
 LynInfo::LynInfo(Desc * _desc)
 {
@@ -23,7 +24,7 @@ LynInfo::~LynInfo()
 
 void LynInfo::Initialize()
 {
-
+	m_energy = 10;
 	m_sKeyTimer = 0.f;
 	m_battleToPeaceTimer = 0;
 	m_animController_lower = GetComponents<AnimationController>()[0];
@@ -32,14 +33,16 @@ void LynInfo::Initialize()
 	m_stateControl_upper = GetComponents<LynStateControl>()[1];
 	m_characterController = GetComponent<CharacterController>();
 	m_skinRenderer = GetComponent<SkinnedMeshRenderer>();
+	m_skillController = GetComponent<LynSkillController>();
 
-	m_state = LYN_STATE_PEACE_STANDARD;
-	UpdateWeapon();
 	auto skin = GetComponent<SkinnedMeshRenderer>();
 	m_matBattleStandard = skin->GetBoneCombinedMatrix("WeaponR");
 	m_matBattleHide = skin->GetBoneCombinedMatrix("WeaponL");
 	m_matPeaceStandard = skin->GetBoneCombinedMatrix("Bip01Spine2");
 
+
+	m_state = LYN_STATE_PEACE_STANDARD;
+	UpdateWeapon();
 }
 
 void LynInfo::Update()
@@ -120,90 +123,21 @@ void LynInfo::Update()
 	if (m_isProgressSkill)
 		return;
 
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_X))
+	/*if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
 	{
-		if (m_target)
-		{
-			m_stateControl_lower->SetState(L"thunderSlash");
-			m_stateControl_upper->SetState(L"thunderSlash");
-			return;
-		}
-	}
+		m_stateControl_upper->SetState(L"test");
+		m_stateControl_lower->SetState(L"test");
+	}*/
 
-	if (m_sKeyTimer > 0.f)
-	{
-		m_sKeyTimer -= dTime;
-		if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-		{
-			m_stateControl_lower->SetState(L"backStep");
-			m_stateControl_upper->SetState(L"backStep");
-			return;
-		}
-	}
+	m_skillController->ActiveSkill();
+
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-	{
 		m_sKeyTimer = 0.5f;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
-	{
-		if (m_state == LYN_STATE_BATTLE_HIDEBLADE)
-		{
-			if(m_dirState == LYN_MOVE_DIR_STATE_NONE)
-				m_stateControl_lower->SetState(L"baldo");
-			m_stateControl_upper->SetState(L"baldo");
-		}
-		else
-		{
-			m_stateControl_lower->SetState(L"slash1");
-			m_stateControl_upper->SetState(L"slash1");
-		}
-	
-		return;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
-	{
-		if (m_dirState == LYN_MOVE_DIR_STATE_NONE)
-			m_stateControl_lower->SetState(L"verticalCut_l0");
-		m_stateControl_upper->SetState(L"verticalCut_l0");
-		return;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_Q))
-	{
-		m_stateControl_upper->SetState(L"sideDashQ");
-		m_stateControl_lower->SetState(L"sideDashQ");
-		return;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_E))
-	{
-		m_stateControl_upper->SetState(L"sideDashE");
-		m_stateControl_lower->SetState(L"sideDashE");
-		return;
-	}
-
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_TAB))
-	{
-		m_stateControl_lower->SetState(L"spinSlash_start");
-		m_stateControl_upper->SetState(L"spinSlash_start");
-		return;
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_C))
-	{
-		m_stateControl_lower->SetState(L"lightningSlash");
-		m_stateControl_upper->SetState(L"lightningSlash");
-		return;
-	}
-
+	m_sKeyTimer -= dTime;
 }
 
 void LynInfo::OnTriggerEnter(Collision & _col)
 {
-	DEBUG_LOG(L"Lyn Trigger!", L"enter");
 
 }
 
@@ -213,7 +147,6 @@ void LynInfo::OnTriggerStay(Collision & _col)
 
 void LynInfo::OnTriggerExit(Collision & _col)
 {
-	DEBUG_LOG(L"Lyn Trigger!", L"exit");
 }
 
 void LynInfo::OnCollisionEnter(Collision & _col)
@@ -256,6 +189,11 @@ LYN_STATE LynInfo::GetState()
 
 
 
+UINT LynInfo::GetEnergy()
+{
+	return m_energy;
+}
+
 void LynInfo::EquipeWeapon(GameObject * _weapon)
 {
 	m_weapon = _weapon;
@@ -278,7 +216,7 @@ void LynInfo::UpdateWeapon()
 	case LYN_STATE_BATTLE_HIDEBLADE:
 		m_weapon->SetParents(m_transform, m_matBattleHide);
 		m_weapon->SetRotation(0, 0, 0);
-		m_weapon->SetPosition(0, 0, 0);
+		m_weapon->SetPosition(0.f, 0.f, 0);
 		break;
 	default:
 		break;
@@ -303,7 +241,7 @@ void LynInfo::UpdateWeapon(LYN_STATE _state)
 	case LYN_STATE_BATTLE_HIDEBLADE:
 		m_weapon->SetParents(m_transform, m_matBattleHide);
 		m_weapon->SetRotation(0, 0, 0);
-		m_weapon->SetPosition(0, 0, 0);
+		m_weapon->SetPosition(0.f, 0.f, 0);
 		break;
 	default:
 		break;

@@ -40,11 +40,11 @@ void LynIdle::EnterState()
 	default:
 		break;
 	}
+	m_animController->PlayBlending(animName);
 
-	if (GetInteger(L"IsBlend") == 0)
+	/*if (GetInteger(L"IsBlend") == 0)
 		m_animController->Play(animName);
-	else
-		m_animController->PlayBlending(animName);
+	else*/
 
 }
 

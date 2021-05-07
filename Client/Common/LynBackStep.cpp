@@ -18,9 +18,8 @@ void LynBackStep::Initialize()
 void LynBackStep::EnterState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-
+	m_info->StartSkill();
 	m_animController->Play("Lyn_B_Std_BackStep");
-
 
 
 	m_animController->SetRootMotion(true);
@@ -48,6 +47,7 @@ void LynBackStep::ExitState()
 	m_animController->SetRootMotion(false);
 
 	m_character->AddVelocity(0, -30 * dTime, 0);
+	m_info->EndSkill();
 
 	SetInteger(L"IsBlend", 0);
 }

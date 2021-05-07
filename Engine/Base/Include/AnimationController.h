@@ -51,13 +51,14 @@ public:
 	void PlayBlending(AnimationClip* _clip, double _otherTime = 0);
 	void PlayBlending(const string&  _clipName, double _otherTime = 0);
 
+	void PlayBlendingOrigin(AnimationClip* _clip, double _otherTime = 0);
+	void PlayBlendingOrigin(const string&  _clipName, double _otherTime = 0);
+
 	void PlayBlending(AnimationClip* _clip1, AnimationClip* _clip2, float _weight);
 	void PlayBlending(const string& _clip1, const string& _clip2, float _weight);
 
 	void Stop();
 	bool IsPlay();
-	void SetSpeed();
-	float GetSpeed();
 	double GetPlayTime();
 	double GetTotalPlayTime();
 	double GetPlayRemainTime();
@@ -94,22 +95,7 @@ private:
 private:
 	vector<AnimationClip*> m_animationClips;
 	AnimationClip* m_currentAnimationClip;
-private:
-	vector<pair<string,float>> m_parmeterFloat;
-	vector<pair<string,bool>> m_parameterBool;
-	vector<pair<string,int>> m_parameterInt;
-public:
-	void AddFloatParameter(const string& _param, float _value);
-	void AddBoolParameter(const string& _param, bool _value);
-	void AddIntParameter(const string& _param, int _value);
-public:
-	float GetFloat(const string& _param);
-	bool GetBool(const string& _param);
-	int GetInt(const string& _param);
-public:
-	void SetFloat(const string& _param,float _value);
-	void SetBool(const string& _param,bool _value);
-	void SetInt(const string& _param,int _value);
+
 public:
 	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true);
 	AnimationClip* GetAnimationClip(const string& _clipName);

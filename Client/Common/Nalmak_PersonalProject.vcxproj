@@ -181,7 +181,7 @@
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
     <ClInclude Include="BnS_MainCamera.h" />
-    <ClInclude Include="BnS_SkillManager.h" />
+    <ClInclude Include="BnS_Skill.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
@@ -200,6 +200,7 @@
     <ClInclude Include="LynMove.h" />
     <ClInclude Include="LynSideDashE.h" />
     <ClInclude Include="LynSideDashQ.h" />
+    <ClInclude Include="LynSkillController.h" />
     <ClInclude Include="LynSkillTest.h" />
     <ClInclude Include="LynSlash1.h" />
     <ClInclude Include="LynSlash2.h" />
@@ -235,7 +236,7 @@
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
-    <ClCompile Include="BnS_SkillManager.cpp" />
+    <ClCompile Include="BnS_Skill.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
@@ -251,6 +252,7 @@
     <ClCompile Include="LynMove.cpp" />
     <ClCompile Include="LynSideDashE.cpp" />
     <ClCompile Include="LynSideDashQ.cpp" />
+    <ClCompile Include="LynSkillController.cpp" />
     <ClCompile Include="LynSkillTest.cpp" />
     <ClCompile Include="LynSlash1.cpp" />
     <ClCompile Include="LynSlash2.cpp" />

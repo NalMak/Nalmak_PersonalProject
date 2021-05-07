@@ -25,6 +25,11 @@ void UIManager::CreateMainUI()
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX , WINCY - 230);
 	}
 
+	{
+		SingleImage::Desc image;
+		image.textureName = L"GameUI_energyGauge";
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(340, 28)->SetPosition(HALF_WINCX, WINCY - 205);
+	}
 
 
 	{
@@ -109,13 +114,15 @@ void UIManager::CreateSkillIcon(const wstring & _texName, UINT _x, UINT _y)
 	{
 		SingleImage::Desc image;
 		image.textureName = _texName;
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(46, 46)->SetPosition(_x, _y);
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
 	}
 	{
 		Text::Desc text;
-		text.text = L"test";
+		text.text = L"X";
+		text.boundary = { -23,-23,200,200 };
+		text.option = DT_LEFT;
 		SingleImage::Desc image;
 		image.textureName = L"GameUI_IconOutLine";
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50)->SetPosition(_x, _y)->AddComponent<Text>(&text);
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50)->SetPosition((float)_x, (float)_y)->AddComponent<Text>(&text);
 	}
 }

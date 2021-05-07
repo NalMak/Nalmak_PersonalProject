@@ -38,7 +38,6 @@ void CharacterController::LateUpdate()
 
 	m_preFlag = m_curFlag;
 	m_curFlag = m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
-	DEBUG_LOG(L"Character velocity", m_velocity);
 }
 
 void CharacterController::PreRender()
