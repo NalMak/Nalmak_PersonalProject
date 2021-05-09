@@ -19,7 +19,6 @@
 #include "LynThunderSlash.h"
 
 #include "LynLightningSlash.h"
-#include "LynSpinSlash_Combo.h"
 #include "LynSpinSlash_End.h"
 #include "LynSpinSlash_Start.h"
 
@@ -28,6 +27,12 @@
 #include "LynSlash3.h"
 #include "LynBaldo.h"
 #include "LynSkillController.h"
+#include "LynChamWall.h"
+#include "LynFrontKick.h"
+#include "LynHold.h"
+#include "LynFrontDash.h"
+#include "LynLowerSlash.h"
+#include "LynLowerSlash2.h"
 
 #include "StaticObjectInfo.h"
 
@@ -35,6 +40,7 @@
 #include "LynFall.h"
 #include "LynJump.h"
 #include "LynLand.h"
+
 
 #include "LynSideDashE.h"
 #include "LynSideDashQ.h"
@@ -56,17 +62,15 @@ StageScene::~StageScene()
 
 void StageScene::Initialize()
 {
-
-
+	Core::GetInstance()->SetSkyBox(L"cubeTex_nightFall");
 	UIManager::GetInstance()->CreateMainUI();
+
 
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
 	for (auto& obj : staticObj)
 	{
 		MAKE_STATIC(obj.first);
 	}
-
-	
 
 	INSTANTIATE()->AddComponent<ParticleRenderer>()->SetPosition(0, 3, 0);
 
@@ -87,8 +91,9 @@ void StageScene::Initialize()
 
 
 	DirectionalLight::Desc light;
-	light.diffuseIntensity = 0.6f;
+	light.diffuseIntensity = 0.35f;
 	light.ambientIntensity = 0.1f;
+	light.color = { 1.f,0.9f,0.88f };
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
 
 
@@ -119,6 +124,20 @@ void StageScene::Initialize()
 		boss->AddComponent<CapsuleCollider>(&capsule);
 		boss->AddComponent<RigidBody>();
 		boss->AddComponent<BnS_Enemy>();
+		/*auto boss = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.15f, 0.15f, 0.15f)->SetPosition(-5, 7, 0);
+		SkinnedMeshRenderer::Desc skin;
+		skin.meshName = L"emperor_boss";
+		boss->AddComponent<SkinnedMeshRenderer>(&skin);
+		boss->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
+		CapsuleCollider::Desc capsule;
+		capsule.posOffset = { 0,2.6f,0 };
+		capsule.height = 6.2f;
+		capsule.isTrigger = false;
+		RigidBody::Desc rigid;
+		rigid.isKinematic = true;
+		boss->AddComponent<CapsuleCollider>(&capsule);
+		boss->AddComponent<RigidBody>(&rigid);
+		boss->AddComponent<BnS_Enemy>();*/
 	}
 
 
@@ -205,8 +224,7 @@ void StageScene::Initialize()
 	lowerControl->AddState<LynSpinSlash_Start>(L"spinSlash_start", false);
 	upperControl->AddState<LynSpinSlash_End>(L"spinSlash_end", true);
 	lowerControl->AddState<LynSpinSlash_End>(L"spinSlash_end", false);
-	upperControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo", true);
-	lowerControl->AddState<LynSpinSlash_Combo>(L"spinSlash_combo", false);
+
 
 	upperControl->AddState<LynBaldo>(L"baldo", true);
 	lowerControl->AddState<LynBaldo>(L"baldo", false);
@@ -217,7 +235,23 @@ void StageScene::Initialize()
 	upperControl->AddState<LynLightningSlash>(L"lightningSlash", true);
 	lowerControl->AddState<LynLightningSlash>(L"lightningSlash", false);
 
+	upperControl->AddState<LynChamWall>(L"chamWall", true);
+	lowerControl->AddState<LynChamWall>(L"chamWall", false);
 
+	upperControl->AddState<LynFrontKick>(L"frontKick", true);
+	lowerControl->AddState<LynFrontKick>(L"frontKick", false);
+
+	upperControl->AddState<LynFrontDash>(L"frontDash", true);
+	lowerControl->AddState<LynFrontDash>(L"frontDash", false);
+
+	upperControl->AddState<LynLowerSlash>(L"lowerSlash", true);
+	lowerControl->AddState<LynLowerSlash>(L"lowerSlash", false);
+
+	upperControl->AddState<LynLowerSlash2>(L"lowerSlash2", true);
+	lowerControl->AddState<LynLowerSlash2>(L"lowerSlash2", false);
+
+	upperControl->AddState<LynHold>(L"hold", true);
+	lowerControl->AddState<LynHold>(L"hold", false);
 
 	upperControl->AddState<LynSkillTest>(L"test", true);
 	lowerControl->AddState<LynSkillTest>(L"test", false);
@@ -228,7 +262,7 @@ void StageScene::Initialize()
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 
 	CharacterController::Desc character;
-	character.center = { 0,2.f,0 };
+	character.center = { 0,1.8f,0 };
 	character.height = 1.6f;
 	lyn->AddComponent<CharacterController>(&character);
 
@@ -343,21 +377,31 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_E", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_Q", 1.f, false);
 
-
-
 	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.5f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.5f, false);
 
 
-	controller->AddAnimationClip("Lyn_B_defaultSlash1", 2.f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash2", 2.f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.7f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash1", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash2", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.4f, false);
 
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 2.f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01_1", 1.5f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.6f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.1f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.1f, false);
 
 	controller->AddAnimationClip("Lyn_B_Std_ThunderCut", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_Chamwall", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_FrontKick", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_lowerSlash1", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_lowerSlash2", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_Std_Dash_1", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_Dash_2", 1.f, false);
+	//controller->AddAnimationClip("Lyn_B_FrontKick", 1.f, false);
+
+
+
 
 
 
@@ -379,7 +423,7 @@ void StageScene::Initialize()
 		bnsCam.player = lyn;
 		SphereCollider::Desc sphere;
 		sphere.isTrigger = true;
-		sphere.radius = 2.f;
+		sphere.radius = 1.f;
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
 		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>();

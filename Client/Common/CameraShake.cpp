@@ -28,7 +28,7 @@ void CameraShake::Update()
 	if (m_timer >= m_interval)
 	{
 		--m_count;
-		m_count -= m_interval;
+		m_timer -= m_interval;
 
 		if (m_count % 2 == 0)
 		{

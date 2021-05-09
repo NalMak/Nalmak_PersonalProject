@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "LynStateControl.h"
-
+#include "BnS_MainCamera.h"
 
 
 LynStateControl::LynStateControl(Desc * _desc)
@@ -18,6 +18,7 @@ void LynStateControl::Initialize()
 	m_info = GetComponent<LynInfo>();
 	m_animController_lower = GetComponents<AnimationController>()[0];
 	m_animController_upper = GetComponents<AnimationController>()[1];
+	auto cam = Core::GetInstance()->GetMainCamera()->GetComponent<BnS_MainCamera>();
 
 	auto stateControls = GetComponents<LynStateControl>();
 	for(auto& state : m_stateList)
@@ -25,6 +26,7 @@ void LynStateControl::Initialize()
 		LynState* lynState = (LynState*)(state.second);
 		lynState->m_character = m_character;
 		lynState->m_info = m_info;
+		lynState->m_bnsMainCam = cam;
 		if(lynState->m_isUpper)
 			lynState->m_animController = m_animController_upper;
 		else
@@ -48,7 +50,7 @@ void LynStateControl::Update()
 	DEBUG_LOG(L"Current State", GetCurStateString());
 	StateControl::Update();
 }
-//
+
 //void LynStateControl::SetSpeed(float _speed)
 //{
 //	m_targetSpeed = _speed;

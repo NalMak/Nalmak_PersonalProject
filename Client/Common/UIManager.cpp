@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "UIManager.h"
+#include "BnS_SkillSlot.h"
+#include "BnS_Skill.h"
 
 IMPLEMENT_SINGLETON(UIManager)
 
@@ -47,7 +49,9 @@ void UIManager::CreateMainUI()
 		m_energyBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
 
 	}
-
+	CreateSkillIcon(BNS_SKILL_SLOT_Q, HALF_WINCX - 360, WINCY - 510); // ÁúÇ³
+	CreateSkillIcon(BNS_SKILL_SLOT_E, HALF_WINCX - 420, WINCY - 510); // ÁúÇ³
+	CreateSkillIcon(BNS_SKILL_SLOT_SS, HALF_WINCX - 480, WINCY - 510); // ÁúÇ³
 
 	CreateSkillIcon(BNS_SKILL_SLOT_LB, HALF_WINCX + 210, WINCY - 210); // ÁúÇ³
 	CreateSkillIcon(BNS_SKILL_SLOT_RB, HALF_WINCX + 270, WINCY - 210); // °¡¸£±â
@@ -110,6 +114,16 @@ void UIManager::UpdateEnergyUI(float _ratio)
 	m_energyBar->SetFloat("g_outputRatio",_ratio);
 }
 
+void UIManager::SetSkillSlot(BnS_Skill* _skill)
+{
+	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<SingleImage>()->SetTexture(_skill->GetSkillIconTexture()->GetTexure(0));
+}
+
+void UIManager::UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio)
+{
+	m_skillSlot[_slot]->GetComponent<BnS_SkillSlot>()->SetCoolTimeRatio(_ratio);
+}
+
 void UIManager::SetDamageFont()
 {
 	for (int i = 0; i < 10; ++i)
@@ -119,23 +133,90 @@ void UIManager::SetDamageFont()
 	}
 }
 
-void UIManager::CreateSkillIcon(UINT _skillSlot, UINT _x, UINT _y)
+void UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y)
 {
 	{
-		m_skillSlot[_skillSlot] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>()->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
+		Text::Desc text;
+		switch (_skillSlot)
+		{
+		case BNS_SKILL_SLOT_Q:
+			text.text = L"Q";
+			break;
+		case BNS_SKILL_SLOT_E:
+			text.text = L"E";
+			break;
+		case BNS_SKILL_SLOT_SS:
+			text.text = L"SS";
+			break;
+		case BNS_SKILL_SLOT_LB:
+			text.text = L"LB";
+			break;
+		case BNS_SKILL_SLOT_RB:
+			text.text = L"RB";
+			break;
+		case BNS_SKILL_SLOT_TAB:
+			text.text = L"TAB";
+			break;
+		case BNS_SKILL_SLOT_F:
+			text.text = L"F";
+			break;
+		case BNS_SKILL_SLOT_1:
+			text.text = L"1";
+			break;
+		case BNS_SKILL_SLOT_2:
+			text.text = L"2";
+			break;
+		case BNS_SKILL_SLOT_3:
+			text.text = L"3";
+			break;
+		case BNS_SKILL_SLOT_4:
+			text.text = L"4";
+			break;
+		case BNS_SKILL_SLOT_Z:
+			text.text = L"Z";
+			break;
+		case BNS_SKILL_SLOT_X:
+			text.text = L"X";
+			break;
+		case BNS_SKILL_SLOT_C:
+			text.text = L"C";
+			break;
+		case BNS_SKILL_SLOT_V:
+			text.text = L"V";
+			break;
+		default:
+			break;
+		}
+		text.boundary = { -20,-23,200,200 };
+		text.option = DT_LEFT;
+		text.height = 18;
+		text.weight = 700;
+		text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
+		CanvasRenderer::Desc canvas;
+		canvas.mtrlName = L"UI_Skill";
+		m_skillSlot[_skillSlot] = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
+			->AddComponent<SingleImage>()->AddComponent<BnS_SkillSlot>()->AddComponent<Text>(&text)
+			->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
 	}
 	{
-		Text::Desc text;
-		text.text = L"X";
-		text.boundary = { -23,-23,200,200 };
-		text.option = DT_LEFT;
+	
+	
 		SingleImage::Desc image;
 		image.textureName = L"GameUI_IconOutLine";
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50)->SetPosition((float)_x, (float)_y)->AddComponent<Text>(&text);
+		auto frame = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50);
+		frame->SetParents(m_skillSlot[_skillSlot]);
 	}
 }
 
-void UIManager::ChangeSkillSlot(BnS_Skill & _skill)
+void UIManager::ChangeSkillSlot(BnS_Skill* _skill)
 {
-	m_skillSlot[_skill.GetSkillSlot()]->GetComponent<SingleImage>()->SetTexture(_skill.GetSkillIconTex()->GetTexure(0));
+	m_skillSlot[_skill->GetSkillSlotIndex()]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
+	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<CanvasRenderer>()->SetActive(true);
+	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<SingleImage>()->SetTexture(_skill->GetSkillIconTexture()->GetTexure(0));
+}
+
+void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
+{
+	m_skillSlot[_slot]->GetComponent<CanvasRenderer>()->SetActive(false);
+	m_skillSlot[_slot]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
 }

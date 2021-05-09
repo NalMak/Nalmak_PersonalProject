@@ -11,8 +11,8 @@ public:
 	{
 		GameObject* player = nullptr;
 
-		float minDistance = 5.f;
-		float maxDistance = 45.f;
+		float minDistance = 2.f;
+		float maxDistance = 60.f;
 		float mouseSensitive = 10.f;
 		float wheelSensitive = 4.f;
 	};
@@ -27,6 +27,10 @@ public:
 	virtual void OnTriggerEnter(Collision& _col) override;
 	virtual void OnTriggerStay(Collision& _col) override;
 	virtual void OnTriggerExit(Collision& _col) override;
+public:
+	void LockTarget();
+	void UnLockTarget();
+	void TurnCamera(bool _dir, float _time);
 private:
 	void Move();
 	GameObject* CheckTarget();
@@ -35,6 +39,9 @@ private:
 	GameObject* m_targetOutline;
 	Camera* m_cam;
 private:
+	float m_turnTimer;
+	float m_turnAngle;
+	bool m_isControlingPlayer;
 	float m_distance;
 	float m_targetDisance;
 	float m_minDistance;

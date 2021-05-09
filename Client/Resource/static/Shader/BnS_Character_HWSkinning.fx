@@ -13,6 +13,7 @@ float4 g_mainTexColor;
 float  g_f0;
 float  g_roughness;
 float g_normalPower;
+float g_specularPower;
 
 int g_bone;
 
@@ -82,8 +83,7 @@ struct PS_OUTPUT
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
 	float4 depth_cookTorrance : COLOR2;
-	float4 specular : COLOR3;
-
+	float4 emission : COLOR3;
 };
 
 VS_OUTPUT VS_Main_Default(VS_INPUT _in)
@@ -166,8 +166,10 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 	o.depth_cookTorrance.zw = float2(g_f0, g_roughness + mask.b);
+	
+	o.emission = float4(o.diffuse.xyz * ((1 - mask.g * 2) + (mask.b * 0.5f)), 1);
 
-	o.specular = float4(specular, 1) * mask.g + (o.diffuse * mask.r) + (o.diffuse * mask.b * 3.f);
+	//o.emission = (float4(specular, 1) * mask.g + (o.diffuse * mask.r) + (o.diffuse * mask.b * 3.f)) * g_specularPower;
 
 	return o;
 }

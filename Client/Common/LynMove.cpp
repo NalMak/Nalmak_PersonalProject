@@ -130,7 +130,7 @@ void LynMove::PlayAnimationByDirection()
 				m_animController->PlayBlending(animName);
 
 			SetInteger(L"IsBlend", 1);
-			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		}
 		
 	

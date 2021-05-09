@@ -17,7 +17,6 @@ DrawGizmo::DrawGizmo(Desc * _desc)
 	render.mtrlName = L"SYS_Picking_Green";
 	m_pickingGizmo[1] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 2, 0)->SetScale(0.3f, 0.3f, 0.3f);
 	
-
 	render.mtrlName = L"SYS_Picking_Blue";
 	m_pickingGizmo[2] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetPosition(0, 0, 2)->SetScale(0.3f, 0.3f, 0.3f)->SetRotation(90, 0, 0);
 }

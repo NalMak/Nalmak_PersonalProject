@@ -13,8 +13,9 @@ texture "g_maskTex" "60107_LynF_col1_M"
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
 float "g_f0" "0.25f"
-float "g_roughness" "0.55f"
+float "g_roughness" "0.45f"
 float "g_normalPower" "1.f"
+float "g_specularPower" "0.9f";
 
 renderQueue "2000"
 

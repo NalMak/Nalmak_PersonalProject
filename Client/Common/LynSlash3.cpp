@@ -20,7 +20,6 @@ void LynSlash3::EnterState()
 	m_info->SetSpeed(m_info->m_airSpeed * 0.8f);
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_defaultSlash3");
-	m_animController->SetAnimatinoOffsetByBeizer({ 0,0,0 }, { 0,2.5f,0 }, 0.5f, { 0,0 }, { 0.5f,1 }, { 1,1 }, { 1,0.f });
 
 
 

@@ -186,8 +186,6 @@ void DebuggingMode::Update()
 		}
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 		{
-		
-
 			if (m_pickingObj)
 			{
 				if (m_pickingType != PICKING_TYPE_NONE)
@@ -509,10 +507,12 @@ void DebuggingMode::UpdatePickingObject()
 	{
 	case GIZMO_TYPE_POSITION:
 	{
-		m_pickingObj->SetPosition(result.start - dir * 2);
+		float distance = Nalmak_Math::Distance(m_pickingObj->GetTransform()->GetWorldPosition(), RenderManager::GetInstance()->GetMainCamera()->GetTransform()->GetWorldPosition());
+
+		m_pickingObj->SetPosition(result.start - dir * distance * 0.08f);
 		if (rigid)
 		{
-			rigid->SetWorldPositionAndRotation(result.start - dir * 2, m_pickingObj->GetTransform()->GetWorldRotation());
+			rigid->SetWorldPositionAndRotation(result.start - dir * distance * 0.08f, m_pickingObj->GetTransform()->GetWorldRotation());
 			rigid->SetAngularVelocity({ 0,0,0 });
 			rigid->SetVelocity({ 0,0,0 });
 		}

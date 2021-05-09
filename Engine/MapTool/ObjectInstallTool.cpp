@@ -1630,7 +1630,15 @@ void ObjectInstallTool::OnBnClickedButtonCopyObject()
 		mesh.meshName = obj->GetComponent<MeshRenderer>()->GetMesh()->GetName();
 		newObj->AddComponent<MeshRenderer>(&mesh);
 	}
-
+	if (obj->GetComponent<PointLight>())
+	{
+		PointLight::Desc light;
+		light.radius = obj->GetComponent<PointLight>()->GetRadius();
+		light.color = obj->GetComponent<PointLight>()->GetLightInfo().base.color;
+		light.ambientIntensity = obj->GetComponent<PointLight>()->GetLightInfo().base.ambientIntensity;
+		light.diffuseIntensity = obj->GetComponent<PointLight>()->GetLightInfo().base.diffuseIntensity;
+		newObj->AddComponent<PointLight>(&light);
+	}
 
 	m_objectList.InsertString(m_objectList.GetCount(), newObj->GetName().c_str());
 	int count = m_objectList.GetCount();

@@ -69,7 +69,7 @@ struct PS_OUTPUT
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
 	float4 depth_cookTorrance : COLOR2;
-	float4 specular : COLOR3;
+	float4 emission : COLOR3;
 
 };
 
@@ -127,7 +127,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	/*if(mask.b > 0)
 		o.cookTorrance = float4(0.3f,0.1f,0, 1);*/
 
-	o.specular = float4(specular , 1);
+	o.emission = float4(specular , 1);
 
 	return o;
 }

@@ -8,9 +8,9 @@ texture "g_mainTex" "GW_GwimyeonGeukDan_1boss_Floor_001_D"
 texture "g_normalTex" "GW_GwimyeonGeukDan_1boss_Floor_001_N"
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
-float "g_f0" "0.25f"
-float "g_roughness" "0.45f"
-float "g_normalPower" "0.55f"
+float "g_f0" "0.3f"
+float "g_roughness" "0.65f"
+float "g_normalPower" "20.f"
 
 renderQueue "1000"
 

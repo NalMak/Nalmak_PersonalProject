@@ -69,45 +69,49 @@ void LynInfo::Update()
 
 	m_inputDir = Nalmak_Math::Lerp(m_inputDir, m_targetInput, dTime * 10);
 
-	float shortLength = INFINITY;
-	int index = 0;
-	for (int i = 0; i < 9; ++i)
+	if (!m_isMovingBySkill)
 	{
-		if (m_targetInput != Vector3(0, 0, 0))
+		float shortLength = INFINITY;
+		int index = 0;
+		for (int i = 0; i < 9; ++i)
 		{
-			if(i == LYN_MOVE_DIR_STATE_NONE)
-				continue;
+			if (m_targetInput != Vector3(0, 0, 0))
+			{
+				if (i == LYN_MOVE_DIR_STATE_NONE)
+					continue;
+			}
+			float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
+			if (length < shortLength)
+			{
+				index = i;
+				shortLength = length;
+			}
 		}
-		float length = Nalmak_Math::DistanceSq(m_directionState[i], m_inputDir);
-		if (length < shortLength)
+		m_dirState = (LYN_MOVE_DIR_STATE)index;
+		Vector3 velocity = { 0,0,0 };
+
+		float speedRatio = 1.f;
+		switch (m_state)
 		{
-			index = i;
-			shortLength = length;
+		case LYN_STATE_PEACE_STANDARD:
+			speedRatio = 1.f;
+			break;
+		case LYN_STATE_BATTLE_STANDARD:
+			speedRatio = 1.1f;
+			break;
+		case LYN_STATE_BATTLE_HIDEBLADE:
+			speedRatio = 1.15f;
+			break;
+		default:
+			break;
 		}
-	}
-	m_dirState = (LYN_MOVE_DIR_STATE)index;
-	Vector3 velocity = { 0,0,0 };
+		velocity += m_inputDir.x * m_transform->GetRight() * m_targetSpeed * speedRatio;
+		velocity += m_inputDir.z * m_transform->GetForward() * m_targetSpeed * speedRatio;
 
-	float speedRatio = 1.f;
-	switch (m_state)
-	{
-	case LYN_STATE_PEACE_STANDARD:
-		speedRatio = 1.f;
-		break;
-	case LYN_STATE_BATTLE_STANDARD:
-		speedRatio = 1.1f;
-		break;
-	case LYN_STATE_BATTLE_HIDEBLADE:
-		speedRatio = 1.15f;
-		break;
-	default:
-		break;
+		m_characterController->SetVelocityX(velocity.x);
+		m_characterController->SetVelocityZ(velocity.z);
+		
 	}
-	velocity += m_inputDir.x * m_transform->GetRight() * m_targetSpeed * speedRatio;
-	velocity += m_inputDir.z * m_transform->GetForward() * m_targetSpeed * speedRatio;
-
-	m_characterController->SetVelocityX(velocity.x);
-	m_characterController->SetVelocityZ(velocity.z);
 	
 	if (!m_characterController->IsGround())
 	{
@@ -173,19 +177,37 @@ void LynInfo::SetState(LYN_STATE _state)
 	switch (_state)
 	{
 	case LYN_STATE_PEACE_STANDARD:
-		m_battleToPeaceTimer =INFINITY;
+	{
+		m_skillController->SetSkillSlot(L"slash1");
+		m_skillController->SetSkillSlot(L"verticalCut_l0");
+		m_battleToPeaceTimer = INFINITY;
 		break;
+	}
 	case LYN_STATE_BATTLE_STANDARD:
+	{
+		m_skillController->SetSkillSlot(L"slash1");
+		m_skillController->SetSkillSlot(L"verticalCut_l0");
 		m_battleToPeaceTimer = 5.f;
 		break;
+	}
 	case LYN_STATE_BATTLE_HIDEBLADE:
+	{
+		m_skillController->SetSkillSlot(L"baldo");
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
 		m_battleToPeaceTimer = 5.f;
 		break;
+	}
 	default:
 		break;
 	}
-	UpdateWeapon();
-	m_state = _state;
+	m_stateControl_lower->SetInteger(L"IsBlend", 1);
+	m_stateControl_upper->SetInteger(L"IsBlend", 1);
+
+	if (m_state != _state)
+	{
+		m_state = _state;
+		UpdateWeapon();
+	}
 }
 
 LYN_STATE LynInfo::GetState()
@@ -195,7 +217,7 @@ LYN_STATE LynInfo::GetState()
 
 
 
-UINT LynInfo::GetEnergy()
+float LynInfo::GetEnergy()
 {
 	return m_energy;
 }
@@ -293,6 +315,16 @@ void LynInfo::StartSkill()
 void LynInfo::EndSkill()
 {
 	m_isProgressSkill = false;
+}
+
+void LynInfo::MoveOn()
+{
+	m_isMovingBySkill = true;
+}
+
+void LynInfo::MoveOff()
+{
+	m_isMovingBySkill = false;
 }
 
 void LynInfo::SetSpeed(float _speed)

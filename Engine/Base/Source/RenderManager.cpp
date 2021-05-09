@@ -72,6 +72,18 @@ void RenderManager::Initialize()
 	m_GBuffer_Specular = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular");
 	m_GBuffer_Shadow = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Shadow");
 	m_GBuffer_LightDepth = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_LightDepth");
+	
+	m_GBuffer_Emission_blur_div4 = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Emission_blur_div4");
+	m_GBuffer_Emission_blur_div4_out = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Emission_blur_div4_out");
+	m_GBuffer_Emission_blur_div2 = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Emission_blur_div2");
+	m_GBuffer_Emission_blur_div2_out = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Emission_blur_div2_out");
+
+	m_GBuffer_Specular_blur_div4 = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular_blur_div4");
+	m_GBuffer_Specular_blur_div4_out = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular_blur_div4_out");
+
+
+
+
 
 	m_screenImageMesh = ResourceManager::GetInstance()->GetResource<Mesh>(L"screenQuad");
 	m_sphere = ResourceManager::GetInstance()->GetResource<Mesh>(L"sphere");
@@ -129,6 +141,17 @@ void RenderManager::Render(Camera * _cam)
 	m_GBuffer_Emission->Clear();
 	m_GBuffer_Specular->Clear();
 	m_GBuffer_Shadow->Clear();
+
+	
+
+	m_GBuffer_Emission_blur_div4->Clear();
+	m_GBuffer_Emission_blur_div4_out->Clear();
+	m_GBuffer_Emission_blur_div2->Clear();
+	m_GBuffer_Emission_blur_div2_out->Clear();
+
+	m_GBuffer_Specular_blur_div4->Clear();
+	m_GBuffer_Specular_blur_div4_out->Clear();
+
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur128_out");
 	//ClearRenderTarget(L"GBuffer_Shadow_blur512");
@@ -152,11 +175,10 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	SkyboxPass(_cBuffer);
 
+	GBufferPass(_cam, _cBuffer);
+
 
 	LightDepthPass(_cBuffer);
-
-	
-	GBufferPass(_cam, _cBuffer);
 
 
 	// 라이트연산
@@ -168,6 +190,11 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 	// 투명객체 그리기
 	TransparentPass(_cam, _cBuffer); // transparent object
 
+	BlurPass(m_GBuffer_Specular, m_GBuffer_Specular_blur_div4, m_GBuffer_Specular_blur_div4_out, 480, 270);
+
+	BlurPass(m_GBuffer_Emission, m_GBuffer_Emission_blur_div2, m_GBuffer_Emission_blur_div2_out, 960, 540);
+	BlurPass(m_GBuffer_Emission_blur_div2_out, m_GBuffer_Emission_blur_div4, m_GBuffer_Emission_blur_div4_out, 480, 270);
+
 	RenderByShaderToScreen(m_SCR_Emission_Pass, _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
 	
 	DebugPass(_cBuffer);
@@ -176,9 +203,9 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 
 	//ClearRenderTarget(L"GBuffer_Bright");
 	//ClearRenderTarget(L"Bright_HorizontalBlur");
-	//RenderByMaterialToScreen(L"GBuffer_Bright", _cBuffer); // bright filter by basic color
-	//RenderByMaterialToScreen(L"brightHorizontalBlur", _cBuffer); // blur by basic color
-	//RenderByMaterialToScreen(L"brightVerticalBlur", _cBuffer);// Draw to GBuffer_Bright blur by basic color
+	
+
+
 	//RenderByMaterialToScreen(L"GBuffer_Bloom", _cBuffer); // bloom ( blur + basic color)
 
 	PostProcessPass(_cam, _cBuffer);
@@ -207,16 +234,16 @@ void RenderManager::SkyboxPass(ConstantBuffer & _cBuffer)
 	auto viBuffer = m_lightManager->GetSkyboxMesh();
 
 	UpdateMaterial(m_lightManager->GetSkyboxMaterial(), _cBuffer);
+	m_currentMaterial->SetDataToShader();
 	UpdateRenderTarget();
-
 	viBuffer->BindingStreamSource(sizeof(INPUT_LAYOUT_SKYBOX));
 
 	DirectionalLightInfo info;
 	if (m_lightManager->IsExistDirectionalLight())
 		info  = m_lightManager->GetDirectionalLightInfo();
 	m_currentShader->SetValue("g_directionalLight", &info, sizeof(DirectionalLightInfo));
-
 	m_currentShader->CommitChanges();
+
 	viBuffer->Draw();
 
 	if (m_currentShader)
@@ -520,7 +547,7 @@ void RenderManager::TransparentPass(Camera* _cam, ConstantBuffer& _cBuffer)
 					renderInfo.renderer->BindingStreamSource();
 					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
 					UpdateRenderTarget();
-					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->OnRender(m_currentMaterial, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -556,7 +583,7 @@ void RenderManager::PostProcessPass(Camera * _cam, ConstantBuffer & _cBuffer)
 					renderInfo.renderer->BindingStreamSource();
 					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
 					UpdateRenderTarget();
-					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->OnRender(m_currentMaterial, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -593,7 +620,7 @@ void RenderManager::UIPass(Camera * _cam, ConstantBuffer & _cBuffer)
 				renderer->BindingStreamSource();
 				UpdateMaterial(renderer->GetMaterial(), _cBuffer);
 				UpdateRenderTarget();
-				renderer->OnRender(m_currentShader, _cBuffer,0,0);
+				renderer->OnRender(m_currentMaterial, _cBuffer,0,0);
 			}
 		}
 	}
@@ -657,7 +684,7 @@ void RenderManager::RenderNoneAlpha(Camera * _cam, ConstantBuffer & _cBuffer, RE
 					renderInfo.renderer->BindingStreamSource();
 					UpdateMaterial(renderInfo.renderer->GetMaterial(renderInfo.containerNum, renderInfo.subsetNum), _cBuffer);
 					UpdateRenderTarget();
-					renderInfo.renderer->OnRender(m_currentShader, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
+					renderInfo.renderer->OnRender(m_currentMaterial, _cBuffer, renderInfo.containerNum, renderInfo.subsetNum);
 				}
 			}
 		}
@@ -674,6 +701,7 @@ void RenderManager::Reset()
 	m_currentMaterial = nullptr;
 
 	for (int i = 0; i < RENDERING_MODE_MAX; ++i)
+	{
 		for (auto& renderList : m_renderLists[i])
 		{
 			for (auto& renderInfo : renderList.second)
@@ -683,6 +711,12 @@ void RenderManager::Reset()
 			}
 			renderList.second.clear();
 		}
+	}
+	for (auto& ui : m_renderUILists)
+	{
+		ui->ResetFrustumCulling();
+		ui->GetGameObject()->ResetRender();
+	}
 	m_renderUILists.clear();
 
 	m_debugManager->EraseTheRecord();
@@ -710,6 +744,7 @@ void RenderManager::RenderByShaderToScreen(Shader * _shader, ConstantBuffer & _c
 	shader->EndPass();
 	EndRenderTarget();
 }
+
 
 ConstantBuffer RenderManager::GetConstantBufferByCam(Camera * _cam)
 {
@@ -820,27 +855,11 @@ void RenderManager::UpdateMaterial(Material * _material, ConstantBuffer & _cBuff
 	if (m_currentMaterial != _material)
 	{
 		m_currentMaterial = _material;
-
 		UpdateBlendingMode(_material);
 		UpdateFillMode(_material);
-		_material->SetDataToShader();
-
 		UpdateShader(m_currentMaterial->GetShader(), _cBuffer);
 	}
 
-}
-
-void RenderManager::UpdateNoneAlphaMaterial(Material * _material, ConstantBuffer & _cBuffer)
-{
-	if (m_currentMaterial != _material)
-	{
-		m_currentMaterial = _material;
-
-		UpdateFillMode(_material);
-		_material->SetDataToShader();
-
-		UpdateShader(m_currentMaterial->GetShader(), _cBuffer);
-	}
 }
 
 void RenderManager::UpdateBlendingMode(Material * _material)

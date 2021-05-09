@@ -16,10 +16,11 @@ BnS_MainCamera::BnS_MainCamera(Desc * _desc)
 	m_distance = 25.f;
 	m_targetDisance = 25.f;
 	m_mouseAngle = { 30.f,0 };
-	m_offsetY = 12.f;
+	m_offsetY = 10.f;
 
 	m_triggerOn = false;
 	m_targetVolume = { HALF_WINCX - 50, HALF_WINCY - 50, HALF_WINCX + 50, HALF_WINCY - 50 };
+	m_isControlingPlayer = true;
 }
 
 BnS_MainCamera::~BnS_MainCamera()
@@ -59,8 +60,29 @@ void BnS_MainCamera::OnTriggerExit(Collision & _col)
 	m_triggerOn = false;
 }
 
+void BnS_MainCamera::LockTarget()
+{
+	m_isControlingPlayer = true;
+}
+
+void BnS_MainCamera::UnLockTarget()
+{
+	m_isControlingPlayer = false;
+}
+
+void BnS_MainCamera::TurnCamera(bool _dir, float _time)
+{
+	m_turnTimer = _time;
+	if (_dir)
+		m_turnAngle = 180 / _time;
+	else
+		m_turnAngle = -180 / _time;
+}
+
+
 void BnS_MainCamera::Move()
 {
+	
 	m_targetDisance -= InputManager::GetInstance()->GetMouseDT(MOUSE_MOVE_STATE_Z) *  dTime * m_wheelSensitive;
 	if (m_triggerOn)
 	{
@@ -73,6 +95,12 @@ void BnS_MainCamera::Move()
 	Vector2 mouseDT = InputManager::GetInstance()->GetMouseMoveDir();
 	m_mouseAngle += Vector2(mouseDT.y, mouseDT.x) * dTime * m_mouseSensitive;
 
+	if (m_turnTimer > 0)
+	{
+		m_turnTimer -= dTime;
+		m_mouseAngle.y += m_turnAngle * dTime;
+	}
+
 
 	Vector3 dir = { 0,0,1 };
 	Matrix rot;
@@ -80,18 +108,23 @@ void BnS_MainCamera::Move()
 	D3DXMatrixRotationYawPitchRoll(&rot, m_mouseAngle.y * Deg2Rad, m_mouseAngle.x * Deg2Rad, 0);
 	D3DXQuaternionRotationYawPitchRoll(&characterRot, m_mouseAngle.y * Deg2Rad, 0, 0);
 
-	DEBUG_LOG(L"character Angle", characterRot);
 	D3DXVec3TransformNormal(&dir, &dir, &rot);
 	D3DXQuaternionRotationMatrix(&qRot, &rot);
 	float offsetY = m_offsetY * (m_distance / m_maxDistance);
-	offsetY = Nalmak_Math::Clamp(offsetY, 3.f, 12.f);
+	offsetY = Nalmak_Math::Clamp(offsetY, 1.5f, 10.f);
 	m_transform->position = m_player->GetTransform()->GetWorldPosition() - dir * m_distance + Vector3(0, offsetY, 0);
 	m_transform->rotation = qRot;
 
-	if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_WHEEL_MOUSE))
+
+	
+	if (m_isControlingPlayer)
 	{
-		m_player->GetTransform()->rotation = characterRot;
+		if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_WHEEL_MOUSE))
+		{
+			m_player->GetTransform()->rotation = characterRot;
+		}
 	}
+
 }
 
 GameObject* BnS_MainCamera::CheckTarget()

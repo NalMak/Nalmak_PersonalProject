@@ -39,7 +39,7 @@ public:
 	void SetVelocityX(float _x);
 	void SetVelocityY(float _y);
 	void SetVelocityZ(float _z);
-
+	void SetPhysicsPosition(const Vector3& _pos);
 
 	bool IsGround();
 	bool IsSide();

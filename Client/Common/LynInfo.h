@@ -48,7 +48,7 @@ public:
 private:
 	float m_energy;
 public:
-	UINT GetEnergy();
+	float GetEnergy();
 public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();
@@ -66,6 +66,7 @@ private:
 	LynSkillController* m_skillController;
 	bool m_followingAnimationPosition;
 	bool m_isProgressSkill;
+	bool m_isMovingBySkill;
 private:
 	Matrix* m_matPeaceStandard;
 	Matrix* m_matBattleStandard;
@@ -82,6 +83,8 @@ private:
 public:
 	void StartSkill();
 	void EndSkill();
+	void MoveOn();
+	void MoveOff();
 	void SetSpeed(float _speed);
 private:
 	LYN_STATE m_state;

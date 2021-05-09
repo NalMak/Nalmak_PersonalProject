@@ -87,6 +87,16 @@ void CharacterController::SetVelocityZ(float _z)
 	m_velocity.z = _z;
 }
 
+void CharacterController::SetPhysicsPosition(const Vector3 & _pos)
+{
+	Vector3 pos = _pos - m_transform->GetWorldPosition();
+
+	m_velocity = { 0,0,0 };
+	PxVec3 vec(pos.x,0, pos.z);
+
+	m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
+}
+
 bool CharacterController::IsGround()
 {
 	return m_curFlag & PxControllerCollisionFlag::eCOLLISION_DOWN;

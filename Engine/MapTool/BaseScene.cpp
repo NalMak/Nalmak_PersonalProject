@@ -20,9 +20,10 @@ void BaseScene::Initialize()
 
 
 	DirectionalLight::Desc light;
-	light.diffuseIntensity = 0.6f;
-	light.ambientIntensity = 0.1f;
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(60, 180, 0);
+	light.diffuseIntensity = 0.45f;
+	light.ambientIntensity = 0.15f;
+	light.color = { 1.f,0.9f,0.88f };
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
 
 	Camera::Desc camera;
 	camera.zFar = 1000;

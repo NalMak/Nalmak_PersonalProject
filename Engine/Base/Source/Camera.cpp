@@ -191,6 +191,7 @@ bool Camera::IsInFrustumCulling(IRenderer * _renderer)
 			if (distance > radius)
 			{
 				_renderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FAIL);
+				
 				return false;
 			}
 		}

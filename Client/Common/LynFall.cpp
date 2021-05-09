@@ -19,7 +19,6 @@ void LynFall::EnterState()
 {
 	m_info->SetSpeed(m_info->m_airSpeed);
 
-	GetInteger(L"JumpDirection");
 	auto dir = (LYN_MOVE_DIR_STATE)GetInteger(L"JumpDirection");
 
 	string anim = "";
@@ -59,12 +58,13 @@ void LynFall::UpdateState()
 {
 	if (m_character->IsGround())
 	{
-		SetState(L"move");
+		SetState(L"land");
 		return;
 	}
 }
 
 void LynFall::ExitState()
 {
-
+	m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+	SetInteger(L"IsBlend", 1);
 }

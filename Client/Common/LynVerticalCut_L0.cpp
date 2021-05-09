@@ -21,7 +21,6 @@ void LynVerticalCut_L0::EnterState()
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyb_B_Std_VerticalCul_01_1");
 
-	m_animController->SetAnimatinoOffsetByBeizer({ 0,0,0 }, { 0,-0.7f,0 }, 0.6f, { 0,0 }, { 0.0f,1.f }, { 0.52f,0.75f }, { 1,0 });
 
 
 }

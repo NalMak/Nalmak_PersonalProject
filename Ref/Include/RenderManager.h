@@ -192,6 +192,15 @@ private:
 	RenderTarget* m_GBuffer_Shadow;
 	RenderTarget* m_GBuffer_LightDepth;
 
+	RenderTarget* m_GBuffer_Emission_blur_div2;
+	RenderTarget* m_GBuffer_Emission_blur_div2_out;
+	RenderTarget* m_GBuffer_Emission_blur_div4;
+	RenderTarget* m_GBuffer_Emission_blur_div4_out;
+
+
+
+	RenderTarget* m_GBuffer_Specular_blur_div4;
+	RenderTarget* m_GBuffer_Specular_blur_div4_out;
 private:
 	Shader* m_SCR_Geometry_Pass;
 	Shader* m_SCR_Emission_Pass;
@@ -199,13 +208,13 @@ private:
 	Shader* m_SCR_Shadow_Pass;
 	Shader* m_SCR_Debug_Pass;
 	Shader* m_SCR_DirectionalLight;
+	Shader* m_SCR_GaussianBlur;
 private:
 	Mesh* m_sphere;
 	Shader* m_SCR_PointLight_Stencil;
 	Shader* m_SCR_PointLight;
 	Shader* m_SYS_LightDepth;
 	Shader* m_SYS_LightDepth_Animation;
-	Shader* m_SCR_GaussianBlur;
 	Shader* m_SYS_PhysX;
 
 	DepthStencil* m_DepthStencil_Shadow;

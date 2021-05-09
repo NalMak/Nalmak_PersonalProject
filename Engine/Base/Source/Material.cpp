@@ -21,20 +21,6 @@ Material::~Material()
 
 void Material::Initialize(wstring _fp)
 {
-	// _fp 파일 경로가 들어오면
-	// 앞에 경로 다 떼면 파일 이름만 남음
-	// 확장자도 떼면 그게 키값이 됨 -> 이걸 AddResource key값으로 등록하면 됨
-	// 파싱을 하면 됩니다?
-	//{
-	//	Material particle;
-	//	particle.SetShader(L"particle");
-	//	particle.SetBledingMode(BLENDING_MODE_ADDITIVE);
-	//	particle.SetTexture("g_mainTex", L"particleDefault");
-	//	particle.SetRenderingMode(RENDERING_MODE_TRANSPARENT);
-	//	particle.SetRenderQueue(RENDER_QUEUE_TRANSPARENT);
-
-	//	//ResourceManager::GetInstance()->AddResource(L"particle", particle);
-	//}
 
 	string path;
 	path.assign(_fp.begin(), _fp.end());
@@ -541,6 +527,7 @@ void Material::SetDataToShader()
 
 	for (auto& value : m_values)
 		m_shader->SetValue(value.first, value.second.first, value.second.second);
+
 }
 
 void Material::SetBool(const string& _parameter, bool _value)

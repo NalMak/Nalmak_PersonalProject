@@ -36,8 +36,12 @@ public:
 	virtual void Release() override;
 public:
 	static void UpdateBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
-	void UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub);
-	void UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub);
+	void UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
+
+
+	void UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
+
+
 	void UpdateFixedBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent);
 
 	const Matrix& GetRootMatrix();
@@ -64,6 +68,8 @@ public:
 	double GetPlayRemainTime();
 	float GetPlayRatio();
 	bool IsOverTime(double _time);
+	bool IsOverRealTime(double _time);
+
 	void SetFixedAnimationBoneName(string _boneName,bool _xAxis, bool _yAxis, bool _zAxis);
 	void SetRootMotion(bool _isFixed);
 	const string& GetCurrentPlayAnimationName();
@@ -86,7 +92,7 @@ private:
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
 	Matrix m_rootMatrix;
 	bool m_isSeparte;
-	bool m_isSub;
+	bool m_isUpper;
 	bool m_isRootAnimation;
 	bool m_rootMotion_fixXAxis;
 	bool m_rootMotion_fixYAxis;
@@ -95,7 +101,7 @@ private:
 private:
 	vector<AnimationClip*> m_animationClips;
 	AnimationClip* m_currentAnimationClip;
-
+	AnimationController* m_otherController;
 public:
 	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true);
 	AnimationClip* GetAnimationClip(const string& _clipName);

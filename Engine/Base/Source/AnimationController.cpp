@@ -26,6 +26,9 @@ AnimationController::AnimationController(Desc * _desc)
 	LPD3DXANIMATIONCONTROLLER originController;
 	if (_desc->cloneAnimationController)
 	{
+		_desc->cloneAnimationController->m_otherController = this;
+		m_otherController = _desc->cloneAnimationController;
+
 		m_rootMatrix = _desc->cloneAnimationController->m_rootMatrix;
 		m_root = _desc->cloneAnimationController->m_root;
 		originController = _desc->cloneAnimationController->m_animController;
@@ -33,9 +36,9 @@ AnimationController::AnimationController(Desc * _desc)
 		_desc->cloneAnimationController->m_isSeparte = true;
 		m_subRoot = _desc->cloneAnimationController->m_subRoot;
 
-		m_isSub = true;
+		m_isUpper = true;
 		m_mesh = _desc->cloneAnimationController->m_mesh;
-		_desc->cloneAnimationController->m_isSub = false;
+		_desc->cloneAnimationController->m_isUpper = false;
 
 		LPD3DXANIMATIONCONTROLLER clone;
 		originController->CloneAnimationController(
@@ -57,14 +60,6 @@ AnimationController::AnimationController(Desc * _desc)
 			LPD3DXANIMATIONSET animSet;
 			_desc->cloneAnimationController->m_animController->GetAnimationSet(i, &animSet);
 			m_animController->RegisterAnimationSet(animSet);
-
-			/*AnimationClip* clip = new AnimationClip();
-			clip->animationName = animSet->GetName();
-			clip->speed = _speed;
-			clip->loop = _loop;
-
-			clip->animationSet = animSet;*/
-
 			animSet->Release();
 			++i;
 		}
@@ -492,6 +487,14 @@ bool AnimationController::IsOverTime(double _time)
 	return false;
 }
 
+bool AnimationController::IsOverRealTime(double _time)
+{
+	if (m_prePlayTime / m_currentAnimationClip->speed < _time && m_currentPlayTime  / m_currentAnimationClip->speed >= _time)
+		return true;
+
+	return false;
+}
+
 void AnimationController::SetFixedAnimationBoneName(string _boneName, bool _xAxis, bool _yAxis, bool _zAxis)
 {
 	m_fixedBone = D3DXFrameFind(m_root, _boneName.c_str());
@@ -549,10 +552,42 @@ void AnimationController::UpdateBoneMatrix()
 		if (m_isRootAnimation)
 		{
 			assert(L"Please set bone to fix pos!" && m_fixedBone);
-			UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, root, m_isSub);
+			if (m_isUpper)
+			{
+				UpdateFixedBoneMatrix((Nalmak_Frame*)m_subRoot->pFrameFirstChild, ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix);
+			}
+			else
+			{
+				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, root); // 하체면 무조건 업데이트 시작
+			}
 		}
 		else
-			UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, root, m_isSub);
+		{
+			UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, root);
+			//if (m_isUpper)
+			//{
+			///*	Matrix& mat = ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix;
+			//	memcpy(&mat._11, &m_rootMatrix._11, sizeof(Vector3));
+			//	memcpy(&mat._21, &m_rootMatrix._21, sizeof(Vector3));
+			//	memcpy(&mat._31, &m_rootMatrix._31, sizeof(Vector3));
+
+			//	mat._11 = 0;
+			//	mat._12 = 1;
+			//	mat._13 = 0;
+			//	mat._21 = -1;
+			//	mat._22 = 0;
+			//	mat._23 = 0;
+			//	mat._31 = 0;
+			//	mat._32 = 0;
+			//	mat._33 = 1;*/
+			//	UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, root);
+			//	UpdateBoneMatrix((Nalmak_Frame*)m_subRoot->pFrameFirstChild, ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix);
+			//}
+			//else
+			//{
+			//	UpdateBoneSeparationMatrix((Nalmak_Frame*)m_root, root); 
+			//}
+		}
 	}
 	else
 	{
@@ -568,37 +603,48 @@ void AnimationController::UpdateBoneMatrix()
 }
 
 
-void AnimationController::UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub)
+void AnimationController::UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
 {
-	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
-
 	if (_bone == m_subRoot)
 	{
-		if (_isSub)
+		if (m_isUpper)
 		{
-
+			Vector3 separteBonePos;
+			memcpy(&separteBonePos, &((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix._41, sizeof(Vector3));
+			_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+			memcpy(&_bone->boneCombinedMatrix._41, &separteBonePos, sizeof(Vector3));
+			
 			if (_bone->pFrameFirstChild)
-				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix);
 		}
 		else
 		{
+			_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
 			if (_bone->pFrameSibling)
-				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
 		}
 		return;
 	}
+	else
+	{
+		_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+	}
+
+
 
 	if (_bone->pFrameFirstChild)
-		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
 
 	if (_bone->pFrameSibling)
-		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+		UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
 }
 
-void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent, bool _isSub)
+void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
 {
 	
+	
 	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+
 	if (_bone == m_fixedBone)
 	{
 		if (m_rootMotion_fixXAxis)
@@ -610,25 +656,24 @@ void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, 
 	}
 	if (_bone == m_subRoot)
 	{
-		if (_isSub)
+		if (m_isUpper)
 		{
-
 			if (_bone->pFrameFirstChild)
-				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
 		}
 		else
 		{
 			if (_bone->pFrameSibling)
-				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
 		}
 		return;
 	}
 
 	if (_bone->pFrameFirstChild)
-		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix, _isSub);
+		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
 
 	if (_bone->pFrameSibling)
-		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent, _isSub);
+		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
 }
 
 void AnimationController::UpdateFixedBoneMatrix(Nalmak_Frame * _bone, const Matrix & _parent)

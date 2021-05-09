@@ -2,7 +2,11 @@
 
 texture g_final;
 texture g_emission;
+texture g_emissionBlurDiv4;
+texture g_emissionBlurDiv2;
+
 texture g_specular;
+texture g_specularBlur;
 sampler FinalSampler = sampler_state
 {
 	texture = g_final;
@@ -13,9 +17,25 @@ sampler EmissionSampler = sampler_state
 	texture = g_emission;
 };
 
+
+sampler EmissionBlurSampler4 = sampler_state
+{
+	texture = g_emissionBlurDiv4;
+};
+
+sampler EmissionBlurSampler2 = sampler_state
+{
+	texture = g_emissionBlurDiv2;
+};
+
 sampler SpecularSampler = sampler_state
 {
 	texture = g_specular;
+};
+
+sampler SpecularBlurSampler = sampler_state
+{
+	texture = g_specularBlur;
 };
 
 struct VS_INPUT
@@ -60,10 +80,22 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float2 uv = float2(_input.uv) + float2(perPixelX, perPixelY);
 
 	float3 final = tex2D(FinalSampler, uv).xyz;
+	
 	float3 emission = tex2D(EmissionSampler, uv).xyz;
-	float3 specular = tex2D(SpecularSampler, uv).xyz;
-
-	o.color = float4(final + emission + specular , 1);
+	if (any(emission))
+	{
+		float3 emissionBlur4 = tex2D(EmissionBlurSampler4, uv).xyz;
+		float3 emissionBlur2 = tex2D(EmissionBlurSampler2, uv).xyz;
+		
+		final = final + (emission  + emissionBlur4 + emissionBlur2) * 0.5f;
+	}
+	else
+	{
+		float3 specular = tex2D(SpecularSampler, uv).xyz;
+		float3 specularBlur = tex2D(SpecularBlurSampler, uv).xyz;
+		final = final + (specular + specularBlur) * 0.5f;
+	}
+	o.color = float4(final, 1);
 
 	return o;
 }

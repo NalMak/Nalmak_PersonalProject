@@ -27,7 +27,7 @@ private:
 	virtual void PreRender() override;
 	virtual void Release() override = 0;
 public:
-	void OnRender(Shader* _shader, ConstantBuffer& _cBuffer,UINT _containerIndex, UINT _subsetIndex);
+	void OnRender(Material* _mtrl, ConstantBuffer& _cBuffer,UINT _containerIndex, UINT _subsetIndex);
 protected:
 	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) = 0;
 public:

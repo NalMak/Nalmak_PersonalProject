@@ -2,6 +2,8 @@
 #include "StateControl.h"
 #include "LynState.h"
 
+class BnS_MainCamera;
+
 class LynStateControl :
 	public StateControl
 {
@@ -38,6 +40,7 @@ private:
 	AnimationController* m_animController_upper;
 
 	CharacterController* m_character;
+
 	LynInfo* m_info;
 
 };

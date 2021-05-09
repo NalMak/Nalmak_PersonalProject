@@ -28,11 +28,9 @@ void LynLightningSlash::UpdateState()
 	{
 		m_info->SetSpeed(m_info->m_runForwardSpeed * 0.5f);
 	}
-	if (m_animController->GetPlayRemainTime() < 0.4f)
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
-		m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
-		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_LINEAR);
-		SetInteger(L"IsBlend", 1);
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}
@@ -40,6 +38,8 @@ void LynLightningSlash::UpdateState()
 
 void LynLightningSlash::ExitState()
 {
+	m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
 	m_info->SetSpeed(m_info->m_runForwardSpeed);
+	SetInteger(L"IsBlend", 1);
 	m_info->EndSkill();
 }

@@ -4,6 +4,8 @@
 #include "AttackInfo.h"
 #include "LynStateControl.h"
 #include "CameraShake.h"
+#include "BnS_MainCamera.h"
+
 class LynState :
 	public IState
 {
@@ -21,7 +23,7 @@ protected:
 	AnimationController* m_animController;
 	CharacterController* m_character;
 	LynInfo* m_info;
-	
+	BnS_MainCamera* m_bnsMainCam;
 	bool m_isUpper;
 private:
 

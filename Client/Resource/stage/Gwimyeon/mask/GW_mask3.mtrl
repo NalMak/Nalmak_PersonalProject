@@ -1,0 +1,59 @@
+#########################################################
+##  Material Data Setting
+#########################################################
+
+shader "BnS_StaticObject_DNS"
+
+texture "g_mainTex" "GW_GwimyeonGeukDan_Mask_03_D"
+texture "g_normalTex" "GW_GwimyeonGeukDan_Mask_03_N"
+texture "g_specularTex" "GW_GwimyeonGeukDan_Mask_03_S"
+
+vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
+float "g_f0" "0.45f"
+float "g_roughness" "0.45f"
+float "g_normalPower" "1.f"
+float "g_specularPower" "0.3f"
+
+renderQueue "1000"
+
+blendingMode "0"
+
+fillMode "0"
+#########################################################
+##   1. Shander
+##  ---------------------------------------------------------------------------------------
+##    shader  "name" 
+##  ---------------------------------------------------------------------------------------
+##   2. Constant Buffer // 다중 선택 가능
+##  ---------------------------------------------------------------------------------------
+##    bool      "handle"   "x"
+##    int         "handle"   "x"
+##    float      "handle"   "x"
+##    matrix    "handle"   "x,x,x,x,  x,x,x,x,  x,x,x,x,  x,x,x,x"
+##    texture   "handle"   "tex"
+##    textureRT "handle" "render target name"
+##    vector4   "handle"   "x,x,x,x"
+##    vector2   "handle"   "x,x"
+##  ---------------------------------------------------------------------------------------
+##   3. Render Queue
+##  ---------------------------------------------------------------------------------------
+##    RENDER_QUEUE_BACKGROUND  :    0 
+##    RENDER_QUEUE_OPAQUE          :    1000 
+##    RENDER_QUEUE_CUTOUT          :    2000
+##    RENDER_QUEUE_TRANSPARENT  :    3000
+##  ---------------------------------------------------------------------------------------
+##   4. BLENDING_MODE 
+##  ---------------------------------------------------------------------------------------
+##    BLENDING_MODE_DEFAULT
+##    BLENDING_MODE_ADDITIVE
+##    BLENDING_MODE_SUBTRACTIVE
+##    BLENDING_MODE_MULTIPLY
+##  ---------------------------------------------------------------------------------------
+##   5. FILL_MODE.
+##  ---------------------------------------------------------------------------------------
+##    FILL_MODE_SOLID             : 0
+##    FILL_MODE_WIREFRAME     : 1
+##    FILL_MODE_POINT             : 2
+#########################################################
+
+

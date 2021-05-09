@@ -71,7 +71,7 @@ struct PS_OUTPUT
 	float4 diffuse : COLOR0;
 	float4 normal : COLOR1;
 	float4 depth_cookTorrance : COLOR2;
-	float4 specular : COLOR3;
+	float4 emission : COLOR3;
 
 };
 
@@ -154,7 +154,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _in)
 	o.depth_cookTorrance.xy = GetDepth(_in.uvAndDepth.zw);
 	o.depth_cookTorrance.zw = float2(g_f0, g_roughness);
 
-	o.specular = o.diffuse * 0.5f;
+	float4 emission = 1;
+	emission.xyz = o.diffuse.xyz * 0.3f;
+	o.emission = emission;
 	return o;
 }
 

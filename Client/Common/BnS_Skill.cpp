@@ -1,10 +1,28 @@
 #include "stdafx.h"
 #include "BnS_Skill.h"
+#include "LynInfo.h"
 
+BnS_Skill::BnS_Skill(Desc * _desc)
+{
+}
 
+BnS_Skill::~BnS_Skill()
+{
+}
 
+void BnS_Skill::Initialize()
+{
+}
 
-BnS_Skill::BnS_Skill(const wstring & _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition)
+void BnS_Skill::Update()
+{
+	if (m_remainCoolTime > 0)
+	{
+		m_remainCoolTime -= dTime;
+	}
+}
+
+void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition)
 {
 	m_stateName = _stateName;
 	m_skillSlot = _skillSlot;
@@ -15,21 +33,29 @@ BnS_Skill::BnS_Skill(const wstring & _stateName, BNS_SKILL_SLOT _skillSlot, cons
 	m_activationCondition = _condition;
 }
 
-BnS_Skill::~BnS_Skill()
-{
-}
-
-bool BnS_Skill::CheckSkill(LynInfo * _info)
+bool BnS_Skill::IsAvailableSkill(LynInfo* _info)
 {
 	return m_activationCondition(_info);
 }
 
-BNS_SKILL_SLOT BnS_Skill::GetSkillSlot()
+void BnS_Skill::ActiveSkill()
+{
+	m_remainCoolTime = m_coolTime;
+}
+
+Texture * BnS_Skill::GetSkillIconTexture()
+{
+	return m_skillIcon;
+}
+
+BNS_SKILL_SLOT BnS_Skill::GetSkillSlotIndex()
 {
 	return m_skillSlot;
 }
 
-Texture * BnS_Skill::GetSkillIconTex()
+float BnS_Skill::GetCoolTime()
 {
-	return m_skillIcon;
+	return m_remainCoolTime;
 }
+
+

@@ -1,5 +1,5 @@
 #pragma once
-#include "BnS_Skill.h"
+class BnS_Skill;
 
 class UIManager
 {
@@ -15,10 +15,13 @@ private:
 	Material* m_enduranceBar;
 public:
 	void UpdateEnergyUI(float _ratio);
+	void SetSkillSlot(BnS_Skill* _skill);
+	void UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio);
+	void ChangeSkillSlot(BnS_Skill* _skill);
+	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
 private:
 	void SetDamageFont();
-	void CreateSkillIcon(UINT _skillSlot, UINT _x, UINT _y);
-	void ChangeSkillSlot(BnS_Skill& _skill);
+	void CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y);
 private:
 	GameObject* m_skillSlot[BNS_SKILL_SLOT::BNS_SKILL_SLOT_MAX];
 

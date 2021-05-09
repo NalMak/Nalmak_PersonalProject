@@ -134,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="TitleToStage.h" />
-    <ClInclude Include="LynSpinSlash_Combo.h">
-      <Filter>04.Lyn\SpinSlash</Filter>
-    </ClInclude>
     <ClInclude Include="LynSpinSlash_End.h">
       <Filter>04.Lyn\SpinSlash</Filter>
     </ClInclude>
@@ -191,11 +188,22 @@
     <ClInclude Include="LynBaldo.h" />
     <ClInclude Include="LynSideDashQ.h" />
     <ClInclude Include="LynSideDashE.h" />
+    <ClInclude Include="CameraShake.h" />
     <ClInclude Include="BnS_Skill.h">
       <Filter>05.Skill</Filter>
     </ClInclude>
-    <ClInclude Include="LynSkillController.h" />
-    <ClInclude Include="CameraShake.h" />
+    <ClInclude Include="BnS_SkillSlot.h">
+      <Filter>05.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSkillController.h">
+      <Filter>05.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="LynFrontKick.h" />
+    <ClInclude Include="LynChamWall.h" />
+    <ClInclude Include="LynFrontDash.h" />
+    <ClInclude Include="LynLowerSlash.h" />
+    <ClInclude Include="LynHold.h" />
+    <ClInclude Include="LynLowerSlash2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -251,9 +259,6 @@
     </ClCompile>
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
-    <ClCompile Include="LynSpinSlash_Combo.cpp">
-      <Filter>04.Lyn\SpinSlash</Filter>
-    </ClCompile>
     <ClCompile Include="LynSpinSlash_End.cpp">
       <Filter>04.Lyn\SpinSlash</Filter>
     </ClCompile>
@@ -308,11 +313,22 @@
     <ClCompile Include="LynBaldo.cpp" />
     <ClCompile Include="LynSideDashQ.cpp" />
     <ClCompile Include="LynSideDashE.cpp" />
+    <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="BnS_Skill.cpp">
       <Filter>05.Skill</Filter>
     </ClCompile>
-    <ClCompile Include="LynSkillController.cpp" />
-    <ClCompile Include="CameraShake.cpp" />
+    <ClCompile Include="BnS_SkillSlot.cpp">
+      <Filter>05.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSkillController.cpp">
+      <Filter>05.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="LynFrontKick.cpp" />
+    <ClCompile Include="LynChamWall.cpp" />
+    <ClCompile Include="LynFrontDash.cpp" />
+    <ClCompile Include="LynLowerSlash.cpp" />
+    <ClCompile Include="LynHold.cpp" />
+    <ClCompile Include="LynLowerSlash2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -360,6 +376,9 @@
     <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd">
       <Filter>03.Shader</Filter>
     </None>
+    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNE.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
@@ -387,6 +406,9 @@
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNE.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

@@ -3,7 +3,7 @@
 matrix g_world;
 texture g_mainTex;
 texture g_nextTex;
-float g_changeRatio;
+//float g_changeRatio;
 float g_coolTimeAngle;
 
 float4 g_mainTexColor;
@@ -52,7 +52,7 @@ VS_OUTPUT VS_Main_Default(VS_INPUT _input)
 
 	o.position = mul(float4(_input.position,1), g_world);
 	o.position.w = 1;
-	o.uv = _input.uv - float2(0.5f,0.5f);
+	o.uv = _input.uv;
 	//o.normal = float3(0, 0, 1);
 	
 	return o;
@@ -63,8 +63,8 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 {
 	PS_OUTPUT o = (PS_OUTPUT)0;
 
-
 	float4 final = 1;
+	/*float4 final = 1;
 	if (_input.uv.x < g_changeRatio)
 	{
 		float4 diffuse = tex2D(mainSampler, _input.uv);
@@ -74,19 +74,20 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	{
 		float4 nextDiffuse = tex2D(nextSampler, _input.uv);
 		final = nextDiffuse * g_mainTexColor;
-	}
-
+	}*/
+	float4 diffuse = tex2D(mainSampler, _input.uv);
+	final = diffuse * g_mainTexColor;
 
 	if (g_coolTimeAngle > 0)
 	{
-		float angle = -atan2(_input.uv.y, _input.uv.x) * 180 / PI - 90;
+		float2 uv = _input.uv - float2(0.5f, 0.5f);
+		float angle = atan2(uv.x, uv.y) * 180 / PI + 180;
 
 		if (g_coolTimeAngle > angle)
 		{
-			final = float4(0, 0, 0, 1);
+			final.xyz *= 0.2f;
 		}
 	}
-
 	o.diffuse = final;
 
 	return o;
