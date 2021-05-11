@@ -1,4 +1,65 @@
-﻿  StageScene.cpp
+﻿  stdafx.cpp
+  homework_enemy.cpp
+  homeworkScene.cpp
+  ZakanSpawn.cpp
+  ZakanPeaceIdle.cpp
+  ZakanNATK2.cpp
+  ZakanNATK1.cpp
+  UIManager.cpp
+  TitleToStage.cpp
+  TitleScene.cpp
+  StageScene.cpp
+  Nalmak_PersonalProject.cpp
+  MainGame.cpp
+  LynVerticalCut_R2.cpp
+  LynVerticalCut_R1.cpp
+  LynVerticalCut_R0.cpp
+  LynVerticalCut_L2.cpp
+  LynVerticalCut_L1.cpp
+  LynVerticalCut_L0.cpp
+  LynThunderSlash.cpp
+  LynStateControl.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  LynState.cpp
+  LynSpinSlash_Start.cpp
+  LynSpinSlash_End.cpp
+  LynSlash3.cpp
+  LynSlash2.cpp
+  LynSlash1.cpp
+  LynSkillController.cpp
+  LynSideDashQ.cpp
+  LynSideDashE.cpp
+  LynRebound.cpp
+  LynMove.cpp
+  LynLowerSlash2.cpp
+  LynLowerSlash.cpp
+  LynLightningSlash.cpp
+  LynLand.cpp
+  LynJump.cpp
+  LynInfo.cpp
+  LynIdle.cpp
+  LynHold.cpp
+  LynFrontKick.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  LynFrontDash.cpp
+  LynFall.cpp
+  LynChamWall.cpp
+  LynBattleToPeace.cpp
+  LynBaldo.cpp
+  LynBackStep.cpp
+  Homework_Player.cpp
+  EnemyStateControl.cpp
+  EnemyState.cpp
+  CameraShake.cpp
+  BnS_SkillSlot.cpp
+  BnS_Skill.cpp
+  BnS_MainCamera.cpp
+  BnS_Enemy.cpp
+  BnS_DamageFont.cpp
+  AttackInfo.cpp
+  코드를 생성하고 있습니다...
      ../Bin/x64\Debug\Nalmak_PersonalProject.lib 라이브러리 및 ../Bin/x64\Debug\Nalmak_PersonalProject.exp 개체를 생성하고 있습니다.
-  Nalmak_PersonalProject.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Client\Common\../Bin/x64\Debug\Nalmak_PersonalProject.exe
+  Nalmak_PersonalProject.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Client\Common\../Bin/x64\Debug\Nalmak_PersonalProject.exe
   Nalmak_PersonalProject.vcxproj -> ../Bin/x64\Debug\Nalmak_PersonalProject.pdb (Full PDB)
