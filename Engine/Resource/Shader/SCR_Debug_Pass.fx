@@ -13,6 +13,10 @@ sampler ShadeSampler = sampler_state
 sampler DebugSampler = sampler_state
 {
 	texture = g_debug;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 
@@ -57,14 +61,17 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 
 	float2 uv = float2(_input.uv) + float2(perPixelX, perPixelY);
 
-	float3 shade = tex2D(ShadeSampler,  uv).xyz;
 	float3 debug = tex2D(DebugSampler, uv).xyz;
-	
-	float3 final ;
-	if(any(debug))	
+	float3 final;
+	if (any(debug))
+	{
 	    final = debug;
+	}
 	else
+	{
+		float3 shade = tex2D(ShadeSampler,  uv).xyz;
 	    final = shade;
+	}
 	o.color = float4(final, 1);
 	
 

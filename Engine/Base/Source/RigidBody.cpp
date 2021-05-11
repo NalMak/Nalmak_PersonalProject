@@ -2,7 +2,6 @@
 #include "Nalmak_Include.h"
 #include "transform.h"
 #include "PhysicsManager.h"
-#include "RenderInfo.h"
 
 
 RigidBody::RigidBody(Desc * _desc)
@@ -38,8 +37,8 @@ void RigidBody::PreRender()
 	if (!m_rigid)
 		return;
 
-	if (m_isKinematic)
-		return;
+	/*if (m_isKinematic)
+		return;*/
 
 	m_transform->position = GetWorldPosition();
 	m_transform->rotation = GetWorldRotation();
@@ -134,6 +133,8 @@ void RigidBody::SetWorldTransform()
 	trs.p = { pos.x, pos.y, pos.z };
 	trs.q = { rot.x,rot.y,rot.z,rot.w };
 	m_rigid->setGlobalPose(trs);
+	//m_rigid->setKinematicTarget(trs);
+
 }
 
 void RigidBody::SetWorldRotation(const Quaternion& _rot)

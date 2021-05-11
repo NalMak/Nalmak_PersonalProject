@@ -229,7 +229,7 @@ bool Camera::IsInFrustumCulling(const Vector3 & _pos, float _radius)
 	{
 		distance = D3DXPlaneDotCoord(&m_frustumPlane[i], &Center);
 
-		if (distance > radius)
+		if (distance > _radius)
 			return false;
 	}
 	return true;

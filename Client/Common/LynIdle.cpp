@@ -12,7 +12,6 @@ LynIdle::~LynIdle()
 void LynIdle::Initialize()
 {
 	m_animController->PlayBlending("Lyn_P_Std_Mov_Idle");
-	SetInteger(L"IsBlend", 0);
 	SetInteger(L"JumpDirection", LYN_MOVE_DIR_STATE::LYN_MOVE_DIR_STATE_FRONT);
 
 }
@@ -40,14 +39,9 @@ void LynIdle::EnterState()
 	default:
 		break;
 	}
-	if (GetInteger(L"IsBlend") == 0)
-		m_animController->Play(animName);
-	else
-		m_animController->PlayBlending(animName);
+	m_animController->PlayBlending(animName);
 
-	/*if (GetInteger(L"IsBlend") == 0)
-		m_animController->Play(animName);
-	else*/
+
 
 }
 
@@ -67,10 +61,19 @@ void LynIdle::UpdateState()
 		SetState(L"jump");
 		return;
 	}
-
-	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE)
+	auto dirState = m_info->GetDirectionState();
+	if (dirState == LYN_MOVE_DIR_STATE_RIGHT)
 	{
-		SetInteger(L"IsBlend", 1);
+		SetState(L"rebound");
+		return;
+	}
+	else if (dirState == LYN_MOVE_DIR_STATE_LEFT)
+	{
+		SetState(L"rebound");
+		return;
+	}
+	else if (dirState != LYN_MOVE_DIR_STATE_NONE)
+	{
 		SetState(L"move");
 		return;
 	}
@@ -94,10 +97,7 @@ void LynIdle::UpdateState()
 		default:
 			break;
 		}
-		if(GetInteger(L"IsBlend") == 0)
-			m_animController->Play(animName);
-		else
-			m_animController->PlayBlending(animName);
+		m_animController->PlayBlending(animName);
 
 	}
 }

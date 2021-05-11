@@ -27,6 +27,8 @@ public:
 
 public:
 	const Vector4& GetVolume();
+	GameObject* GetTarget();
+	void LostTarget();
 private:
 	Vector4 m_volumeRect;
 	UINT m_hp;
@@ -36,6 +38,6 @@ private:
 	bool m_isAggro;
 	float m_detectionRadius;
 	GameObject* m_target;
-	CharacterController* m_controller;
+	CharacterController* m_character;
 };
 

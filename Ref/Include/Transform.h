@@ -85,6 +85,7 @@ public:
 	Transform* GetChild(int _index);
 	size_t GetChildCount();
 	void SetParents(Transform* _parents,Matrix* _bone);
+	void SetParents(Transform* _parents, const string& _boneName);
 	void SetParents(Transform* _parents);
 	void SetParents(GameObject* _parents);
 	void AddChild(Transform* _child);

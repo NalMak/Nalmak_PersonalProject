@@ -441,6 +441,16 @@ void GameObject::SetParents(GameObject * _parents, Matrix * _boneMatrix)
 	m_transform->SetParents(_parents->m_transform, _boneMatrix);
 }
 
+void GameObject::SetParents(Transform * _parents, const string & _boneName)
+{
+	m_transform->SetParents(m_transform, _boneName);
+
+}
+void GameObject::SetParents(GameObject * _parents, const string & _boneName)
+{
+	m_transform->SetParents(_parents->m_transform, _boneName);
+}
+
 void GameObject::SetParents(Transform * _parents)
 {
 	m_transform->SetParents(_parents);

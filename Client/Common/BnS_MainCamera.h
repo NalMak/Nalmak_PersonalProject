@@ -30,7 +30,7 @@ public:
 public:
 	void LockTarget();
 	void UnLockTarget();
-	void TurnCamera(bool _dir, float _time);
+	void TurnCamera(float _angle, bool _dir, float _time);
 private:
 	void Move();
 	GameObject* CheckTarget();

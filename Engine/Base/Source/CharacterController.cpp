@@ -24,7 +24,8 @@ CharacterController::~CharacterController()
 void CharacterController::Initialize()
 {
 	m_controller = PhysicsManager::GetInstance()->CreateCharacterController(this);
-	
+	m_filterCallback = new NalmakPxControllerFilterCallback;
+	m_filterData = PhysicsManager::GetInstance()->GetFilterData(m_gameObject->GetLayer());
 }
 
 void CharacterController::Update()
@@ -36,8 +37,13 @@ void CharacterController::LateUpdate()
 {
 	PxVec3 vec(m_velocity.x, m_velocity.y, m_velocity.z);
 
+	PxControllerFilters filter;
+
+	filter.mCCTFilterCallback = m_filterCallback;
+	filter.mFilterData = &m_filterData;
+	filter.mFilterFlags = physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC;
 	m_preFlag = m_curFlag;
-	m_curFlag = m_controller->move(vec * dTime, 0.0f, dTime, PxControllerFilters());
+	m_curFlag = m_controller->move(vec * dTime, 0.0f, dTime, filter);
 }
 
 void CharacterController::PreRender()
@@ -49,6 +55,7 @@ void CharacterController::PreRender()
 void CharacterController::Release()
 {
 	Safe_release(m_controller);
+	SAFE_DELETE(m_filterCallback);
 }
 
 void CharacterController::SetFootPosition(const Vector3 & _pos)
@@ -65,6 +72,11 @@ void CharacterController::SetVelocity(const Vector3 & _velocity)
 void CharacterController::SetVelocity(float _x, float _y, float _z)
 {
 	m_velocity = { _x,_y,_z };
+}
+
+void CharacterController::AddVelocity(const Vector3 & _velocity)
+{
+	m_velocity += _velocity;
 }
 
 void CharacterController::AddVelocity(float _x, float _y, float _z)

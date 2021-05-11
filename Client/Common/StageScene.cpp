@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "StageScene.h"
 #include "Homework_Player.h"
@@ -15,7 +16,6 @@
 #include "LynIdle.h"
 #include "LynBattleToPeace.h"
 #include "LynBackStep.h"
-#include "LynSkillTest.h"
 #include "LynThunderSlash.h"
 
 #include "LynLightningSlash.h"
@@ -40,11 +40,16 @@
 #include "LynFall.h"
 #include "LynJump.h"
 #include "LynLand.h"
-
+#include "LynRebound.h"
 
 #include "LynSideDashE.h"
 #include "LynSideDashQ.h"
 
+
+#include "ZakanPeaceIdle.h"
+#include "ZakanSpawn.h"
+#include "ZakanNATK1.h"
+#include "ZakanNATK2.h"
 
 #include "BnS_Enemy.h"
 #include "UIManager.h"
@@ -64,101 +69,45 @@ void StageScene::Initialize()
 {
 	Core::GetInstance()->SetSkyBox(L"cubeTex_nightFall");
 	UIManager::GetInstance()->CreateMainUI();
-
-
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
 	for (auto& obj : staticObj)
-	{
 		MAKE_STATIC(obj.first);
-	}
 
-	INSTANTIATE()->AddComponent<ParticleRenderer>()->SetPosition(0, 3, 0);
+	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(0, 10, 0)->SetRotation(0,-90,0);
+	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(10, 10, 0)->SetScale(0.7f,0.7f,0.7f);
+	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
+	
+	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
 
-	{
-		RigidBody::Desc rigid;
-		BoxCollider::Desc box;
-		box.isTrigger = true;
-		INSTANTIATE(OBJECT_TAG_DEFAULT,OBJECT_LAYER_NAVIMESH)->AddComponent<BoxCollider>(&box)->AddComponent<MeshRenderer>()->SetPosition(5, 10, 0);
-	}
-	/*for (int i = 0; i < 70; ++i)
-	{
-		PointLight::Desc point;
-		point.diffuseIntensity = Nalmak_Math::Rand(10.f, 30.f);
-		point.radius = Nalmak_Math::Rand(10.f, 60.f);
-		point.color = Nalmak_Math::RandColor();
-		INSTANTIATE()->AddComponent<PointLight>(&point)->SetPosition(Nalmak_Math::RandDirection() * Nalmak_Math::Rand(0.f, 100.f));
-	}*/
-
-
+#pragma region Light Setting
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.35f;
 	light.ambientIntensity = 0.1f;
 	light.color = { 1.f,0.9f,0.88f };
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
-
-
-
+#pragma endregion Light Setting
+#pragma region Debug
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
-	auto obj = INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
-	//MAKE_STATIC(L"musin_boss_floor");
-	{
-		MeshRenderer::Desc mesh;
-		mesh.meshName = L"plane";
-		RigidBody::Desc rigid;
-		rigid.isKinematic = true;
-		rigid.isGravity = false;
-		auto plane = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshCollider>()->SetScale(10, 10, 10)->SetPosition(0, 8.f, 0);
-	}
-
-	{
-		auto boss = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.07f,0.07f,0.07f)->SetPosition(-5,7,0);
-		MeshRenderer::Desc skin;
-		skin.meshName = L"Lyn_Model2";
-		boss->AddComponent<MeshRenderer>(&skin);
-
-		CapsuleCollider::Desc capsule;
-		capsule.posOffset= { 0,2.6f,0 };
-		capsule.height = 3.2f;
-		capsule.isTrigger = false;
-		boss->AddComponent<CapsuleCollider>(&capsule);
-		boss->AddComponent<RigidBody>();
-		boss->AddComponent<BnS_Enemy>();
-		/*auto boss = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.15f, 0.15f, 0.15f)->SetPosition(-5, 7, 0);
-		SkinnedMeshRenderer::Desc skin;
-		skin.meshName = L"emperor_boss";
-		boss->AddComponent<SkinnedMeshRenderer>(&skin);
-		boss->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
-		CapsuleCollider::Desc capsule;
-		capsule.posOffset = { 0,2.6f,0 };
-		capsule.height = 6.2f;
-		capsule.isTrigger = false;
-		RigidBody::Desc rigid;
-		rigid.isKinematic = true;
-		boss->AddComponent<CapsuleCollider>(&capsule);
-		boss->AddComponent<RigidBody>(&rigid);
-		boss->AddComponent<BnS_Enemy>();*/
-	}
-
-
-
+	INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
+#pragma endregion Debug
+#pragma region Navi Mesh
 	NavCollider::Desc navCollider;
 	navCollider.navName = L"GW_navi";
 	INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
-
-	
-
-	
-	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER,L"Player")->SetPosition(0, 10, 0);
-	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT,OBJECT_LAYER_CAMERA);
-
+#pragma endregion Navi Mesh
+#pragma region Lyn
 	lyn->AddComponent<LynSkillController>();
-
 	SkinnedMeshRenderer::Desc skin;
 	skin.meshName = L"Lyn_Model2";
 	skin.mtrlName = L"lyn_hair";
 	lyn->AddComponent<SkinnedMeshRenderer>(&skin);
+	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
+	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body", 0);
+	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
+	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 	lyn->AddComponent<LynInfo>();
+
 	AnimationController::Desc anim;
 	anim.meshName = L"Lyn_Model2";
 	Matrix rotMat;
@@ -173,8 +122,8 @@ void StageScene::Initialize()
 
 	//lyn->AddComponent<LynStateControl>();
 
-	lowerControl->AddState<LynMove>(L"move",false);
-	upperControl->AddState<LynMove>(L"move",true);
+	lowerControl->AddState<LynMove>(L"move", false);
+	upperControl->AddState<LynMove>(L"move", true);
 	lowerControl->AddState<LynFall>(L"fall", false);
 	upperControl->AddState<LynFall>(L"fall", true);
 	lowerControl->AddState<LynLand>(L"land", false);
@@ -183,7 +132,8 @@ void StageScene::Initialize()
 	upperControl->AddState<LynJump>(L"jump", true);
 	lowerControl->AddState<LynIdle>(L"idle", false);
 	upperControl->AddState<LynIdle>(L"idle", true);
-
+	lowerControl->AddState<LynRebound>(L"rebound", false);
+	upperControl->AddState<LynRebound>(L"rebound", true);
 
 	upperControl->InitState(L"idle");
 	lowerControl->InitState(L"idle");
@@ -253,13 +203,7 @@ void StageScene::Initialize()
 	upperControl->AddState<LynHold>(L"hold", true);
 	lowerControl->AddState<LynHold>(L"hold", false);
 
-	upperControl->AddState<LynSkillTest>(L"test", true);
-	lowerControl->AddState<LynSkillTest>(L"test", false);
 
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
-	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body", 0);
-	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
-	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 
 	CharacterController::Desc character;
 	character.center = { 0,1.8f,0 };
@@ -267,6 +211,7 @@ void StageScene::Initialize()
 	lyn->AddComponent<CharacterController>(&character);
 
 	AnimationController* controller = lyn->GetComponent<AnimationController>();
+	controller->SetRootMotion(true);
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_Idle", 1.f, true);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event1", 1.f, false);
@@ -398,18 +343,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_lowerSlash2", 1.3f, false);
 	controller->AddAnimationClip("Lyn_B_Std_Dash_1", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_Dash_2", 1.f, false);
-	//controller->AddAnimationClip("Lyn_B_FrontKick", 1.f, false);
-
-
-
-
-
-
-	/*controller->AddAnimationClip("Lyn_B_Hide_BattoCombo1_Dash_Exec.X", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo1_Dash_Swing.X", 1.f, false);
-
-	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo2_Exec.X", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_BattoCombo2_Swing.X", 1.f, false);*/
+	
 
 	controller->SeparateBone("Bip01Spine");
 	controller->SetFixedAnimationBoneName("Bip01", true, false, true);
@@ -417,21 +351,9 @@ void StageScene::Initialize()
 	anim2.cloneAnimationController = controller;
 	lyn->AddComponent<AnimationController>(&anim2);
 	lyn->GetComponents<AnimationController>()[1]->SetFixedAnimationBoneName("Bip01", true, false, true);
-
-	{
-		BnS_MainCamera::Desc bnsCam;
-		bnsCam.player = lyn;
-		SphereCollider::Desc sphere;
-		sphere.isTrigger = true;
-		sphere.radius = 1.f;
-		RigidBody::Desc rigid;
-		rigid.isGravity = false;
-		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>();
-		//INSTANTIATE()->AddComponent<Camera>()->AddComponent<CameraShake>()->SetParents(cam);
-			
-	}
-
-
+	lyn->GetComponents<AnimationController>()[1]->SetRootMotion(true);
+#pragma endregion Lyn
+#pragma region Lyn Weapon
 	{
 		MeshRenderer::Desc mesh;
 		mesh.meshName = L"lyn_weapon";
@@ -445,7 +367,86 @@ void StageScene::Initialize()
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
-		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(0.5f, 0.65f, 0.5f)->AddComponent<DebugObject>();
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(0.5f, 0.65f, 0.5f);
 		lyn->GetComponent<LynInfo>()->EquipeWeapon(weapon);
 	}
+#pragma endregion Lyn Weapon
+#pragma region Zakan
+	{
+		SkinnedMeshRenderer::Desc skin;
+		skin.meshName = L"zakan";
+		zakan->AddComponent<SkinnedMeshRenderer>(&skin);
+		auto skinRenderer = zakan->GetComponent<SkinnedMeshRenderer>();
+		skinRenderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
+		skinRenderer->SetMaterial(L"zakan_arm");
+		skinRenderer->AddMaterial(L"zakan_cape");
+		skinRenderer->AddMaterial(L"zakan_head");
+		skinRenderer->AddMaterial(L"zakan_body");
+		CharacterController::Desc character;
+		character.height = 7.f;
+		character.radius = 4.f;
+		character.center = { 0.f,7.6f,0.f };
+		zakan->AddComponent<EnemyStateControl>();
+		zakan->AddComponent<CharacterController>(&character);
+		zakan->AddComponent<BnS_Enemy>();
+		AnimationController::Desc anim;
+		anim.meshName = L"zakan";
+		Matrix rotMat;
+		anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
+		zakan->AddComponent<AnimationController>(&anim);
+
+
+
+
+		auto stateCtrl = zakan->GetComponent<EnemyStateControl>();
+		stateCtrl->AddState<ZakanSpawn>(L"spawn");
+		stateCtrl->AddState<ZakanPeaceIdle>(L"peace_idle");
+		stateCtrl->AddState<ZakanNATK1>(L"NATK1");
+		stateCtrl->AddState<ZakanNATK2>(L"NATK2");
+
+		stateCtrl->InitState(L"peace_idle");
+
+		auto animCtrl = zakan->GetComponent<AnimationController>();
+		animCtrl->AddAnimationClip("Zakan_P_Std_Mov_Idle", 1.f, true);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.f, false);
+
+	}
+#pragma endregion Zakan
+#pragma region Zakan Weapon
+	{
+		MeshRenderer::Desc mesh;
+		mesh.meshName = L"zakan_weapon";
+		mesh.mtrlName = L"zakan_weapon";
+		CapsuleCollider::Desc capsule;
+		capsule.height = 3.6f;
+		capsule.isTrigger = true;
+		capsule.radius = 0.1f;
+		capsule.rotOffset = { 0,0,77 };
+		capsule.posOffset = { 0,1.5f,0 };
+		RigidBody::Desc rigid;
+		rigid.isKinematic = true;
+		rigid.isGravity = false;
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(1.f, 1.f, 1.f);
+		weapon->SetParents(zakan, "WeaponL");
+	}
+#pragma endregion Zakan Weapon
+#pragma region BnS Camera
+	{
+		BnS_MainCamera::Desc bnsCam;
+		bnsCam.player = lyn;
+		SphereCollider::Desc sphere;
+		sphere.isTrigger = true;
+		sphere.radius = 1.f;
+		RigidBody::Desc rigid;
+		rigid.isGravity = false;
+		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>();
+		//INSTANTIATE()->AddComponent<Camera>()->AddComponent<CameraShake>()->SetParents(cam);
+	}
+#pragma endregion BnS Camera
+	
+
+
+	
+	
 }

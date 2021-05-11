@@ -12,5 +12,6 @@ inputRT "g_specularBlur" "GBuffer_Specular_blur_div4_out"
 
 outputRT "GBuffer_Final"
 
+
 inputLayout "1"
 

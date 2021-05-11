@@ -185,6 +185,8 @@
     <ClInclude Include="BnS_SkillSlot.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="EnemyState.h" />
+    <ClInclude Include="EnemyStateControl.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
     <ClInclude Include="homeworkScene.h" />
@@ -209,7 +211,6 @@
     <ClInclude Include="LynSideDashE.h" />
     <ClInclude Include="LynSideDashQ.h" />
     <ClInclude Include="LynSkillController.h" />
-    <ClInclude Include="LynSkillTest.h" />
     <ClInclude Include="LynSlash1.h" />
     <ClInclude Include="LynSlash2.h" />
     <ClInclude Include="LynSlash3.h" />
@@ -224,8 +225,8 @@
     <ClInclude Include="LynVerticalCut_R0.h" />
     <ClInclude Include="LynVerticalCut_R1.h" />
     <ClInclude Include="LynVerticalCut_R2.h" />
+    <ClInclude Include="LynRebound.h" />
     <ClInclude Include="LynWait.h" />
-    <ClInclude Include="Lyn_Attack_Basic1.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
     <ClInclude Include="PublicData.h" />
@@ -237,6 +238,10 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleToStage.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="ZakanNATK1.h" />
+    <ClInclude Include="ZakanNATK2.h" />
+    <ClInclude Include="ZakanPeaceIdle.h" />
+    <ClInclude Include="ZakanSpawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
@@ -246,6 +251,8 @@
     <ClCompile Include="BnS_Skill.cpp" />
     <ClCompile Include="BnS_SkillSlot.cpp" />
     <ClCompile Include="CameraShake.cpp" />
+    <ClCompile Include="EnemyState.cpp" />
+    <ClCompile Include="EnemyStateControl.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
@@ -268,7 +275,6 @@
     <ClCompile Include="LynSideDashE.cpp" />
     <ClCompile Include="LynSideDashQ.cpp" />
     <ClCompile Include="LynSkillController.cpp" />
-    <ClCompile Include="LynSkillTest.cpp" />
     <ClCompile Include="LynSlash1.cpp" />
     <ClCompile Include="LynSlash2.cpp" />
     <ClCompile Include="LynSlash3.cpp" />
@@ -283,8 +289,8 @@
     <ClCompile Include="LynVerticalCut_R0.cpp" />
     <ClCompile Include="LynVerticalCut_R1.cpp" />
     <ClCompile Include="LynVerticalCut_R2.cpp" />
+    <ClCompile Include="LynRebound.cpp" />
     <ClCompile Include="LynWait.cpp" />
-    <ClCompile Include="Lyn_Attack_Basic1.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
     <ClCompile Include="StageScene.cpp" />
@@ -297,6 +303,10 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="ZakanNATK1.cpp" />
+    <ClCompile Include="ZakanNATK2.cpp" />
+    <ClCompile Include="ZakanPeaceIdle.cpp" />
+    <ClCompile Include="ZakanSpawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak_PersonalProject.rc" />

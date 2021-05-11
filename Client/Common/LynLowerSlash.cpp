@@ -27,7 +27,6 @@ void LynLowerSlash::UpdateState()
 {
 	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
-		SetInteger(L"IsBlend", 1);
 		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"lowerSlash2");
 		return;

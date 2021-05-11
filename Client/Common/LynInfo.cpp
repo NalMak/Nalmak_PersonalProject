@@ -125,7 +125,6 @@ void LynInfo::Update()
 		{
 			m_battleToPeaceTimer = INFINITY;
 			
-			m_stateControl_upper->SetInteger(L"IsBlend", 1);
 			m_stateControl_upper->SetState(L"battleToPeace");
 			return;
 		}
@@ -133,11 +132,7 @@ void LynInfo::Update()
 	if (m_isProgressSkill)
 		return;
 
-	/*if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
-	{
-		m_stateControl_upper->SetState(L"test");
-		m_stateControl_lower->SetState(L"test");
-	}*/
+
 
 	m_skillController->ActiveSkill();
 
@@ -148,6 +143,8 @@ void LynInfo::Update()
 
 void LynInfo::OnTriggerEnter(Collision & _col)
 {
+	m_stateControl_lower->SetState(L"jump");
+	m_stateControl_upper->SetState(L"jump");
 
 }
 
@@ -200,8 +197,7 @@ void LynInfo::SetState(LYN_STATE _state)
 	default:
 		break;
 	}
-	m_stateControl_lower->SetInteger(L"IsBlend", 1);
-	m_stateControl_upper->SetInteger(L"IsBlend", 1);
+
 
 	if (m_state != _state)
 	{
@@ -330,4 +326,9 @@ void LynInfo::MoveOff()
 void LynInfo::SetSpeed(float _speed)
 {
 	m_targetSpeed = _speed;
+}
+
+const Vector3 & LynInfo::GetTargetInput()
+{
+	return m_targetInput;
 }

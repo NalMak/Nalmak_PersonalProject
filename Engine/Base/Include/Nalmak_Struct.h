@@ -8,6 +8,13 @@
 #pragma region LIGHT INFO
 
 
+struct RenderInfo
+{
+	class IRenderer* renderer = nullptr;
+	UINT containerNum = 0;
+	UINT subsetNum = 0;
+};
+
 struct BaseLightInfo
 {
 	Vector3 color = Vector3(1,1,1);

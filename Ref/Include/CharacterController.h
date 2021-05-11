@@ -34,6 +34,7 @@ public:
 
 	void SetVelocity(const Vector3& _velocity);
 	void SetVelocity(float _x,float _y, float _z);
+	void AddVelocity(const Vector3& _velocity);
 	void AddVelocity(float _x, float _y, float _z);
 
 	void SetVelocityX(float _x);
@@ -59,8 +60,12 @@ private:
 	float m_stepLimit;
 	PxControllerCollisionFlags m_preFlag;
 	PxControllerCollisionFlags m_curFlag;
+
 	PxCapsuleClimbingMode::Enum m_climbingMode;
 	PxFilterData m_filterData;
+	NalmakPxControllerFilterCallback* m_filterCallback;
+	
+
 	PxCapsuleController* m_controller;
 };
 

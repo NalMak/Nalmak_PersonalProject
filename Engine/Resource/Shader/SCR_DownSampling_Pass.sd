@@ -1,0 +1,11 @@
+#########################################################
+## Shader Data Setting (sd)
+#########################################################
+
+inputRT "g_mainTex" "GBuffer_Final"
+
+outputRT "GBuffer_Final_div4"
+
+
+inputLayout "1"
+

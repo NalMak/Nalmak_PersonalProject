@@ -4,7 +4,6 @@
 #define __RENDERMANAGER_H__
 
 #include "Nalmak_Include.h"
-#include "RenderInfo.h"
 #include "Camera.h"
 
 class IRenderer;
@@ -186,12 +185,10 @@ private:
 	RenderTarget* m_GBuffer_Depth_CookTorrance;
 	RenderTarget* m_GBuffer_Light;
 	RenderTarget* m_GBuffer_Debug;
-	RenderTarget* m_GBuffer_Final;
-	RenderTarget* m_GBuffer_Emission;
-	RenderTarget* m_GBuffer_Specular;
 	RenderTarget* m_GBuffer_Shadow;
 	RenderTarget* m_GBuffer_LightDepth;
 
+	RenderTarget* m_GBuffer_Emission;
 	RenderTarget* m_GBuffer_Emission_blur_div2;
 	RenderTarget* m_GBuffer_Emission_blur_div2_out;
 	RenderTarget* m_GBuffer_Emission_blur_div4;
@@ -199,8 +196,16 @@ private:
 
 
 
+	RenderTarget* m_GBuffer_Specular;
 	RenderTarget* m_GBuffer_Specular_blur_div4;
 	RenderTarget* m_GBuffer_Specular_blur_div4_out;
+
+	RenderTarget* m_GBuffer_Final;
+	RenderTarget* m_GBuffer_Final_div4;
+	RenderTarget* m_GBuffer_Final_div4_out;
+
+
+
 private:
 	Shader* m_SCR_Geometry_Pass;
 	Shader* m_SCR_Emission_Pass;
@@ -209,6 +214,8 @@ private:
 	Shader* m_SCR_Debug_Pass;
 	Shader* m_SCR_DirectionalLight;
 	Shader* m_SCR_GaussianBlur;
+	Shader* m_SCR_DownSampling_Pass;
+
 private:
 	Mesh* m_sphere;
 	Shader* m_SCR_PointLight_Stencil;

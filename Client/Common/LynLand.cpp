@@ -78,7 +78,6 @@ void LynLand::UpdateState()
 	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
 		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-		SetInteger(L"IsBlend", 1);
 		SetState(L"idle");
 		return;
 	}

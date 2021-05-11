@@ -42,6 +42,8 @@ void PhysicsManager::Release()
 	Safe_release(m_port);
 	Safe_release(m_foundation);
 	SAFE_DELETE(m_eventCallback);
+
+	SAFE_DELETE(m_controllerBehaviorCallback);
 }
 
 void PhysicsManager::Update()
@@ -54,6 +56,7 @@ void PhysicsManager::Update()
 	{
 		m_scene->simulate(dTime);
 		m_scene->fetchResults(true);
+
 	}
 }
 
@@ -106,8 +109,8 @@ void PhysicsManager::CreateScene()
 	sceneDesc.simulationEventCallback = m_eventCallback;
 	sceneDesc.filterShader = UserCollisionFilterFlag;
 
-	sceneDesc.flags |= PxSceneFlag::eENABLE_KINEMATIC_PAIRS;
-	sceneDesc.flags |= PxSceneFlag::eENABLE_KINEMATIC_STATIC_PAIRS;
+	/*sceneDesc.flags |= PxSceneFlag::eENABLE_KINEMATIC_PAIRS;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_KINEMATIC_STATIC_PAIRS;*/
 
 	m_scene = m_physics->createScene(sceneDesc);
 
@@ -145,6 +148,8 @@ void PhysicsManager::CreatePVD()
 void PhysicsManager::CreateController()
 {
 	m_controllerManager = PxCreateControllerManager(*m_scene);
+
+	m_controllerBehaviorCallback = new NalmakPxControllerBehaviorCallback;
 }
 
 PxFilterData PhysicsManager::GetFilterData(_OBJECT_LAYER _layer)
@@ -156,7 +161,7 @@ PxFilterData PhysicsManager::GetFilterData(_OBJECT_LAYER _layer)
 
 	for (int i = 0; i < layerCount; ++i)
 	{
-		PxU32 targetLayer = (PxU32)pow(2, i);
+		PxU32 targetLayer = (PxU32)pow(2, i); 
 		for (auto& resultLayer : m_collisionLayer)
 		{
 			if (resultLayer == shapeLayer + targetLayer)
@@ -206,6 +211,7 @@ void PhysicsManager::SetUpFiltering(PxShape* _shape, PxU32 _filterGroup, PxU32 _
 	filterData.word1 = _filterMask;
 
 	_shape->setSimulationFilterData(filterData);
+	_shape->setQueryFilterData(filterData);
 }
 
 void PhysicsManager::AddActorToScene(PxActor * _rigid)
@@ -453,6 +459,8 @@ void PhysicsManager::CreateCapsuleCollider(Collider * _col, RigidBody * _rigid, 
 PxCapsuleController* PhysicsManager::CreateCharacterController(CharacterController* _controller)
 {
 	PxCapsuleControllerDesc desc;
+
+	desc.behaviorCallback = m_controllerBehaviorCallback;
 	desc.userData = _controller->GetGameObject();
 	desc.climbingMode = _controller->m_climbingMode;
 	desc.material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
@@ -473,6 +481,7 @@ PxCapsuleController* PhysicsManager::CreateCharacterController(CharacterControll
 	
 	PxController*	 controller =  m_controllerManager->createController(desc);
 	controller->setUserData(_controller->GetGameObject());
+
 	Vector3 footPos = pos + _controller->m_center;
 	controller->setFootPosition(PxExtendedVec3(footPos.x, footPos.y, footPos.z));
 
@@ -526,7 +535,7 @@ void PhysicsManager::InitializeShapeByColliderInfo(PxShape * _shape, Collider * 
 	_shape->setLocalPose(trans);
 	_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !_collider->IsTrigger());
 	_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, _collider->IsTrigger());
-
+	_shape->userData = _collider->GetGameObject();
 	_collider->SetShape(_shape);
 	AdjustCollisionLayer(_shape, _collider->GetGameObject()->GetLayer());
 }

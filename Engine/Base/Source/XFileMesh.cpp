@@ -3,7 +3,6 @@
 #include "AnimationController.h"
 #include "Shader.h"
 #include "SkinnedMeshRenderer.h"
-#include "RenderInfo.h"
 
 
 XFileMesh::XFileMesh()

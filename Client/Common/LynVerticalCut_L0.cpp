@@ -54,6 +54,5 @@ void LynVerticalCut_L0::UpdateState()
 void LynVerticalCut_L0::ExitState()
 {
 	m_info->EndSkill();
-	SetInteger(L"IsBlend", 1);
 
 }

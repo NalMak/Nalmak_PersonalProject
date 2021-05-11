@@ -52,7 +52,6 @@ void LynThunderSlash::UpdateState()
 		if (m_animController->GetPlayRemainTime() < 0.2)
 		{
 			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
-			SetInteger(L"IsBlend", 1);
 			SetState(L"idle");
 			return;
 		}

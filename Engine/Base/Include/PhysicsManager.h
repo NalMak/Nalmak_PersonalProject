@@ -4,6 +4,8 @@
 #include "PxPhysicsAPI.h"
 #include "NalmakPxEventCallBack.h"
 #include "MeshRenderer.h"
+#include "NalmakPxControllerFilterCallback.h"
+#include "NalmakPxControllerBehaviorCallback.h"
 
 class RigidBody;
 class Collider;
@@ -42,6 +44,7 @@ private:
 	PxControllerManager*	m_controllerManager = nullptr;
 
 	NalmakPxEventCallBack*  m_eventCallback;
+	NalmakPxControllerBehaviorCallback*  m_controllerBehaviorCallback;
 
 	vector<unsigned long long>  m_collisionLayer;
 public:

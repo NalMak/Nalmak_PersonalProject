@@ -22,15 +22,16 @@ void LynBackStep::EnterState()
 	m_animController->Play("Lyn_B_Std_BackStep");
 
 
-	m_animController->SetRootMotion(true);
+	//m_animController->SetRootMotion(true);
 
 
 }
 
 void LynBackStep::UpdateState()
 {
-	if (!m_animController->IsPlay())
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}
@@ -44,10 +45,9 @@ void LynBackStep::UpdateState()
 
 void LynBackStep::ExitState()
 {
-	m_animController->SetRootMotion(false);
+	//m_animController->SetRootMotion(false);
 
 	m_character->AddVelocity(0, -30 * dTime, 0);
 	m_info->EndSkill();
 
-	SetInteger(L"IsBlend", 0);
 }

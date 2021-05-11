@@ -86,6 +86,8 @@ public:
 	void MoveOn();
 	void MoveOff();
 	void SetSpeed(float _speed);
+public:
+	const  Vector3& GetTargetInput();
 private:
 	LYN_STATE m_state;
 

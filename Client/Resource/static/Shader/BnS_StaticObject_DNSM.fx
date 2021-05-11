@@ -10,11 +10,16 @@ texture g_maskTex;
 float4 g_mainTexColor;
 float  g_f0;
 float  g_roughness;
-float g_normalPower;
+float g_normalPower = 1.f;
+float g_specularPower = 1.f;
 
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler normalSampler = sampler_state
@@ -25,6 +30,10 @@ sampler normalSampler = sampler_state
 sampler specularSampler = sampler_state
 {
 	texture = g_specularTex;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 

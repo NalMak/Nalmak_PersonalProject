@@ -57,25 +57,46 @@ void LynMove::PlayAnimationByDirection()
 {
 	auto dir = m_info->GetDirectionState();
 	auto state = m_info->GetState();
+
 	if (dir != m_dirState || state != m_state)
 	{
-
-		m_dirState = dir;
 		string animName = "";
-		switch (m_dirState)
+		switch (dir)
 		{
 		case LYN_MOVE_DIR_STATE_FRONT:
 			animName = "Mov_RunFront";
 			break;
 		case LYN_MOVE_DIR_STATE_RIGHT:
-			animName = "Mov_RunRight";
-			break;
+		{
+			if (m_dirState == LYN_MOVE_DIR_STATE_LEFT)
+			{
+				SetState(L"rebound");
+				m_dirState = dir;
+				return;
+			}
+			else
+			{
+				animName = "Mov_RunRight";
+				break;
+			}
+		}
 		case LYN_MOVE_DIR_STATE_FRONTRIGHT:
 			animName = "Mov_RunRightFront";
 			break;
 		case LYN_MOVE_DIR_STATE_LEFT:
-			animName = "Mov_RunLeft";
-			break;
+		{
+			if (m_dirState == LYN_MOVE_DIR_STATE_RIGHT)
+			{
+				SetState(L"rebound");
+				m_dirState = dir;
+				return;
+			}
+			else
+			{
+				animName = "Mov_RunLeft";
+				break;
+			}
+		}
 		case LYN_MOVE_DIR_STATE_FRONTLEFT:
 			animName = "Mov_RunLeftFront";
 			break;
@@ -90,15 +111,18 @@ void LynMove::PlayAnimationByDirection()
 			break;
 		case LYN_MOVE_DIR_STATE_NONE:
 		{
-			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-			SetInteger(L"IsBlend", 1);
-			SetState(L"idle");
-			return;
+			if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_A) && !InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+			{
+				m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+				SetState(L"idle");
+				m_dirState = dir;
+				return;
+			}
 		}
 		default:
 			break;
 		}
-	
+		m_dirState = dir;
 		m_state = state;
 		if (animName != "")
 		{
@@ -116,20 +140,9 @@ void LynMove::PlayAnimationByDirection()
 			default:
 				break;
 			}
-		
-			/*if (GetInteger(L"IsBlend") == 2)
-			{
-				m_animController->PlayBlending(animName, m_animController->GetPlayTime());
-			}
-			else
-			{
-			}*/
-			if (GetInteger(L"IsBlend") == 0)
-				m_animController->Play(animName);
-			else
-				m_animController->PlayBlending(animName);
 
-			SetInteger(L"IsBlend", 1);
+		
+			m_animController->PlayBlending(animName);
 			m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		}
 		

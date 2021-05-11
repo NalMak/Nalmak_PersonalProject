@@ -56,15 +56,7 @@ void SkinnedMeshRenderer::Initialize()
 
 void SkinnedMeshRenderer::Update()
 {
-	
-	/*m_mesh->UpdateAnimationController();
-	m_mesh->UpdateBoneMatrix();
 
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_RIGHT_MOUSE))
-	{
-		++m_index;
-		m_mesh->SetAnimation(m_index);
-	}*/
 }
 
 void SkinnedMeshRenderer::LateUpdate()

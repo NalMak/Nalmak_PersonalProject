@@ -145,21 +145,23 @@ GameObject * MapToolManager::GetAnimationObject()
 
 void MapToolManager::SetAnimationObjectMesh(const wstring & _meshName)
 {
-	if (!m_animationObject->GetComponent<SkinnedMeshRenderer>())
+
+	if (m_animationObject->GetComponent<SkinnedMeshRenderer>())
 	{
-		SkinnedMeshRenderer::Desc renderer;
-		renderer.meshName = _meshName;
-		AnimationController::Desc anim;
-		anim.meshName = _meshName;
-		m_animationObject->AddComponent<AnimationController>(&anim);
-		m_animationObject->AddComponent<SkinnedMeshRenderer>(&renderer);
-		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
-		m_animationObject->SetActive(true);
+		m_animationObject->DeleteComponent<SkinnedMeshRenderer>();
 	}
-	else
+	if(m_animationObject->GetComponent<AnimationController>())
 	{
-		m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetMesh(_meshName);
+		m_animationObject->DeleteComponent<AnimationController>();
 	}
+	SkinnedMeshRenderer::Desc renderer;
+	renderer.meshName = _meshName;
+	AnimationController::Desc anim;
+	anim.meshName = _meshName;
+	m_animationObject->AddComponent<AnimationController>(&anim);
+	m_animationObject->AddComponent<SkinnedMeshRenderer>(&renderer);
+	m_animationObject->GetComponent<SkinnedMeshRenderer>()->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
+	m_animationObject->SetActive(true);
 
 	//m_animationObject->GetComponent<Animator>()->
 }

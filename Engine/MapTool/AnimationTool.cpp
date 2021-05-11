@@ -128,8 +128,17 @@ void AnimationTool::OnCbnSelchangeComboSceneName()
 	auto& meshes = ResourceManager::GetInstance()->GetAllResource<Mesh>();
 	for (auto& mesh : meshes)
 	{
-		if(((Mesh*)(mesh.second))->GetMeshType() == MESH_TYPE_ANIMATION)
-			m_meshList.AddString(mesh.first.c_str());
+		if (((Mesh*)(mesh.second))->GetMeshType() == MESH_TYPE_ANIMATION)
+		{
+			//auto animCtrl = ((XFileMesh*)mesh.second)->GetAnimationController();
+			if(((XFileMesh*)(mesh.second))->GetMeshContainerSize() > 0)
+				m_meshList.AddString(mesh.first.c_str());
+			else
+			{
+				wstring wName = ((XFileMesh*)mesh.second)->GetName();
+				m_animationList.AddString(wName.c_str());
+			}
+		}
 	}
 }
 
@@ -149,16 +158,7 @@ void AnimationTool::OnLbnSelchangeMeshList()
 	XFileMesh* mesh = (XFileMesh*)ResourceManager::GetInstance()->GetResource<Mesh>(name.GetString());
 	Nalmak_Frame* frame = (Nalmak_Frame*)mesh->GetRoot();
 
-
-	m_animationList.ResetContent();
-	for (UINT i = 0; i < mesh->GetAnimationController()->GetMaxNumAnimationSets(); ++i)
-	{
-		LPD3DXANIMATIONSET anim;
-		mesh->GetAnimationController()->GetAnimationSet(i, &anim);
-		wstring wName;
-		wName = Nalmak_String::StringToWString(anim->GetName());
-		m_animationList.AddString(wName.c_str());
-	}
+	
 
 	SearchFrame(frame, nullptr);
 
@@ -178,12 +178,18 @@ void AnimationTool::OnLbnSelchangeAnimationList()
 		return;
 
 	CString name;
-	m_meshList.GetText(index, name);
+	m_animationList.GetText(animIndex, name);
 
-	XFileMesh* mesh = (XFileMesh*)ResourceManager::GetInstance()->GetResource<Mesh>(name.GetString());
+	//XFileMesh* mesh = (XFileMesh*)ResourceManager::GetInstance()->GetResource<Mesh>(name.GetString());
+	auto animCtrl = MapToolManager::GetInstance()->GetAnimationObject()->GetComponent<AnimationController>();
+	string  animName = Nalmak_String::WStringToString(name.GetString());
 
+	if(!animCtrl->GetAnimationClip(animName))
+		animCtrl->AddAnimationClip(animName, 1.f, true);
 
+	animCtrl->Play(animName);
 
+	//controller->AddAnimationClip("Lyn_P_Std_Mov_Idle", 1.f, true);
 	//MapToolManager::GetInstance()->GetAnimationObject()->GetComponent<AnimationController>()->Play();
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

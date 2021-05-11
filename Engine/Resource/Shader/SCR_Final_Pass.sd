@@ -3,6 +3,8 @@
 #########################################################
 
 inputRT "g_mainTex" "GBuffer_Final"
+//inputRT "g_downTex" "GBuffer_Final_div4_out"
+
 
 inputLayout "1"
 

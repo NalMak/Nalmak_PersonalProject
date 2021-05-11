@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "RenderManager.h"
+#include "SkinnedMeshRenderer.h"
 
 USING(Nalmak)
 
@@ -509,6 +510,23 @@ Transform * Transform::GetChild(int _index)
 size_t Transform::GetChildCount()
 {
 	return m_childs.size();
+}
+
+void Transform::SetParents(Transform * _parents, const string & _boneName)
+{
+	auto skin = _parents->GetComponent<SkinnedMeshRenderer>();
+	assert("parents don't have bones" && skin);
+
+	if (_parents == this)
+		assert("parents are themselves" && 0);
+
+	if (m_parents)
+		m_parents->DeleteChild(this);
+
+	m_parents = _parents;
+	_parents->AddChild(this);
+
+	m_boneParents = skin->GetBoneCombinedMatrix(_boneName);
 }
 
 void Transform::SetParents(Transform * _parents, Matrix * _bone)

@@ -250,6 +250,9 @@
     <Filter Include="06.Resource\09.NavMesh">
       <UniqueIdentifier>{8731b8fd-50e6-4167-aa33-f1d16ab17069}</UniqueIdentifier>
     </Filter>
+    <Filter Include="12.Collision">
+      <UniqueIdentifier>{0165ff4f-df81-4e28-95a6-06a8e774b067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core.cpp">
@@ -567,9 +570,6 @@
     <ClCompile Include="..\Source\NavMeshData.cpp">
       <Filter>06.Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\RenderInfo.cpp">
-      <Filter>06.Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\CharacterController.cpp">
       <Filter>05.Component\03.Rigidbody</Filter>
     </ClCompile>
@@ -582,9 +582,17 @@
     <ClCompile Include="..\Source\LOD_Group.cpp">
       <Filter>05.Component\01.Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Collision.cpp" />
     <ClCompile Include="..\Source\SplineCurve.cpp">
       <Filter>99.PreCompile\99.Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NalmakPxControllerFilterCallback.cpp">
+      <Filter>07.PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NalmakPxControllerBehaviorCallback.cpp">
+      <Filter>07.PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Collision.cpp">
+      <Filter>12.Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -927,9 +935,6 @@
     <ClInclude Include="..\Include\NavMeshData.h">
       <Filter>06.Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\RenderInfo.h">
-      <Filter>06.Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\CharacterController.h">
       <Filter>05.Component\03.Rigidbody</Filter>
     </ClInclude>
@@ -942,9 +947,17 @@
     <ClInclude Include="..\Include\LOD_Group.h">
       <Filter>05.Component\01.Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Collision.h" />
     <ClInclude Include="..\Include\SplineCurve.h">
       <Filter>99.PreCompile\99.Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NalmakPxControllerFilterCallback.h">
+      <Filter>07.PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NalmakPxControllerBehaviorCallback.h">
+      <Filter>07.PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Collision.h">
+      <Filter>12.Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1038,6 +1051,9 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Bloom.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SCR_DownSampling_Pass.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_Standard.sd">
@@ -1122,6 +1138,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SYS_UI.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SCR_DownSampling_Pass.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

@@ -70,13 +70,13 @@ void BnS_MainCamera::UnLockTarget()
 	m_isControlingPlayer = false;
 }
 
-void BnS_MainCamera::TurnCamera(bool _dir, float _time)
+void BnS_MainCamera::TurnCamera(float _angle, bool _dir, float _time)
 {
 	m_turnTimer = _time;
 	if (_dir)
-		m_turnAngle = 180 / _time;
+		m_turnAngle = (180 - _angle) / _time;
 	else
-		m_turnAngle = -180 / _time;
+		m_turnAngle = -(180 - _angle) / _time;
 }
 
 

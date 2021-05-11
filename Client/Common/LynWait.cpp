@@ -7,7 +7,6 @@
 
 void LynWait::Initialize()
 {
-	SetInteger(L"IsBlend", 0);
 }
 
 void LynWait::EnterState()

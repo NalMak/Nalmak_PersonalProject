@@ -7,35 +7,60 @@ texture g_emissionBlurDiv2;
 
 texture g_specular;
 texture g_specularBlur;
+
 sampler FinalSampler = sampler_state
 {
 	texture = g_final;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler EmissionSampler = sampler_state
 {
 	texture = g_emission;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 
 sampler EmissionBlurSampler4 = sampler_state
 {
 	texture = g_emissionBlurDiv4;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler EmissionBlurSampler2 = sampler_state
 {
 	texture = g_emissionBlurDiv2;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler SpecularSampler = sampler_state
 {
 	texture = g_specular;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler SpecularBlurSampler = sampler_state
 {
 	texture = g_specularBlur;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 struct VS_INPUT

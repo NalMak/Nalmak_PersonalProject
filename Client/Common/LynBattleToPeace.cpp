@@ -38,5 +38,4 @@ void LynBattleToPeace::UpdateState()
 
 void LynBattleToPeace::ExitState()
 {
-	SetInteger(L"IsBlend", 1);
 }

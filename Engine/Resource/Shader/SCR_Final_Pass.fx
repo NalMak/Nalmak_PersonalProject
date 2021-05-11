@@ -1,13 +1,17 @@
 #include "H_common.fxh"
 
 texture g_mainTex;
-
+//texture g_downTex;
 
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
-
 };
+//sampler downSampler = sampler_state
+//{
+//	texture = g_downTex;
+//};
+
 
 struct VS_INPUT
 {
@@ -48,8 +52,10 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	PS_OUTPUT o = (PS_OUTPUT)0;
 	float2 uv = float2(_input.uv) + float2(perPixelX, perPixelY);
 		
-	float4 diffuse = tex2D(mainSampler, uv);
-	o.diffuse = diffuse;
+	//float4 diffuse =;
+	//float4 down = tex2D(downSampler, uv);
+
+	o.diffuse = tex2D(mainSampler, uv);
 
 	return o;
 }

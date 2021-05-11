@@ -69,6 +69,8 @@
   ..\Include\MeshPicking.h
   ..\Include\MeshRenderer.h
   ..\Include\MessageProc.h
+  ..\Include\NalmakPxControllerBehaviorCallback.h
+  ..\Include\NalmakPxControllerFilterCallback.h
   ..\Include\NalmakPxEventCallBack.h
   ..\Include\Nalmak_Animation.h
   ..\Include\Nalmak_Define.h
@@ -140,7 +142,7 @@
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
   ..\Include\XFileMesh.h
-  140개 파일이 복사되었습니다.
+  142개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll
@@ -163,6 +165,7 @@
   ..\Bin\SCR_Bloom.cso
   ..\Bin\SCR_Debug_Pass.cso
   ..\Bin\SCR_DirectionalLight.cso
+  ..\Bin\SCR_DownSampling_Pass.cso
   ..\Bin\SCR_Emission_Pass.cso
   ..\Bin\SCR_Final_Pass.cso
   ..\Bin\SCR_GaussianBlur.cso
@@ -188,7 +191,7 @@
   ..\Bin\SYS_Standard.cso
   ..\Bin\SYS_Standard_NormalMap.cso
   ..\Bin\SYS_UI.cso
-  28개 파일이 복사되었습니다.
+  29개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

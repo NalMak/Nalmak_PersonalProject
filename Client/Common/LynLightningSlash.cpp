@@ -40,6 +40,5 @@ void LynLightningSlash::ExitState()
 {
 	m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
 	m_info->SetSpeed(m_info->m_runForwardSpeed);
-	SetInteger(L"IsBlend", 1);
 	m_info->EndSkill();
 }

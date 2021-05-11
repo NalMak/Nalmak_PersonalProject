@@ -9,6 +9,10 @@ texture g_shadow;
 sampler DiffuseSampler = sampler_state
 {
 	texture = g_diffuse;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 sampler NormalSampler = sampler_state
 {
@@ -17,10 +21,18 @@ sampler NormalSampler = sampler_state
 sampler LightSampler = sampler_state
 {
 	texture = g_light;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 sampler ShadowSampler = sampler_state
 {
 	texture = g_shadow;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 struct VS_INPUT
 {

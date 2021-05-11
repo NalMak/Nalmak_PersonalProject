@@ -11,7 +11,9 @@ sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
 
-	
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 struct VS_INPUT

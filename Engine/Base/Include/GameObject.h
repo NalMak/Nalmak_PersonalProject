@@ -206,7 +206,8 @@ private:
 public:
 	void SetParents(Transform* _parents, Matrix* _boneMatrix);
 	void SetParents(GameObject* _parents, Matrix* _boneMatrix);
-
+	void SetParents(Transform* _parents, const string& _boneName);
+	void SetParents(GameObject* _parents, const string& _boneName);
 	void SetParents(Transform* _parents);
 	void SetParents(GameObject* _parents);
 

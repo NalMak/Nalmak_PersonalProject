@@ -10,6 +10,9 @@
 
 AnimationController::AnimationController(Desc * _desc)
 {
+
+
+
 	m_currentTrack = 0;
 	m_nextTrack = 1;
 	m_currentPlayTime = 0.f;
@@ -67,6 +70,9 @@ AnimationController::AnimationController(Desc * _desc)
 	}
 	else
 	{
+		if (_desc->meshName == L"")
+			assert(L"Please Set Mesh to animation controller!" && 0);
+
 		m_rootMatrix = _desc->rootMatrix;
 		Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(_desc->meshName);
 
@@ -178,6 +184,8 @@ void AnimationController::EachRender()
 
 void AnimationController::AddAnimationClip(const string & _animName, float _speed, bool _loop)
 {
+	assert(L"Please Add Animation Controller Component!" && this);
+
 	Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(Nalmak_String::StringToWString(_animName));
 	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
 		assert(L"No animation data in mesh File! " && 0);
@@ -243,7 +251,7 @@ AnimationClip* AnimationController::GetAnimationClip(const string & _clipName)
 			return clip;
 		}
 	}
-	assert(L"Can't find animation clip!" && 0);
+
 	return nullptr;
 }
 
@@ -552,14 +560,15 @@ void AnimationController::UpdateBoneMatrix()
 		if (m_isRootAnimation)
 		{
 			assert(L"Please set bone to fix pos!" && m_fixedBone);
-			if (m_isUpper)
+			UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, root); // 하체면 무조건 업데이트 시작
+
+			/*if (m_isUpper)
 			{
 				UpdateFixedBoneMatrix((Nalmak_Frame*)m_subRoot->pFrameFirstChild, ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix);
 			}
 			else
 			{
-				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)m_root, root); // 하체면 무조건 업데이트 시작
-			}
+			}*/
 		}
 		else
 		{
@@ -641,9 +650,30 @@ void AnimationController::UpdateBoneSeparationMatrix(Nalmak_Frame * _bone, const
 
 void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, const Matrix & _parent)
 {
-	
-	
-	_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+	if (_bone == m_subRoot)
+	{
+		if (m_isUpper)
+		{
+			Vector3 separteBonePos;
+			memcpy(&separteBonePos, &((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix._41, sizeof(Vector3));
+			_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+			memcpy(&_bone->boneCombinedMatrix._41, &separteBonePos, sizeof(Vector3));
+
+			if (_bone->pFrameFirstChild)
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, ((Nalmak_Frame*)m_subRoot)->boneCombinedMatrix);
+		}
+		else
+		{
+			_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+			if (_bone->pFrameSibling)
+				UpdateBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
+		}
+		return;
+	}
+	else
+	{
+		_bone->boneCombinedMatrix = _bone->TransformationMatrix * _parent;
+	}
 
 	if (_bone == m_fixedBone)
 	{
@@ -654,20 +684,7 @@ void AnimationController::UpdateFixedBoneSeparationMatrix(Nalmak_Frame * _bone, 
 		if (m_rootMotion_fixZAxis)
 			_bone->boneCombinedMatrix._43 = 0;
 	}
-	if (_bone == m_subRoot)
-	{
-		if (m_isUpper)
-		{
-			if (_bone->pFrameFirstChild)
-				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);
-		}
-		else
-		{
-			if (_bone->pFrameSibling)
-				UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameSibling, _parent);
-		}
-		return;
-	}
+
 
 	if (_bone->pFrameFirstChild)
 		UpdateFixedBoneSeparationMatrix((Nalmak_Frame*)_bone->pFrameFirstChild, _bone->boneCombinedMatrix);

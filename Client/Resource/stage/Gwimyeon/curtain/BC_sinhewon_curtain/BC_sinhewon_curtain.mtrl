@@ -12,6 +12,7 @@ vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
 float "g_f0" "0.3f"
 float "g_roughness" "0.6f"
 float "g_normalPower" "1.f"
+float "g_specularPower" "0.3f"
 
 renderQueue "1000"
 

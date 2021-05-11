@@ -17,6 +17,10 @@ float4 g_emissionColor = float4(1, 1, 1, 1);
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler normalSampler = sampler_state
@@ -27,6 +31,10 @@ sampler normalSampler = sampler_state
 sampler emissionSampler = sampler_state
 {
 	texture = g_emissionTex;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 

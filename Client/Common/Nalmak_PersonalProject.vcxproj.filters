@@ -58,6 +58,39 @@
     <Filter Include="05.Skill">
       <UniqueIdentifier>{571e5f07-8286-43f7-a497-41e259c04a3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.UI">
+      <UniqueIdentifier>{53d8274b-381e-469d-9142-5921a0a1f3db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Slash">
+      <UniqueIdentifier>{d21c6699-5a1d-4339-9cf0-b3273a423c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\SideDash">
+      <UniqueIdentifier>{4bf6948b-fa2b-4155-8cb4-0a79494c7a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\FrontDash">
+      <UniqueIdentifier>{e6e743b2-662c-4cc0-b2a3-601f04c016cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\FrontKick">
+      <UniqueIdentifier>{7f484489-ef8a-49d8-8b5c-6c343d71e3e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\LowerSlash">
+      <UniqueIdentifier>{f534adbd-061c-4e9e-9979-579e885de774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\LightningSlash">
+      <UniqueIdentifier>{8b2002a1-1ac1-4675-95e2-cfff67286112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\ThunderSlash">
+      <UniqueIdentifier>{be40f940-82bf-4cf5-92b1-6658ba06a4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Jump">
+      <UniqueIdentifier>{6d1e6fc1-ad73-47da-8cc3-54f9c7d820f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Move">
+      <UniqueIdentifier>{82a2ac5f-6820-4b73-9fc4-d7cabc05b969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07.Enemy">
+      <UniqueIdentifier>{5c0cf3c7-5930-4ec5-9069-27e268854990}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -132,8 +165,6 @@
     <ClInclude Include="LynVerticalCut_R2.h">
       <Filter>04.Lyn\VerticalCut</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h" />
-    <ClInclude Include="TitleToStage.h" />
     <ClInclude Include="LynSpinSlash_End.h">
       <Filter>04.Lyn\SpinSlash</Filter>
     </ClInclude>
@@ -155,39 +186,13 @@
     <ClInclude Include="BnS_DamageFont.h">
       <Filter>02.Component\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="LynSkillTest.h" />
-    <ClInclude Include="LynThunderSlash.h" />
-    <ClInclude Include="Lyn_Attack_Basic1.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
     <ClInclude Include="LynBattleToPeace.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
     <ClInclude Include="LynWait.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynFall.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynIdle.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynJump.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynLand.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynMove.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynLightningSlash.h" />
-    <ClInclude Include="LynSlash1.h" />
-    <ClInclude Include="LynSlash2.h" />
-    <ClInclude Include="LynSlash3.h" />
     <ClInclude Include="LynBaldo.h" />
-    <ClInclude Include="LynSideDashQ.h" />
-    <ClInclude Include="LynSideDashE.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="BnS_Skill.h">
       <Filter>05.Skill</Filter>
@@ -198,12 +203,73 @@
     <ClInclude Include="LynSkillController.h">
       <Filter>05.Skill</Filter>
     </ClInclude>
-    <ClInclude Include="LynFrontKick.h" />
     <ClInclude Include="LynChamWall.h" />
-    <ClInclude Include="LynFrontDash.h" />
-    <ClInclude Include="LynLowerSlash.h" />
     <ClInclude Include="LynHold.h" />
-    <ClInclude Include="LynLowerSlash2.h" />
+    <ClInclude Include="UIManager.h">
+      <Filter>06.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleToStage.h">
+      <Filter>02.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSlash1.h">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSlash2.h">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSlash3.h">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSideDashE.h">
+      <Filter>04.Lyn\SideDash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynSideDashQ.h">
+      <Filter>04.Lyn\SideDash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynFrontDash.h">
+      <Filter>04.Lyn\FrontDash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynFrontKick.h">
+      <Filter>04.Lyn\FrontKick</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLowerSlash.h">
+      <Filter>04.Lyn\LowerSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLowerSlash2.h">
+      <Filter>04.Lyn\LowerSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLightningSlash.h">
+      <Filter>04.Lyn\LightningSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynThunderSlash.h">
+      <Filter>04.Lyn\ThunderSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynJump.h">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLand.h">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="LynFall.h">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="LynMove.h">
+      <Filter>04.Lyn\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="LynIdle.h">
+      <Filter>04.Lyn\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyState.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateControl.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanPeaceIdle.h" />
+    <ClInclude Include="ZakanNATK1.h" />
+    <ClInclude Include="ZakanNATK2.h" />
+    <ClInclude Include="ZakanSpawn.h" />
+    <ClInclude Include="LynRebound.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -257,8 +323,6 @@
     <ClCompile Include="LynVerticalCut_R2.cpp">
       <Filter>04.Lyn\VerticalCut</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="TitleToStage.cpp" />
     <ClCompile Include="LynSpinSlash_End.cpp">
       <Filter>04.Lyn\SpinSlash</Filter>
     </ClCompile>
@@ -280,39 +344,13 @@
     <ClCompile Include="BnS_DamageFont.cpp">
       <Filter>02.Component\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="LynSkillTest.cpp" />
-    <ClCompile Include="LynThunderSlash.cpp" />
-    <ClCompile Include="Lyn_Attack_Basic1.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
     <ClCompile Include="LynBattleToPeace.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
     <ClCompile Include="LynWait.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynFall.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynIdle.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynJump.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynLand.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynMove.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynLightningSlash.cpp" />
-    <ClCompile Include="LynSlash1.cpp" />
-    <ClCompile Include="LynSlash2.cpp" />
-    <ClCompile Include="LynSlash3.cpp" />
     <ClCompile Include="LynBaldo.cpp" />
-    <ClCompile Include="LynSideDashQ.cpp" />
-    <ClCompile Include="LynSideDashE.cpp" />
     <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="BnS_Skill.cpp">
       <Filter>05.Skill</Filter>
@@ -323,12 +361,73 @@
     <ClCompile Include="LynSkillController.cpp">
       <Filter>05.Skill</Filter>
     </ClCompile>
-    <ClCompile Include="LynFrontKick.cpp" />
     <ClCompile Include="LynChamWall.cpp" />
-    <ClCompile Include="LynFrontDash.cpp" />
-    <ClCompile Include="LynLowerSlash.cpp" />
     <ClCompile Include="LynHold.cpp" />
-    <ClCompile Include="LynLowerSlash2.cpp" />
+    <ClCompile Include="UIManager.cpp">
+      <Filter>06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleToStage.cpp">
+      <Filter>02.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSlash1.cpp">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSlash2.cpp">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSlash3.cpp">
+      <Filter>04.Lyn\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSideDashE.cpp">
+      <Filter>04.Lyn\SideDash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynSideDashQ.cpp">
+      <Filter>04.Lyn\SideDash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynFrontDash.cpp">
+      <Filter>04.Lyn\FrontDash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynFrontKick.cpp">
+      <Filter>04.Lyn\FrontKick</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLowerSlash.cpp">
+      <Filter>04.Lyn\LowerSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLowerSlash2.cpp">
+      <Filter>04.Lyn\LowerSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLightningSlash.cpp">
+      <Filter>04.Lyn\LightningSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynThunderSlash.cpp">
+      <Filter>04.Lyn\ThunderSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynJump.cpp">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLand.cpp">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="LynFall.cpp">
+      <Filter>04.Lyn\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="LynMove.cpp">
+      <Filter>04.Lyn\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="LynIdle.cpp">
+      <Filter>04.Lyn\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyState.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateControl.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanPeaceIdle.cpp" />
+    <ClCompile Include="ZakanNATK1.cpp" />
+    <ClCompile Include="ZakanNATK2.cpp" />
+    <ClCompile Include="ZakanSpawn.cpp" />
+    <ClCompile Include="LynRebound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

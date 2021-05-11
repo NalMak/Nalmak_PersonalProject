@@ -81,6 +81,8 @@ void RenderManager::Initialize()
 	m_GBuffer_Specular_blur_div4 = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular_blur_div4");
 	m_GBuffer_Specular_blur_div4_out = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Specular_blur_div4_out");
 
+	m_GBuffer_Final_div4 = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Final_div4");
+	m_GBuffer_Final_div4_out = ResourceManager::GetInstance()->GetResource<RenderTarget>(L"GBuffer_Final_div4_out");
 
 
 
@@ -91,6 +93,9 @@ void RenderManager::Initialize()
 	m_SCR_Geometry_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Geometry_Pass");
 	m_SCR_Emission_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Emission_Pass");
 	m_SCR_Final_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Final_Pass");
+
+	m_SCR_DownSampling_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_DownSampling_Pass");
+
 	m_SCR_Shadow_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Shadow_Pass");
 	m_SCR_Debug_Pass = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_Debug_Pass");
 	m_SCR_DirectionalLight = ResourceManager::GetInstance()->GetResource<Shader>(L"SCR_DirectionalLight");
@@ -104,6 +109,8 @@ void RenderManager::Initialize()
 	m_DepthStencil_Shadow = ResourceManager::GetInstance()->GetResource<DepthStencil>(L"DepthStencil_Shadow");
 
 
+
+	//m_device->SetSamplerState(0, D3DSAMP_MAXANISOTROPY, 16);
 
 }
 
@@ -137,12 +144,14 @@ void RenderManager::Render(Camera * _cam)
 	m_GBuffer_Depth_CookTorrance->Clear();
 	m_GBuffer_Light->Clear();
 	m_GBuffer_Debug->Clear();
-	m_GBuffer_Final->Clear();
 	m_GBuffer_Emission->Clear();
 	m_GBuffer_Specular->Clear();
 	m_GBuffer_Shadow->Clear();
 
-	
+	m_GBuffer_Final->Clear();
+	//m_GBuffer_Final_div4->Clear();
+	//m_GBuffer_Final_div4_out->Clear();
+
 
 	m_GBuffer_Emission_blur_div4->Clear();
 	m_GBuffer_Emission_blur_div4_out->Clear();
@@ -195,8 +204,13 @@ void RenderManager::DeferredRender(Camera* _cam, ConstantBuffer& _cBuffer)
 	BlurPass(m_GBuffer_Emission, m_GBuffer_Emission_blur_div2, m_GBuffer_Emission_blur_div2_out, 960, 540);
 	BlurPass(m_GBuffer_Emission_blur_div2_out, m_GBuffer_Emission_blur_div4, m_GBuffer_Emission_blur_div4_out, 480, 270);
 
-	RenderByShaderToScreen(m_SCR_Emission_Pass, _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
+	RenderByShaderToScreen(m_SCR_Emission_Pass, _cBuffer, BLENDING_MODE_DEFAULT);
+
+	//BlurPass(m_GBuffer_Final, m_GBuffer_Final_div4, m_GBuffer_Final_div4_out, 480, 270);
+
+	//RenderByShaderToScreen(m_SCR_DownSampling_Pass, _cBuffer, BLENDING_MODE_DEFAULT);// emission target color + basic color
 	
+
 	DebugPass(_cBuffer);
 
 	//RenderByMaterialToScreen(L"GBuffer_Debug", _cBuffer);
@@ -420,16 +434,17 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 		float scale = pointLight->GetRadius() * 2;
 		pointLight->SetLightPosition(pos);
 
-		Matrix world =
-		{
-			scale,0,0,0,
-			0,scale,0,0,
-			0,0,scale,0,
-			pos.x, pos.y, pos.z,1
-		};
+	
 
 		if (_cam->IsInFrustumCulling(pos, scale))
 		{
+			Matrix world =
+			{
+				scale,0,0,0,
+				0,scale,0,0,
+				0,0,scale,0,
+				pos.x, pos.y, pos.z,1
+			};
 			PointLightPass(world, pointLight->GetLightInfo(), m_sphere, m_SCR_PointLight_Stencil, m_SCR_PointLight);
 			m_device->Clear(0, nullptr, D3DCLEAR_STENCIL, 0, 1, 0);
 		}
@@ -783,14 +798,23 @@ void RenderManager::RenderRequest(IRenderer * _render)
 		break;
 	case RENDERER_TYPE::RENDERER_TYPE_MESH:
 	{
-		UINT mtrlCount = ((MeshRenderer*)_render)->GetMaterialCount();
-		for (UINT i = 0; i < mtrlCount; ++i)
+		Mesh* mesh = ((MeshRenderer*)_render)->GetMesh();
+		UINT containerCount = mesh->GetMeshContainerSize();
+		UINT mtrlIndex = 0;
+		for (UINT i = 0; i < containerCount; ++i)
 		{
-			auto mtrl = _render->GetMaterial(i);
-			RenderInfo renderInfo;
-			renderInfo.renderer = _render;
-			renderInfo.subsetNum = i;
-			m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+			UINT mtrlCount = mesh->GetSubsetCount(i);
+			for (UINT j = 0; j < mtrlCount; ++j)
+			{
+
+				auto mtrl = _render->GetMaterial(mtrlIndex);
+				RenderInfo renderInfo;
+				renderInfo.renderer = _render;
+				renderInfo.containerNum = i;
+				renderInfo.subsetNum = j;
+				m_renderLists[mtrl->GetRenderingMode()][mtrl->GetRenderQueue()].emplace_back(renderInfo);
+				++mtrlIndex;
+			}
 		}
 		break;
 	}

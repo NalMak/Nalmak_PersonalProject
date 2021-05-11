@@ -4,7 +4,6 @@
 #define __IRENDERER_H__
 
 #include "Nalmak_Include.h"
-#include "RenderInfo.h"
 #include "Component.h"
 #include "Material.h"
 #include "VIBuffer.h"

@@ -13,6 +13,10 @@ float g_normalPower;
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
+
+	MinFilter = anisotropic;
+	MagFilter = anisotropic;
+	MAXANISOTROPY = 16;
 };
 
 sampler normalSampler = sampler_state

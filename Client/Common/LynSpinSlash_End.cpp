@@ -36,6 +36,5 @@ void LynSpinSlash_End::UpdateState()
 
 void LynSpinSlash_End::ExitState()
 {
-	SetInteger(L"IsBlend", 1);
 	m_info->EndSkill();
 }

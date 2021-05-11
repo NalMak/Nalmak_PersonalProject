@@ -52,10 +52,11 @@
     <ClCompile Include="..\Source\LoadResourcesUsingThread.cpp" />
     <ClCompile Include="..\Source\LOD_Group.cpp" />
     <ClCompile Include="..\Source\MeshHierarchy.cpp" />
+    <ClCompile Include="..\Source\NalmakPxControllerBehaviorCallback.cpp" />
+    <ClCompile Include="..\Source\NalmakPxControllerFilterCallback.cpp" />
     <ClCompile Include="..\Source\Nalmak_Animation.cpp" />
     <ClCompile Include="..\Source\NavCollider.cpp" />
     <ClCompile Include="..\Source\NavMeshData.cpp" />
-    <ClCompile Include="..\Source\RenderInfo.cpp" />
     <ClCompile Include="..\Source\Shader.cpp" />
     <ClCompile Include="..\Source\SkinnedMeshRenderer.cpp" />
     <ClCompile Include="..\Source\SplineCurve.cpp" />
@@ -164,10 +165,11 @@
     <ClInclude Include="..\Include\LoadResourcesUsingThread.h" />
     <ClInclude Include="..\Include\LOD_Group.h" />
     <ClInclude Include="..\Include\MeshHierarchy.h" />
+    <ClInclude Include="..\Include\NalmakPxControllerBehaviorCallback.h" />
+    <ClInclude Include="..\Include\NalmakPxControllerFilterCallback.h" />
     <ClInclude Include="..\Include\Nalmak_Animation.h" />
     <ClInclude Include="..\Include\NavCollider.h" />
     <ClInclude Include="..\Include\NavMeshData.h" />
-    <ClInclude Include="..\Include\RenderInfo.h" />
     <ClInclude Include="..\Include\Shader.h" />
     <ClInclude Include="..\Include\SkinnedMeshRenderer.h" />
     <ClInclude Include="..\Include\SplineCurve.h" />
@@ -263,6 +265,7 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_Bloom.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_Debug_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_DirectionalLight.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SCR_DownSampling_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_Emission_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_Final_Pass.fx" />
     <FxCompile Include="..\..\Resource\Shader\SCR_GaussianBlur.fx" />
@@ -293,6 +296,7 @@
     <None Include="..\..\Resource\Shader\SCR_Bloom.sd" />
     <None Include="..\..\Resource\Shader\SCR_Debug_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_DirectionalLight.sd" />
+    <None Include="..\..\Resource\Shader\SCR_DownSampling_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_Emission_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_Final_Pass.sd" />
     <None Include="..\..\Resource\Shader\SCR_GaussianBlur.sd" />
