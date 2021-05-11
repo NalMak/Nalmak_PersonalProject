@@ -73,6 +73,10 @@ void NalmakPxEventCallBack::onTrigger(PxTriggerPair * pairs, PxU32 count)
 
 		GameObject* obj0 = (GameObject*)(tp.triggerActor->userData);
 		GameObject* obj1 = (GameObject*)(tp.otherActor->userData);
+
+		if (!IsValid(obj0) || !IsValid(obj1))
+			continue;
+
 		if (!obj0 || !obj1)
 			continue;
 

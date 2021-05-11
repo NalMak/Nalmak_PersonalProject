@@ -57,11 +57,12 @@ AnimationController::AnimationController(Desc * _desc)
 		for (auto& clip : _desc->cloneAnimationController->m_animationClips)
 		{
 
-			m_animationClips.emplace_back(clip);
+			
 			//m_animController->RegisterAnimationSet(clip->animationSet);
 
 			LPD3DXANIMATIONSET animSet;
 			_desc->cloneAnimationController->m_animController->GetAnimationSet(i, &animSet);
+			m_animationClips[clip.first] = clip.second;
 			m_animController->RegisterAnimationSet(animSet);
 			animSet->Release();
 			++i;
@@ -235,7 +236,7 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 
 		clip->animationSet = animSet;
 
-		m_animationClips.emplace_back(clip);
+		m_animationClips[animSet->GetName()] = clip;
 
 		animSet->Release();
 
@@ -244,15 +245,7 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 
 AnimationClip* AnimationController::GetAnimationClip(const string & _clipName)
 {
-	for (auto& clip : m_animationClips)
-	{
-		if (clip->animationName == _clipName)
-		{
-			return clip;
-		}
-	}
-
-	return nullptr;
+	return m_animationClips[_clipName];
 }
 
 void AnimationController::SetAnimatinoOffsetByBeizer(const Vector3 & _startOffset, const Vector3 & _endOffset, float _time, const Vector2 & _p1, const Vector2 & _p2, const Vector2 & _p3, const Vector2 & _p4)

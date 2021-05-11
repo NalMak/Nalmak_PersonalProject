@@ -91,6 +91,9 @@
     <Filter Include="07.Enemy">
       <UniqueIdentifier>{5c0cf3c7-5930-4ec5-9069-27e268854990}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Lyn\Baldo">
+      <UniqueIdentifier>{29d6ca26-05b6-4b90-9aa0-f5d9765276b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -189,10 +192,6 @@
     <ClInclude Include="LynBattleToPeace.h">
       <Filter>04.Lyn</Filter>
     </ClInclude>
-    <ClInclude Include="LynWait.h">
-      <Filter>04.Lyn</Filter>
-    </ClInclude>
-    <ClInclude Include="LynBaldo.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="BnS_Skill.h">
       <Filter>05.Skill</Filter>
@@ -270,6 +269,9 @@
     <ClInclude Include="ZakanNATK2.h" />
     <ClInclude Include="ZakanSpawn.h" />
     <ClInclude Include="LynRebound.h" />
+    <ClInclude Include="LynBaldo.h">
+      <Filter>04.Lyn\Baldo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -347,10 +349,6 @@
     <ClCompile Include="LynBattleToPeace.cpp">
       <Filter>04.Lyn</Filter>
     </ClCompile>
-    <ClCompile Include="LynWait.cpp">
-      <Filter>04.Lyn</Filter>
-    </ClCompile>
-    <ClCompile Include="LynBaldo.cpp" />
     <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="BnS_Skill.cpp">
       <Filter>05.Skill</Filter>
@@ -428,6 +426,9 @@
     <ClCompile Include="ZakanNATK2.cpp" />
     <ClCompile Include="ZakanSpawn.cpp" />
     <ClCompile Include="LynRebound.cpp" />
+    <ClCompile Include="LynBaldo.cpp">
+      <Filter>04.Lyn\Baldo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

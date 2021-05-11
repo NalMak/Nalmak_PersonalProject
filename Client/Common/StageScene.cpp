@@ -6,7 +6,6 @@
 #include "BnS_MainCamera.h"
 
 #include "LynStateControl.h"
-#include "LynWait.h"
 #include "LynVerticalCut_L0.h"
 #include "LynVerticalCut_L1.h"
 #include "LynVerticalCut_L2.h"

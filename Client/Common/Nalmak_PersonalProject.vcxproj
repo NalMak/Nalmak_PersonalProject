@@ -226,7 +226,6 @@
     <ClInclude Include="LynVerticalCut_R1.h" />
     <ClInclude Include="LynVerticalCut_R2.h" />
     <ClInclude Include="LynRebound.h" />
-    <ClInclude Include="LynWait.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
     <ClInclude Include="PublicData.h" />
@@ -290,7 +289,6 @@
     <ClCompile Include="LynVerticalCut_R1.cpp" />
     <ClCompile Include="LynVerticalCut_R2.cpp" />
     <ClCompile Include="LynRebound.cpp" />
-    <ClCompile Include="LynWait.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
     <ClCompile Include="StageScene.cpp" />

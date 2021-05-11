@@ -89,7 +89,8 @@ private:
 	LPD3DXFRAME m_subRoot;
 	LPD3DXFRAME m_fixedBone;
 	XFileMesh* m_mesh;
-	vector<Nalmak_MeshContainer*>		m_meshContainerList;
+	map<string,Nalmak_MeshContainer*>		m_meshContainerList;
+
 	Matrix m_rootMatrix;
 	bool m_isSeparte;
 	bool m_isUpper;
@@ -99,7 +100,7 @@ private:
 	bool m_rootMotion_fixZAxis;
 
 private:
-	vector<AnimationClip*> m_animationClips;
+	map<string,AnimationClip*> m_animationClips;
 	AnimationClip* m_currentAnimationClip;
 	AnimationController* m_otherController;
 public:
