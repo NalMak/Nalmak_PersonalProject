@@ -17,6 +17,7 @@ public:
 		float height = 4;
 		float depth = 8;
 		float radius = 2;
+		UINT innerPower = 0;
 	};
 public:
 	AttackInfo(Desc* _desc);
@@ -34,7 +35,11 @@ public:
 	float m_height;
 	float m_depth;
 	float m_radius;
-
+	UINT m_innerPower;
+public:
+	GameObject* GetHost();
+private:
+	GameObject* m_host;
 	UINT m_frameLife;
 	COLLIDER_TYPE m_colliderType;
 };

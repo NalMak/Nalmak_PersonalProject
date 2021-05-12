@@ -222,6 +222,7 @@ public:
 
 	bool IsStatic() const { return m_static; }
 	GameObject* SetPosition(const Vector3& _pos);
+	GameObject* SetPosition(const Vector2& _pos);
 	GameObject* SetPosition(float _x, float _y, float _z);
 	GameObject* SetPosition(float _x, float _y);
 	GameObject* SetScale(const Vector3& _scale);

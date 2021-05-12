@@ -12,7 +12,7 @@ public:
 		float hitRadius = 3.f;
 		UINT power = 1500;
 		float detectionRadius = 10.f;
-		Vector4 volumeRect = { 5,10,5,0};
+		Vector4 volumeRect = { 6,10,6,1.5f};
 	};
 public:
 	BnS_Enemy(Desc* _desc);
@@ -27,10 +27,14 @@ public:
 
 public:
 	const Vector4& GetVolume();
+	const RECT& GetScreenVolume();
+
 	GameObject* GetTarget();
 	void LostTarget();
+	void GetDamage(AttackInfo* _attackInfo);
 private:
 	Vector4 m_volumeRect;
+	RECT m_screenVolumeRect;
 	UINT m_hp;
 	UINT m_power;
 	float m_hitRadius;
@@ -39,5 +43,7 @@ private:
 	float m_detectionRadius;
 	GameObject* m_target;
 	CharacterController* m_character;
+private:
+	void CalcWorldVolume();
 };
 

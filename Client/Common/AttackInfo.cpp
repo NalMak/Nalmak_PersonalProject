@@ -9,7 +9,11 @@ AttackInfo::AttackInfo(Desc * _desc)
 	m_attackType = _desc->attackType;
 	m_isCritical = _desc->isCritical;
 	m_power = _desc->power;
+	m_innerPower = _desc->innerPower;
 
+	assert(L"Please Set Attack host!" && _desc->host);
+
+	m_host = _desc->host;
 	m_width = _desc->width;
 	m_height = _desc->height;
 	m_depth = _desc->depth;
@@ -65,4 +69,9 @@ void AttackInfo::Update()
 		DESTROY(m_gameObject);
 
 	--m_frameLife;
+}
+
+GameObject * AttackInfo::GetHost()
+{
+	return m_host;
 }

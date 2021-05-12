@@ -26,6 +26,7 @@
 #include <io.h>
 #include <mutex>
 #include <process.h>
+#include <sstream>
 
 #include <unordered_map>
 #include <vector>

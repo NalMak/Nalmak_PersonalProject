@@ -44,6 +44,21 @@
 #include "LynSideDashE.h"
 #include "LynSideDashQ.h"
 
+#include "LynWindyMoonSlash.h"
+#include "LynUpperSlash.h"
+#include "LynThrowSoulBlade.h"
+#include "LynRotateSoulBlade.h"
+#include "LynLightningCombo.h"
+#include "LynLayDown.h"
+#include "LynKnockBackLong.h"
+#include "LynKnockBackMiddle.h"
+#include "LynIlSum.h"
+#include "LynHolded.h"
+#include "LynGrogy.h"
+#include "LynExcape.h"
+#include "LynDown.h"
+#include "LynDead.h"
+#include "LynBackRoll.h"
 
 #include "ZakanPeaceIdle.h"
 #include "ZakanSpawn.h"
@@ -106,7 +121,7 @@ void StageScene::Initialize()
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
 	lyn->AddComponent<LynInfo>();
-
+	UIManager::GetInstance()->SetLynInfo(lyn->GetComponent<LynInfo>());
 	AnimationController::Desc anim;
 	anim.meshName = L"Lyn_Model2";
 	Matrix rotMat;
@@ -133,6 +148,39 @@ void StageScene::Initialize()
 	upperControl->AddState<LynIdle>(L"idle", true);
 	lowerControl->AddState<LynRebound>(L"rebound", false);
 	upperControl->AddState<LynRebound>(L"rebound", true);
+
+
+
+	lowerControl->AddState<LynWindyMoonSlash>(L"windyWallSlash", false);
+	upperControl->AddState<LynWindyMoonSlash>(L"windyWallSlash", true);
+	lowerControl->AddState<LynUpperSlash>(L"upperSlash", false);
+	upperControl->AddState<LynUpperSlash>(L"upperSlash", true);
+	lowerControl->AddState<LynThrowSoulBlade>(L"throwSword", false);
+	upperControl->AddState<LynThrowSoulBlade>(L"throwSword", true);
+	lowerControl->AddState<LynRotateSoulBlade>(L"rotateSoulBlade", false);
+	upperControl->AddState<LynRotateSoulBlade>(L"rotateSoulBlade", true);
+	lowerControl->AddState<LynLightningCombo>(L"lightningCombo", false);
+	upperControl->AddState<LynLightningCombo>(L"lightningCombo", true);
+	lowerControl->AddState<LynLayDown>(L"layDown", false);
+	upperControl->AddState<LynLayDown>(L"layDown", true);
+	lowerControl->AddState<LynKnockBackLong>(L"knockBackLong", false);
+	upperControl->AddState<LynKnockBackLong>(L"knockBackLong", true);
+	lowerControl->AddState<LynKnockBackMiddle>(L"knockBackMiddle", false);
+	upperControl->AddState<LynKnockBackMiddle>(L"knockBackMiddle", true);
+	lowerControl->AddState<LynIlSum>(L"IlSum", false);
+	upperControl->AddState<LynIlSum>(L"IlSum", true);
+	lowerControl->AddState<LynHolded>(L"holded", false);
+	upperControl->AddState<LynHolded>(L"holded", true);
+	lowerControl->AddState<LynGrogy>(L"grogy", false);
+	upperControl->AddState<LynGrogy>(L"grogy", true);
+	lowerControl->AddState<LynExcape>(L"excape", false);
+	upperControl->AddState<LynExcape>(L"excape", true);
+	lowerControl->AddState<LynDown>(L"down", false);
+	upperControl->AddState<LynDown>(L"down", true);
+	lowerControl->AddState<LynDead>(L"dead", false);
+	upperControl->AddState<LynDead>(L"dead", true);
+	lowerControl->AddState<LynBackRoll>(L"backRoll", false);
+	upperControl->AddState<LynBackRoll>(L"backRoll", true);
 
 	upperControl->InitState(L"idle");
 	lowerControl->InitState(L"idle");
@@ -336,13 +384,49 @@ void StageScene::Initialize()
 
 	controller->AddAnimationClip("Lyn_B_Chamwall", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_B_FrontKick", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_FrontKick", 1.3f, false);
 
 	controller->AddAnimationClip("Lyn_B_lowerSlash1", 1.3f, false);
 	controller->AddAnimationClip("Lyn_B_lowerSlash2", 1.3f, false);
 	controller->AddAnimationClip("Lyn_B_Std_Dash_1", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_Dash_2", 1.f, false);
 	
+
+
+	controller->AddAnimationClip("Lyn_B_Hide_RotateSoulBlade", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Long_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Long_F", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_F", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_LightningCombo", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Down", 1.f, false);// 두개 테스트 필요
+	controller->AddAnimationClip("Lyn_B_layDown", 1.f, false);//
+	controller->AddAnimationClip("Lyn_B_Down_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Down_F", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Dash", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_BackRoll", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Throw1", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Throw2", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_Dead", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_Dead_Stay", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Holded_Looping", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Holded_Start", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Holded_ToGrogy", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_upperSlash1", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_upperSlash2", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Ilsum", 1.f, false); // 테스트 필요
+	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_End", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_Fire", 1.f, false);
+	controller->AddAnimationClip("Lyb_B_Std_Excape_1", 1.f, false);
+	controller->AddAnimationClip("Lyb_B_Std_Excape_2", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_WindyMoonSlash1", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_WindyMoonSlash2", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_WindyMoonSlashEnd", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Start", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Looping", 1.f, false);
+
+
+
 
 	controller->SeparateBone("Bip01Spine");
 	controller->SetFixedAnimationBoneName("Bip01", true, false, true);

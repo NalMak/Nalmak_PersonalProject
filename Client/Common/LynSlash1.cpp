@@ -24,6 +24,15 @@ void LynSlash1::EnterState()
 
 	m_isCombo = false;
 
+	AttackInfo::Desc attack;
+	attack.height = 5;
+	attack.depth = 5;
+	attack.width = 8;
+	attack.innerPower = 1;
+	CreateAttackInfo(&attack, 3.f, 1.5f, 1.f);
+
+	
+
 }
 
 void LynSlash1::UpdateState()

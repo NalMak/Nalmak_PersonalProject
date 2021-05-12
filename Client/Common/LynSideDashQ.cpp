@@ -17,6 +17,7 @@ void LynSideDashQ::Initialize()
 
 void LynSideDashQ::EnterState()
 {
+	m_info->AddInnerPower(1);
 	m_bnsMainCam->UnLockTarget();
 
 	m_info->SetSpeed(0.f);
@@ -60,6 +61,14 @@ void LynSideDashQ::UpdateState()
 
 	if (m_animController->GetPlayRemainTime() < 0.4f)
 	{
+		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
+		{
+			if (m_info->GetInnerPower() >= 2)
+			{
+				SetState(L"verticalCut_l2");
+				return;
+			}
+		}
 		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 
 		SetState(L"idle");

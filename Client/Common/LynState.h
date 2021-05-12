@@ -25,6 +25,10 @@ protected:
 	LynInfo* m_info;
 	BnS_MainCamera* m_bnsMainCam;
 	bool m_isUpper;
+
+	void ReduceInnerPower(UINT _innerPower);
+	void AddInnerPower(UINT _innerPower);
+	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
 private:
 
 };

@@ -21,9 +21,14 @@ void LynSlash3::EnterState()
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_defaultSlash3");
 
-
-
 	m_isCombo = false;
+
+	AttackInfo::Desc attack;
+	attack.height = 5;
+	attack.depth = 5;
+	attack.width = 8;
+	attack.innerPower = 2;
+	CreateAttackInfo(&attack, 3.f, 1.5f, 1.3f);
 }
 
 void LynSlash3::UpdateState()

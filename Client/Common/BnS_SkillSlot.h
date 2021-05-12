@@ -24,7 +24,10 @@ public:
 	void SetCoolTimeRatio(float _ratio);
 private:
 	float m_coolTimeRatio;
+	float m_skillChangeTimer;
 	BnS_Skill* m_skill;
+	BnS_Skill* m_preSkill;
+
 	Material* m_material;
 };
 

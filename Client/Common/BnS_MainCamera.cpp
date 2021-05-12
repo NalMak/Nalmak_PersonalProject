@@ -132,6 +132,20 @@ GameObject* BnS_MainCamera::CheckTarget()
 	Vector3 pickingPoint;
 	auto objList = Core::GetInstance()->GetObjectList(OBJECT_TAG_ENEMY);
 
+	// 앞뒤 판별
+	for (auto iter = objList.begin(); iter != objList.end(); )
+	{
+		Vector3 dir1 = Nalmak_Math::Normalize((*iter)->GetTransform()->GetWorldPosition()- m_player->GetTransform()->GetWorldPosition());
+		if (Nalmak_Math::Dot(dir1, m_player->GetTransform()->GetForward()) > 0)
+		{
+			++iter;
+		}
+		else
+		{
+			iter = objList.erase(iter);
+		}
+	}
+
 	Line line;
 	line.start = m_transform->GetWorldPosition();
 	line.end = m_transform->GetWorldPosition() + m_transform->GetForward() * 400;
@@ -147,14 +161,8 @@ GameObject* BnS_MainCamera::CheckTarget()
 	
 	for (auto& obj : objList)
 	{
-		Vector3 pos = obj->GetTransform()->GetWorldPosition();
 		auto enemy = obj->GetComponent<BnS_Enemy>();
-		Vector4 volumeRect = enemy->GetVolume();
-
-		volumeRect.x =  m_cam->WorldToScreenPos(pos - m_transform->GetRight() * volumeRect.x + m_transform->GetUp() * volumeRect.y).x;
-		volumeRect.y = m_cam->WorldToScreenPos(pos - m_transform->GetRight() * volumeRect.x + m_transform->GetUp() * volumeRect.y).y;
-		volumeRect.z = m_cam->WorldToScreenPos(pos + m_transform->GetRight() * volumeRect.z - m_transform->GetUp() * volumeRect.w).x;
-		volumeRect.w = m_cam->WorldToScreenPos(pos + m_transform->GetRight() * volumeRect.z - m_transform->GetUp() * volumeRect.w).y;
+		RECT volumeRect = enemy->GetScreenVolume();
 
 		if (Nalmak_Math::IsInPointInRect(Vector2(m_targetVolume.x, m_targetVolume.y), volumeRect))
 		{

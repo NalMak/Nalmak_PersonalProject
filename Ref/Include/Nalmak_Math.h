@@ -151,6 +151,14 @@ public:
 		return sqrtf(Nalmak_Math::Dot(dP, dP));
 	}
 
+	static bool IsInPointInRect(const Vector2& _point, const RECT& _rect)
+	{
+		if (_point.x >= _rect.left && _point.x <= _rect.right && _point.y >= _rect.top && _point.y <= _rect.bottom)
+			return true;
+		return false;
+	}
+
+
 	static bool IsInPointInRect(const Vector2& _point, const Vector4& _rect)
 	{
 		if (_point.x >= _rect.x && _point.x <= _rect.z && _point.y >= _rect.y && _point.y <= _rect.w)

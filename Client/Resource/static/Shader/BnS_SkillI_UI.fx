@@ -1,9 +1,10 @@
 #include "../../../../Engine/Resource/Shader/H_common.fxh"
 
 matrix g_world;
+
 texture g_mainTex;
 texture g_nextTex;
-//float g_changeRatio;
+float g_changeRatio;
 float g_coolTimeAngle;
 
 float4 g_mainTexColor;
@@ -22,6 +23,10 @@ sampler mainSampler = sampler_state
 sampler nextSampler = sampler_state
 {
 	texture = g_nextTex;
+
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	MipFilter = LINEAR;
 };
 
 struct VS_INPUT
@@ -75,8 +80,16 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 		float4 nextDiffuse = tex2D(nextSampler, _input.uv);
 		final = nextDiffuse * g_mainTexColor;
 	}*/
-	float4 diffuse = tex2D(mainSampler, _input.uv);
-	final = diffuse * g_mainTexColor;
+	if (_input.uv.x <= g_changeRatio)
+	{
+		float4 diffuse = tex2D(mainSampler, _input.uv);
+		final = diffuse * g_mainTexColor;
+	}
+	else
+	{
+		float4 nextDiffuse = tex2D(nextSampler, _input.uv);
+		final = nextDiffuse * g_mainTexColor;
+	}
 
 	if (g_coolTimeAngle > 0)
 	{

@@ -17,6 +17,9 @@ public:
 		float turningSpeed = 7.f;
 		float halfHeight = 3.2f;
 		float jumpHalfHeight = 0.9f;
+
+		UINT power = 500;
+		float criticalRatio = 0.6f;
 	};
 public:
 	LynInfo(Desc* _desc);
@@ -34,6 +37,11 @@ private:
 public:
 	void SetState(LYN_STATE _state);
 	LYN_STATE GetState();
+	void SetBattleState(BATTLE_STATE _state);
+	BATTLE_STATE GetBattleState();
+
+	UINT m_power;
+	float m_criticalRatio;
 
 	float m_battleToPeaceTimer;
 
@@ -46,9 +54,16 @@ public:
 	float m_jumpHalfHeight;
 	float m_currentSpeed;
 private:
+	float m_resistanceTimer;
 	float m_energy;
+	UINT m_innerPower;
 public:
+	void SetResistance(float _timer);
+	float GetDistanceToTarget();
 	float GetEnergy();
+	void AddInnerPower(UINT _power);
+	void ReduceInnerPower(UINT _power);
+	UINT GetInnerPower();
 public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();
@@ -80,6 +95,7 @@ public:
 	LYN_MOVE_DIR_STATE GetDirectionState();
 private:
 	GameObject* m_target;
+	float m_distanceToTarget;
 public:
 	void StartSkill();
 	void EndSkill();
@@ -90,11 +106,13 @@ public:
 	const  Vector3& GetTargetInput();
 private:
 	LYN_STATE m_state;
+	BATTLE_STATE m_battleState;
 
 	Vector3 m_inputDir;
 	Vector3 m_targetInput;
 	LYN_MOVE_DIR_STATE m_dirState;
 	float m_targetSpeed;
+	float m_innerPowerTimer;
 	Vector3 m_directionState[9] = {
 		{ 0, 0, 1 },
 		{ 1,0,0 },

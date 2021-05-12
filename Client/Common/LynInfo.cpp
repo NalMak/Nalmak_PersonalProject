@@ -13,9 +13,13 @@ LynInfo::LynInfo(Desc * _desc)
 	m_jumpHalfHeight = _desc->jumpHalfHeight;
 	m_halfHeight = _desc->halfHeight;
 	m_turningSpeed = _desc->turningSpeed;
+	m_criticalRatio = _desc->criticalRatio;
+	m_power = _desc->power;
 
 	m_currentSpeed = 0;
-	
+	m_innerPowerTimer = 0;
+	m_innerPower = 10;
+
 	m_followingAnimationPosition = false;
 }
 
@@ -27,7 +31,8 @@ void LynInfo::Initialize()
 {
 	m_energy = 100;
 	m_sKeyTimer = 0.f;
-	m_battleToPeaceTimer = 0;
+	m_battleToPeaceTimer = 0.f;
+	m_resistanceTimer = 0.f;
 	m_animController_lower = GetComponents<AnimationController>()[0];
 	m_animController_upper = GetComponents<AnimationController>()[1];
 	m_stateControl_lower = GetComponents<LynStateControl>()[0];
@@ -43,11 +48,36 @@ void LynInfo::Initialize()
 
 
 	m_state = LYN_STATE_PEACE_STANDARD;
+	m_battleState = BATTLE_STATE_WEAK;
+
 	UpdateWeapon();
 }
 
 void LynInfo::Update()
 {
+	if (m_resistanceTimer > 0.f)
+	{
+		m_resistanceTimer -= dTime;
+		if (m_resistanceTimer <= 0.f)
+		{
+			m_battleState = BATTLE_STATE_WEAK;
+		}
+	}
+
+	if (m_state == LYN_STATE_PEACE_STANDARD)
+	{
+		if (m_innerPower < 10) // 자동 내력 충전
+		{
+			m_innerPowerTimer += dTime;
+
+			if (m_innerPowerTimer > 2.f)
+			{
+				m_innerPowerTimer = 0;
+				AddInnerPower(1);
+			}
+		}
+	}
+
 	m_targetInput = { 0,0,0 };
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W))
 	{
@@ -137,14 +167,43 @@ void LynInfo::Update()
 	m_skillController->ActiveSkill();
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-		m_sKeyTimer = 0.5f;
+		m_sKeyTimer = 0.3f;
 	m_sKeyTimer -= dTime;
 }
 
 void LynInfo::OnTriggerEnter(Collision & _col)
 {
-	m_stateControl_lower->SetState(L"jump");
-	m_stateControl_upper->SetState(L"jump");
+	if (m_battleState == BATTLE_STATE_RESISTANCE)
+		return;
+
+	if (_col.hitObj->GetTag() == OBJECT_TAG_ATTACKINFO)
+	{
+		if (_col.hitObj->GetLayer() == OBJECT_LAYER_ENEMY_HITBOX)
+		{
+			AttackInfo* attack = _col.hitObj->GetComponent<AttackInfo>();
+			auto attackType = attack->m_attackType;
+			if (m_battleState == BATTLE_STATE_WEAK)
+			{
+				switch (attackType)
+				{
+				case ATTACK_TYPE_DOWN:
+					m_stateControl_lower->SetState(L"down");
+					m_stateControl_upper->SetState(L"down");
+					break;
+				case ATTACK_TYPE_GROGY:
+					m_stateControl_lower->SetState(L"grogy");
+					m_stateControl_upper->SetState(L"grogy");
+					break;
+				case ATTACK_TYPE_MAGNETIC:
+					m_stateControl_lower->SetState(L"hold");
+					m_stateControl_upper->SetState(L"hold");
+				default:
+					break;
+				}
+			}
+		}
+	}
+
 
 }
 
@@ -178,6 +237,7 @@ void LynInfo::SetState(LYN_STATE _state)
 		m_skillController->SetSkillSlot(L"slash1");
 		m_skillController->SetSkillSlot(L"verticalCut_l0");
 		m_battleToPeaceTimer = INFINITY;
+		m_innerPowerTimer = 0;
 		break;
 	}
 	case LYN_STATE_BATTLE_STANDARD:
@@ -211,12 +271,71 @@ LYN_STATE LynInfo::GetState()
 	return m_state;
 }
 
+void LynInfo::SetBattleState(BATTLE_STATE _state)
+{
+	m_battleState = _state;
+}
 
+BATTLE_STATE LynInfo::GetBattleState()
+{
+	return m_battleState;
+}
+
+void LynInfo::SetResistance(float _timer)
+{
+	m_resistanceTimer = _timer;
+	m_battleState = BATTLE_STATE_RESISTANCE;
+}
+
+float LynInfo::GetDistanceToTarget()
+{
+	return m_distanceToTarget;
+}
 
 float LynInfo::GetEnergy()
 {
 	return m_energy;
 }
+
+void LynInfo::AddInnerPower(UINT _power)
+{
+	if (m_innerPower < 10)
+	{
+		auto ui = UIManager::GetInstance();
+		if (m_innerPower + _power > 10)
+		{
+			_power = 10 - m_innerPower;
+		}
+		for (UINT i = 0; i < _power; ++i)
+		{
+			ui->AddInnerPower(m_innerPower + i);
+		}
+		m_innerPower += _power;
+	}
+}
+
+void LynInfo::ReduceInnerPower(UINT _power)
+{
+	if (m_innerPower > 0)
+	{
+		auto ui = UIManager::GetInstance();
+		if (m_innerPower - _power < 0)
+		{
+			_power = m_innerPower;
+		}
+		for (UINT i = 1; i <= _power; ++i)
+		{
+			ui->ReduceInnerPower(m_innerPower - i);
+		}
+		m_innerPower -= _power;
+	}
+}
+
+UINT LynInfo::GetInnerPower()
+{
+	return m_innerPower;
+}
+
 
 void LynInfo::EquipeWeapon(GameObject * _weapon)
 {
@@ -289,7 +408,16 @@ bool LynInfo::UseEnergy(float _amount)
 
 void LynInfo::SetTarget(GameObject * _obj)
 {
+	if (m_target != _obj)
+	{
+		UIManager::GetInstance()->UpdateTarget(_obj);
+	}
 	m_target = _obj;
+	if (m_target)
+	{
+		m_distanceToTarget = Nalmak_Math::Distance(m_transform->GetWorldPosition(), _obj->GetTransform()->GetWorldPosition()) * BNS_DISTANCE_RATIO;
+		UIManager::GetInstance()->UpdateTargetBoundaryBox(_obj);
+	}
 }
 
 GameObject * LynInfo::GetTarget()

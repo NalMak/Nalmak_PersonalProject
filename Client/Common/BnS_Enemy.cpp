@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BnS_Enemy.h"
 #include "BnS_DamageFont.h"
+#include "LynInfo.h"
 
 
 BnS_Enemy::BnS_Enemy(Desc * _desc)
@@ -32,6 +33,7 @@ void BnS_Enemy::Update()
 {
 	DEBUG_LOG(L"enemy hp", m_hp);
 
+	CalcWorldVolume();
 	m_character->AddVelocity(0, -50.f * dTime, 0);
 
 	if (!m_target)
@@ -54,12 +56,9 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 	{
 		if (_col.hitObj->GetLayer() == OBJECT_LAYER_PLAYER_HITBOX)
 		{
-			m_hp -= _col.hitObj->GetComponent<AttackInfo>()->m_power;
-
-			BnS_DamageFont::Desc damageFont;
-			damageFont.damage = Nalmak_Math::Rand(80, 120);
-			damageFont.isCritical = Nalmak_Math::Random<bool>(true, true, true, false, false);
-			INSTANTIATE()->AddComponent<BnS_DamageFont>(&damageFont)->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 6, 0));
+			auto attackInfo = _col.hitObj->GetComponent<AttackInfo>();
+			GetDamage(attackInfo);
+			
 		}
 	}
 }
@@ -73,6 +72,11 @@ const Vector4 & BnS_Enemy::GetVolume()
 	return m_volumeRect;	
 }
 
+const RECT & BnS_Enemy::GetScreenVolume()
+{
+	return m_screenVolumeRect;
+}
+
 GameObject * BnS_Enemy::GetTarget()
 {
 	return m_target;
@@ -81,4 +85,32 @@ GameObject * BnS_Enemy::GetTarget()
 void BnS_Enemy::LostTarget()
 {
 	m_target = nullptr;
+}
+
+void BnS_Enemy::GetDamage(AttackInfo * _attackInfo)
+{
+	m_hp -= _attackInfo->m_power;
+
+	if (_attackInfo->m_innerPower > 0)
+		_attackInfo->GetHost()->GetComponent<LynInfo>()->AddInnerPower(_attackInfo->m_innerPower);
+
+
+	BnS_DamageFont::Desc damageFont;
+	damageFont.damage = _attackInfo->m_power;
+	damageFont.isCritical =_attackInfo->m_isCritical;
+	INSTANTIATE()->AddComponent<BnS_DamageFont>(&damageFont)->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 6, 0));
+}
+
+void BnS_Enemy::CalcWorldVolume()
+{
+	auto cam = Core::GetInstance()->GetMainCamera();
+	Vector3 pos = m_transform->GetWorldPosition();
+	float averageX = (m_volumeRect.z - m_volumeRect.x) * 0.5f;
+	float averageY = (m_volumeRect.w - m_volumeRect.y) * 0.5f;
+	pos += Vector3(averageX, -averageY, 0);
+
+	m_screenVolumeRect.left = (UINT)cam->WorldToScreenPos(pos - cam->GetTransform()->GetRight() * m_volumeRect.x + cam->GetTransform()->GetUp() * m_volumeRect.y).x;
+	m_screenVolumeRect.top = (UINT)cam->WorldToScreenPos(pos - cam->GetTransform()->GetRight() * m_volumeRect.x + cam->GetTransform()->GetUp() * m_volumeRect.y).y;
+	m_screenVolumeRect.right = (UINT)cam->WorldToScreenPos(pos + cam->GetTransform()->GetRight() * m_volumeRect.z - cam->GetTransform()->GetUp() * m_volumeRect.w).x;
+	m_screenVolumeRect.bottom = (UINT)cam->WorldToScreenPos(pos + cam->GetTransform()->GetRight() * m_volumeRect.z - cam->GetTransform()->GetUp() * m_volumeRect.w).y;
 }

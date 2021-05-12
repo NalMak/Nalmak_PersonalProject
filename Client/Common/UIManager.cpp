@@ -2,6 +2,8 @@
 #include "UIManager.h"
 #include "BnS_SkillSlot.h"
 #include "BnS_Skill.h"
+#include "BnS_Enemy.h"
+#include "LynInfo.h"
 
 IMPLEMENT_SINGLETON(UIManager)
 
@@ -32,6 +34,14 @@ void UIManager::CreateMainUI()
 		image.textureName = L"GameUI_energyGauge";
 		
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(340, 28)->SetPosition(HALF_WINCX, WINCY - 205);
+
+		for (int i = 0; i < 10; ++i)
+		{
+			SingleImage::Desc image;
+			image.textureName = L"UI_CriticalDamageFont0";
+			auto innerPower = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(30.f,30.f)->SetPosition((float)(HALF_WINCX - 143 + 32 * i), (float)(WINCY - 205));
+			m_innerPowerIcon[i] = innerPower->GetComponent<CanvasRenderer>();
+		}
 	}
 
 
@@ -102,16 +112,87 @@ void UIManager::CreateMainUI()
 	}
 	{
 		SingleImage::Desc image;
-		image.color = Vector4(1, 1, 1, 0.1f);
+		image.color = Vector4(1, 1, 1, 0.2f);
 		image.textureName = L"TargetGuide";
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(128, 128);
 	}
+	{
+		SingleImage::Desc image;
+		image.color = Vector4(1, 1, 1, 0.3f);
+		image.textureName = L"TargetGuide";
+		Text::Desc text;
+		text.color = D3DXCOLOR(1, 1, 1, 0.5f);
+		m_targetOutLine = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(256, 256);
+		m_targetOutLine->SetActive(false);
+
+
+	
+
+		 
+	}
+}
+
+void UIManager::SetLynInfo(LynInfo * _info)
+{
+	m_lynInfo = _info;
 }
 
 void UIManager::UpdateEnergyUI(float _ratio)
 {
-	DEBUG_LOG(L"energy", _ratio);
 	m_energyBar->SetFloat("g_outputRatio",_ratio);
+}
+
+void UIManager::UpdateHpUI(float _ratio)
+{
+	m_hpBar->SetFloat("g_outputRatio", _ratio);
+}
+
+void UIManager::UpdateTarget(GameObject * _target)
+{
+	if (_target)
+	{
+		m_targetOutLine->SetActive(true);
+	}
+	else
+	{
+		m_targetOutLine->SetActive(false);
+	}
+}
+
+void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
+{
+
+	auto enemy = _target->GetComponent<BnS_Enemy>();
+	auto worldVolume = enemy->GetScreenVolume();
+	auto volume = enemy->GetVolume();
+
+	float averageX = (volume.z - volume.x) * 0.5f;
+	float averageY = (volume.w - volume.y) * 0.5f;
+
+	Vector2 screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(_target->GetTransform()->GetWorldPosition() + Vector3(averageX, -averageY, 0));
+	m_targetOutLine->SetPosition(screenPos);
+	m_targetOutLine->SetScale((float)(worldVolume.right - worldVolume.left) * 2, (float)(worldVolume.bottom - worldVolume.top) * 2);
+	//m_targetOutLine->SetScale(200,200);
+	float distance = m_lynInfo->GetDistanceToTarget();
+	
+	auto text = m_targetOutLine->GetComponent<Text>();
+	RECT rc;
+	UINT right = UINT((worldVolume.right - worldVolume.left) * 0.5f);
+	UINT bottom = UINT((worldVolume.bottom - worldVolume.top) * 0.5f);
+	rc.left = right + 10;
+	rc.top = bottom + 10;
+	rc.right = right + 150;
+	rc.bottom = bottom + 30;
+
+	double dDistance = int(distance * 10) / 10.0;
+	wstring strDistance = to_wstring(dDistance);
+	size_t targetNum = strDistance.find_last_of(L".");
+	strDistance = strDistance.substr(0, targetNum + 2);
+	/*std::sstream
+	string num_str = sstream.str();*/
+
+	text->SetBoundary(&rc);
+	text->SetText(strDistance + L"m");
 }
 
 void UIManager::SetSkillSlot(BnS_Skill* _skill)
@@ -212,11 +293,20 @@ void UIManager::ChangeSkillSlot(BnS_Skill* _skill)
 {
 	m_skillSlot[_skill->GetSkillSlotIndex()]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
 	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<CanvasRenderer>()->SetActive(true);
-	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<SingleImage>()->SetTexture(_skill->GetSkillIconTexture()->GetTexure(0));
 }
 
 void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
 {
 	m_skillSlot[_slot]->GetComponent<CanvasRenderer>()->SetActive(false);
 	m_skillSlot[_slot]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
+}
+
+void UIManager::AddInnerPower(UINT _index)
+{
+	m_innerPowerIcon[_index]->SetActive(true);
+}
+
+void UIManager::ReduceInnerPower(UINT _index)
+{
+	m_innerPowerIcon[_index]->SetActive(false);
 }

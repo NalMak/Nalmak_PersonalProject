@@ -518,6 +518,13 @@ GameObject* GameObject::SetPosition(const Vector3 & _pos)
 	return this;
 }
 
+GameObject * GameObject::SetPosition(const Vector2 & _pos)
+{
+	m_transform->position = Vector3(_pos.x, _pos.y, m_transform->position.z);
+
+	return this;
+}
+
 GameObject* GameObject::SetPosition(float _x, float _y, float _z)
 {
 	m_transform->position = Vector3(_x, _y, _z);

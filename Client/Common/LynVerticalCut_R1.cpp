@@ -36,8 +36,11 @@ void LynVerticalCut_R1::UpdateState()
 	
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
-			SetState(L"verticalCut_l2");
-			return;
+			if (m_info->GetInnerPower() >= 2)
+			{
+				SetState(L"verticalCut_l2");
+				return;
+			}
 		}
 		else
 		{

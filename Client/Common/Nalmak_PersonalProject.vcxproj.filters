@@ -94,6 +94,57 @@
     <Filter Include="04.Lyn\Baldo">
       <UniqueIdentifier>{29d6ca26-05b6-4b90-9aa0-f5d9765276b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Lyn\BackRoll">
+      <UniqueIdentifier>{41f7b43a-49c1-40a6-b6ed-1e107d44b9fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\ChamWall">
+      <UniqueIdentifier>{35030c35-ece6-4020-94c1-1ce0bf3643c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Dead">
+      <UniqueIdentifier>{55e4c09a-32ca-49a9-b9b3-1f870072b4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Excape">
+      <UniqueIdentifier>{ae57ee86-7cf2-43d1-a6fe-ab50e77f9eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Grogy">
+      <UniqueIdentifier>{c8ec54e7-9f5c-4e8a-bf6e-ab5b87dd3bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Hold">
+      <UniqueIdentifier>{b6a73a73-2ffb-4c95-bd4a-f0620d21c5f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Holded">
+      <UniqueIdentifier>{625b5d7d-3c24-4d74-affe-3c53a712a49d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Down">
+      <UniqueIdentifier>{539150fb-bd4c-485e-bdf1-280b3a4908ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\IlSum">
+      <UniqueIdentifier>{fdcc3c1c-403f-4c5a-a50c-4237a42273a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\KnockBack">
+      <UniqueIdentifier>{52418273-b9fc-4805-876c-e7750df9b48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\LayDown">
+      <UniqueIdentifier>{b54d7e03-4800-43ac-b571-65dd22499176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\LightningCombo">
+      <UniqueIdentifier>{c68e41ba-0591-44fc-9523-b02ba15988f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\Rebound">
+      <UniqueIdentifier>{602b2c17-1766-45fd-8dab-ae46b3bb50cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\RotateSoulBlade">
+      <UniqueIdentifier>{a0fbbfe9-d5ac-407b-bba0-3afa74cc4c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\ThrowSoulBlade">
+      <UniqueIdentifier>{41e09bda-fe89-4364-9ed5-5af4dbd2f341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\WindyMoonSlash">
+      <UniqueIdentifier>{be76c903-3346-4c34-a48a-9c9b1ace6d62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Lyn\UpperSlash">
+      <UniqueIdentifier>{325cdeaa-27ac-4c1c-811b-bd97f99a2261}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -202,8 +253,6 @@
     <ClInclude Include="LynSkillController.h">
       <Filter>05.Skill</Filter>
     </ClInclude>
-    <ClInclude Include="LynChamWall.h" />
-    <ClInclude Include="LynHold.h" />
     <ClInclude Include="UIManager.h">
       <Filter>06.UI</Filter>
     </ClInclude>
@@ -264,13 +313,98 @@
     <ClInclude Include="EnemyStateControl.h">
       <Filter>07.Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="ZakanPeaceIdle.h" />
-    <ClInclude Include="ZakanNATK1.h" />
-    <ClInclude Include="ZakanNATK2.h" />
-    <ClInclude Include="ZakanSpawn.h" />
-    <ClInclude Include="LynRebound.h" />
     <ClInclude Include="LynBaldo.h">
       <Filter>04.Lyn\Baldo</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanDamageShield.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanFireSpellWave.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanFlyTakeDown.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanGrab.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanHolded.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanNATK1.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanNATK2.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanPeaceIdle.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSpawn.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSpellExplosion.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSpellStance.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSpellSuction.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="LynBackRoll.h">
+      <Filter>04.Lyn\BackRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="LynChamWall.h">
+      <Filter>04.Lyn\ChamWall</Filter>
+    </ClInclude>
+    <ClInclude Include="LynDead.h">
+      <Filter>04.Lyn\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="LynExcape.h">
+      <Filter>04.Lyn\Excape</Filter>
+    </ClInclude>
+    <ClInclude Include="LynGrogy.h">
+      <Filter>04.Lyn\Grogy</Filter>
+    </ClInclude>
+    <ClInclude Include="LynHold.h">
+      <Filter>04.Lyn\Hold</Filter>
+    </ClInclude>
+    <ClInclude Include="LynHolded.h">
+      <Filter>04.Lyn\Holded</Filter>
+    </ClInclude>
+    <ClInclude Include="LynDown.h">
+      <Filter>04.Lyn\Down</Filter>
+    </ClInclude>
+    <ClInclude Include="LynIlSum.h">
+      <Filter>04.Lyn\IlSum</Filter>
+    </ClInclude>
+    <ClInclude Include="LynKnockBackMiddle.h">
+      <Filter>04.Lyn\KnockBack</Filter>
+    </ClInclude>
+    <ClInclude Include="LynKnockBackLong.h">
+      <Filter>04.Lyn\KnockBack</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLayDown.h">
+      <Filter>04.Lyn\LayDown</Filter>
+    </ClInclude>
+    <ClInclude Include="LynLightningCombo.h">
+      <Filter>04.Lyn\LightningCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="LynRebound.h">
+      <Filter>04.Lyn\Rebound</Filter>
+    </ClInclude>
+    <ClInclude Include="LynRotateSoulBlade.h">
+      <Filter>04.Lyn\RotateSoulBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="LynThrowSoulBlade.h">
+      <Filter>04.Lyn\ThrowSoulBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="LynWindyMoonSlash.h">
+      <Filter>04.Lyn\WindyMoonSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="LynUpperSlash.h">
+      <Filter>04.Lyn\UpperSlash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -359,8 +493,6 @@
     <ClCompile Include="LynSkillController.cpp">
       <Filter>05.Skill</Filter>
     </ClCompile>
-    <ClCompile Include="LynChamWall.cpp" />
-    <ClCompile Include="LynHold.cpp" />
     <ClCompile Include="UIManager.cpp">
       <Filter>06.UI</Filter>
     </ClCompile>
@@ -421,13 +553,98 @@
     <ClCompile Include="EnemyStateControl.cpp">
       <Filter>07.Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="ZakanPeaceIdle.cpp" />
-    <ClCompile Include="ZakanNATK1.cpp" />
-    <ClCompile Include="ZakanNATK2.cpp" />
-    <ClCompile Include="ZakanSpawn.cpp" />
-    <ClCompile Include="LynRebound.cpp" />
     <ClCompile Include="LynBaldo.cpp">
       <Filter>04.Lyn\Baldo</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanDamageShield.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanFireSpellWave.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanFlyTakeDown.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanGrab.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanHolded.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanNATK1.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanNATK2.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanPeaceIdle.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSpawn.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSpellExplosion.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSpellStance.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSpellSuction.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="LynBackRoll.cpp">
+      <Filter>04.Lyn\BackRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="LynChamWall.cpp">
+      <Filter>04.Lyn\ChamWall</Filter>
+    </ClCompile>
+    <ClCompile Include="LynDead.cpp">
+      <Filter>04.Lyn\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="LynExcape.cpp">
+      <Filter>04.Lyn\Excape</Filter>
+    </ClCompile>
+    <ClCompile Include="LynGrogy.cpp">
+      <Filter>04.Lyn\Grogy</Filter>
+    </ClCompile>
+    <ClCompile Include="LynHold.cpp">
+      <Filter>04.Lyn\Hold</Filter>
+    </ClCompile>
+    <ClCompile Include="LynHolded.cpp">
+      <Filter>04.Lyn\Holded</Filter>
+    </ClCompile>
+    <ClCompile Include="LynDown.cpp">
+      <Filter>04.Lyn\Down</Filter>
+    </ClCompile>
+    <ClCompile Include="LynIlSum.cpp">
+      <Filter>04.Lyn\IlSum</Filter>
+    </ClCompile>
+    <ClCompile Include="LynKnockBackMiddle.cpp">
+      <Filter>04.Lyn\KnockBack</Filter>
+    </ClCompile>
+    <ClCompile Include="LynKnockBackLong.cpp">
+      <Filter>04.Lyn\KnockBack</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLayDown.cpp">
+      <Filter>04.Lyn\LayDown</Filter>
+    </ClCompile>
+    <ClCompile Include="LynLightningCombo.cpp">
+      <Filter>04.Lyn\LightningCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="LynRebound.cpp">
+      <Filter>04.Lyn\Rebound</Filter>
+    </ClCompile>
+    <ClCompile Include="LynRotateSoulBlade.cpp">
+      <Filter>04.Lyn\RotateSoulBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="LynThrowSoulBlade.cpp">
+      <Filter>04.Lyn\ThrowSoulBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="LynWindyMoonSlash.cpp">
+      <Filter>04.Lyn\WindyMoonSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="LynUpperSlash.cpp">
+      <Filter>04.Lyn\UpperSlash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

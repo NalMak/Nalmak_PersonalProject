@@ -57,7 +57,8 @@ void ZakanNATK1::CreateAttackArea()
 	info.height = 4.f;
 	info.width = 5.f;
 	info.power = 100;
+	info.host = m_gameObject;
 	auto hitBox = INSTANTIATE(OBJECT_TAG_ATTACKINFO,OBJECT_LAYER_ENEMY_HITBOX)->AddComponent<AttackInfo>(&info);
 
-	hitBox->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 3.f);
+	hitBox->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 5.f);
 }

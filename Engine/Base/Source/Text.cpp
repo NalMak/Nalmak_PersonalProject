@@ -68,6 +68,11 @@ void Text::RenderText()
 	);
 }
 
+void Text::SetBoundary(RECT * _rc)
+{
+	m_boundary = *_rc;
+}
+
 
 
 void Text::Release()

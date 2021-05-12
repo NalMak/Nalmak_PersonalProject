@@ -21,7 +21,7 @@ void LynVerticalCut_L0::EnterState()
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyb_B_Std_VerticalCul_01_1");
 
-
+	ReduceInnerPower(2);
 
 }
 
@@ -34,15 +34,12 @@ void LynVerticalCut_L0::UpdateState()
 		{
 			shake->Shake(3.f, 5.f, 5, 0.2f, 10, { 1,1,0 });
 		}*/
-
 		AttackInfo::Desc attack;
-		attack.height = 12;
-		attack.depth = 20;
-		attack.width = 6;
-		INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
-			->AddComponent<AttackInfo>()
-			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 6.f + Vector3(0, 1.5f, 0))
-			->SetRotation(m_transform->GetWorldRotation());
+		attack.height = 7;
+		attack.depth = 10;
+		attack.width = 4;
+		CreateAttackInfo(&attack,6.f,1.5f,3.f);
+	
 	}
 
 	if (!m_animController->IsPlay())
