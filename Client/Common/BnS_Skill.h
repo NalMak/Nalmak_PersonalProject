@@ -22,7 +22,7 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 public:
-	void CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring& _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition);
+	void CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring& _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot);
 	bool IsAvailableSkill(LynInfo* _info);
 	void ActiveSkill();
 
@@ -31,6 +31,7 @@ public:
 	BNS_SKILL_SLOT GetSkillSlotIndex();
 	float GetCoolTime();
 private:
+	bool m_isRenderSlot;
 	wstring m_stateName;
 	bool m_isAvailable;
 	Texture* m_skillIcon;

@@ -68,18 +68,9 @@ void CanvasRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _con
 {
 	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
-	auto images = GetComponents<SingleImage>();
-
-	for (int i = 0; i < images.size(); ++i)
-	{
-		_shader->SetTexture("g_mainTex", images[i]->GetTexture());
-		_shader->SetVector("g_mainTexColor", images[i]->GetColor());
-
-		_shader->CommitChanges();
-
-		m_mesh->Draw();
-	}
-
+	_shader->CommitChanges();
+	m_mesh->Draw();
+	
 	auto texts = GetComponents<Text>();
 	for (int i = 0; i < texts.size(); ++i)
 	{

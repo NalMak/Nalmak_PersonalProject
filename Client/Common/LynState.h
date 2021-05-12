@@ -5,6 +5,8 @@
 #include "LynStateControl.h"
 #include "CameraShake.h"
 #include "BnS_MainCamera.h"
+#include "LynSkillController.h"
+#include "UIManager.h"
 
 class LynState :
 	public IState
@@ -24,11 +26,13 @@ protected:
 	CharacterController* m_character;
 	LynInfo* m_info;
 	BnS_MainCamera* m_bnsMainCam;
+	LynSkillController* m_skillController;
 	bool m_isUpper;
 
 	void ReduceInnerPower(UINT _innerPower);
 	void AddInnerPower(UINT _innerPower);
 	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
+	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
 private:
 
 };

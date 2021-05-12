@@ -22,6 +22,7 @@ public:
 protected:
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void EachRender() override;
 
 public:
 	void SetTexture(wstring _name);
@@ -32,6 +33,7 @@ public:
 	IDirect3DBaseTexture9* GetTexture();
 	
 private:
+	Material* m_material;
 	IDirect3DBaseTexture9* m_image;
 	CanvasRenderer* m_renderer;
 	Vector4 m_color;

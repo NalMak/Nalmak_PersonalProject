@@ -25,6 +25,7 @@ public:
 	void SetSkillSlot(BnS_Skill* _skill);
 	void UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio);
 	void ChangeSkillSlot(BnS_Skill* _skill);
+	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
 	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
 
 	void AddInnerPower(UINT _index);
@@ -32,12 +33,14 @@ public:
 
 private:
 	void SetDamageFont();
-	void CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y);
+	GameObject* CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y);
 private:
 	LynInfo* m_lynInfo;
-	GameObject* m_skillSlot[BNS_SKILL_SLOT::BNS_SKILL_SLOT_MAX];
+	GameObject* m_skillSlot[BNS_SKILL_SLOT::BNS_SKILL_SLOT_RENDER_SLOT];
+	GameObject* m_subSkillSlot[10];
+
 	CanvasRenderer* m_innerPowerIcon[10];
-	GameObject* m_targetOutLine;
+	GameObject* m_targetOutLine[4];
 	
 	Texture* m_damageFont[10];
 	Texture* m_criticalDamageFont[10];

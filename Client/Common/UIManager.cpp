@@ -38,8 +38,8 @@ void UIManager::CreateMainUI()
 		for (int i = 0; i < 10; ++i)
 		{
 			SingleImage::Desc image;
-			image.textureName = L"UI_CriticalDamageFont0";
-			auto innerPower = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(30.f,30.f)->SetPosition((float)(HALF_WINCX - 143 + 32 * i), (float)(WINCY - 205));
+			image.textureName = L"GameUI_energyIcon";
+			auto innerPower = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(24.f,24.f)->SetPosition((float)(HALF_WINCX - 145 + 32.1f * i), (float)(WINCY - 205));
 			m_innerPowerIcon[i] = innerPower->GetComponent<CanvasRenderer>();
 		}
 	}
@@ -59,24 +59,30 @@ void UIManager::CreateMainUI()
 		m_energyBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
 
 	}
-	CreateSkillIcon(BNS_SKILL_SLOT_Q, HALF_WINCX - 360, WINCY - 510); // ÁúÇ³
-	CreateSkillIcon(BNS_SKILL_SLOT_E, HALF_WINCX - 420, WINCY - 510); // ÁúÇ³
-	CreateSkillIcon(BNS_SKILL_SLOT_SS, HALF_WINCX - 480, WINCY - 510); // ÁúÇ³
 
-	CreateSkillIcon(BNS_SKILL_SLOT_LB, HALF_WINCX + 210, WINCY - 210); // ÁúÇ³
-	CreateSkillIcon(BNS_SKILL_SLOT_RB, HALF_WINCX + 270, WINCY - 210); // °¡¸£±â
-	CreateSkillIcon(BNS_SKILL_SLOT_TAB, HALF_WINCX - 210, WINCY - 210); // Å»Ãâ tab
-	CreateSkillIcon(BNS_SKILL_SLOT_F, HALF_WINCX - 270, WINCY - 210); // ³ú¿¬¼¶ f
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	m_subSkillSlot[BNS_SKILL_SLOT_Q] = CreateSkillIcon(BNS_SKILL_SLOT_Q, HALF_WINCX - 360, WINCY - 510); // ÁúÇ³
+	//}
+
+	//m_skillSlot[BNS_SKILL_SLOT_Q] = CreateSkillIcon(BNS_SKILL_SLOT_Q, HALF_WINCX - 360, WINCY - 510); // ÁúÇ³
+	//m_skillSlot[BNS_SKILL_SLOT_E] = CreateSkillIcon(BNS_SKILL_SLOT_E, HALF_WINCX - 420, WINCY - 510); // ÁúÇ³
+	//m_skillSlot[BNS_SKILL_SLOT_SS] = CreateSkillIcon(BNS_SKILL_SLOT_SS, HALF_WINCX - 480, WINCY - 510); // ÁúÇ³
+
+	m_skillSlot[BNS_SKILL_SLOT_LB] = CreateSkillIcon(BNS_SKILL_SLOT_LB, HALF_WINCX + 210, WINCY - 210); // ÁúÇ³
+	m_skillSlot[BNS_SKILL_SLOT_RB] = CreateSkillIcon(BNS_SKILL_SLOT_RB, HALF_WINCX + 270, WINCY - 210); // °¡¸£±â
+	m_skillSlot[BNS_SKILL_SLOT_TAB] = CreateSkillIcon(BNS_SKILL_SLOT_TAB, HALF_WINCX - 210, WINCY - 210); // Å»Ãâ tab
+	m_skillSlot[BNS_SKILL_SLOT_F] = CreateSkillIcon(BNS_SKILL_SLOT_F, HALF_WINCX - 270, WINCY - 210); // ³ú¿¬¼¶ f
 
 	// ¹Ù¶÷°³ºñ Èí°ø 
-	CreateSkillIcon(BNS_SKILL_SLOT_1, HALF_WINCX - 220, WINCY - 90); // 1
-	CreateSkillIcon(BNS_SKILL_SLOT_2, HALF_WINCX - 160, WINCY - 90); // 2
-	CreateSkillIcon(BNS_SKILL_SLOT_3, HALF_WINCX - 100, WINCY - 90); // 3
-	CreateSkillIcon(BNS_SKILL_SLOT_4, HALF_WINCX - 40,  WINCY - 90); // 4
-	CreateSkillIcon(BNS_SKILL_SLOT_Z, HALF_WINCX + 40,  WINCY - 90); // ±Í°Ë·É
-	CreateSkillIcon(BNS_SKILL_SLOT_X, HALF_WINCX + 100, WINCY - 90); // x
-	CreateSkillIcon(BNS_SKILL_SLOT_C, HALF_WINCX + 160, WINCY - 90); // c ÃµµÕº£±â
-	CreateSkillIcon(BNS_SKILL_SLOT_V, HALF_WINCX + 220, WINCY - 90); // v Âü¿ù
+	m_skillSlot[BNS_SKILL_SLOT_1] = CreateSkillIcon(BNS_SKILL_SLOT_1, HALF_WINCX - 220, WINCY - 90); // 1
+	m_skillSlot[BNS_SKILL_SLOT_2] = CreateSkillIcon(BNS_SKILL_SLOT_2, HALF_WINCX - 160, WINCY - 90); // 2
+	m_skillSlot[BNS_SKILL_SLOT_3] = CreateSkillIcon(BNS_SKILL_SLOT_3, HALF_WINCX - 100, WINCY - 90); // 3
+	m_skillSlot[BNS_SKILL_SLOT_4] = CreateSkillIcon(BNS_SKILL_SLOT_4, HALF_WINCX - 40, WINCY - 90); // 4
+	m_skillSlot[BNS_SKILL_SLOT_Z] = CreateSkillIcon(BNS_SKILL_SLOT_Z, HALF_WINCX + 40, WINCY - 90); // ±Í°Ë·É
+	m_skillSlot[BNS_SKILL_SLOT_X] = CreateSkillIcon(BNS_SKILL_SLOT_X, HALF_WINCX + 100, WINCY - 90); // x
+	m_skillSlot[BNS_SKILL_SLOT_C] = CreateSkillIcon(BNS_SKILL_SLOT_C, HALF_WINCX + 160, WINCY - 90); // c ÃµµÕº£±â
+	m_skillSlot[BNS_SKILL_SLOT_V] = CreateSkillIcon(BNS_SKILL_SLOT_V, HALF_WINCX + 220, WINCY - 90); // v Âü¿ù
 
 
 	//CreateSkillIcon(L"skill_Icon46", 1000, 600); // ss
@@ -118,16 +124,21 @@ void UIManager::CreateMainUI()
 	}
 	{
 		SingleImage::Desc image;
-		image.color = Vector4(1, 1, 1, 0.3f);
+		image.color = Vector4(1, 1, 1, 0.5f);
 		image.textureName = L"TargetGuide";
 		Text::Desc text;
 		text.color = D3DXCOLOR(1, 1, 1, 0.5f);
-		m_targetOutLine = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(256, 256);
-		m_targetOutLine->SetActive(false);
+	/*	m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30);
+		m_targetOutLine[0]->SetActive(false);
 
+		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -90);
+		m_targetOutLine[1]->SetActive(false);
 
-	
+		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -180);
+		m_targetOutLine[2]->SetActive(false);*/
 
+	/*	m_targetOutLine[3] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -270);
+		m_targetOutLine[3]->SetActive(false);*/
 		 
 	}
 }
@@ -149,14 +160,16 @@ void UIManager::UpdateHpUI(float _ratio)
 
 void UIManager::UpdateTarget(GameObject * _target)
 {
-	if (_target)
+	/*if (_target)
 	{
-		m_targetOutLine->SetActive(true);
+		for(int i = 0;  i <1; ++i)
+			m_targetOutLine[3]->SetActive(true);
 	}
 	else
 	{
-		m_targetOutLine->SetActive(false);
-	}
+		for (int i = 0; i < 1; ++i)
+			m_targetOutLine[3]->SetActive(false);
+	}*/
 }
 
 void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
@@ -166,21 +179,25 @@ void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
 	auto worldVolume = enemy->GetScreenVolume();
 	auto volume = enemy->GetVolume();
 
-	float averageX = (volume.z - volume.x) * 0.5f;
-	float averageY = (volume.w - volume.y) * 0.5f;
-
-	Vector2 screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(_target->GetTransform()->GetWorldPosition() + Vector3(averageX, -averageY, 0));
-	m_targetOutLine->SetPosition(screenPos);
-	m_targetOutLine->SetScale((float)(worldVolume.right - worldVolume.left) * 2, (float)(worldVolume.bottom - worldVolume.top) * 2);
+	//Vector2 screenPos = Vector2((worldVolume.right + worldVolume.left) * 0.5f, (worldVolume.bottom + worldVolume.top) * 0.5f);
+	//m_targetOutLine->SetScale((float)(worldVolume.right - worldVolume.left) * 2, (float)(worldVolume.bottom - worldVolume.top) * 2);
 	//m_targetOutLine->SetScale(200,200);
 	float distance = m_lynInfo->GetDistanceToTarget();
 	
-	auto text = m_targetOutLine->GetComponent<Text>();
+	//auto text = m_targetOutLine[3]->GetComponent<Text>();
 	RECT rc;
 	UINT right = UINT((worldVolume.right - worldVolume.left) * 0.5f);
 	UINT bottom = UINT((worldVolume.bottom - worldVolume.top) * 0.5f);
-	rc.left = right + 10;
-	rc.top = bottom + 10;
+
+
+	//m_targetOutLine[0]->SetPosition((float)worldVolume.left, (float)worldVolume.bottom);
+	//m_targetOutLine[1]->SetPosition((float)worldVolume.left, (float)worldVolume.top);
+	//m_targetOutLine[2]->SetPosition((float)worldVolume.right,(float)worldVolume.top);
+	//m_targetOutLine[3]->SetPosition((float)worldVolume.right,(float)worldVolume.bottom);
+
+
+	rc.left = right;
+	rc.top = bottom;
 	rc.right = right + 150;
 	rc.bottom = bottom + 30;
 
@@ -191,13 +208,16 @@ void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
 	/*std::sstream
 	string num_str = sstream.str();*/
 
-	text->SetBoundary(&rc);
-	text->SetText(strDistance + L"m");
+	/*text->SetBoundary(&rc);
+	text->SetText(strDistance + L"m");*/
 }
 
 void UIManager::SetSkillSlot(BnS_Skill* _skill)
 {
-	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<SingleImage>()->SetTexture(_skill->GetSkillIconTexture()->GetTexure(0));
+	auto curSkill = m_skillSlot[_skill->GetSkillSlotIndex()];
+	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
+	curSkill->GetComponent<CanvasRenderer>()->SetActive(true);
+	curSkill->GetComponent<BnS_SkillSlot>()->SetSkill(_skill);
 }
 
 void UIManager::UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio)
@@ -214,91 +234,101 @@ void UIManager::SetDamageFont()
 	}
 }
 
-void UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y)
+GameObject* UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y)
 {
+	Text::Desc text;
+	switch (_skillSlot)
 	{
-		Text::Desc text;
-		switch (_skillSlot)
-		{
-		case BNS_SKILL_SLOT_Q:
-			text.text = L"Q";
-			break;
-		case BNS_SKILL_SLOT_E:
-			text.text = L"E";
-			break;
-		case BNS_SKILL_SLOT_SS:
-			text.text = L"SS";
-			break;
-		case BNS_SKILL_SLOT_LB:
-			text.text = L"LB";
-			break;
-		case BNS_SKILL_SLOT_RB:
-			text.text = L"RB";
-			break;
-		case BNS_SKILL_SLOT_TAB:
-			text.text = L"TAB";
-			break;
-		case BNS_SKILL_SLOT_F:
-			text.text = L"F";
-			break;
-		case BNS_SKILL_SLOT_1:
-			text.text = L"1";
-			break;
-		case BNS_SKILL_SLOT_2:
-			text.text = L"2";
-			break;
-		case BNS_SKILL_SLOT_3:
-			text.text = L"3";
-			break;
-		case BNS_SKILL_SLOT_4:
-			text.text = L"4";
-			break;
-		case BNS_SKILL_SLOT_Z:
-			text.text = L"Z";
-			break;
-		case BNS_SKILL_SLOT_X:
-			text.text = L"X";
-			break;
-		case BNS_SKILL_SLOT_C:
-			text.text = L"C";
-			break;
-		case BNS_SKILL_SLOT_V:
-			text.text = L"V";
-			break;
-		default:
-			break;
-		}
-		text.boundary = { -20,-23,200,200 };
-		text.option = DT_LEFT;
-		text.height = 18;
-		text.weight = 700;
-		text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
-		CanvasRenderer::Desc canvas;
-		canvas.mtrlName = L"UI_Skill";
-		m_skillSlot[_skillSlot] = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
-			->AddComponent<SingleImage>()->AddComponent<BnS_SkillSlot>()->AddComponent<Text>(&text)
-			->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
+	case BNS_SKILL_SLOT_Q:
+		text.text = L"Q";
+		break;
+	case BNS_SKILL_SLOT_E:
+		text.text = L"E";
+		break;
+	case BNS_SKILL_SLOT_SS:
+		text.text = L"SS";
+		break;
+	case BNS_SKILL_SLOT_LB:
+		text.text = L"LB";
+		break;
+	case BNS_SKILL_SLOT_RB:
+		text.text = L"RB";
+		break;
+	case BNS_SKILL_SLOT_TAB:
+		text.text = L"TAB";
+		break;
+	case BNS_SKILL_SLOT_F:
+		text.text = L"F";
+		break;
+	case BNS_SKILL_SLOT_1:
+		text.text = L"1";
+		break;
+	case BNS_SKILL_SLOT_2:
+		text.text = L"2";
+		break;
+	case BNS_SKILL_SLOT_3:
+		text.text = L"3";
+		break;
+	case BNS_SKILL_SLOT_4:
+		text.text = L"4";
+		break;
+	case BNS_SKILL_SLOT_Z:
+		text.text = L"Z";
+		break;
+	case BNS_SKILL_SLOT_X:
+		text.text = L"X";
+		break;
+	case BNS_SKILL_SLOT_C:
+		text.text = L"C";
+		break;
+	case BNS_SKILL_SLOT_V:
+		text.text = L"V";
+		break;
+	default:
+		break;
 	}
-	{
-	
-	
-		SingleImage::Desc image;
-		image.textureName = L"GameUI_IconOutLine";
-		auto frame = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50);
-		frame->SetParents(m_skillSlot[_skillSlot]);
-	}
+	text.boundary = { -20,-23,200,200 };
+	text.option = DT_LEFT;
+	text.height = 18;
+	text.weight = 700;
+	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
+	CanvasRenderer::Desc canvas;
+	canvas.mtrlName = L"UI_Skill";
+	auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
+		->AddComponent<BnS_SkillSlot>()->AddComponent<Text>(&text)
+		->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
+	obj->GetComponent<CanvasRenderer>()->SetActive(false);
+
+	SingleImage::Desc image;
+	image.textureName = L"GameUI_IconOutLine";
+	auto frame = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50);
+	frame->SetParents(obj);
+	frame->SetActive(false);
+
+	return obj;
+
 }
 
 void UIManager::ChangeSkillSlot(BnS_Skill* _skill)
 {
-	m_skillSlot[_skill->GetSkillSlotIndex()]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
-	m_skillSlot[_skill->GetSkillSlotIndex()]->GetComponent<CanvasRenderer>()->SetActive(true);
+	auto curSkill = m_skillSlot[_skill->GetSkillSlotIndex()];
+	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
+	curSkill->GetComponent<CanvasRenderer>()->SetActive(true);
+	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_skill->GetSkillIconTexture());
 }
+
+void UIManager::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex)
+{
+	auto curSkill = m_skillSlot[_slot];
+	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_tex);
+}
+
 
 void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
 {
-	m_skillSlot[_slot]->GetComponent<CanvasRenderer>()->SetActive(false);
-	m_skillSlot[_slot]->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
+	auto curSkill = m_skillSlot[_slot];
+	curSkill->GetComponent<CanvasRenderer>()->SetActive(false);
+	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
 }
 
 void UIManager::AddInnerPower(UINT _index)

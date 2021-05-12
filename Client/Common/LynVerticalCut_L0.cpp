@@ -21,7 +21,6 @@ void LynVerticalCut_L0::EnterState()
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyb_B_Std_VerticalCul_01_1");
 
-	ReduceInnerPower(2);
 
 }
 

@@ -24,10 +24,12 @@ public:
 		float _coolTime,
 		__int64 _actionKey,
 		bool _isCombined,
-		activationCondition _condition);
+		bool _isRenderSlot,
+		activationCondition _condition
+		);
 	void SetSkillSlot(const wstring& _name);
+	void ChangeSkillSlot(const wstring& _name);
 	void ReleaseSkill(BNS_SKILL_SLOT _slot);
-	void UpdateCoolTime();
 	//virtual void Release() override
 	void ActiveSkill();
 private:
