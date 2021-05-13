@@ -313,7 +313,7 @@ void LynInfo::SetState(LYN_STATE _state)
 	}
 	case LYN_STATE_BATTLE_HIDEBLADE:
 	{
-		m_skillController->SetSkillSlot(L"baldo");
+		//m_skillController->SetSkillSlot(L"baldo");
 		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
 		m_battleToPeaceTimer = 5.f;
 		break;

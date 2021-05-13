@@ -12,12 +12,18 @@ SingleImage::SingleImage(Desc * _desc)
 
 void SingleImage::Initialize()
 {
-	
+	m_material = GetComponent<CanvasRenderer>()->GetMaterial();
 }
 
 void SingleImage::Update()
 {
 
+}
+
+void SingleImage::EachRender()
+{
+	m_material->SetTexture("g_mainTex", m_image);
+	m_material->SetVector("g_mainTexColor", m_color);
 }
 
 void SingleImage::SetTexture(wstring _name)

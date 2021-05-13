@@ -19,7 +19,7 @@ void LynStateControl::Initialize()
 	m_animController_lower = GetComponents<AnimationController>()[0];
 	m_animController_upper = GetComponents<AnimationController>()[1];
 	auto cam = Core::GetInstance()->GetMainCamera()->GetComponent<BnS_MainCamera>();
-
+	auto skillController = GetComponent<LynSkillController>();
 	auto stateControls = GetComponents<LynStateControl>();
 	for(auto& state : m_stateList)
 	{
@@ -27,6 +27,7 @@ void LynStateControl::Initialize()
 		lynState->m_character = m_character;
 		lynState->m_info = m_info;
 		lynState->m_bnsMainCam = cam;
+		lynState->m_skillController = skillController;
 		if(lynState->m_isUpper)
 			lynState->m_animController = m_animController_upper;
 		else

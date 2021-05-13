@@ -22,9 +22,10 @@ void BnS_Skill::Update()
 	}
 }
 
-void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition)
+void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot)
 {
 	m_stateName = _stateName;
+	m_isRenderSlot = _isRenderSlot;
 	m_skillSlot = _skillSlot;
 	m_isCombined = _isCombined;
 	m_skillIcon = ResourceManager::GetInstance()->GetResource<Texture>(_skillIcon);

@@ -13,10 +13,15 @@ LynSlash1::~LynSlash1()
 
 void LynSlash1::Initialize()
 {
+	m_slash2Tex = ResourceManager::GetInstance()->GetResource<Texture>(L"skill_Icon01");
+	m_slash1Tex = ResourceManager::GetInstance()->GetResource<Texture>(L"skill_Icon00");
+
 }
 
 void LynSlash1::EnterState()
 {
+	ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash2Tex);
+
 	m_info->StartSkill();
 	m_info->SetSpeed(m_info->m_airSpeed * 0.8f);
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
@@ -68,5 +73,8 @@ void LynSlash1::UpdateState()
 
 void LynSlash1::ExitState()
 {
+	if (!m_isCombo)
+		ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex);
+
 	m_info->EndSkill();
 }

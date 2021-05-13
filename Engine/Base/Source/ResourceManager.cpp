@@ -251,6 +251,7 @@ void ResourceManager::LoadTextures(const TCHAR * _extention, bool _isStatic)
 				{
 					tex = new Texture;
 					tex->m_isStatic = _isStatic;
+					tex->m_name = fileName;
 					m_resoucreContainers[typeid(Texture).name()][fileName] = tex;
 				}
 				tex->Initialize(filePath.c_str());
@@ -265,6 +266,7 @@ void ResourceManager::LoadTextures(const TCHAR * _extention, bool _isStatic)
 				Texture* tex = new Texture();
 				assert("Fail to Create Resource!" && tex);
 				tex->m_isStatic = _isStatic;
+				tex->m_name = fileName;
 				tex->Initialize(filePath.c_str());
 				m_resoucreContainers[typeid(Texture).name()][fileName] = tex;
 			}
@@ -277,6 +279,7 @@ void ResourceManager::LoadTextures(const TCHAR * _extention, bool _isStatic)
 			}
 			Texture* tex = new Texture();
 			tex->m_isStatic = _isStatic;
+			tex->m_name = fileName;
 			assert("Fail to Create Resource!" && tex);
 			tex->Initialize(filePath.c_str());
 			m_resoucreContainers[typeid(Texture).name()][fileName] = tex;

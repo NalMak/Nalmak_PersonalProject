@@ -306,11 +306,9 @@ void AnimationController::Play(AnimationClip * _clip, double _startTime)
 
 	m_animController->ResetTime();
 	m_totalPlayTime = anim->GetPeriod();
+	m_currentPlayTime = _startTime;
+	
 
-
-	D3DXTRACK_DESC trackInfo;
-	m_animController->GetTrackDesc(m_currentTrack, &trackInfo);
-	m_currentPlayTime = trackInfo.Position;
 
 }
 

@@ -208,8 +208,10 @@ void BnS_Enemy::CalcWorldVolume()
 	float averageY = (m_volumeRect.w - m_volumeRect.y) * 0.5f;
 	pos += Vector3(averageX, -averageY, 0);
 
-	m_screenVolumeRect.left = (UINT)cam->WorldToScreenPos(pos - cam->GetTransform()->GetRight() * m_volumeRect.x + cam->GetTransform()->GetUp() * m_volumeRect.y).x;
-	m_screenVolumeRect.top = (UINT)cam->WorldToScreenPos(pos - cam->GetTransform()->GetRight() * m_volumeRect.x + cam->GetTransform()->GetUp() * m_volumeRect.y).y;
-	m_screenVolumeRect.right = (UINT)cam->WorldToScreenPos(pos + cam->GetTransform()->GetRight() * m_volumeRect.z - cam->GetTransform()->GetUp() * m_volumeRect.w).x;
-	m_screenVolumeRect.bottom = (UINT)cam->WorldToScreenPos(pos + cam->GetTransform()->GetRight() * m_volumeRect.z - cam->GetTransform()->GetUp() * m_volumeRect.w).y;
+	Vector2 leftTopPos = cam->WorldToScreenPos(pos - cam->GetTransform()->GetRight() * m_volumeRect.x + cam->GetTransform()->GetUp() * m_volumeRect.y);
+	Vector2 rightBottomPos = cam->WorldToScreenPos(pos + cam->GetTransform()->GetRight() * m_volumeRect.z - cam->GetTransform()->GetUp() * m_volumeRect.w);
+	m_screenVolumeRect.left = (UINT)leftTopPos.x;
+	m_screenVolumeRect.top = (UINT)leftTopPos.y;
+	m_screenVolumeRect.right = (UINT)rightBottomPos.x;
+	m_screenVolumeRect.bottom = (UINT)rightBottomPos.y;
 }

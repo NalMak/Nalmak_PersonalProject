@@ -38,3 +38,11 @@ void LynState::CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, f
 	}
 }
 
+void LynState::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture * _tex)
+{
+	if (m_isUpper)
+	{
+		UIManager::GetInstance()->ChangeSkillSlotTexture(_slot, _tex);
+	}
+}
+

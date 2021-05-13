@@ -14,5 +14,6 @@ public:
 	virtual void ExitState() override;
 private:
 	bool m_isCombo;
+	Texture* m_slash1Tex;
 };
 

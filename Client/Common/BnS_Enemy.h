@@ -13,7 +13,7 @@ public:
 		float hitRadius = 3.f;
 		UINT power = 1500;
 		float detectionRadius = 10.f;
-		Vector4 volumeRect = { 6,10,6,1.5f};
+		Vector4 volumeRect = { 6,9,6,4.5f};
 	};
 public:
 	BnS_Enemy(Desc* _desc);

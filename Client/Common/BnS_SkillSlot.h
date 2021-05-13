@@ -20,13 +20,15 @@ public:
 	virtual void EachRender() override;
 public:
 	void SetSkill(BnS_Skill* _skill);
-	void ChangeSkill(BnS_Skill* _skill);
+	void ChangeSkillTex(Texture* _tex);
+
 	void SetCoolTimeRatio(float _ratio);
 private:
+	bool m_isChange;
 	float m_coolTimeRatio;
 	float m_skillChangeTimer;
-	BnS_Skill* m_skill;
-	BnS_Skill* m_preSkill;
+	Texture* m_curSkill;
+	Texture* m_nextSkill;
 
 	Material* m_material;
 };
