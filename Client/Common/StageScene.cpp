@@ -557,8 +557,8 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir2_upper", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Fire", 0.5f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_End", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Fire", 0.8f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_End", 0.7f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Exec", 1.f, false);

@@ -19,7 +19,7 @@ public:
 		float jumpHalfHeight = 0.9f;
 
 		UINT power = 500;
-		UINT hp = 5460;
+		UINT hp = 54600;
 		float criticalRatio = 0.6f;
 	};
 public:

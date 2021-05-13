@@ -594,6 +594,7 @@
     <ClCompile Include="..\Source\Collision.cpp">
       <Filter>12.Collision</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Core.h">
@@ -959,6 +960,7 @@
     <ClInclude Include="..\Include\Collision.h">
       <Filter>12.Collision</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\UIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resource\Shader\H_common.fxh">

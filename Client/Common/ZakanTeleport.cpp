@@ -38,14 +38,14 @@ void ZakanTeleport::UpdateState()
 			m_jumpPos = m_transform->GetWorldPosition();
 			m_flyVelocity = (m_landingTarget - m_jumpPos) / m_flyTime;
 			m_flyLength = Nalmak_Math::Distance(Vector3(m_jumpPos.x, m_landingTarget.y, m_jumpPos.z), m_landingTarget);
-			m_character->SetVelocityY(200);
+			m_character->SetVelocityY(160);
 		}
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Skl_Teleport_Fire")
 	{
-		m_character->AddVelocity(Vector3(0,-800 * dTime,0));
+		m_character->AddVelocity(Vector3(0,-700 * dTime,0));
 
-		m_character->SetVelocityXZ(m_flyVelocity * Nalmak_Math::Clamp(1.2f - m_animController->GetPlayRatio(), 0.8f, 1.2f));
+		m_character->SetVelocityXZ(m_flyVelocity * Nalmak_Math::Clamp(0.9f - m_animController->GetPlayRatio(), 0.5f, 0.9f));
 		Vector3 worldPos = m_transform->GetWorldPosition();
 		if (Nalmak_Math::Distance(Vector3(worldPos.x, m_landingTarget.y, worldPos.z), m_jumpPos) > m_flyLength)
 		{

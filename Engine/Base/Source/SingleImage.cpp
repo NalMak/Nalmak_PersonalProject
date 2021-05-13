@@ -1,6 +1,7 @@
 #include "..\Include\SingleImage.h"
 #include "ResourceManager.h"
 #include "CanvasRenderer.h"
+#include "Transform.h"
 
 SingleImage::SingleImage(Desc * _desc)
 {
@@ -12,7 +13,7 @@ SingleImage::SingleImage(Desc * _desc)
 
 void SingleImage::Initialize()
 {
-	m_material = GetComponent<CanvasRenderer>()->GetMaterial();
+	UIComponent::Initialize();
 }
 
 void SingleImage::Update()
@@ -22,8 +23,11 @@ void SingleImage::Update()
 
 void SingleImage::EachRender()
 {
-	m_material->SetTexture("g_mainTex", m_image);
-	m_material->SetVector("g_mainTexColor", m_color);
+}
+
+void SingleImage::Release()
+{
+	UIComponent::Release();
 }
 
 void SingleImage::SetTexture(wstring _name)
@@ -41,4 +45,16 @@ void SingleImage::SetTexture(IDirect3DBaseTexture9 * _tex)
 IDirect3DBaseTexture9* SingleImage::GetTexture()
 {
 	return m_image;
+}
+
+void SingleImage::Render(Shader* _shader, Mesh* _mesh)
+{
+	_shader->SetTexture("g_mainTex", m_image);
+	_shader->SetVector("g_mainTexColor", m_color);
+
+
+	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
+
+	_shader->CommitChanges();
+	_mesh->Draw();
 }

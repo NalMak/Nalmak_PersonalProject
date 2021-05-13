@@ -4,7 +4,7 @@
 
 
 #include "IRenderer.h"
-
+class UIComponent;
 class Texture;
 class Animator;
 class RenderManager;
@@ -27,20 +27,21 @@ private:
 	virtual void LateUpdate() override;
 	virtual void Release() override;
 public:
+	void AddUIComponent(UIComponent* _ui);
+	void DeleteUIComponent(UIComponent* _ui);
 	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 private:
 	virtual void BindingStreamSource() override;
 private:
 	Mesh* m_mesh;
 	Material* m_material;
+	vector<UIComponent*> m_uiComponents;
 public:	// IRenderer을(를) 통해 상속됨
 	virtual int GetMaterialCount() override;
 	virtual Material * GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) override;
 	virtual void SetMaterial(Material * _material, int _index = 0) override;
 	virtual void SetMaterial(const wstring& _mtrlName, int _index = 0) override;
-public:
-	void Render_Text();
-	void Render_Number();
+
 public:
 	void UpdateBoundary();
 	bool IsCursorOnRect();
@@ -65,9 +66,6 @@ private:
 	RenderManager* m_renderManager;
 
 private:
-	Vector3 m_observedPosition;
-	Vector3 m_observedScale;
-
 	RECT m_boundary;
 
 	bool m_interactive;

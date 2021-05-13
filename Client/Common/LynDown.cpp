@@ -28,15 +28,21 @@ void LynDown::UpdateState()
 {
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_F))
 	{
-		SetState(L"backRoll");
-		return;
+		if (BETWEEN(m_animController->GetPlayRatio(), 0.4f, 1.f))
+		{
+			SetState(L"backRoll");
+			return;
+		}
 	}
+
+	
 
 	if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Down_B")
 	{
-		if (m_animController->GetPlayRemainTime() < 0.1f)
+		m_character->SetVelocityXZ(-m_transform->GetForward() * 3.5f);
+		if (m_animController->GetPlayRemainTime() < 0.3f)
 		{
-			m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			SetState(L"layDown");
 			return;
 		}

@@ -5,10 +5,11 @@
 
 
 #include "Component.h"
+#include "UIComponent.h"
 
 class CanvasRenderer;
 class NALMAK_DLL Text :
-	public Component
+	public UIComponent
 {
 	friend class RenderManager;
 public:
@@ -31,9 +32,8 @@ private:
 	virtual void LateUpdate() override;
 	virtual void PreRender() override;
 	virtual void Release() override;
-
+	virtual void Render(Shader * _shader, Mesh * _mesh) override;
 public:
-	virtual void RenderText();
 
 	void SetText(wstring _text) { m_text = _text; }
 	void SetColor(const D3DXCOLOR& _color) { m_color = _color; }
@@ -45,7 +45,6 @@ private:
 	LPD3DXFONT m_font = nullptr;
 	PDIRECT3DDEVICE9 m_device = nullptr;
 	RenderManager* m_render = nullptr;
-	CanvasRenderer* m_renderer = nullptr;
 
 private:
 	RECT m_boundary;
@@ -57,6 +56,8 @@ private:
 	const TCHAR* m_fontName;
 	wstring m_text;
 	bool	m_Hangul;
+
+
 };
 
 #endif // !__TEXT_H__

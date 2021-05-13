@@ -42,7 +42,7 @@ void CanvasRenderer::Initialize()
 
 void CanvasRenderer::Update()
 {
-	UpdateBoundary();
+	/*UpdateBoundary();
 	if (m_observedPosition != m_transform->position)
 	{
 		UpdateBoundary();
@@ -52,7 +52,7 @@ void CanvasRenderer::Update()
 	{
 		UpdateBoundary();
 		m_observedScale = m_transform->scale;
-	}
+	}*/
 }
 
 void CanvasRenderer::LateUpdate()
@@ -64,46 +64,34 @@ void CanvasRenderer::Release()
 	
 }
 
+void CanvasRenderer::AddUIComponent(UIComponent * _ui)
+{
+	m_uiComponents.emplace_back(_ui);
+}
+
+void CanvasRenderer::DeleteUIComponent(UIComponent * _ui)
+{
+	for (auto iter = m_uiComponents.begin(); iter != m_uiComponents.end(); ++iter)
+	{
+		if ((*iter) == _ui)
+		{
+			iter = m_uiComponents.erase(iter);
+			return;
+		}
+	}
+}
+
 void CanvasRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
-
-	_shader->CommitChanges();
-	m_mesh->Draw();
-	
-	auto texts = GetComponents<Text>();
-	for (int i = 0; i < texts.size(); ++i)
+	for (auto& ui : m_uiComponents)
 	{
-		texts[i]->RenderText();
+		ui->Render(_shader, m_mesh);
 	}
-	
 }
 
 void CanvasRenderer::BindingStreamSource()
 {
 	m_mesh->BindingStreamSource(m_material->GetShader()->GetInputLayoutSize());
-}
-
-
-
-void CanvasRenderer::Render_Text()
-{
-	Text* text = GetComponent<Text>();
-
-	if (text)
-	{
-		text->RenderText();
-	}
-}
-
-void CanvasRenderer::Render_Number()
-{
-	Number* number = GetComponent<Number>();
-
-	if (number)
-	{
-		number->RenderText();
-	}
 }
 
 void CanvasRenderer::UpdateBoundary()

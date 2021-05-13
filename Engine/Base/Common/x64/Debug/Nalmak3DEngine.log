@@ -138,11 +138,12 @@
   ..\Include\Trail_Color.h
   ..\Include\Transform.h
   ..\Include\Triangle.h
+  ..\Include\UIComponent.h
   ..\Include\UIInteractor.h
   ..\Include\UserCollisionFilterFlag.h
   ..\Include\VIBuffer.h
   ..\Include\XFileMesh.h
-  142개 파일이 복사되었습니다.
+  143개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

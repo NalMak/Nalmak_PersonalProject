@@ -130,19 +130,23 @@ void UIManager::CreateMainUI()
 		image.color = Vector4(1, 1, 1, 0.5f);
 		image.textureName = L"TargetGuide";
 		Text::Desc text;
+		text.boundary = { 20,0,200,30 };
+		text.option = DT_LEFT;
 		text.color = D3DXCOLOR(1, 1, 1, 0.5f);
-	/*	m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30);
+		m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30);
 		m_targetOutLine[0]->SetActive(false);
 
 		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -90);
 		m_targetOutLine[1]->SetActive(false);
 
 		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -180);
-		m_targetOutLine[2]->SetActive(false);*/
+		m_targetOutLine[2]->SetActive(false);
 
-	/*	m_targetOutLine[3] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -270);
-		m_targetOutLine[3]->SetActive(false);*/
+		m_targetOutLine[3] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -270);
+		m_targetOutLine[3]->SetActive(false);
 		 
+
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -90);
 	}
 }
 
@@ -163,16 +167,16 @@ void UIManager::UpdateHpUI(float _ratio)
 
 void UIManager::UpdateTarget(GameObject * _target)
 {
-	/*if (_target)
+	if (_target)
 	{
-		for(int i = 0;  i <1; ++i)
-			m_targetOutLine[3]->SetActive(true);
+		for(int i = 0;  i <4; ++i)
+			m_targetOutLine[i]->SetActive(true);
 	}
 	else
 	{
-		for (int i = 0; i < 1; ++i)
-			m_targetOutLine[3]->SetActive(false);
-	}*/
+		for (int i = 0; i < 4; ++i)
+			m_targetOutLine[i]->SetActive(false);
+	}
 }
 
 void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
@@ -187,32 +191,21 @@ void UIManager::UpdateTargetBoundaryBox(GameObject * _target)
 	//m_targetOutLine->SetScale(200,200);
 	float distance = m_lynInfo->GetDistanceToTarget();
 	
-	//auto text = m_targetOutLine[3]->GetComponent<Text>();
-	RECT rc;
-	UINT right = UINT((worldVolume.right - worldVolume.left) * 0.5f);
-	UINT bottom = UINT((worldVolume.bottom - worldVolume.top) * 0.5f);
+
+	m_targetOutLine[0]->SetPosition((float)worldVolume.left, (float)worldVolume.bottom);
+	m_targetOutLine[1]->SetPosition((float)worldVolume.left, (float)worldVolume.top);
+	m_targetOutLine[2]->SetPosition((float)worldVolume.right,(float)worldVolume.top);
+	m_targetOutLine[3]->SetPosition((float)worldVolume.right,(float)worldVolume.bottom);
 
 
-	//m_targetOutLine[0]->SetPosition((float)worldVolume.left, (float)worldVolume.bottom);
-	//m_targetOutLine[1]->SetPosition((float)worldVolume.left, (float)worldVolume.top);
-	//m_targetOutLine[2]->SetPosition((float)worldVolume.right,(float)worldVolume.top);
-	//m_targetOutLine[3]->SetPosition((float)worldVolume.right,(float)worldVolume.bottom);
 
-
-	rc.left = right;
-	rc.top = bottom;
-	rc.right = right + 150;
-	rc.bottom = bottom + 30;
+	auto text = m_targetOutLine[3]->GetComponent<Text>();
 
 	double dDistance = int(distance * 10) / 10.0;
 	wstring strDistance = to_wstring(dDistance);
 	size_t targetNum = strDistance.find_last_of(L".");
 	strDistance = strDistance.substr(0, targetNum + 2);
-	/*std::sstream
-	string num_str = sstream.str();*/
-
-	/*text->SetBoundary(&rc);
-	text->SetText(strDistance + L"m");*/
+	text->SetText(strDistance + L"m");
 }
 
 void UIManager::SetSkillSlot(BnS_Skill* _skill)

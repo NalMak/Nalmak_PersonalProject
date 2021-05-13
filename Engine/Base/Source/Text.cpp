@@ -19,8 +19,7 @@ Text::Text(Desc * _desc)
 
 void Text::Initialize()
 {
-	
-	m_renderer = GetComponent<CanvasRenderer>();
+	UIComponent::Initialize();
 
 	m_render = RenderManager::GetInstance();
 	m_device = DeviceManager::GetInstance()->GetDevice();
@@ -49,7 +48,12 @@ void Text::PreRender()
 {
 }
 
-void Text::RenderText()
+void Text::SetBoundary(RECT * _rc)
+{
+	m_boundary = *_rc;
+}
+
+void Text::Render(Shader * _shader, Mesh * _mesh)
 {
 	auto pos = m_transform->GetWorldPosition();
 	RECT rc = {
@@ -68,15 +72,12 @@ void Text::RenderText()
 	);
 }
 
-void Text::SetBoundary(RECT * _rc)
-{
-	m_boundary = *_rc;
-}
-
 
 
 void Text::Release()
 {
+	UIComponent::Release();
+
 	if (m_font)
 	{
 		m_font->Release();

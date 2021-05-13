@@ -184,8 +184,8 @@ void AnimationTool::OnLbnSelchangeAnimationList()
 	auto animCtrl = MapToolManager::GetInstance()->GetAnimationObject()->GetComponent<AnimationController>();
 	string  animName = Nalmak_String::WStringToString(name.GetString());
 
-	if(!animCtrl->GetAnimationClip(animName))
-		animCtrl->AddAnimationClip(animName, 1.f, true);
+	//if(!animCtrl->GetAnimationClip(animName))
+	animCtrl->AddAnimationClip(animName, 1.f, true);
 
 	animCtrl->Play(animName);
 

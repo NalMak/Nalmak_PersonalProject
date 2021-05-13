@@ -1,9 +1,9 @@
 #pragma once
-#include "Component.h"
+#include "UIComponent.h"
 class BnS_Skill;
 
 class BnS_SkillSlot :
-	public Component
+	public UIComponent
 {
 public:
 	struct Desc
@@ -17,7 +17,9 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
-	virtual void EachRender() override;
+	// UIComponent을(를) 통해 상속됨
+	virtual void Release() override;
+	virtual void Render(Shader * _shader, Mesh * _mesh) override;
 public:
 	void SetSkill(BnS_Skill* _skill);
 	void ChangeSkillTex(Texture* _tex);
@@ -30,6 +32,5 @@ private:
 	Texture* m_curSkill;
 	Texture* m_nextSkill;
 
-	Material* m_material;
 };
 

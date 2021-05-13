@@ -25,6 +25,8 @@ void LynLayDown::EnterState()
 	m_bnsMainCam->UnLockTarget();
 
 	m_downTimer = GetFloat(L"downTime");
+
+	m_character->SetVelocityXZ(Vector3(0, 0, 0));
 }
 
 void LynLayDown::UpdateState()

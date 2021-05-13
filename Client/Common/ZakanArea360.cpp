@@ -18,6 +18,7 @@ void ZakanArea360::Initialize()
 
 void ZakanArea360::EnterState()
 {
+	m_info->LookTarget();
 	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_animController->Play("Zakan_B_Spell_Skl_Area360_Cast");
 }

@@ -127,6 +127,7 @@
     <ClCompile Include="..\Source\TrailRenderer.cpp" />
     <ClCompile Include="..\Source\Transform.cpp" />
     <ClCompile Include="..\Source\Triangle.cpp" />
+    <ClCompile Include="..\Source\UIComponent.cpp" />
     <ClCompile Include="..\Source\UIInteractor.cpp" />
     <ClCompile Include="..\Source\UserCollisionFilterFlag.cpp" />
     <ClCompile Include="..\Source\VIBuffer.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="..\Include\TrailRenderer.h" />
     <ClInclude Include="..\Include\Transform.h" />
     <ClInclude Include="..\Include\Triangle.h" />
+    <ClInclude Include="..\Include\UIComponent.h" />
     <ClInclude Include="..\Include\UIInteractor.h" />
     <ClInclude Include="..\Include\UserCollisionFilterFlag.h" />
     <ClInclude Include="..\Include\VIBuffer.h" />
