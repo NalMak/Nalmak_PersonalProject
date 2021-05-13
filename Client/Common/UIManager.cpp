@@ -26,7 +26,10 @@ void UIManager::CreateMainUI()
 	{
 		SingleImage::Desc image;
 		image.textureName = L"GameUI_hp";
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX , WINCY - 230);
+		CanvasRenderer::Desc canvas;
+		canvas.mtrlName = L"UI_Hp";
+		auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX , WINCY - 230);
+		m_hpBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
 	}
 
 	{

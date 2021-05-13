@@ -14,6 +14,7 @@ public:
 		float mass = 1;
 		bool isGravity = true;
 		bool isKinematic = false;
+		Vector3 velocity = { 0,0,0 };
 
 		BitFlag<CONSTRAINTS_DIRECTION> constraints = 0;
 	};
@@ -53,6 +54,7 @@ public:
 public:
 	PxRigidDynamic* GetRigidBody();
 private:
+	Vector3 m_velocity;
 	PxRigidDynamic* m_rigid;
 	float m_damping;
 	float m_mass;

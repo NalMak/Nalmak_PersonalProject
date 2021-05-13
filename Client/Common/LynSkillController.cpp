@@ -141,6 +141,22 @@ LynSkillController::LynSkillController(Desc * _desc)
 		}
 		return false;
 	});
+
+	CreateSkill(L"rotateSoulBlade", BNS_SKILL_SLOT_Z, L"skill_Icon75", 16.f, KEY_STATE_Z, true, [](LynInfo* _info)->bool {
+		return true;
+	});
+
+
+	CreateSkill(L"throwSoulBlade", BNS_SKILL_SLOT_1, L"skill_Icon04", 5.f, KEY_STATE_1, false, [](LynInfo* _info)->bool {
+		if (_info->GetTarget())
+		{
+			if (BETWEEN(_info->GetDistanceToTarget(), 4,16))
+			{
+				return true;
+			}
+		}
+		return false;
+	});
 }
 
 LynSkillController::~LynSkillController()
@@ -166,7 +182,8 @@ void LynSkillController::Initialize()
 	SetSkillSlot(L"frontDash");
 	SetSkillSlot(L"lowerSlash");
 	SetSkillSlot(L"hold");
-
+	SetSkillSlot(L"rotateSoulBlade");
+	SetSkillSlot(L"throwSoulBlade");
 
 
 }

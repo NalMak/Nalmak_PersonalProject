@@ -26,7 +26,7 @@ void LynSpinSlash_End::EnterState()
 
 void LynSpinSlash_End::UpdateState()
 {
-	if (m_animController->GetPlayRemainTime() < 1.f)
+	if (m_animController->GetPlayRemainTime() < 1.2f)
 	{
 		m_animController->SetBlendOption(0.5f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");

@@ -16,6 +16,7 @@
 #include "LynBattleToPeace.h"
 #include "LynBackStep.h"
 #include "LynThunderSlash.h"
+#include "LynWakeUp.h"
 
 #include "LynLightningSlash.h"
 #include "LynSpinSlash_End.h"
@@ -32,6 +33,7 @@
 #include "LynFrontDash.h"
 #include "LynLowerSlash.h"
 #include "LynLowerSlash2.h"
+#include "LynDown.h"
 
 #include "StaticObjectInfo.h"
 
@@ -61,14 +63,24 @@
 #include "LynBackRoll.h"
 
 #include "ZakanPeaceIdle.h"
+#include "ZakanBattleIdle.h"
 #include "ZakanSpawn.h"
 #include "ZakanNATK1.h"
 #include "ZakanNATK2.h"
+#include "ZakanMove.h"
+#include "ZakanPattern.h"
+
 
 #include "BnS_Enemy.h"
 #include "UIManager.h"
 #include "CameraShake.h"
-
+#include "ZakanSmash.h"
+#include "ZakanDown.h"
+#include "ZakanAir.h"
+#include "ZakanRise.h"
+#include "LynWeapon.h"
+#include "ZakanTeleport.h"
+#include "ZakanArea360.h"
 StageScene::StageScene()
 {
 }
@@ -81,6 +93,8 @@ StageScene::~StageScene()
 
 void StageScene::Initialize()
 {
+	ShowCursor(false);
+
 	Core::GetInstance()->SetSkyBox(L"cubeTex_nightFall");
 	UIManager::GetInstance()->CreateMainUI();
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
@@ -88,7 +102,7 @@ void StageScene::Initialize()
 		MAKE_STATIC(obj.first);
 
 	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(0, 10, 0)->SetRotation(0,-90,0);
-	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(10, 10, 0)->SetScale(0.7f,0.7f,0.7f);
+	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(30, 30, 10)->SetScale(0.7f,0.7f,0.7f);
 	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
 	
 	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
@@ -155,8 +169,8 @@ void StageScene::Initialize()
 	upperControl->AddState<LynWindyMoonSlash>(L"windyWallSlash", true);
 	lowerControl->AddState<LynUpperSlash>(L"upperSlash", false);
 	upperControl->AddState<LynUpperSlash>(L"upperSlash", true);
-	lowerControl->AddState<LynThrowSoulBlade>(L"throwSword", false);
-	upperControl->AddState<LynThrowSoulBlade>(L"throwSword", true);
+	lowerControl->AddState<LynThrowSoulBlade>(L"throwSoulBlade", false);
+	upperControl->AddState<LynThrowSoulBlade>(L"throwSoulBlade", true);
 	lowerControl->AddState<LynRotateSoulBlade>(L"rotateSoulBlade", false);
 	upperControl->AddState<LynRotateSoulBlade>(L"rotateSoulBlade", true);
 	lowerControl->AddState<LynLightningCombo>(L"lightningCombo", false);
@@ -203,6 +217,9 @@ void StageScene::Initialize()
 
 	upperControl->AddState<LynBackStep>(L"backStep", true);
 	lowerControl->AddState<LynBackStep>(L"backStep", false);
+
+	upperControl->AddState<LynWakeUp>(L"wakeUp", true);
+	lowerControl->AddState<LynWakeUp>(L"wakeUp", false);
 
 	upperControl->AddState<LynSideDashQ>(L"sideDashQ", true);
 	lowerControl->AddState<LynSideDashQ>(L"sideDashQ", false);
@@ -365,6 +382,8 @@ void StageScene::Initialize()
 
 
 	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_BackStep", 1.1f, false);
+
 
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_E", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_Q", 1.f, false);
@@ -378,7 +397,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.4f, false);
 
 	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.1f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.1f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.2f, false);
 
 	controller->AddAnimationClip("Lyn_B_Std_ThunderCut", 1.f, false);
 
@@ -402,6 +421,9 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Down", 1.f, false);// 두개 테스트 필요
 	controller->AddAnimationClip("Lyn_B_layDown", 1.f, false);//
 	controller->AddAnimationClip("Lyn_B_Down_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_wakeUp1", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_wakeUp2", 1.f, false);
+
 	controller->AddAnimationClip("Lyn_B_Down_F", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Dash", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_BackRoll", 1.f, false);
@@ -412,8 +434,8 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Holded_Looping", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_ToGrogy", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_upperSlash1", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_upperSlash2", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_upperSlash1", 1.5f, false);
+	controller->AddAnimationClip("Lyn_B_upperSlash2", 1.5f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum", 1.f, false); // 테스트 필요
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_End", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_Fire", 1.f, false);
@@ -424,6 +446,8 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Hide_WindyMoonSlashEnd", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Looping", 1.f, false);
+
+
 
 
 
@@ -450,7 +474,7 @@ void StageScene::Initialize()
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
-		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(0.5f, 0.65f, 0.5f);
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->SetScale(0.5f, 0.65f, 0.5f);
 		lyn->GetComponent<LynInfo>()->EquipeWeapon(weapon);
 	}
 #pragma endregion Lyn Weapon
@@ -483,16 +507,63 @@ void StageScene::Initialize()
 
 		auto stateCtrl = zakan->GetComponent<EnemyStateControl>();
 		stateCtrl->AddState<ZakanSpawn>(L"spawn");
+		stateCtrl->AddState<ZakanMove>(L"move");
+
 		stateCtrl->AddState<ZakanPeaceIdle>(L"peace_idle");
+		stateCtrl->AddState<ZakanBattleIdle>(L"battle_idle");
 		stateCtrl->AddState<ZakanNATK1>(L"NATK1");
 		stateCtrl->AddState<ZakanNATK2>(L"NATK2");
+		stateCtrl->AddState<ZakanSmash>(L"smash");
+		stateCtrl->AddState<ZakanPattern>(L"pattern");
+		stateCtrl->AddState<ZakanDown>(L"down");
+		stateCtrl->AddState<ZakanAir>(L"air");
+		stateCtrl->AddState<ZakanRise>(L"rise");
+		stateCtrl->AddState<ZakanTeleport>(L"teleport");
+		stateCtrl->AddState<ZakanArea360>(L"area360");
+
+
+
 
 		stateCtrl->InitState(L"peace_idle");
 
 		auto animCtrl = zakan->GetComponent<AnimationController>();
 		animCtrl->AddAnimationClip("Zakan_P_Std_Mov_Idle", 1.f, true);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Mov_Idle", 1.f, true);
+		animCtrl->AddAnimationClip("Zakan_B_None_Mov_Idle", 1.f, true);
+
+		animCtrl->AddAnimationClip("Zakan_B_Std_RunFront", 1.f, true);
+
+
 		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Exec", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec1", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec2", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Start", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Looping", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_End", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Start", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Looping", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_idle", 1.f, true);
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_lower", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_upper", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir2_upper", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Fire", 0.5f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_End", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Exec", 1.f, false);
+
+
 
 	}
 #pragma endregion Zakan

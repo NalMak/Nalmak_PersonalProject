@@ -32,6 +32,8 @@ private:
 public:
 	void SetFootPosition(const Vector3& _pos);
 
+
+	void SetVelocityXZ(const Vector3& _velocity);
 	void SetVelocity(const Vector3& _velocity);
 	void SetVelocity(float _x,float _y, float _z);
 	void AddVelocity(const Vector3& _velocity);

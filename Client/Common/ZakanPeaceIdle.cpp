@@ -19,15 +19,17 @@ void ZakanPeaceIdle::Initialize()
 void ZakanPeaceIdle::EnterState()
 {
 	m_animController->PlayBlending("Zakan_P_Std_Mov_Idle");
-
-	m_info->LostTarget();
+	m_transform->rotation = m_info->GetSpawnRot();
+	
+	m_character->SetVelocityX(0);
+	m_character->SetVelocityZ(0);
 }
 
 void ZakanPeaceIdle::UpdateState()
 {
 	if (m_info->GetTarget())
 	{
-		SetState(L"NATK1");
+		SetState(L"battle_idle");
 		return;
 	}
 }

@@ -20,9 +20,11 @@ void LynThunderSlash::EnterState()
 	m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
 	m_animController->Play("Lyn_B_Hide_SwordFlash_Swing");
 
-	m_distanceToTarget = Nalmak_Math::Distance(m_transform->GetWorldPosition(), m_info->GetTarget()->GetTransform()->GetWorldPosition()) - 6.f;
+	m_distanceToTarget = Nalmak_Math::Distance(m_transform->GetWorldPosition(), m_info->GetTarget()->GetTransform()->GetWorldPosition()) - (3.f / BNS_DISTANCE_RATIO);
 	m_toTargetDirection = Nalmak_Math::Normalize(m_info->GetTarget()->GetTransform()->GetWorldPosition() - m_transform->GetWorldPosition());
-	m_animPlayTime = m_animController->GetAnimationClip("Lyn_B_Hide_SwordFlash_Exec")->animationSet->GetPeriod();
+
+	auto clip = m_animController->GetAnimationClip("Lyn_B_Hide_SwordFlash_Exec");
+	m_animPlayTime = clip->animationSet->GetPeriod() / clip->speed;
 	m_info->StartSkill();
 }
 
@@ -43,19 +45,21 @@ void LynThunderSlash::UpdateState()
 
 		if (!m_animController->IsPlay())
 		{
-			m_animController->Play("Lyn_B_Hide_SwordFlash_End");
-		}
-	}
-	else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_End")
-	{
-		m_character->SetVelocity(0, 0, 0);
-		if (m_animController->GetPlayRemainTime() < 0.2)
-		{
-			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
+			m_character->SetVelocity(0, 0, 0);
 			SetState(L"idle");
 			return;
 		}
 	}
+	/*else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_End")
+	{
+		m_character->SetVelocity(0, 0, 0);
+		if (m_animController->GetPlayRemainTime() < 1.2f)
+		{
+			m_animController->SetBlendOption(0.6f, 1.f, D3DXTRANSITION_LINEAR);
+			SetState(L"idle");
+			return;
+		}
+	}*/
 }
 
 void LynThunderSlash::ExitState()

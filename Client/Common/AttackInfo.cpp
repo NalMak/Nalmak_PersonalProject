@@ -10,7 +10,11 @@ AttackInfo::AttackInfo(Desc * _desc)
 	m_isCritical = _desc->isCritical;
 	m_power = _desc->power;
 	m_innerPower = _desc->innerPower;
+	m_ccTime = _desc->ccTime;
+	m_hitEvent = nullptr;
 
+	
+	m_lifeTime = _desc->lifeTime;
 	assert(L"Please Set Attack host!" && _desc->host);
 
 	m_host = _desc->host;
@@ -19,7 +23,6 @@ AttackInfo::AttackInfo(Desc * _desc)
 	m_depth = _desc->depth;
 	m_colliderType = _desc->colliderType;
 
-	m_frameLife = 10;
 }
 
 AttackInfo::~AttackInfo()
@@ -65,10 +68,25 @@ void AttackInfo::Initialize()
 
 void AttackInfo::Update()
 {
-	if(m_frameLife <= 0)
-		DESTROY(m_gameObject);
+	if (m_lifeTime > 0)
+	{
+		m_lifeTime -= dTime;
+		if (m_lifeTime <= 0)
+		{
+			DESTROY(m_gameObject);
+		}
+	}
+}
 
-	--m_frameLife;
+void AttackInfo::Release()
+{
+	SAFE_DELETE(m_hitEvent);
+}
+
+
+void AttackInfo::AddHitEvent(HitEvent _hitEvent)
+{
+	m_hitEvent = new HitEvent(_hitEvent);
 }
 
 GameObject * AttackInfo::GetHost()

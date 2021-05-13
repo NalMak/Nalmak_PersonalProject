@@ -2,10 +2,11 @@
 ##  Material Data Setting
 #########################################################
 
-shader "SYS_UI"
+shader "BnS_HpUI"
 
 texture "g_mainTex" "default"
 vector4 "g_mainTexColor" "1,1,1,1"
+float "g_outputRatio" "1"
 
 blendingMode "0"
 

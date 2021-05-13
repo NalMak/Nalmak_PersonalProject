@@ -3,6 +3,7 @@
 #include "LynStateControl.h"
 #include "LynSkillController.h"
 #include "UIManager.h"
+#include "BnS_Enemy.h"
 
 LynInfo::LynInfo(Desc * _desc)
 {
@@ -21,6 +22,9 @@ LynInfo::LynInfo(Desc * _desc)
 	m_innerPower = 10;
 
 	m_followingAnimationPosition = false;
+
+	m_hp = _desc->hp;
+	m_maxHp	 = _desc->hp;
 }
 
 LynInfo::~LynInfo()
@@ -29,6 +33,7 @@ LynInfo::~LynInfo()
 
 void LynInfo::Initialize()
 {
+	m_lightningSpirit = 0;
 	m_energy = 100;
 	m_sKeyTimer = 0.f;
 	m_battleToPeaceTimer = 0.f;
@@ -163,7 +168,18 @@ void LynInfo::Update()
 		return;
 
 
-
+	if (m_target)
+	{
+		if (m_target->GetComponent<BnS_Enemy>()->GetBattleState() == BATTLE_STATE_DOWN)
+		{
+			if(InputManager::GetInstance()->GetKeyDown(KEY_STATE_F))
+			{
+				m_stateControl_lower->SetState(L"upperSlash");
+				m_stateControl_upper->SetState(L"upperSlash");
+				return;
+			}
+		}
+	}
 	m_skillController->ActiveSkill();
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
@@ -182,19 +198,32 @@ void LynInfo::OnTriggerEnter(Collision & _col)
 		{
 			AttackInfo* attack = _col.hitObj->GetComponent<AttackInfo>();
 			auto attackType = attack->m_attackType;
+
+			if (!GetDamage(attack->m_power))
+			{
+				attack->GetHost()->GetComponent<BnS_Enemy>()->LostTarget();
+				return;
+			}
 			if (m_battleState == BATTLE_STATE_WEAK)
 			{
 				switch (attackType)
 				{
 				case ATTACK_TYPE_DOWN:
+					m_stateControl_lower->SetFloat(L"downTime", attack->m_ccTime);
+					m_stateControl_upper->SetFloat(L"downTime", attack->m_ccTime);
+
 					m_stateControl_lower->SetState(L"down");
 					m_stateControl_upper->SetState(L"down");
 					break;
 				case ATTACK_TYPE_GROGY:
+					m_stateControl_lower->SetFloat(L"grogyTime", attack->m_ccTime);
+					m_stateControl_upper->SetFloat(L"grogyTime", attack->m_ccTime);
+
 					m_stateControl_lower->SetState(L"grogy");
 					m_stateControl_upper->SetState(L"grogy");
 					break;
 				case ATTACK_TYPE_MAGNETIC:
+					
 					m_stateControl_lower->SetState(L"hold");
 					m_stateControl_upper->SetState(L"hold");
 				default:
@@ -226,6 +255,41 @@ void LynInfo::OnCollisionStay(Collision & _col)
 
 void LynInfo::OnCollisionExit(Collision & _col)
 {
+}
+
+void LynInfo::AddLightningSpirit()
+{
+	if (m_lightningSpirit < 3)
+	{
+		++m_lightningSpirit;
+	}
+}
+
+bool LynInfo::UseLightningSpirit()
+{
+	if (m_lightningSpirit > 0)
+	{
+		--m_lightningSpirit;
+		return true;
+	}
+	return false;
+}
+
+bool LynInfo::GetDamage(UINT _damage)
+{
+	if (m_hp > _damage)
+	{
+		m_hp -= _damage;
+		UIManager::GetInstance()->UpdateHpUI((float)m_hp / m_maxHp);
+		return true;
+	}
+	else
+	{
+		UIManager::GetInstance()->UpdateHpUI(0);
+		m_stateControl_upper->SetState(L"dead");
+		m_stateControl_lower->SetState(L"dead");
+		return false;
+	}
 }
 
 void LynInfo::SetState(LYN_STATE _state)
@@ -389,6 +453,20 @@ void LynInfo::UpdateWeapon(LYN_STATE _state)
 	default:
 		break;
 	}
+}
+
+GameObject * LynInfo::GetWeapon()
+{
+	return m_weapon;
+}
+
+Vector3 LynInfo::GetRightHandPosition()
+{
+	auto rightHandMat =  m_transform->GetWorldMatrix() * *m_matBattleStandard;
+	Vector3 rightHandPos;
+	memcpy(&rightHandPos, &rightHandMat._41, sizeof(Vector3));
+
+	return rightHandPos;
 }
 
 bool LynInfo::UseEnergy(float _amount)

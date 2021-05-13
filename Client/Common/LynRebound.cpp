@@ -45,7 +45,7 @@ void LynRebound::EnterState()
 		break;
 	}
 	m_animController->PlayBlending(animName);
-
+	m_info->SetSpeed(m_info->m_runForwardSpeed);
 }
 
 void LynRebound::UpdateState()

@@ -240,6 +240,8 @@
     <ClInclude Include="LynVerticalCut_R1.h" />
     <ClInclude Include="LynVerticalCut_R2.h" />
     <ClInclude Include="LynRebound.h" />
+    <ClInclude Include="LynWakeUp.h" />
+    <ClInclude Include="LynWeapon.h" />
     <ClInclude Include="LynWindyMoonSlash.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
@@ -252,18 +254,27 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleToStage.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="ZakanAir.h" />
+    <ClInclude Include="ZakanArea360.h" />
+    <ClInclude Include="ZakanBattleIdle.h" />
     <ClInclude Include="ZakanDamageShield.h" />
+    <ClInclude Include="ZakanDown.h" />
     <ClInclude Include="ZakanFireSpellWave.h" />
     <ClInclude Include="ZakanFlyTakeDown.h" />
     <ClInclude Include="ZakanGrab.h" />
     <ClInclude Include="ZakanHolded.h" />
+    <ClInclude Include="ZakanMove.h" />
     <ClInclude Include="ZakanNATK1.h" />
     <ClInclude Include="ZakanNATK2.h" />
+    <ClInclude Include="ZakanPattern.h" />
     <ClInclude Include="ZakanPeaceIdle.h" />
+    <ClInclude Include="ZakanRise.h" />
+    <ClInclude Include="ZakanSmash.h" />
     <ClInclude Include="ZakanSpawn.h" />
     <ClInclude Include="ZakanSpellExplosion.h" />
     <ClInclude Include="ZakanSpellStance.h" />
     <ClInclude Include="ZakanSpellSuction.h" />
+    <ClInclude Include="ZakanTeleport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
@@ -326,6 +337,8 @@
     <ClCompile Include="LynVerticalCut_R1.cpp" />
     <ClCompile Include="LynVerticalCut_R2.cpp" />
     <ClCompile Include="LynRebound.cpp" />
+    <ClCompile Include="LynWakeUp.cpp" />
+    <ClCompile Include="LynWeapon.cpp" />
     <ClCompile Include="LynWindyMoonSlash.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
@@ -339,18 +352,27 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="ZakanAir.cpp" />
+    <ClCompile Include="ZakanArea360.cpp" />
+    <ClCompile Include="ZakanBattleIdle.cpp" />
     <ClCompile Include="ZakanDamageShield.cpp" />
+    <ClCompile Include="ZakanDown.cpp" />
     <ClCompile Include="ZakanFireSpellWave.cpp" />
     <ClCompile Include="ZakanFlyTakeDown.cpp" />
     <ClCompile Include="ZakanGrab.cpp" />
     <ClCompile Include="ZakanHolded.cpp" />
+    <ClCompile Include="ZakanMove.cpp" />
     <ClCompile Include="ZakanNATK1.cpp" />
     <ClCompile Include="ZakanNATK2.cpp" />
+    <ClCompile Include="ZakanPattern.cpp" />
     <ClCompile Include="ZakanPeaceIdle.cpp" />
+    <ClCompile Include="ZakanRise.cpp" />
+    <ClCompile Include="ZakanSmash.cpp" />
     <ClCompile Include="ZakanSpawn.cpp" />
     <ClCompile Include="ZakanSpellExplosion.cpp" />
     <ClCompile Include="ZakanSpellStance.cpp" />
     <ClCompile Include="ZakanSpellSuction.cpp" />
+    <ClCompile Include="ZakanTeleport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak_PersonalProject.rc" />

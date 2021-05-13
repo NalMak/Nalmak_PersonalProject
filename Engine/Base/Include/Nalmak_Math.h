@@ -264,6 +264,45 @@ public:
 		return vec;
 	}
 
+	static int AngleDir(const Vector3& _v1, const Vector3& _v2)
+	{
+		Vector3 cross = Nalmak_Math::Cross(_v1, _v2);
+		float dir = Nalmak_Math::Dot(cross, Vector3(0, 1, 0));
+
+		if (dir > 0.f)
+		{
+			return 1;
+		}
+		else if (dir < 0.f)
+		{
+			return -1;
+		}
+		else
+			return 0;
+	}
+
+	static float ContAngle(const Vector3& _v1, const Vector3& _v2)
+	{
+		float angle = Angle(_v1, _v2);
+
+		if (AngleDir(_v1, _v2) == -1)
+		{
+			angle = 360 - angle;
+			if (angle > 359.9999f)
+				angle -= 360.f;
+
+			return angle;
+		}
+		else
+			return angle;
+	}
+
+	static float Angle(const Vector3& _v1, const Vector3& _v2)
+	{
+		float dot = Nalmak_Math::Dot(Normalize(_v1), Normalize(_v2));
+		return acosf(dot);
+	}
+
 	static const Vector3 Direction(const Vector3& _v1, const Vector3& _v2)
 	{
 		Vector3 temp = _v2 - _v1;

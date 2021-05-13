@@ -19,6 +19,7 @@ public:
 		float jumpHalfHeight = 0.9f;
 
 		UINT power = 500;
+		UINT hp = 5460;
 		float criticalRatio = 0.6f;
 	};
 public:
@@ -35,6 +36,9 @@ private:
 	void OnCollisionStay(Collision& _col) override;
 	void OnCollisionExit(Collision& _col) override;
 public:
+	void AddLightningSpirit();
+	bool UseLightningSpirit();
+	bool GetDamage(UINT _damage);
 	void SetState(LYN_STATE _state);
 	LYN_STATE GetState();
 	void SetBattleState(BATTLE_STATE _state);
@@ -54,9 +58,13 @@ public:
 	float m_jumpHalfHeight;
 	float m_currentSpeed;
 private:
-	float m_resistanceTimer;
+	UINT m_maxHp;
+	UINT m_hp;
+	UINT m_lightningSpirit;
 	float m_energy;
 	UINT m_innerPower;
+	float m_resistanceTimer;
+
 public:
 	void SetResistance(float _timer);
 	float GetDistanceToTarget();
@@ -68,7 +76,7 @@ public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();
 	void UpdateWeapon(LYN_STATE _state);
-
+	GameObject* GetWeapon();
 private:
 	GameObject* m_weapon;
 	AnimationController* m_animController_lower;
@@ -89,6 +97,7 @@ private:
 private:
 	Vector3 m_preAnimPos;
 public:
+	Vector3 GetRightHandPosition();
 	bool UseEnergy(float _amount);
 	void SetTarget(GameObject* _obj);
 	GameObject* GetTarget();

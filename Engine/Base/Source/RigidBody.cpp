@@ -11,6 +11,7 @@ RigidBody::RigidBody(Desc * _desc)
 	m_isKinematic = _desc->isKinematic;
 	m_constraints = _desc->constraints;
 	m_mass = _desc->mass;
+	m_velocity = _desc->velocity;
 }
 
 RigidBody::~RigidBody()
@@ -20,6 +21,8 @@ RigidBody::~RigidBody()
 void RigidBody::Initialize()
 {
 	PhysicsManager::GetInstance()->CreateRigidDynamic(this);
+
+	SetVelocity(m_velocity);
 }
 
 void RigidBody::Update()

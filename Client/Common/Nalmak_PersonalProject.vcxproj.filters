@@ -406,6 +406,21 @@
     <ClInclude Include="LynUpperSlash.h">
       <Filter>04.Lyn\UpperSlash</Filter>
     </ClInclude>
+    <ClInclude Include="LynWakeUp.h" />
+    <ClInclude Include="ZakanBattleIdle.h" />
+    <ClInclude Include="ZakanMove.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanPattern.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSmash.h" />
+    <ClInclude Include="ZakanDown.h" />
+    <ClInclude Include="ZakanAir.h" />
+    <ClInclude Include="ZakanRise.h" />
+    <ClInclude Include="LynWeapon.h" />
+    <ClInclude Include="ZakanTeleport.h" />
+    <ClInclude Include="ZakanArea360.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -646,6 +661,21 @@
     <ClCompile Include="LynUpperSlash.cpp">
       <Filter>04.Lyn\UpperSlash</Filter>
     </ClCompile>
+    <ClCompile Include="LynWakeUp.cpp" />
+    <ClCompile Include="ZakanBattleIdle.cpp" />
+    <ClCompile Include="ZakanMove.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanPattern.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSmash.cpp" />
+    <ClCompile Include="ZakanDown.cpp" />
+    <ClCompile Include="ZakanAir.cpp" />
+    <ClCompile Include="ZakanRise.cpp" />
+    <ClCompile Include="LynWeapon.cpp" />
+    <ClCompile Include="ZakanTeleport.cpp" />
+    <ClCompile Include="ZakanArea360.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

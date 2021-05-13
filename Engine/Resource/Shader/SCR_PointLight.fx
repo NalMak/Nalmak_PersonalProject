@@ -12,8 +12,6 @@ texture g_depth_cookTorrance;
 sampler DiffuseSampler = sampler_state
 {
 	texture = g_diffuse;
-
-	
 };
 
 sampler NormalSampler = sampler_state

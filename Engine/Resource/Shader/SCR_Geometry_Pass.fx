@@ -22,9 +22,9 @@ sampler LightSampler = sampler_state
 {
 	texture = g_light;
 
-	MinFilter = anisotropic;
-	MagFilter = anisotropic;
-	MAXANISOTROPY = 16;
+	//MinFilter = anisotropic;
+	//MagFilter = anisotropic;
+	//MAXANISOTROPY = 16;
 };
 sampler ShadowSampler = sampler_state
 {

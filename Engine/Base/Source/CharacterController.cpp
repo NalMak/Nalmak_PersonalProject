@@ -64,6 +64,20 @@ void CharacterController::SetFootPosition(const Vector3 & _pos)
 	m_controller->setFootPosition(vec3);
 }
 
+
+
+//void CharacterController::SetVelcityXZ(const Vector3 & _velocity)
+//{
+//	m_velocity.x = _velocity.x;
+//	m_velocity.z = _velocity.z;
+//}
+
+void CharacterController::SetVelocityXZ(const Vector3 & _velocity)
+{
+	m_velocity.x = _velocity.x;
+	m_velocity.z = _velocity.z;
+}
+
 void CharacterController::SetVelocity(const Vector3 & _velocity)
 {
 	m_velocity = _velocity;

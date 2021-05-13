@@ -96,7 +96,7 @@ void Transform::UpdateMatrix()
 		}
 		else
 		{
-			worldMatrix = worldMatrix * m_parents->GetNoneScaleWorldMatrix();
+			worldMatrix = 1 * m_parents->GetNoneScaleWorldMatrix();
 		}
 	}
 }

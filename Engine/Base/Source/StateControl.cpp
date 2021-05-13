@@ -142,7 +142,7 @@ float StateControl::GetFloat(wstring _key)
 	{
 #ifdef _DEBUG
 		{
-			assert(L"Can't find integer data has that key!" && 0);
+			assert(L"Can't find float data has that key!" && 0);
 		}
 #endif
 	}
