@@ -178,9 +178,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackInfo.h" />
+    <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
     <ClInclude Include="BnS_MainCamera.h" />
+    <ClInclude Include="BnS_RotateSoulBlade.h" />
     <ClInclude Include="BnS_Skill.h" />
     <ClInclude Include="BnS_SkillSlot.h" />
     <ClInclude Include="CameraShake.h" />
@@ -199,6 +201,7 @@
     <ClInclude Include="LynChamWall.h" />
     <ClInclude Include="LynDead.h" />
     <ClInclude Include="LynDown.h" />
+    <ClInclude Include="LynEventIdle.h" />
     <ClInclude Include="LynExcape.h" />
     <ClInclude Include="LynFall.h" />
     <ClInclude Include="LynFrontDash.h" />
@@ -278,9 +281,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
+    <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
+    <ClCompile Include="BnS_RotateSoulBlade.cpp" />
     <ClCompile Include="BnS_Skill.cpp" />
     <ClCompile Include="BnS_SkillSlot.cpp" />
     <ClCompile Include="CameraShake.cpp" />
@@ -296,6 +301,7 @@
     <ClCompile Include="LynChamWall.cpp" />
     <ClCompile Include="LynDead.cpp" />
     <ClCompile Include="LynDown.cpp" />
+    <ClCompile Include="LynEventIdle.cpp" />
     <ClCompile Include="LynExcape.cpp" />
     <ClCompile Include="LynFall.cpp" />
     <ClCompile Include="LynFrontDash.cpp" />

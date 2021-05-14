@@ -10,9 +10,6 @@
 
 AnimationController::AnimationController(Desc * _desc)
 {
-
-
-
 	m_currentTrack = 0;
 	m_nextTrack = 1;
 	m_currentPlayTime = 0.f;
@@ -366,6 +363,7 @@ void AnimationController::PlayBlending(AnimationClip * _clip, double _otherTime)
 
 void AnimationController::PlayBlending(const string & _clipName, double _otherTime)
 {
+	assert(L"Can't find animation!" &&  GetAnimationClip(_clipName));
 	PlayBlending(GetAnimationClip(_clipName),_otherTime);
 }
 

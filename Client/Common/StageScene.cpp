@@ -81,6 +81,7 @@
 #include "LynWeapon.h"
 #include "ZakanTeleport.h"
 #include "ZakanArea360.h"
+#include "LynEventIdle.h"
 StageScene::StageScene()
 {
 }
@@ -160,6 +161,8 @@ void StageScene::Initialize()
 	upperControl->AddState<LynJump>(L"jump", true);
 	lowerControl->AddState<LynIdle>(L"idle", false);
 	upperControl->AddState<LynIdle>(L"idle", true);
+	lowerControl->AddState<LynEventIdle>(L"eventIdle", false);
+	upperControl->AddState<LynEventIdle>(L"eventIdle", true);
 	lowerControl->AddState<LynRebound>(L"rebound", false);
 	upperControl->AddState<LynRebound>(L"rebound", true);
 
@@ -198,6 +201,8 @@ void StageScene::Initialize()
 
 	upperControl->InitState(L"idle");
 	lowerControl->InitState(L"idle");
+
+
 
 	lowerControl->AddState<LynBattleToPeace>(L"battleToPeace", false);
 	upperControl->AddState<LynBattleToPeace>(L"battleToPeace", true);
@@ -282,6 +287,9 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event2", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event3", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Idle_Event4", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Idle_Event5", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Idle_Event6", 1.f, false);
+
 
 	controller->AddAnimationClip("Lyn_P_Std_Mov_LeftToRight", 1.f, false);
 	controller->AddAnimationClip("Lyn_P_Std_Mov_RightToLeft", 1.f, false);
@@ -412,7 +420,9 @@ void StageScene::Initialize()
 	
 
 
-	controller->AddAnimationClip("Lyn_B_Hide_RotateSoulBlade", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_RotateSoulBlade", 1.1f, false);
+	controller->AddAnimationClip("Lyn_B_Std_RotateSoulBlade", 1.1f, false);
+
 	controller->AddAnimationClip("Lyn_B_KnockBack_Long_B", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Long_F", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_B", 1.f, false);
@@ -429,8 +439,8 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Std_BackRoll", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Throw1", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Throw2", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_Std_Dead", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_Std_Dead_Stay", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Dead", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Exhausted_Mov_Idle", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_Looping", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_ToGrogy", 1.f, false);

@@ -7,6 +7,7 @@
 #include "BnS_MainCamera.h"
 #include "LynSkillController.h"
 #include "UIManager.h"
+#include "BnS_Buff.h"
 
 class LynState :
 	public IState

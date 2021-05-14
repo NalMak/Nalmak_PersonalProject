@@ -3,6 +3,10 @@
 #include "BnS_Skill.h"
 BnS_SkillSlot::BnS_SkillSlot(Desc * _desc)
 {
+	if (_desc->_skill)
+	{
+		SetSkill(_desc->_skill);
+	}
 }
 
 BnS_SkillSlot::~BnS_SkillSlot()
@@ -40,7 +44,7 @@ void BnS_SkillSlot::ChangeSkillTex(Texture * _tex)
 
 void BnS_SkillSlot::SetCoolTimeRatio(float _ratio)
 {
-	m_coolTimeRatio = _ratio;
+	m_coolTimeRatio = 1 - _ratio;
 }
 
 void BnS_SkillSlot::Release()

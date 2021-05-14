@@ -56,10 +56,32 @@ void LynInfo::Initialize()
 	m_battleState = BATTLE_STATE_WEAK;
 
 	UpdateWeapon();
+
+	m_idleTimer = 0.f;
 }
 
 void LynInfo::Update()
 {
+	DEBUG_LOG(L"Battle State", m_state);
+
+	if (m_stateControl_lower->GetCurStateString() == L"idle" && m_stateControl_upper->GetCurStateString() == L"idle")
+	{
+		if (m_idleTimer > 4.f)
+		{
+			m_stateControl_lower->SetState(L"eventIdle");
+			m_stateControl_upper->SetState(L"eventIdle");
+			return;
+		}
+		else
+		{
+			m_idleTimer += dTime;
+		}
+	}
+	else
+	{
+		m_idleTimer = 0;
+	}
+
 	if (m_resistanceTimer > 0.f)
 	{
 		m_resistanceTimer -= dTime;
@@ -308,14 +330,14 @@ void LynInfo::SetState(LYN_STATE _state)
 	{
 		m_skillController->SetSkillSlot(L"slash1");
 		m_skillController->SetSkillSlot(L"verticalCut_l0");
-		m_battleToPeaceTimer = 5.f;
+		m_battleToPeaceTimer = BNS_BATTLE_TO_PEACE_TIME;
 		break;
 	}
 	case LYN_STATE_BATTLE_HIDEBLADE:
 	{
 		//m_skillController->SetSkillSlot(L"baldo");
 		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
-		m_battleToPeaceTimer = 5.f;
+		m_battleToPeaceTimer = BNS_BATTLE_TO_PEACE_TIME;
 		break;
 	}
 	default:
@@ -328,6 +350,11 @@ void LynInfo::SetState(LYN_STATE _state)
 		m_state = _state;
 		UpdateWeapon();
 	}
+}
+
+void LynInfo::ResetBattleTimer()
+{
+	m_battleToPeaceTimer = BNS_BATTLE_TO_PEACE_TIME;
 }
 
 LYN_STATE LynInfo::GetState()

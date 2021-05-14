@@ -26,6 +26,11 @@ LynSkillController::LynSkillController(Desc * _desc)
 		return false;
 	});
 
+	CreateSkill(L"backRoll", BNS_SKILL_SLOT_F, L"skill_Icon34", 5.f, KEY_STATE_F, true, false, [](LynInfo* _info)->bool {
+		return true;
+	});
+
+
 	CreateSkill(L"baldo", BNS_SKILL_SLOT_LB, L"skill_Icon69", 0.f, KEY_STATE_LEFT_MOUSE, false, true,[](LynInfo* _info)->bool {
 		if (_info->m_target)
 		{
@@ -270,4 +275,9 @@ void LynSkillController::ActiveSkill()
 		}
 	}
 
+}
+
+BnS_Skill * LynSkillController::GetSkill(const wstring & _skillName)
+{
+	return m_allSkill[_skillName];
 }

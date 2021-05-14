@@ -239,8 +239,6 @@ void RenderManager::SkyboxPass(ConstantBuffer & _cBuffer)
 	if (!m_lightManager->IsSkyBoxRender())
 		return;
 
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, false));
 
 	m_currentShader = nullptr;
 	m_currentMaterial = nullptr;
@@ -434,8 +432,6 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 		float scale = pointLight->GetRadius() * 2;
 		pointLight->SetLightPosition(pos);
 
-	
-
 		if (_cam->IsInFrustumCulling(pos, scale))
 		{
 			Matrix world =
@@ -461,7 +457,6 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 
 void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _lightInfo, Mesh* _mesh,  Shader* _mtrlStencilLight, Shader* _mtrlLight)
 {
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 
 	if(m_currentShader)
 		m_currentShader->EndPass();
@@ -471,12 +466,6 @@ void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _ligh
 	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
 	UpdateRenderTarget();
 
-	m_device->SetRenderState(D3DRS_ZENABLE, true);
-	m_device->SetRenderState(D3DRS_ZWRITEENABLE, false);
-	m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_device->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
-	m_device->SetRenderState(D3DRS_TWOSIDEDSTENCILMODE, true);
-
 	m_currentShader->SetMatrix("g_world", _matWorld);
 	m_currentShader->CommitChanges();
 	_mesh->Draw();
@@ -485,21 +474,12 @@ void RenderManager::PointLightPass(const Matrix& _matWorld, PointLightInfo _ligh
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ThrowIfFailed(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
 	m_currentShader->EndPass();
 	m_currentShader = _mtrlLight;
 	m_currentShader->BeginPass();
 
 	ThrowIfFailed(m_device->SetVertexDeclaration(m_currentShader->GetDeclartion()));
 	UpdateRenderTarget();
-
-	m_device->SetRenderState(D3DRS_ZENABLE, false);
-	m_device->SetRenderState(D3DRS_ZWRITEENABLE, true);
-	m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-	m_device->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_NOTEQUAL);
-	m_device->SetRenderState(D3DRS_STENCILREF, 0);
-
-	m_device->SetRenderState(D3DRS_TWOSIDEDSTENCILMODE, false);
 
 	m_currentShader->SetValue("g_pointLight", &_lightInfo, sizeof(PointLightInfo));
 	m_currentShader->SetMatrix("g_world", _matWorld);

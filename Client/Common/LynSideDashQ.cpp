@@ -17,6 +17,15 @@ void LynSideDashQ::Initialize()
 
 void LynSideDashQ::EnterState()
 {
+	if (m_isUpper)
+	{
+		BnS_Buff::Desc buff;
+		buff.buffTimer = 6.f;
+		buff.key = L"Q";
+		buff.skill = m_skillController->GetSkill(L"sideDashQ");
+		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+	}
+
 	m_info->AddInnerPower(1);
 	m_bnsMainCam->UnLockTarget();
 
@@ -59,7 +68,7 @@ void LynSideDashQ::UpdateState()
 		m_character->SetVelocity(0, 0, 0);
 	}
 
-	if (m_animController->GetPlayRemainTime() < 0.4f)
+	if (m_animController->GetPlayRemainTime() < 0.2f)
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
@@ -69,7 +78,7 @@ void LynSideDashQ::UpdateState()
 				return;
 			}
 		}
-		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 
 		SetState(L"idle");
 		return;

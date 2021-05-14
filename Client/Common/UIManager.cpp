@@ -4,6 +4,7 @@
 #include "BnS_Skill.h"
 #include "BnS_Enemy.h"
 #include "LynInfo.h"
+#include "BnS_Buff.h"
 
 IMPLEMENT_SINGLETON(UIManager)
 
@@ -325,6 +326,62 @@ void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
 	auto curSkill = m_skillSlot[_slot];
 	curSkill->GetComponent<CanvasRenderer>()->SetActive(false);
 	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
+}
+
+void UIManager::AddBuff(BnS_Buff * _buff, BnS_Skill * _skill, const wstring & _key)
+{
+	size_t index = m_buffSlot.size();
+
+	Text::Desc text;
+	text.boundary = { -20,-23,200,200 };
+	text.option = DT_LEFT;
+	text.height = 18;
+	text.weight = 700;
+	text.text = _key;
+	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
+	CanvasRenderer::Desc canvas;
+	canvas.mtrlName = L"UI_Skill";
+	BnS_SkillSlot::Desc skill;
+	skill._skill = _skill;
+	auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
+		->AddComponent<BnS_SkillSlot>(&skill)->AddComponent<Text>(&text)
+		->SetScale(46, 46)->SetPosition((float)(HALF_WINCX - 460 + 60 * index), (float)WINCY - 510);
+
+	SingleImage::Desc image;
+	image.textureName = L"GameUI_IconOutLine";
+	auto frame = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50);
+	frame->SetParents(obj);
+	_buff->SetSkillSlot(obj->GetComponent<BnS_SkillSlot>());
+
+	m_buffSlot.emplace_back(pair<GameObject*,BnS_Buff*>(obj, _buff));
+}
+
+void UIManager::ReleaseBuff(BnS_Buff * _buff)
+{
+	GameObject* slot = nullptr;
+	for (auto iter = m_buffSlot.begin(); iter != m_buffSlot.end(); ++iter)
+	{
+		if ((*iter).second == _buff)
+		{
+			slot = (*iter).first;
+			m_buffSlot.erase(iter);
+			break;
+		}
+	}
+
+	if (slot)
+	{
+		DESTROY(slot->GetTransform()->GetChild(0)->GetGameObject());
+		DESTROY(slot);
+	}
+
+	int index = 0;
+	for (auto& slot : m_buffSlot)
+	{
+		slot.first->SetPosition((float)(HALF_WINCX - 460 + 60 * index), (float)WINCY - 510);
+		++index;
+	}
+
 }
 
 void UIManager::AddInnerPower(UINT _index)

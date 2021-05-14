@@ -1,6 +1,7 @@
 #pragma once
 class BnS_Skill;
 class LynInfo;
+class BnS_Buff;
 
 class UIManager
 {
@@ -28,6 +29,8 @@ public:
 	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
 	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
 
+	void AddBuff(BnS_Buff* _buff, BnS_Skill* _skill, const wstring& _key);
+	void ReleaseBuff(BnS_Buff* _buff);
 	void AddInnerPower(UINT _index);
 	void ReduceInnerPower(UINT _index);
 
@@ -37,7 +40,7 @@ private:
 private:
 	LynInfo* m_lynInfo;
 	GameObject* m_skillSlot[BNS_SKILL_SLOT::BNS_SKILL_SLOT_RENDER_SLOT];
-	GameObject* m_subSkillSlot[10];
+	vector<pair<GameObject*,BnS_Buff*>> m_buffSlot;
 
 	CanvasRenderer* m_innerPowerIcon[10];
 	GameObject* m_targetOutLine[4];

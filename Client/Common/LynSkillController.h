@@ -32,6 +32,7 @@ public:
 	void ReleaseSkill(BNS_SKILL_SLOT _slot);
 	//virtual void Release() override
 	void ActiveSkill();
+	BnS_Skill* GetSkill(const wstring& _skillName);
 private:
 	map<wstring, BnS_Skill*> m_allSkill;
 	BnS_Skill* m_baseSkill[BNS_SKILL_SLOT::BNS_SKILL_SLOT_MAX];

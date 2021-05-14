@@ -8,7 +8,7 @@ class BnS_SkillSlot :
 public:
 	struct Desc
 	{
-
+		BnS_Skill* _skill = nullptr;
 	};
 public:
 	BnS_SkillSlot(Desc* _desc);

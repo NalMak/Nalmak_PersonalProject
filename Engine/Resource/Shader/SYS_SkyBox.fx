@@ -79,6 +79,8 @@ technique DefaultTechnique
 
 		//ZEnable = false;
 		//ZWriteEnable = false;
+		alphaBlendEnable = false;
+		alphaTestEnable = false;
 		CullMode = CW;
 		VertexShader = compile vs_3_0 VS_Main_Default();
 		PixelShader = compile ps_3_0 PS_Main_Default();

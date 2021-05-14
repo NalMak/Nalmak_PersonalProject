@@ -44,11 +44,12 @@ void LynIdle::EnterState()
 	m_animController->PlayBlending(animName);
 
 
-
 }
 
 void LynIdle::UpdateState()
 {
+	
+	
 	m_info->UseEnergy(3);
 
 	if (!m_character->IsGround())

@@ -40,13 +40,13 @@ public:
 	bool UseLightningSpirit();
 	bool GetDamage(UINT _damage);
 	void SetState(LYN_STATE _state);
+	void ResetBattleTimer();
 	LYN_STATE GetState();
 	void SetBattleState(BATTLE_STATE _state);
 	BATTLE_STATE GetBattleState();
 
 	UINT m_power;
 	float m_criticalRatio;
-
 	float m_battleToPeaceTimer;
 
 	float m_runForwardSpeed;
@@ -64,6 +64,7 @@ private:
 	float m_energy;
 	UINT m_innerPower;
 	float m_resistanceTimer;
+	float m_idleTimer;
 
 public:
 	void SetResistance(float _timer);

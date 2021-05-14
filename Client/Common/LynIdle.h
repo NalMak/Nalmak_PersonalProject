@@ -14,6 +14,6 @@ public:
 	virtual void ExitState() override;
 private:
 	LYN_STATE m_state;
-
+	
 };
 

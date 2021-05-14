@@ -43,6 +43,7 @@ void Transform::Release()
 {
 	if (m_parents)
 	{
+		m_parents->DeleteChild(this);
 		m_parents = nullptr;
 	}
 	if (m_boneParents)
@@ -53,6 +54,7 @@ void Transform::Release()
 	for (auto& child : m_childs)
 	{
 		child->m_parents = nullptr;
+		child->m_boneParents = nullptr;
 	}
 
 
@@ -74,7 +76,7 @@ void Transform::UpdateMatrix()
 		}
 		else
 		{
-			worldMatrix = 1 * m_parents->GetNoneScaleWorldMatrix();
+			worldMatrix = worldMatrix * m_parents->GetNoneScaleWorldMatrix();
 		}
 	}
 	
@@ -507,8 +509,8 @@ void Transform::DeleteChild(Transform * _child)
 	{
 		if ((*iter) == _child)
 		{
-			_child->position = _child->GetWorldPosition();
-			_child->rotation = _child->GetWorldRotation();
+		/*	_child->position = _child->GetWorldPosition();
+			_child->rotation = _child->GetWorldRotation();*/
 			m_childs.erase(iter);
 			return;
 		}

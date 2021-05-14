@@ -80,7 +80,6 @@ void SkinnedMeshRenderer::Release()
 
 void SkinnedMeshRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
-
 	UINT texIndex = 0;
 	for (UINT i = 0; i < _containerIndex; ++i)
 	{

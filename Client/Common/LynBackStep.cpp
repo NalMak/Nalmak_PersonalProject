@@ -17,6 +17,16 @@ void LynBackStep::Initialize()
 
 void LynBackStep::EnterState()
 {
+	if (m_isUpper)
+	{
+		BnS_Buff::Desc buff;
+		buff.buffTimer = 2.f;
+		buff.key = L"SS";
+		buff.skill = m_skillController->GetSkill(L"backStep");
+		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+	}
+
+
 	m_info->StartSkill();
 
 	if (m_info->GetState() == LYN_STATE_BATTLE_HIDEBLADE)

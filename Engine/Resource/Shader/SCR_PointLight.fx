@@ -101,6 +101,13 @@ technique DefaultTechnique
 	{
 		//https://blueswamp.tistory.com/entry/D3DRSZENABLE-D3DRSZWRITEENABLE Z 값에대한 활용
 
+		zEnable = false;
+		zWriteEnable = true;
+		cullMode = cw;
+		stencilFunc = notEqual;
+		twoSidedStencilMode = false;
+		alphablendEnable = true;
+
 		VertexShader = compile vs_3_0 VS_Main_Default();
 		PixelShader = compile ps_3_0 PS_Main_Default();
 

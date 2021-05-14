@@ -18,6 +18,15 @@ void LynSideDashE::Initialize()
 
 void LynSideDashE::EnterState()
 {
+	if (m_isUpper)
+	{
+		BnS_Buff::Desc buff;
+		buff.buffTimer = 6.f;
+		buff.key = L"E";
+		buff.skill = m_skillController->GetSkill(L"sideDashE");
+		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+	}
+
 	m_info->AddInnerPower(1);
 
 	m_info->SetSpeed(0.f);
@@ -69,7 +78,7 @@ void LynSideDashE::UpdateState()
 
 	
 
-	if (m_animController->GetPlayRemainTime() < 0.4f)
+	if (m_animController->GetPlayRemainTime() < 0.3f)
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
@@ -79,7 +88,7 @@ void LynSideDashE::UpdateState()
 				return;
 			}
 		}
-		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 
 		SetState(L"idle");
 		return;

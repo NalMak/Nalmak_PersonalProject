@@ -421,6 +421,9 @@
     <ClInclude Include="LynWeapon.h" />
     <ClInclude Include="ZakanTeleport.h" />
     <ClInclude Include="ZakanArea360.h" />
+    <ClInclude Include="BnS_Buff.h" />
+    <ClInclude Include="BnS_RotateSoulBlade.h" />
+    <ClInclude Include="LynEventIdle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -676,6 +679,9 @@
     <ClCompile Include="LynWeapon.cpp" />
     <ClCompile Include="ZakanTeleport.cpp" />
     <ClCompile Include="ZakanArea360.cpp" />
+    <ClCompile Include="BnS_Buff.cpp" />
+    <ClCompile Include="BnS_RotateSoulBlade.cpp" />
+    <ClCompile Include="LynEventIdle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

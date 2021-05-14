@@ -96,9 +96,9 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 		float2 uv = _input.uv - float2(0.5f, 0.5f);
 		float angle = atan2(uv.x, uv.y) * 180 / PI + 180;
 
-		if (g_coolTimeAngle > angle)
+		if (g_coolTimeAngle < angle)
 		{
-			final.xyz *= 0.2f;
+			final.xyz *= 0.3f;
 		}
 	}
 	o.diffuse = final;
