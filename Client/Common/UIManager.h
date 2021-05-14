@@ -26,12 +26,15 @@ public:
 	void SetSkillSlot(BnS_Skill* _skill);
 	void UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio);
 	void ChangeSkillSlot(BnS_Skill* _skill);
+	void ChangeSkillSlotByAnimation(BnS_Skill* _skill);
 	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
 	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
 
 	void AddBuff(BnS_Buff* _buff, BnS_Skill* _skill, const wstring& _key);
 	void ReleaseBuff(BnS_Buff* _buff);
 	void AddInnerPower(UINT _index);
+	void FullInnerPower();
+
 	void ReduceInnerPower(UINT _index);
 
 private:

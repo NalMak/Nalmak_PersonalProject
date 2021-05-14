@@ -17,11 +17,12 @@ void LynVerticalCut_R2::Initialize()
 
 void LynVerticalCut_R2::EnterState()
 {
+	ReduceInnerPower(2);
+
 	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyb_B_Std_VerticalCul_02_3");
 
-	ReduceInnerPower(2);
 
 }
 

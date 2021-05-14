@@ -17,6 +17,7 @@ void LynChamWall::Initialize()
 
 void LynChamWall::EnterState()
 {
+	m_info->SetSpeed(0);
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_Chamwall");

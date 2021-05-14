@@ -604,7 +604,7 @@ void StageScene::Initialize()
 		sphere.radius = 1.f;
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
-		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>();
+		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>()->AddComponent<AudioListener>()->AddComponent<AudioSource>();
 		//INSTANTIATE()->AddComponent<Camera>()->AddComponent<CameraShake>()->SetParents(cam);
 	}
 #pragma endregion BnS Camera

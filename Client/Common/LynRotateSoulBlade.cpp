@@ -19,6 +19,8 @@ void LynRotateSoulBlade::Initialize()
 
 void LynRotateSoulBlade::EnterState()
 {
+	m_info->SetResistanceTimer(6.f);
+
 	if (m_isUpper)
 	{
 		BnS_Buff::Desc buff;

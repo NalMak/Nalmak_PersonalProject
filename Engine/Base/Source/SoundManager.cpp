@@ -30,13 +30,13 @@ void SoundManager::Initialize()
 	eRes = FMOD_System_Create(&m_pSystem);
 	if (eRes != FMOD_OK)
 	{
-		//assert(L"Failed to FMod System Create! " && 0);
+		assert(L"Failed to FMod System Create! " && 0);
 	}
 
 	eRes = FMOD_System_Init(m_pSystem, SOUND_CHANNEL_COUNT_MAX, FMOD_INIT_NORMAL, NULL);
 	if (eRes != FMOD_OK)
 	{
-		//assert(L"Failed to FMod Initialize! " && 0);
+		assert(L"Failed to FMod Initialize! " && 0);
 	}
 
 

@@ -17,6 +17,9 @@ void LynBackStep::Initialize()
 
 void LynBackStep::EnterState()
 {
+	m_info->SetResistance(true);
+
+
 	if (m_isUpper)
 	{
 		BnS_Buff::Desc buff;
@@ -66,7 +69,8 @@ void LynBackStep::UpdateState()
 void LynBackStep::ExitState()
 {
 	//m_animController->SetRootMotion(false);
-
+	m_info->SetResistanceTimer(1.f);
+	m_info->SetResistance(false);
 	m_character->AddVelocity(0, -30 * dTime, 0);
 	m_info->EndSkill();
 

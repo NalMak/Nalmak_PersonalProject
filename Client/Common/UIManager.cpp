@@ -5,7 +5,7 @@
 #include "BnS_Enemy.h"
 #include "LynInfo.h"
 #include "BnS_Buff.h"
-
+#include "BnS_InnerForceAnimation.h"
 IMPLEMENT_SINGLETON(UIManager)
 
 UIManager::UIManager()
@@ -41,10 +41,13 @@ void UIManager::CreateMainUI()
 
 		for (int i = 0; i < 10; ++i)
 		{
-			SingleImage::Desc image;
-			image.textureName = L"GameUI_energyIcon";
-			auto innerPower = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(24.f,24.f)->SetPosition((float)(HALF_WINCX - 145 + 32.1f * i), (float)(WINCY - 205));
+			BnS_InnerForceAnimation::Desc image;
+			image.texName = L"GameUI_energyIcon";
+			CanvasRenderer::Desc canvas;
+			canvas.mtrlName = L"UI_InnerForce";
+			auto innerPower = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)->AddComponent<BnS_InnerForceAnimation>(&image)->SetScale(24.f,24.f)->SetPosition((float)(HALF_WINCX - 145 + 32.1f * i), (float)(WINCY - 205));
 			m_innerPowerIcon[i] = innerPower->GetComponent<CanvasRenderer>();
+
 		}
 	}
 
@@ -314,6 +317,14 @@ void UIManager::ChangeSkillSlot(BnS_Skill* _skill)
 	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_skill->GetSkillIconTexture());
 }
 
+void UIManager::ChangeSkillSlotByAnimation(BnS_Skill * _skill)
+{
+	auto curSkill = m_skillSlot[_skill->GetSkillSlotIndex()];
+	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
+	curSkill->GetComponent<CanvasRenderer>()->SetActive(true);
+	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_skill->GetSkillIconTexture());
+}
+
 void UIManager::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex)
 {
 	auto curSkill = m_skillSlot[_slot];
@@ -324,6 +335,8 @@ void UIManager::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex)
 void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
 {
 	auto curSkill = m_skillSlot[_slot];
+	if (!curSkill)
+		return;
 	curSkill->GetComponent<CanvasRenderer>()->SetActive(false);
 	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
 }
@@ -386,10 +399,20 @@ void UIManager::ReleaseBuff(BnS_Buff * _buff)
 
 void UIManager::AddInnerPower(UINT _index)
 {
-	m_innerPowerIcon[_index]->SetActive(true);
+	m_innerPowerIcon[_index]->GetComponent<BnS_InnerForceAnimation>()->SetTargetRatio(1.f);
+}
+
+void UIManager::FullInnerPower()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		auto innerForce = m_innerPowerIcon[i]->GetComponent<BnS_InnerForceAnimation>();
+		innerForce->SetTargetRatio(1.f);
+		innerForce->SetCurrentRatio(0.4f);
+	}
 }
 
 void UIManager::ReduceInnerPower(UINT _index)
 {
-	m_innerPowerIcon[_index]->SetActive(false);
+	m_innerPowerIcon[_index]->GetComponent<BnS_InnerForceAnimation>()->SetTargetRatio(0.f);
 }

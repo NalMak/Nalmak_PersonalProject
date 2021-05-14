@@ -28,6 +28,7 @@ public:
 private:
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void LateUpdate() override;
 	void OnTriggerEnter(Collision& _col) override;
 	void OnTriggerStay(Collision& _col) override;
 	void OnTriggerExit(Collision& _col) override;
@@ -40,6 +41,8 @@ public:
 	bool UseLightningSpirit();
 	bool GetDamage(UINT _damage);
 	void SetState(LYN_STATE _state);
+	void ChangeSkillByState(LYN_SKILL_STATE _state);
+
 	void ResetBattleTimer();
 	LYN_STATE GetState();
 	void SetBattleState(BATTLE_STATE _state);
@@ -64,14 +67,18 @@ private:
 	float m_energy;
 	UINT m_innerPower;
 	float m_resistanceTimer;
+	bool m_resistanceAlways;
 	float m_idleTimer;
 
 public:
-	void SetResistance(float _timer);
+	void SetResistanceTimer(float _timer);
+	void SetResistance(bool _resistance);
+	//void SetResistanceTi(float _timer);
+
 	float GetDistanceToTarget();
 	float GetEnergy();
-	void AddInnerPower(UINT _power);
-	void ReduceInnerPower(UINT _power);
+	void AddInnerPower(int _power);
+	void ReduceInnerPower(int _power);
 	UINT GetInnerPower();
 public:
 	void EquipeWeapon(GameObject* _weapon);
@@ -80,6 +87,7 @@ public:
 	GameObject* GetWeapon();
 private:
 	GameObject* m_weapon;
+	AudioSource* m_sysAudio;
 	AnimationController* m_animController_lower;
 	AnimationController* m_animController_upper;
 	LynStateControl* m_stateControl_lower;

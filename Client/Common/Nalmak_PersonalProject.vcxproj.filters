@@ -424,6 +424,8 @@
     <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_RotateSoulBlade.h" />
     <ClInclude Include="LynEventIdle.h" />
+    <ClInclude Include="ZakanPowerATK.h" />
+    <ClInclude Include="BnS_InnerForceAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -682,6 +684,8 @@
     <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_RotateSoulBlade.cpp" />
     <ClCompile Include="LynEventIdle.cpp" />
+    <ClCompile Include="ZakanPowerATK.cpp" />
+    <ClCompile Include="BnS_InnerForceAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -732,6 +736,9 @@
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNE.sd">
       <Filter>03.Shader</Filter>
     </None>
+    <None Include="..\Resource\static\Shader\BnS_InnerForce.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
@@ -762,6 +769,9 @@
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNE.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\static\Shader\BnS_InnerForce.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>

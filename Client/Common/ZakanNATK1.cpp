@@ -65,4 +65,9 @@ void ZakanNATK1::CreateAttackArea()
 
 	hitBox->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 8.f);
 	hitBox->SetRotation(m_transform->GetWorldRotation());
+
+	/*ParticleRenderer::Desc particle;
+	particle.particleDataName = L"zakan_attackTest";
+	particle.PlayOnAwake = true;
+	INSTANTIATE()->AddComponent<ParticleRenderer>(&particle)->SetPosition(hitBox->GetTransform()->position);*/
 }

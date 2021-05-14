@@ -17,6 +17,8 @@ void LynBackRoll::Initialize()
 
 void LynBackRoll::EnterState()
 {
+	m_info->SetResistance(true);
+
 	if (m_isUpper)
 	{
 		BnS_Buff::Desc buff;
@@ -53,6 +55,9 @@ void LynBackRoll::UpdateState()
 
 void LynBackRoll::ExitState()
 {
+	m_info->SetResistance(false);
+	m_info->SetResistanceTimer(0.5f);
+
 	m_info->EndSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_bnsMainCam->LockTarget();	

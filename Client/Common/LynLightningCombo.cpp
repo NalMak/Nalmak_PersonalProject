@@ -21,7 +21,6 @@ void LynLightningCombo::EnterState()
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
 	m_animController->Play("Lyn_B_Hide_LightningCombo");
-	ReduceInnerPower(1);
 }
 
 void LynLightningCombo::UpdateState()

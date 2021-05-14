@@ -22,25 +22,36 @@ public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 public:
-	void CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring& _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot);
-	bool IsAvailableSkill(LynInfo* _info);
-	void ActiveSkill();
+	void CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring& _skillIcon, float _coolTime, __int64 _actionKey,
+		bool _isCombined, activationCondition _condition, bool _isRenderSlot, float _minDistance, float _maxDistance, UINT _innerForce);
+	void UpdateAvailableSkill(LynInfo* _info);
+	bool IsValidEvent(LynInfo* _info);
+	bool GetAvailable(BNS_SKILL_CONDITION _condition);
+	void ActiveSkill(LynInfo* _info);
 
 public:
 	Texture* GetSkillIconTexture();
 	BNS_SKILL_SLOT GetSkillSlotIndex();
 	float GetCoolTime();
+	int GetNeedInnerPower();
 private:
+	BitFlag<BNS_SKILL_CONDITION> m_useableCondition;
+	BitFlag<BNS_SKILL_CONDITION> m_isUseable;
+
+
+	
+
 	bool m_isRenderSlot;
 	wstring m_stateName;
-	bool m_isAvailable;
 	Texture* m_skillIcon;
 	BNS_SKILL_SLOT m_skillSlot;
+	UINT  m_needInnerForce = 0;
+	float m_minDistance = 0;
+	float m_maxDistance = 0;
 	float m_coolTime;
 	bool m_isCombined;
 	__int64 m_actionKey;
 	activationCondition m_activationCondition;
-	bool m_available;
 	float m_remainCoolTime;
 };
 

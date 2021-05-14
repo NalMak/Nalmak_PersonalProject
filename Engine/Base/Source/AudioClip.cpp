@@ -140,7 +140,7 @@ void AudioClip::Initialize(wstring _fp)
 	//		break;
 	//	}
 	//}
-	string extention[5] = { ".mp3",".mp4", ".wav", ".mkv", ".ogg" };
+	string extention[5] = { ".mp3",".mp4", ".wav", ".mkv", ".ogg"};
 
 
 	//FMOD_3D
@@ -157,11 +157,11 @@ void AudioClip::Initialize(wstring _fp)
 		if (eRes == FMOD_OK)
 		{
 			return;
-			//assert(L"Failed to Create AudioClip! " && 0);
+			assert(L"Failed to Create AudioClip! " && 0);
 		}
 	}
 	
-}
+}	
 
 void AudioClip::Release()
 {

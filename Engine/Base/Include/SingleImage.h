@@ -15,6 +15,15 @@ class NALMAK_DLL SingleImage :
 public:
 	struct Desc
 	{
+		Desc()
+		{
+
+		};
+		Desc(Vector4 _color, wstring _name)
+		{
+			color = _color;
+			textureName = _name;
+		};
 		Vector4 color = { 1,1,1,1 };
 		wstring textureName = L"default";
 	};
@@ -34,7 +43,7 @@ public:
 public:
 	IDirect3DBaseTexture9* GetTexture();
 	
-private:
+protected:
 	IDirect3DBaseTexture9* m_image;
 	CanvasRenderer* m_renderer;
 	Vector4 m_color;

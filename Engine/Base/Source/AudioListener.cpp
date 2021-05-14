@@ -29,5 +29,5 @@ void AudioListener::LateUpdate()
 
 void AudioListener::Release()
 {
-	m_soundManager->DeleteAudioListener(this);
+	//m_soundManager->DeleteAudioListener(this);
 }

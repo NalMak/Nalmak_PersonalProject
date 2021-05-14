@@ -20,7 +20,6 @@ void LynBaldo::EnterState()
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_Hide_Baldo0");
-	ReduceInnerPower(1);
 
 	if (m_isUpper)
 	{

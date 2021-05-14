@@ -52,7 +52,6 @@ void SingleImage::Render(Shader* _shader, Mesh* _mesh)
 	_shader->SetTexture("g_mainTex", m_image);
 	_shader->SetVector("g_mainTexColor", m_color);
 
-
 	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
 	_shader->CommitChanges();

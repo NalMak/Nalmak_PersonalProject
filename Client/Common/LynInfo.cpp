@@ -45,6 +45,8 @@ void LynInfo::Initialize()
 	m_characterController = GetComponent<CharacterController>();
 	m_skinRenderer = GetComponent<SkinnedMeshRenderer>();
 	m_skillController = GetComponent<LynSkillController>();
+	m_sysAudio = Core::GetInstance()->GetMainCamera()->GetComponent<AudioSource>();
+
 
 	auto skin = GetComponent<SkinnedMeshRenderer>();
 	m_matBattleStandard = skin->GetBoneCombinedMatrix("WeaponR");
@@ -62,7 +64,10 @@ void LynInfo::Initialize()
 
 void LynInfo::Update()
 {
-	DEBUG_LOG(L"Battle State", m_state);
+	DEBUG_LOG(L"Battle State", m_battleState);
+
+
+
 
 	if (m_stateControl_lower->GetCurStateString() == L"idle" && m_stateControl_upper->GetCurStateString() == L"idle")
 	{
@@ -82,14 +87,21 @@ void LynInfo::Update()
 		m_idleTimer = 0;
 	}
 
+	if (m_resistanceAlways)
+		m_battleState = BATTLE_STATE_RESISTANCE;
+
 	if (m_resistanceTimer > 0.f)
 	{
 		m_resistanceTimer -= dTime;
+		m_battleState = BATTLE_STATE_RESISTANCE;
 		if (m_resistanceTimer <= 0.f)
 		{
 			m_battleState = BATTLE_STATE_WEAK;
 		}
 	}
+
+	
+
 
 	if (m_state == LYN_STATE_PEACE_STANDARD)
 	{
@@ -186,8 +198,6 @@ void LynInfo::Update()
 			return;
 		}
 	}
-	if (m_isProgressSkill)
-		return;
 
 
 	if (m_target)
@@ -202,17 +212,23 @@ void LynInfo::Update()
 			}
 		}
 	}
-	m_skillController->ActiveSkill();
+	//Nalmak_Math::Random<wstring>(L"1", L"2", L"3");
+	
 
+	
+}
+
+void LynInfo::LateUpdate()
+{
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
+	{
 		m_sKeyTimer = 0.3f;
+	}
 	m_sKeyTimer -= dTime;
 }
 
 void LynInfo::OnTriggerEnter(Collision & _col)
 {
-	if (m_battleState == BATTLE_STATE_RESISTANCE)
-		return;
 
 	if (_col.hitObj->GetTag() == OBJECT_TAG_ATTACKINFO)
 	{
@@ -220,12 +236,19 @@ void LynInfo::OnTriggerEnter(Collision & _col)
 		{
 			AttackInfo* attack = _col.hitObj->GetComponent<AttackInfo>();
 			auto attackType = attack->m_attackType;
+			ResetBattleTimer();
 
+			if (m_battleState == BATTLE_STATE_RESISTANCE)
+			{
+				m_sysAudio->PlayOneShot(L"lyn_resistance");
+				return;
+			}
 			if (!GetDamage(attack->m_power))
 			{
 				attack->GetHost()->GetComponent<BnS_Enemy>()->LostTarget();
 				return;
 			}
+			
 			if (m_battleState == BATTLE_STATE_WEAK)
 			{
 				switch (attackType)
@@ -320,23 +343,17 @@ void LynInfo::SetState(LYN_STATE _state)
 	{
 	case LYN_STATE_PEACE_STANDARD:
 	{
-		m_skillController->SetSkillSlot(L"slash1");
-		m_skillController->SetSkillSlot(L"verticalCut_l0");
 		m_battleToPeaceTimer = INFINITY;
 		m_innerPowerTimer = 0;
 		break;
 	}
 	case LYN_STATE_BATTLE_STANDARD:
 	{
-		m_skillController->SetSkillSlot(L"slash1");
-		m_skillController->SetSkillSlot(L"verticalCut_l0");
 		m_battleToPeaceTimer = BNS_BATTLE_TO_PEACE_TIME;
 		break;
 	}
 	case LYN_STATE_BATTLE_HIDEBLADE:
 	{
-		//m_skillController->SetSkillSlot(L"baldo");
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
 		m_battleToPeaceTimer = BNS_BATTLE_TO_PEACE_TIME;
 		break;
 	}
@@ -347,10 +364,80 @@ void LynInfo::SetState(LYN_STATE _state)
 
 	if (m_state != _state)
 	{
+		if (_state == LYN_STATE_BATTLE_HIDEBLADE)
+		{
+			ChangeSkillByState(LYN_SKILL_STATE_HIDE);
+		}
+		else if (_state == LYN_STATE_BATTLE_STANDARD)
+		{
+			ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+		}
+		else if (_state == LYN_STATE_PEACE_STANDARD)
+		{
+			if(m_state == LYN_STATE_BATTLE_HIDEBLADE)
+				ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+		}
+
 		m_state = _state;
 		UpdateWeapon();
 	}
 }
+
+
+
+void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
+{
+	switch (_state)
+	{
+	case LYN_SKILL_STATE_STANDARD:
+		m_skillController->ChangeSkillSlotByAnimation(L"verticalCut_l0");
+		m_skillController->ChangeSkillSlotByAnimation(L"slash1");
+		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
+		m_skillController->ChangeSkillSlotByAnimation(L"lowerSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"hold");
+		m_skillController->ChangeSkillSlotByAnimation(L"rotateSoulBlade");
+		m_skillController->ChangeSkillSlotByAnimation(L"lightningSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"thunderSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"chamWall");
+	
+		break;
+	case LYN_SKILL_STATE_HIDE:
+		m_skillController->ChangeSkillSlotByAnimation(L"baldo");
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
+		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
+		m_skillController->ChangeSkillSlotByAnimation(L"lowerSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"hold");
+		m_skillController->ChangeSkillSlotByAnimation(L"rotateSoulBlade");
+		m_skillController->ChangeSkillSlotByAnimation(L"lightningSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"thunderSlash");
+		m_skillController->ChangeSkillSlotByAnimation(L"chamWall");
+
+		break;
+	case LYN_SKILL_STATE_AIR:
+		break;
+	case LYN_SKILL_STATE_MAGNETIC:
+		break;
+
+	default:
+		break;
+	}
+	if (!GetTarget())
+	{
+		m_skillController->ChangeSkillSlot(L"frontKick");
+	}
+	else
+	{
+		if (GetDistanceToTarget() > 3)
+		{
+			m_skillController->ChangeSkillSlot(L"throwSoulBlade");
+		}
+		else
+		{
+			m_skillController->ChangeSkillSlot(L"frontKick");
+		}
+	}
+}
+
 
 void LynInfo::ResetBattleTimer()
 {
@@ -372,10 +459,15 @@ BATTLE_STATE LynInfo::GetBattleState()
 	return m_battleState;
 }
 
-void LynInfo::SetResistance(float _timer)
+void LynInfo::SetResistanceTimer(float _timer)
 {
-	m_resistanceTimer = _timer;
-	m_battleState = BATTLE_STATE_RESISTANCE;
+	if(m_resistanceTimer < _timer)
+		m_resistanceTimer = _timer;
+}
+
+void LynInfo::SetResistance(bool _resistance)
+{
+	m_resistanceAlways = _resistance;
 }
 
 float LynInfo::GetDistanceToTarget()
@@ -388,24 +480,29 @@ float LynInfo::GetEnergy()
 	return m_energy;
 }
 
-void LynInfo::AddInnerPower(UINT _power)
+void LynInfo::AddInnerPower(int _power)
 {
+	auto ui = UIManager::GetInstance();
+
 	if (m_innerPower < 10)
 	{
-		auto ui = UIManager::GetInstance();
 		if (m_innerPower + _power > 10)
 		{
 			_power = 10 - m_innerPower;
 		}
-		for (UINT i = 0; i < _power; ++i)
+		for (int i = 0; i < _power; ++i)
 		{
 			ui->AddInnerPower(m_innerPower + i);
 		}
 		m_innerPower += _power;
 	}
+	else
+	{
+		ui->FullInnerPower();
+	}
 }
 
-void LynInfo::ReduceInnerPower(UINT _power)
+void LynInfo::ReduceInnerPower(int _power)
 {
 	if (m_innerPower > 0)
 	{
@@ -414,7 +511,7 @@ void LynInfo::ReduceInnerPower(UINT _power)
 		{
 			_power = m_innerPower;
 		}
-		for (UINT i = 1; i <= _power; ++i)
+		for (int i = 1; i <= _power; ++i)
 		{
 			ui->ReduceInnerPower(m_innerPower - i);
 		}

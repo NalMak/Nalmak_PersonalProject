@@ -181,6 +181,7 @@
     <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
+    <ClInclude Include="BnS_InnerForceAnimation.h" />
     <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="BnS_RotateSoulBlade.h" />
     <ClInclude Include="BnS_Skill.h" />
@@ -271,6 +272,7 @@
     <ClInclude Include="ZakanNATK2.h" />
     <ClInclude Include="ZakanPattern.h" />
     <ClInclude Include="ZakanPeaceIdle.h" />
+    <ClInclude Include="ZakanPowerATK.h" />
     <ClInclude Include="ZakanRise.h" />
     <ClInclude Include="ZakanSmash.h" />
     <ClInclude Include="ZakanSpawn.h" />
@@ -284,6 +286,7 @@
     <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
+    <ClCompile Include="BnS_InnerForceAnimation.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="BnS_RotateSoulBlade.cpp" />
     <ClCompile Include="BnS_Skill.cpp" />
@@ -372,6 +375,7 @@
     <ClCompile Include="ZakanNATK2.cpp" />
     <ClCompile Include="ZakanPattern.cpp" />
     <ClCompile Include="ZakanPeaceIdle.cpp" />
+    <ClCompile Include="ZakanPowerATK.cpp" />
     <ClCompile Include="ZakanRise.cpp" />
     <ClCompile Include="ZakanSmash.cpp" />
     <ClCompile Include="ZakanSpawn.cpp" />
@@ -392,6 +396,7 @@
     <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd" />
     <None Include="..\Resource\static\Shader\BnS_HpUI.sd" />
+    <None Include="..\Resource\static\Shader\BnS_InnerForce.sd" />
     <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd" />
     <None Include="..\Resource\static\Shader\BnS_StaticObject_DNE.sd" />
@@ -404,6 +409,7 @@
     <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_HpUI.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_InnerForce.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx" />
     <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNE.fx" />

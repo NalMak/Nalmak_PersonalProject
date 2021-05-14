@@ -18,6 +18,8 @@ void LynSideDashE::Initialize()
 
 void LynSideDashE::EnterState()
 {
+	m_info->SetResistance(true);
+
 	if (m_isUpper)
 	{
 		BnS_Buff::Desc buff;
@@ -27,7 +29,7 @@ void LynSideDashE::EnterState()
 		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
 	}
 
-	m_info->AddInnerPower(1);
+	AddInnerPower(1);
 
 	m_info->SetSpeed(0.f);
 
@@ -50,7 +52,7 @@ void LynSideDashE::EnterState()
 
 	{
 		m_targetPos1 = centerPos + m_transform->GetRight() * 3.f;
-		m_character->SetVelocity((m_targetPos1 - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5)); // 0.25초 이동
+		m_character->SetVelocity((m_targetPos1 - curPos) * 1 / ((float)BNS_SIDE_DASH_TIME * 0.5f)); // 0.25초 이동
 	}
 	m_info->MoveOn();
 	m_bnsMainCam->UnLockTarget();
@@ -69,7 +71,7 @@ void LynSideDashE::UpdateState()
 	{
 		Vector3 target = m_targetPos2;
 		Vector3 curPos = m_transform->GetWorldPosition();
-		m_character->SetVelocity((target - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5));
+		m_character->SetVelocity((target - curPos) * 1 / ((float)BNS_SIDE_DASH_TIME * 0.5f));
 	}
 	if (m_animController->IsOverRealTime(BNS_SIDE_DASH_TIME))
 	{
@@ -82,10 +84,13 @@ void LynSideDashE::UpdateState()
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
-			if (m_info->GetInnerPower() >= 2)
+			if (m_info->GetState() != LYN_STATE_BATTLE_HIDEBLADE)
 			{
-				SetState(L"verticalCut_r2");
-				return;
+				if (m_info->GetInnerPower() >= 2)
+				{
+					SetState(L"verticalCut_r2");
+					return;
+				}
 			}
 		}
 		m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
@@ -97,6 +102,9 @@ void LynSideDashE::UpdateState()
 
 void LynSideDashE::ExitState()
 {
+	m_info->SetResistanceTimer(1);
+	m_info->SetResistance(false);
+
 	if (m_info->GetState() == LYN_STATE_PEACE_STANDARD)
 	{
 		m_info->SetState(LYN_STATE_BATTLE_STANDARD);

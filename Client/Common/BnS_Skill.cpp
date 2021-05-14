@@ -4,6 +4,9 @@
 
 BnS_Skill::BnS_Skill(Desc * _desc)
 {
+	m_useableCondition.AllOff();
+	m_useableCondition.On(BNS_SKILL_CONDITION_EVENT);
+	m_isUseable.AllOn();
 }
 
 BnS_Skill::~BnS_Skill()
@@ -12,6 +15,7 @@ BnS_Skill::~BnS_Skill()
 
 void BnS_Skill::Initialize()
 {
+	
 }
 
 void BnS_Skill::Update()
@@ -20,28 +24,88 @@ void BnS_Skill::Update()
 	{
 		m_remainCoolTime -= dTime;
 	}
+	else
+	{
+		m_remainCoolTime = 0;
+	}
 }
 
-void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime, __int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot)
+void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime,
+	__int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot, float _minDistance, float _maxDistance, UINT _innerForce)
 {
 	m_stateName = _stateName;
-	m_isRenderSlot = _isRenderSlot;
 	m_skillSlot = _skillSlot;
 	m_isCombined = _isCombined;
+	m_isRenderSlot = _isRenderSlot;
+
+	if (_minDistance != 0 || _maxDistance != 0)
+	{
+		m_minDistance = _minDistance / BNS_DISTANCE_RATIO;
+		m_maxDistance = _maxDistance / BNS_DISTANCE_RATIO;
+		m_useableCondition.On(BNS_SKILL_CONDITION_DISTANCE);
+	}
+	m_needInnerForce = _innerForce;
+	if (_innerForce < 0)
+	{
+		m_useableCondition.On(BNS_SKILL_CONDITION_INNERFORCE);
+	}
 	m_skillIcon = ResourceManager::GetInstance()->GetResource<Texture>(_skillIcon);
 	m_coolTime = _coolTime;
 	m_actionKey = _actionKey;
 	m_activationCondition = _condition;
 }
 
-bool BnS_Skill::IsAvailableSkill(LynInfo* _info)
+void BnS_Skill::UpdateAvailableSkill(LynInfo* _info)
+{
+	if (m_useableCondition.Check(BNS_SKILL_CONDITION_DISTANCE))
+	{
+		if (_info->GetTarget())
+		{
+			if (BETWEEN(_info->GetDistanceToTarget(), m_minDistance, m_maxDistance))
+			{
+				m_isUseable.On(BNS_SKILL_CONDITION_DISTANCE);
+			}
+			else
+			{
+				m_isUseable.Off(BNS_SKILL_CONDITION_DISTANCE);
+			}
+		}
+		else
+		{
+			m_isUseable.Off(BNS_SKILL_CONDITION_DISTANCE);
+		}
+	}
+	if (m_useableCondition.Check(BNS_SKILL_CONDITION_INNERFORCE))
+	{
+		if (_info->GetInnerPower() >= m_needInnerForce)
+		{
+			m_isUseable.On(BNS_SKILL_CONDITION_INNERFORCE);
+		}
+		else
+		{
+			m_isUseable.Off(BNS_SKILL_CONDITION_INNERFORCE);
+		}
+	}
+	
+	
+}
+
+bool BnS_Skill::IsValidEvent(LynInfo * _info)
 {
 	return m_activationCondition(_info);
 }
 
-void BnS_Skill::ActiveSkill()
+bool BnS_Skill::GetAvailable(BNS_SKILL_CONDITION _condition)
+{
+	return m_isUseable.Check(_condition);
+}
+
+void BnS_Skill::ActiveSkill(LynInfo* _info)
 {
 	m_remainCoolTime = m_coolTime;
+
+	if(m_needInnerForce > 0)
+		_info->ReduceInnerPower(m_needInnerForce);
 }
 
 Texture * BnS_Skill::GetSkillIconTexture()
@@ -57,6 +121,11 @@ BNS_SKILL_SLOT BnS_Skill::GetSkillSlotIndex()
 float BnS_Skill::GetCoolTime()
 {
 	return m_remainCoolTime;
+}
+
+int BnS_Skill::GetNeedInnerPower()
+{
+	return m_needInnerForce;
 }
 
 
