@@ -50,7 +50,7 @@ void LynSideDashE::EnterState()
 
 	{
 		m_targetPos1 = centerPos + m_transform->GetRight() * 3.f;
-		m_character->SetVelocity((m_targetPos1 - curPos) * 10.f ); // 0.25초 이동
+		m_character->SetVelocity((m_targetPos1 - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5)); // 0.25초 이동
 	}
 	m_info->MoveOn();
 	m_bnsMainCam->UnLockTarget();
@@ -65,13 +65,13 @@ void LynSideDashE::UpdateState()
 {
 	float ratio = m_animController->GetPlayRatio();
 
-	if (m_animController->IsOverRealTime(0.1))
+	if (m_animController->IsOverRealTime(BNS_SIDE_DASH_TIME * 0.5))
 	{
 		Vector3 target = m_targetPos2;
 		Vector3 curPos = m_transform->GetWorldPosition();
-		m_character->SetVelocity((target - curPos) * 10.f);
+		m_character->SetVelocity((target - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5));
 	}
-	if (m_animController->IsOverRealTime(0.2))
+	if (m_animController->IsOverRealTime(BNS_SIDE_DASH_TIME))
 	{
 		m_character->SetVelocity(0,0,0);
 	}

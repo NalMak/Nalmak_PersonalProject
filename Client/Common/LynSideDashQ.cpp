@@ -47,7 +47,8 @@ void LynSideDashQ::EnterState()
 	Vector3 centerPos = (curPos + m_targetPos2) * 0.5f;
 
 	m_targetPos1 = centerPos - m_transform->GetRight() * 3.f;
-	m_character->SetVelocity((m_targetPos1 - curPos) * 10.f); // 0.25초 이동
+	m_character->SetVelocity((m_targetPos1 - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5)); // 0.25초 이동
+
 	m_info->MoveOn();
 	float angle = acosf(Nalmak_Math::Dot(m_transform->GetForward(), targetDir));
 	Vector3 cross = Nalmak_Math::Cross(m_transform->GetForward(), targetDir);
@@ -57,18 +58,18 @@ void LynSideDashQ::EnterState()
 
 void LynSideDashQ::UpdateState()
 {
-	if (m_animController->IsOverRealTime(0.1))
+	if (m_animController->IsOverRealTime(BNS_SIDE_DASH_TIME * 0.5))
 	{
 		Vector3 target = m_targetPos2;
 		Vector3 curPos = m_transform->GetWorldPosition();
-		m_character->SetVelocity((target - curPos) * 10.f);
+		m_character->SetVelocity((target - curPos) * 1 / (BNS_SIDE_DASH_TIME * 0.5));
 	}
-	if (m_animController->IsOverRealTime(0.2))
+	if (m_animController->IsOverRealTime(BNS_SIDE_DASH_TIME))
 	{
 		m_character->SetVelocity(0, 0, 0);
 	}
 
-	if (m_animController->GetPlayRemainTime() < 0.2f)
+	if (m_animController->GetPlayRemainTime() < 0.3f)
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
@@ -78,7 +79,7 @@ void LynSideDashQ::UpdateState()
 				return;
 			}
 		}
-		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 
 		SetState(L"idle");
 		return;
