@@ -236,11 +236,15 @@ bool MapTool_NavMeshState::IsPickingSuccessNavPoint(Vector3  _point)
 	auto cam = Core::GetInstance()->GetMainCamera();
 	Vector3 dir = cam->GetCamToMouseWorldDirection();
 
+	float pointDistance = Nalmak_Math::Distance(cam->GetTransform()->GetWorldPosition(), _point);
+	float radius  = pointDistance * 0.03f;
+
+
 	Line line;
 	line.start = cam->GetTransform()->GetWorldPosition();
 	line.end = line.start + dir;
 	float distance = Nalmak_Math::GetDistance_PointToInfinityLine(_point, line);
-	if (distance < m_navPointRadius)
+	if (distance < radius)
 	{
 		return true;
 	}
