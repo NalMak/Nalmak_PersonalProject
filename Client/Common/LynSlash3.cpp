@@ -32,6 +32,11 @@ void LynSlash3::EnterState()
 	attack.width = 8;
 	attack.innerPower = 2;
 	CreateAttackInfo(&attack, 3.f, 1.5f, 1.3f);
+
+	if (m_isUpper)
+	{
+		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash3_1", L"lyn_slash3_2", L"lyn_slash3_3"));
+	}
 }
 
 void LynSlash3::UpdateState()

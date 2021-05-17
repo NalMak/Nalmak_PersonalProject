@@ -34,6 +34,12 @@ void BnS_MainCamera::Initialize()
 	//m_cam = m_transform->GetChild(0)->GetComponent<Camera>();
 	m_cam = GetComponent<Camera>();
 
+	auto audio = GetComponents<AudioSource>();
+
+	audio[1]->Play(L"bossRoom_ambient");
+	audio[2]->Play(L"bossRoom_bgm");
+
+
 }
 
 void BnS_MainCamera::Update()
@@ -135,6 +141,12 @@ GameObject* BnS_MainCamera::CheckTarget()
 	// 앞뒤 판별
 	for (auto iter = objList.begin(); iter != objList.end(); )
 	{
+		if ((*iter)->GetComponent<BnS_Enemy>()->GetBattleState() == BATTLE_STATE_DEAD)
+		{
+			iter = objList.erase(iter);
+			continue;
+		}
+
 		Vector3 dir1 = Nalmak_Math::Normalize((*iter)->GetTransform()->GetWorldPosition()- m_player->GetTransform()->GetWorldPosition());
 		if (Nalmak_Math::Dot(dir1, m_player->GetTransform()->GetForward()) > 0)
 		{

@@ -50,7 +50,8 @@ void ZakanTeleport::UpdateState()
 		if (Nalmak_Math::Distance(Vector3(worldPos.x, m_landingTarget.y, worldPos.z), m_jumpPos) > m_flyLength)
 		{
 			m_animController->Play("Zakan_B_Spell_Skl_Teleport_End");
-			m_character->SetVelocityXZ(Vector3(0,0,0));
+			m_character->SetVelocity(Vector3(0, 0, 0));
+
 		}
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Skl_Teleport_End")

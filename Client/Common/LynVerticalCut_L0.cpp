@@ -17,6 +17,9 @@ void LynVerticalCut_L0::Initialize()
 
 void LynVerticalCut_L0::EnterState()
 {
+	if (m_isUpper)
+		m_audio->PlayOneShot(L"lyn_vertical1");
+
 	ReduceInnerPower(2);
 	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);

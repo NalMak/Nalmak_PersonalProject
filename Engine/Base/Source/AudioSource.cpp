@@ -78,6 +78,12 @@ void AudioSource::Play()
 	
 }
 
+void AudioSource::Play(const wstring & _audioClip)
+{
+	m_audioClip = ResourceManager::GetInstance()->GetResource<AudioClip>(_audioClip);
+	Play();
+}
+
 void AudioSource::PlayOneShot(const wstring & _audioClip)
 {
 	m_soundManager->PlayOneShot(this, _audioClip);

@@ -28,9 +28,9 @@ void LynLightningSlash::UpdateState()
 	{
 		m_info->SetSpeed(m_info->m_runForwardSpeed * 0.5f);
 	}
-	if (m_animController->GetPlayRemainTime() < 0.2f)
+	if (m_animController->GetPlayRemainTime() < 0.6f)
 	{
-		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.6f, 1.f, D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}

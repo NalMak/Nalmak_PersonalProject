@@ -56,6 +56,7 @@ void BnS_InnerForceAnimation::Render(Shader * _shader, Mesh * _mesh)
 	}
 	_shader->SetFloat("g_glowRatio", glow * 1.5f);
 
+
 	
 	SingleImage::Render(_shader, _mesh);
 }

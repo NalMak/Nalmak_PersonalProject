@@ -13,12 +13,17 @@ public:
 	void CreateMainUI();
 private:
 	Material* m_hpBar;
-	Material* m_energyBar;
+	Material* m_bossHpBar;
+
+	CanvasRenderer* m_energyBarRenderer;
+	SingleImage* m_energyBarImage;
+
 	Material* m_enduranceBar;
 public:
 	void SetLynInfo(LynInfo* _info);
-	void UpdateEnergyUI(float _ratio);
+	void UpdateEnergyUI(float _ratio, LYN_STATE _state);
 	void UpdateHpUI(float _ratio);
+	void UpdateEnemyHpUI(float _ratio);
 	void UpdateTarget(GameObject* _target);
 	void UpdateTargetBoundaryBox(GameObject* _target);
 
@@ -29,14 +34,17 @@ public:
 	void ChangeSkillSlotByAnimation(BnS_Skill* _skill);
 	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
 	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
+	void SetSkillSlotColor(BNS_SKILL_SLOT _slot, const Vector4& _color);
+
+
 
 	void AddBuff(BnS_Buff* _buff, BnS_Skill* _skill, const wstring& _key);
 	void ReleaseBuff(BnS_Buff* _buff);
-	void AddInnerPower(UINT _index);
+	void AddInnerPower(int _index);
 	void FullInnerPower();
 
-	void ReduceInnerPower(UINT _index);
-
+	void ReduceInnerPower(int _index);
+		
 private:
 	void SetDamageFont();
 	GameObject* CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y);

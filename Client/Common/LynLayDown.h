@@ -14,5 +14,6 @@ public:
 	virtual void ExitState() override;
 private:
 	float m_downTimer;
+	float m_backRollTimer;
 };
 

@@ -63,6 +63,8 @@ public:
 
 	void Stop();
 	bool IsPlay();
+	bool IsPlay(const string& _name);
+
 	double GetPlayTime();
 	double GetTotalPlayTime();
 	double GetPlayRemainTime();

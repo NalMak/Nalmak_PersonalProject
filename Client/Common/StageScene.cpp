@@ -82,6 +82,13 @@
 #include "ZakanTeleport.h"
 #include "ZakanArea360.h"
 #include "LynEventIdle.h"
+#include "BnS_SystemSetting.h"
+#include "ZakanPowerATK.h"
+#include "ZakanSpellExplosion.h"
+#include "ZakanDamageShield.h"
+#include "ZakanSplitBlood.h"
+#include "ZakanTeleportCenter.h"
+#include "ZakanDead.h"
 StageScene::StageScene()
 {
 }
@@ -94,32 +101,28 @@ StageScene::~StageScene()
 
 void StageScene::Initialize()
 {
-	ShowCursor(false);
 
-	Core::GetInstance()->SetSkyBox(L"cubeTex_nightFall");
-	UIManager::GetInstance()->CreateMainUI();
-	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
-	for (auto& obj : staticObj)
-		MAKE_STATIC(obj.first);
-
-	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(0, 10, 0)->SetRotation(0,-90,0);
-	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(30, 30, 10)->SetScale(0.7f,0.7f,0.7f);
-	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
-	
-	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
-
-#pragma region Light Setting
-	DirectionalLight::Desc light;
-	light.diffuseIntensity = 0.35f;
-	light.ambientIntensity = 0.1f;
-	light.color = { 1.f,0.9f,0.88f };
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
-#pragma endregion Light Setting
 #pragma region Debug
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
 	INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
 #pragma endregion Debug
+
+	INSTANTIATE()->AddComponent<BnS_SystemSetting>();
+
+	UIManager::GetInstance()->CreateMainUI();
+	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
+	for (auto& obj : staticObj)
+		MAKE_STATIC(obj.first);
+
+	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(-5, 10, -5)->SetRotation(0,-90,0);
+	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(30, 30, 10)->SetScale(0.7f,0.7f,0.7f);
+	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
+	
+	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
+
+
+
 #pragma region Navi Mesh
 	NavCollider::Desc navCollider;
 	navCollider.navName = L"GW_navi";
@@ -273,7 +276,6 @@ void StageScene::Initialize()
 	lowerControl->AddState<LynHold>(L"hold", false);
 
 
-
 	CharacterController::Desc character;
 	character.center = { 0,1.8f,0 };
 	character.height = 1.6f;
@@ -389,8 +391,8 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Swing", 0.8f, false);
 
 
-	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.4f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_BackStep", 1.1f, false);
+	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_BackStep", 0.95f, false);
 
 
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_E", 1.f, false);
@@ -400,18 +402,18 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.5f, false);
 
 
-	controller->AddAnimationClip("Lyn_B_defaultSlash1", 1.4f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash2", 1.4f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash1", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash2", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.3f, false);
 
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.1f, false);
-	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.2f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.f, false);
 
 	controller->AddAnimationClip("Lyn_B_Std_ThunderCut", 1.f, false);
 
 	controller->AddAnimationClip("Lyn_B_Chamwall", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_B_FrontKick", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_FrontKick", 1.2f, false);
 
 	controller->AddAnimationClip("Lyn_B_lowerSlash1", 1.3f, false);
 	controller->AddAnimationClip("Lyn_B_lowerSlash2", 1.3f, false);
@@ -419,15 +421,18 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Std_Dash_2", 1.f, false);
 	
 
+	controller->AddAnimationClip("Lyn_B_Hide_RotateSoulBlade", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Std_RotateSoulBlade", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_B_Hide_RotateSoulBlade", 1.1f, false);
-	controller->AddAnimationClip("Lyn_B_Std_RotateSoulBlade", 1.1f, false);
 
+	controller->AddAnimationClip("Lyn_B_Stun_Start", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Stun_Looping", 1.f, true);
+	
 	controller->AddAnimationClip("Lyn_B_KnockBack_Long_B", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Long_F", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_B", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_F", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_LightningCombo", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_LightningCombo", 1.1f, false);
 	controller->AddAnimationClip("Lyn_B_Down", 1.f, false);// 두개 테스트 필요
 	controller->AddAnimationClip("Lyn_B_layDown", 1.f, false);//
 	controller->AddAnimationClip("Lyn_B_Down_B", 1.f, false);
@@ -457,6 +462,11 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Magnetic_Cast_Looping", 1.f, false);
 
+	controller->AddAnimationClip("Lyn_B_FlyByHit", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Long_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Long_F", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_B", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_F", 1.f, false);
 
 
 
@@ -469,6 +479,7 @@ void StageScene::Initialize()
 	lyn->AddComponent<AnimationController>(&anim2);
 	lyn->GetComponents<AnimationController>()[1]->SetFixedAnimationBoneName("Bip01", true, false, true);
 	lyn->GetComponents<AnimationController>()[1]->SetRootMotion(true);
+	lyn->AddComponent<AudioSource>();
 #pragma endregion Lyn
 #pragma region Lyn Weapon
 	{
@@ -511,7 +522,7 @@ void StageScene::Initialize()
 		Matrix rotMat;
 		anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
 		zakan->AddComponent<AnimationController>(&anim);
-
+		zakan->AddComponent<AudioSource>();
 
 
 
@@ -530,6 +541,13 @@ void StageScene::Initialize()
 		stateCtrl->AddState<ZakanRise>(L"rise");
 		stateCtrl->AddState<ZakanTeleport>(L"teleport");
 		stateCtrl->AddState<ZakanArea360>(L"area360");
+		stateCtrl->AddState<ZakanPowerATK>(L"powerATK");
+		stateCtrl->AddState<ZakanSpellExplosion>(L"explosion");
+		stateCtrl->AddState<ZakanDamageShield>(L"damageShield");
+		stateCtrl->AddState<ZakanSplitBlood>(L"splitBlood");
+		stateCtrl->AddState<ZakanTeleportCenter>(L"teleportCenter");
+		stateCtrl->AddState<ZakanDead>(L"dead");
+
 
 
 
@@ -545,20 +563,20 @@ void StageScene::Initialize()
 
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.1f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Exec", 1.1f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec1", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec2", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Start", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Looping", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Looping", 1.f, true);
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_End", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Start", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Looping", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Looping", 1.f, true);
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_idle", 1.f, true);
@@ -573,11 +591,31 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Exec", 1.f, false);
 
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec1", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec2", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_End", 0.7f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_Fire", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Exec1", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Exec2", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Exec", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_SplitBlood_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_SplitBlood_Exec", 1.f, false);
+
+
+
 
 
 	}
 #pragma endregion Zakan
 #pragma region Zakan Weapon
+
 	{
 		MeshRenderer::Desc mesh;
 		mesh.meshName = L"zakan_weapon";
@@ -604,7 +642,9 @@ void StageScene::Initialize()
 		sphere.radius = 1.f;
 		RigidBody::Desc rigid;
 		rigid.isGravity = false;
-		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>()->AddComponent<AudioListener>()->AddComponent<AudioSource>();
+		cam->AddComponent<BnS_MainCamera>(&bnsCam)->AddComponent<SphereCollider>(&sphere)
+			->AddComponent<RigidBody>(&rigid)->AddComponent<Camera>()->AddComponent<CameraShake>()
+			->AddComponent<AudioListener>()->AddComponent<AudioSource>()->AddComponent<AudioSource>()->AddComponent<AudioSource>();
 		//INSTANTIATE()->AddComponent<Camera>()->AddComponent<CameraShake>()->SetParents(cam);
 	}
 #pragma endregion BnS Camera

@@ -424,6 +424,8 @@ void PhysicsManager::CreateStaticMeshCollider(Collider * _col, bool _directInser
 
 void PhysicsManager::CreateSphereCollider(Collider * _col, RigidBody * _rigid, float _radius)
 {
+	assert(L"Invalid radius" && _radius);
+
 	PxMaterial* material = m_physics->createMaterial(0.5f, 0.5f, 0.5f);
 	PxShape* shape = m_physics->createShape(PxSphereGeometry(_radius), *material, true);
 	InitializeShapeByColliderInfo(shape, _col);

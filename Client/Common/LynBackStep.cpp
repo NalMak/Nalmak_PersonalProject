@@ -18,7 +18,7 @@ void LynBackStep::Initialize()
 void LynBackStep::EnterState()
 {
 	m_info->SetResistance(true);
-
+	AddInnerPower(2);
 
 	if (m_isUpper)
 	{
@@ -27,6 +27,9 @@ void LynBackStep::EnterState()
 		buff.key = L"SS";
 		buff.skill = m_skillController->GetSkill(L"backStep");
 		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+
+		m_audio->PlayOneShot(L"lyn_backStep");
+
 	}
 
 
@@ -34,12 +37,12 @@ void LynBackStep::EnterState()
 
 	if (m_info->GetState() == LYN_STATE_BATTLE_HIDEBLADE)
 	{
-		m_animController->Play("Lyn_B_Hide_BackStep");
+		m_animController->PlayBlending("Lyn_B_Hide_BackStep");
 	}
 	else
 	{
 		m_info->SetState(LYN_STATE_BATTLE_STANDARD);
-		m_animController->Play("Lyn_B_Std_BackStep");
+		m_animController->PlayBlending("Lyn_B_Std_BackStep");
 	}
 
 	//m_animController->SetRootMotion(true);

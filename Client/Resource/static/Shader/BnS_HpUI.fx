@@ -60,7 +60,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	}
 	else
 	{
-		clip(0);
+		o.diffuse = float4(0.1f,0.1f,0.1f,0.5f);
 	}
 	return o;
 }

@@ -19,7 +19,7 @@ void LynBaldo::EnterState()
 {
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
-	m_animController->Play("Lyn_B_Hide_Baldo0");
+	m_animController->PlayBlending("Lyn_B_Hide_Baldo0");
 
 	if (m_isUpper)
 	{
@@ -33,7 +33,7 @@ void LynBaldo::EnterState()
 		attack.host = m_gameObject;
 		attack.power = (UINT)(m_info->m_power * 3 * Nalmak_Math::Rand(0.8f, 1.2f));
 		float critical = Nalmak_Math::Rand(0.f, 1.f);
-		attack.isCritical = m_info->m_criticalRatio < critical;
+		attack.isCritical = m_info->m_criticalRatio > critical;
 		
 		auto hitBox = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
 			->AddComponent<AttackInfo>(&attack)
@@ -47,6 +47,9 @@ void LynBaldo::EnterState()
 				m_info->AddLightningSpirit();
 			});
 		}
+
+		
+
 	}
 }
 
@@ -57,19 +60,12 @@ void LynBaldo::UpdateState()
 	{
 		m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
 
-		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_F))
-		{
-			if (m_info->UseLightningSpirit())
-			{
-				SetState(L"lightningCombo");
-				return;
-			}
-		}
+		
 	}
 
-	if (m_animController->GetPlayRemainTime() < 0.2f)
+	if (m_animController->GetPlayRemainTime() < 0.4f)
 	{
-		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}

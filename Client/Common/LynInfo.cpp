@@ -45,6 +45,8 @@ void LynInfo::Initialize()
 	m_characterController = GetComponent<CharacterController>();
 	m_skinRenderer = GetComponent<SkinnedMeshRenderer>();
 	m_skillController = GetComponent<LynSkillController>();
+	m_audio = GetComponent<AudioSource>();
+
 	m_sysAudio = Core::GetInstance()->GetMainCamera()->GetComponent<AudioSource>();
 
 
@@ -65,9 +67,61 @@ void LynInfo::Initialize()
 void LynInfo::Update()
 {
 	DEBUG_LOG(L"Battle State", m_battleState);
+	DEBUG_LOG(L"lightning spirit", m_lightningSpirit);
 
+	//PlayMoveAnimation();
 
+	if (m_target)
+	{
+		auto enemy = m_target->GetComponent<BnS_Enemy>()->GetBattleState();
 
+		wstring fSlotName = L"";
+		if (m_state == LYN_STATE_BATTLE_HIDEBLADE)
+		{
+			if (m_lightningSpirit > 0)
+			{
+				if (enemy != BATTLE_STATE_GROGY && enemy != BATTLE_STATE_STUN &&enemy != BATTLE_STATE_DOWN &&enemy != BATTLE_STATE_AIR)
+					fSlotName = L"lightningCombo";
+			}
+		}
+		switch (enemy)
+		{
+		case BATTLE_STATE_GROGY:
+			fSlotName = L"upperSlash";
+			break;
+		case BATTLE_STATE_STUN:
+			fSlotName = L"upperSlash";
+			break;
+		case BATTLE_STATE_DOWN:
+			fSlotName = L"thunderbolt";
+			break;
+		case BATTLE_STATE_AIR:
+			m_skillController->SetSkillSlot(L"airShot");
+			break;
+		default:
+			
+			break;
+		}
+
+		if (m_battleState == BATTLE_STATE_STUN || m_battleState == BATTLE_STATE_GROGY || m_battleState == BATTLE_STATE_DOWN)
+		{
+			fSlotName = L"backRoll";
+		}
+
+		if(fSlotName == L"")
+			m_skillController->ReleaseSkill(BNS_SKILL_SLOT_F);
+		else
+			m_skillController->SetSkillSlot(fSlotName);
+	}
+
+	if (m_distanceToTarget > 3.f)
+	{
+		m_skillController->SetSkillSlot(L"throwSoulBlade");
+	}
+	else
+	{
+		m_skillController->SetSkillSlot(L"frontKick");
+	}
 
 	if (m_stateControl_lower->GetCurStateString() == L"idle" && m_stateControl_upper->GetCurStateString() == L"idle")
 	{
@@ -99,9 +153,6 @@ void LynInfo::Update()
 			m_battleState = BATTLE_STATE_WEAK;
 		}
 	}
-
-	
-
 
 	if (m_state == LYN_STATE_PEACE_STANDARD)
 	{
@@ -199,19 +250,7 @@ void LynInfo::Update()
 		}
 	}
 
-
-	if (m_target)
-	{
-		if (m_target->GetComponent<BnS_Enemy>()->GetBattleState() == BATTLE_STATE_DOWN)
-		{
-			if(InputManager::GetInstance()->GetKeyDown(KEY_STATE_F))
-			{
-				m_stateControl_lower->SetState(L"upperSlash");
-				m_stateControl_upper->SetState(L"upperSlash");
-				return;
-			}
-		}
-	}
+	
 	//Nalmak_Math::Random<wstring>(L"1", L"2", L"3");
 	
 
@@ -235,46 +274,8 @@ void LynInfo::OnTriggerEnter(Collision & _col)
 		if (_col.hitObj->GetLayer() == OBJECT_LAYER_ENEMY_HITBOX)
 		{
 			AttackInfo* attack = _col.hitObj->GetComponent<AttackInfo>();
-			auto attackType = attack->m_attackType;
-			ResetBattleTimer();
-
-			if (m_battleState == BATTLE_STATE_RESISTANCE)
-			{
-				m_sysAudio->PlayOneShot(L"lyn_resistance");
-				return;
-			}
-			if (!GetDamage(attack->m_power))
-			{
-				attack->GetHost()->GetComponent<BnS_Enemy>()->LostTarget();
-				return;
-			}
 			
-			if (m_battleState == BATTLE_STATE_WEAK)
-			{
-				switch (attackType)
-				{
-				case ATTACK_TYPE_DOWN:
-					m_stateControl_lower->SetFloat(L"downTime", attack->m_ccTime);
-					m_stateControl_upper->SetFloat(L"downTime", attack->m_ccTime);
-
-					m_stateControl_lower->SetState(L"down");
-					m_stateControl_upper->SetState(L"down");
-					break;
-				case ATTACK_TYPE_GROGY:
-					m_stateControl_lower->SetFloat(L"grogyTime", attack->m_ccTime);
-					m_stateControl_upper->SetFloat(L"grogyTime", attack->m_ccTime);
-
-					m_stateControl_lower->SetState(L"grogy");
-					m_stateControl_upper->SetState(L"grogy");
-					break;
-				case ATTACK_TYPE_MAGNETIC:
-					
-					m_stateControl_lower->SetState(L"hold");
-					m_stateControl_upper->SetState(L"hold");
-				default:
-					break;
-				}
-			}
+			HitByAttackInfo(attack);
 		}
 	}
 
@@ -295,7 +296,6 @@ void LynInfo::OnCollisionEnter(Collision & _col)
 
 void LynInfo::OnCollisionStay(Collision & _col)
 {
-	DEBUG_LOG(L"Lyn Collision!" , L"stay");
 }
 
 void LynInfo::OnCollisionExit(Collision & _col)
@@ -339,6 +339,8 @@ bool LynInfo::GetDamage(UINT _damage)
 
 void LynInfo::SetState(LYN_STATE _state)
 {
+	UIManager::GetInstance()->UpdateEnergyUI(m_energy / 100.f, m_state);
+
 	switch (_state)
 	{
 	case LYN_STATE_PEACE_STANDARD:
@@ -390,6 +392,7 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 	switch (_state)
 	{
 	case LYN_SKILL_STATE_STANDARD:
+		m_skillController->ChangeSkillSlotByAnimation(L"spinSlash_start");
 		m_skillController->ChangeSkillSlotByAnimation(L"verticalCut_l0");
 		m_skillController->ChangeSkillSlotByAnimation(L"slash1");
 		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
@@ -402,6 +405,7 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 	
 		break;
 	case LYN_SKILL_STATE_HIDE:
+		m_skillController->ChangeSkillSlotByAnimation(L"spinSlash_start");
 		m_skillController->ChangeSkillSlotByAnimation(L"baldo");
 		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
 		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
@@ -415,9 +419,30 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 		break;
 	case LYN_SKILL_STATE_AIR:
 		break;
+	case LYN_SKILL_STATE_CC:
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_1);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_2);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_3);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_4);
+
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_Z);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_X);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_C);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_V);
+
+
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_LB);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
+
+		m_skillController->ChangeSkillSlotByAnimation(L"backRoll");
+		m_skillController->ChangeSkillSlotByAnimation(L"excape");
+		break;
 	case LYN_SKILL_STATE_MAGNETIC:
 		break;
-
+	case LYN_SKILL_STATE_LAY:
+		m_skillController->ChangeSkillSlotByAnimation(L"backRoll");
+		m_skillController->ChangeSkillSlotByAnimation(L"excape");
+		break;
 	default:
 		break;
 	}
@@ -452,6 +477,98 @@ LYN_STATE LynInfo::GetState()
 void LynInfo::SetBattleState(BATTLE_STATE _state)
 {
 	m_battleState = _state;
+}
+
+void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
+{
+	auto attackType = _attackInfo->m_attackType;
+	ResetBattleTimer();
+
+	if (m_battleState == BATTLE_STATE_RESISTANCE)
+	{
+		m_sysAudio->PlayOneShot(L"lyn_resistance");
+		return;
+	}
+	if (!GetDamage(_attackInfo->m_power))
+	{
+		_attackInfo->GetHost()->GetComponent<BnS_Enemy>()->LostTarget();
+		return;
+	}
+
+	if (m_battleState != BATTLE_STATE_RESISTANCE)
+	{
+		Vector3 dir;
+		switch (attackType)
+		{
+		case ATTACK_TYPE_DOWN:
+			if (!m_audio->IsPlay())
+			{
+				m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+			}
+
+
+			m_stateControl_lower->SetFloat(L"downTime", _attackInfo->m_ccTime);
+			m_stateControl_upper->SetFloat(L"downTime", _attackInfo->m_ccTime);
+
+			m_stateControl_lower->SetState(L"down");
+			m_stateControl_upper->SetState(L"down");
+			break;
+		case ATTACK_TYPE_GROGY:
+			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
+			{
+				m_stateControl_lower->SetFloat(L"grogyTime", _attackInfo->m_ccTime);
+				m_stateControl_upper->SetFloat(L"grogyTime", _attackInfo->m_ccTime);
+
+				m_stateControl_lower->SetState(L"grogy");
+				m_stateControl_upper->SetState(L"grogy");
+			}
+			break;
+		case ATTACK_TYPE_MAGNETIC:
+			m_stateControl_lower->SetState(L"hold");
+			m_stateControl_upper->SetState(L"hold");
+			break;
+		case ATTACK_TYPE_KNOCKBACK_MIDDLE:
+			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
+			{
+				if (!m_audio->IsPlay())
+				{
+					m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+				}
+
+				m_stateControl_lower->SetFloat(L"downTime", _attackInfo->m_ccTime);
+				m_stateControl_upper->SetFloat(L"downTime", _attackInfo->m_ccTime);
+
+				auto rigid = _attackInfo->GetComponent<RigidBody>();
+				if (rigid)
+					dir = Nalmak_Math::Normalize(_attackInfo->GetComponent<RigidBody>()->GetVelocity());
+				else
+					dir = Nalmak_Math::Normalize(m_transform->GetWorldPosition() - _attackInfo->GetHost()->GetTransform()->GetWorldPosition());
+				m_stateControl_lower->SetVector3(L"knockBackDir", dir);
+				m_stateControl_upper->SetVector3(L"knockBackDir", dir);
+
+				m_stateControl_lower->SetState(L"knockBackMiddle");
+				m_stateControl_upper->SetState(L"knockBackMiddle");
+			}
+			break;
+		case ATTACK_TYPE_KNOCKBACK_LONG:
+			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
+			{
+				if (!m_audio->IsPlay())
+				{
+					m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+				}
+
+
+				m_stateControl_lower->SetFloat(L"downTime", _attackInfo->m_ccTime);
+				m_stateControl_upper->SetFloat(L"downTime", _attackInfo->m_ccTime);
+
+				m_stateControl_lower->SetState(L"knockBackLong");
+				m_stateControl_upper->SetState(L"knockBackLong");
+			}
+		default:
+			break;
+		}
+	}
 }
 
 BATTLE_STATE LynInfo::GetBattleState()
@@ -519,9 +636,131 @@ void LynInfo::ReduceInnerPower(int _power)
 	}
 }
 
-UINT LynInfo::GetInnerPower()
+int LynInfo::GetInnerPower()
 {
 	return m_innerPower;
+}
+
+void LynInfo::PlayMoveAnimation()
+{
+	auto dir =GetDirectionState();
+	auto state = GetState();
+
+
+	if (dir != m_dirState || state != m_state)
+	{
+		string animName = "";
+		switch (dir)
+		{
+		case LYN_MOVE_DIR_STATE_FRONT:
+			animName = "Mov_RunFront";
+			break;
+		case LYN_MOVE_DIR_STATE_RIGHT:
+		{
+			if (m_dirState == LYN_MOVE_DIR_STATE_LEFT)
+			{
+				if (m_isProgressSkill)
+					m_stateControl_upper->SetState(L"rebound");
+				m_stateControl_lower->SetState(L"rebound");
+				m_dirState = dir;
+				return;
+			}
+			else
+			{
+				animName = "Mov_RunRight";
+				break;
+			}
+		}
+		case LYN_MOVE_DIR_STATE_FRONTRIGHT:
+			animName = "Mov_RunRightFront";
+			break;
+		case LYN_MOVE_DIR_STATE_LEFT:
+		{
+			if (m_dirState == LYN_MOVE_DIR_STATE_RIGHT)
+			{
+				if (m_isProgressSkill)
+					m_stateControl_upper->SetState(L"rebound");
+				m_stateControl_lower->SetState(L"rebound");
+				m_dirState = dir;
+				return;
+			}
+			else
+			{
+				animName = "Mov_RunLeft";
+				break;
+			}
+		}
+		case LYN_MOVE_DIR_STATE_FRONTLEFT:
+			animName = "Mov_RunLeftFront";
+			break;
+		case LYN_MOVE_DIR_STATE_BACK:
+			animName = "Mov_RunBack";
+			break;
+		case LYN_MOVE_DIR_STATE_BACKRIGHT:
+			animName = "Mov_RunRightBack";
+			break;
+		case LYN_MOVE_DIR_STATE_BACKLEFT:
+			animName = "Mov_RunLeftBack";
+			break;
+		case LYN_MOVE_DIR_STATE_NONE:
+		{
+			if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_A) && !InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+			{
+				//m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+				m_dirState = dir;
+
+				if (m_isProgressSkill)
+				{
+					m_stateControl_upper->SetState(L"idle");
+					m_animController_upper->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+				}
+				m_stateControl_lower->SetState(L"idle");
+				m_animController_lower->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+
+				return;
+			}
+		}
+		default:
+			break;
+		}
+
+		m_state = state;
+		if (animName != "")
+		{
+			switch (state)
+			{
+			case LYN_STATE_PEACE_STANDARD:
+				animName = "Lyn_P_Std_" + animName;
+				break;
+			case LYN_STATE_BATTLE_STANDARD:
+				animName = "Lyn_B_Std_" + animName;
+				break;
+			case LYN_STATE_BATTLE_HIDEBLADE:
+				animName = "Lyn_B_Hide_" + animName;
+				break;
+			default:
+				break;
+			}
+			if (m_isProgressSkill)
+			{
+				m_animController_upper->PlayBlending(animName);
+				m_animController_upper->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			}
+			m_animController_lower->PlayBlending(animName);
+			m_animController_lower->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		}
+	}
+
+}
+
+AnimationController * LynInfo::GetUpperAnimationController()
+{
+	return m_animController_upper;
+}
+
+AnimationController * LynInfo::GetLowerAnimationController()
+{
+	return m_animController_lower;
 }
 
 
@@ -598,7 +837,7 @@ bool LynInfo::UseEnergy(float _amount)
 	if (m_energy >= 0)
 	{
 		m_energy += dTime * _amount;
-		UIManager::GetInstance()->UpdateEnergyUI(m_energy / 100.f);
+		UIManager::GetInstance()->UpdateEnergyUI(m_energy / 100.f, m_state);
 		return true;
 	}
 	else
@@ -636,11 +875,13 @@ void LynInfo::StartSkill()
 {
 	m_isProgressSkill = true;
 	m_battleToPeaceTimer = 5.f;
+	m_dirState = LYN_MOVE_DIR_STATE_MAX;
 }
 
 void LynInfo::EndSkill()
 {
 	m_isProgressSkill = false;
+	m_dirState = LYN_MOVE_DIR_STATE_MAX;
 }
 
 void LynInfo::MoveOn()
@@ -656,6 +897,11 @@ void LynInfo::MoveOff()
 void LynInfo::SetSpeed(float _speed)
 {
 	m_targetSpeed = _speed;
+}
+
+bool LynInfo::IsProgressingSkill()
+{
+	return m_isProgressSkill;
 }
 
 const Vector3 & LynInfo::GetTargetInput()

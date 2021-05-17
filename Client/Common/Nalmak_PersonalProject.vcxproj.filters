@@ -426,6 +426,10 @@
     <ClInclude Include="LynEventIdle.h" />
     <ClInclude Include="ZakanPowerATK.h" />
     <ClInclude Include="BnS_InnerForceAnimation.h" />
+    <ClInclude Include="BnS_SystemSetting.h" />
+    <ClInclude Include="ZakanSplitBlood.h" />
+    <ClInclude Include="ZakanTeleportCenter.h" />
+    <ClInclude Include="ZakanDead.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -686,6 +690,10 @@
     <ClCompile Include="LynEventIdle.cpp" />
     <ClCompile Include="ZakanPowerATK.cpp" />
     <ClCompile Include="BnS_InnerForceAnimation.cpp" />
+    <ClCompile Include="BnS_SystemSetting.cpp" />
+    <ClCompile Include="ZakanSplitBlood.cpp" />
+    <ClCompile Include="ZakanTeleportCenter.cpp" />
+    <ClCompile Include="ZakanDead.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

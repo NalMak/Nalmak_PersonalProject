@@ -76,7 +76,8 @@ public:
 	void LookAt(GameObject* _Target, float _Spd, Quaternion* _qOut = nullptr); // transform 
 	void LookAt(const Vector3& _pos, float _Spd, Quaternion* _qOut = nullptr);
 	void LookAt(const Vector3& _dest, Quaternion* _qOut);
-
+	void LookAt_RotYAxis(const Vector3& _dir);
+		
 private:
 	list<Transform*>   m_childs;
 	Transform * m_parents = nullptr;

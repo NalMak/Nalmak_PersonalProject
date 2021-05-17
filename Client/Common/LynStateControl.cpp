@@ -21,6 +21,7 @@ void LynStateControl::Initialize()
 	auto cam = Core::GetInstance()->GetMainCamera()->GetComponent<BnS_MainCamera>();
 	auto skillController = GetComponent<LynSkillController>();
 	auto stateControls = GetComponents<LynStateControl>();
+	auto audio = GetComponent<AudioSource>();
 	for(auto& state : m_stateList)
 	{
 		LynState* lynState = (LynState*)(state.second);
@@ -28,6 +29,7 @@ void LynStateControl::Initialize()
 		lynState->m_info = m_info;
 		lynState->m_bnsMainCam = cam;
 		lynState->m_skillController = skillController;
+		lynState->m_audio = audio;
 		if(lynState->m_isUpper)
 			lynState->m_animController = m_animController_upper;
 		else

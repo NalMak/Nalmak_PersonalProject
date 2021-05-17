@@ -186,6 +186,7 @@
     <ClInclude Include="BnS_RotateSoulBlade.h" />
     <ClInclude Include="BnS_Skill.h" />
     <ClInclude Include="BnS_SkillSlot.h" />
+    <ClInclude Include="BnS_SystemSetting.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EnemyState.h" />
@@ -262,6 +263,7 @@
     <ClInclude Include="ZakanArea360.h" />
     <ClInclude Include="ZakanBattleIdle.h" />
     <ClInclude Include="ZakanDamageShield.h" />
+    <ClInclude Include="ZakanDead.h" />
     <ClInclude Include="ZakanDown.h" />
     <ClInclude Include="ZakanFireSpellWave.h" />
     <ClInclude Include="ZakanFlyTakeDown.h" />
@@ -279,7 +281,9 @@
     <ClInclude Include="ZakanSpellExplosion.h" />
     <ClInclude Include="ZakanSpellStance.h" />
     <ClInclude Include="ZakanSpellSuction.h" />
+    <ClInclude Include="ZakanSplitBlood.h" />
     <ClInclude Include="ZakanTeleport.h" />
+    <ClInclude Include="ZakanTeleportCenter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
@@ -291,6 +295,7 @@
     <ClCompile Include="BnS_RotateSoulBlade.cpp" />
     <ClCompile Include="BnS_Skill.cpp" />
     <ClCompile Include="BnS_SkillSlot.cpp" />
+    <ClCompile Include="BnS_SystemSetting.cpp" />
     <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="EnemyStateControl.cpp" />
@@ -365,6 +370,7 @@
     <ClCompile Include="ZakanArea360.cpp" />
     <ClCompile Include="ZakanBattleIdle.cpp" />
     <ClCompile Include="ZakanDamageShield.cpp" />
+    <ClCompile Include="ZakanDead.cpp" />
     <ClCompile Include="ZakanDown.cpp" />
     <ClCompile Include="ZakanFireSpellWave.cpp" />
     <ClCompile Include="ZakanFlyTakeDown.cpp" />
@@ -382,7 +388,9 @@
     <ClCompile Include="ZakanSpellExplosion.cpp" />
     <ClCompile Include="ZakanSpellStance.cpp" />
     <ClCompile Include="ZakanSpellSuction.cpp" />
+    <ClCompile Include="ZakanSplitBlood.cpp" />
     <ClCompile Include="ZakanTeleport.cpp" />
+    <ClCompile Include="ZakanTeleportCenter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Nalmak_PersonalProject.rc" />

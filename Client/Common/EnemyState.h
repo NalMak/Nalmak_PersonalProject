@@ -24,5 +24,6 @@ protected:
 	BnS_Enemy* m_info;
 	CharacterController* m_character;
 	BnS_MainCamera* m_bnsMainCam;
+	AudioSource* m_audio;
 };
 

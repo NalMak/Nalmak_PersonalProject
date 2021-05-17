@@ -17,6 +17,8 @@ void LynEventIdle::Initialize()
 
 void LynEventIdle::EnterState()
 {
+	m_info->SetBattleState(BATTLE_STATE_WEAK);
+
 	m_bnsMainCam->UnLockTarget();
 
 	string anim = "Lyn_P_Std_Idle_Event";

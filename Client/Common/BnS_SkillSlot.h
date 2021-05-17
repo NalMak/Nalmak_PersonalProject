@@ -3,7 +3,7 @@
 class BnS_Skill;
 
 class BnS_SkillSlot :
-	public UIComponent
+	public SingleImage
 {
 public:
 	struct Desc
@@ -23,7 +23,6 @@ public:
 public:
 	void SetSkill(BnS_Skill* _skill);
 	void ChangeSkillTex(Texture* _tex);
-
 	void SetCoolTimeRatio(float _ratio);
 private:
 	bool m_isChange;
@@ -31,6 +30,5 @@ private:
 	float m_skillChangeTimer;
 	Texture* m_curSkill;
 	Texture* m_nextSkill;
-
 };
 

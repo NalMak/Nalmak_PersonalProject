@@ -17,6 +17,7 @@ void LynSpinSlash_End::Initialize()
 
 void LynSpinSlash_End::EnterState()
 {
+	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_Std_SpinSlash_02");
@@ -36,5 +37,6 @@ void LynSpinSlash_End::UpdateState()
 
 void LynSpinSlash_End::ExitState()
 {
+	m_info->SetBattleState(BATTLE_STATE_WEAK);
 	m_info->EndSkill();
 }

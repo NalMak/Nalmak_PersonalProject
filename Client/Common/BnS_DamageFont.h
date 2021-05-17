@@ -24,8 +24,11 @@ private:
 	bool m_isCritical;
 	DAMAGE_FONT_ANIMATION_TYPE m_animationType;
 	float m_lifeTime;
+	float m_totalLifeTime;
+	Vector2 m_screenPos;
+	Vector2 m_screenVelocity;
+	
 	vector<SingleImage*> m_fontData;
 
-	Vector3 m_velocity;
 };
 

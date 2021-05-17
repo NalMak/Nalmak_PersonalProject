@@ -456,6 +456,15 @@ bool AnimationController::IsPlay()
 	return !m_isStop;
 }
 
+bool AnimationController::IsPlay(const string & _name)
+{
+	if (m_currentAnimationClip->animationName == _name)
+	{
+		return !m_isStop;;
+	}
+	return true;
+}
+
 double AnimationController::GetPlayTime()
 {
 	return m_currentPlayTime;

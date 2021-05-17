@@ -12,10 +12,10 @@ texture "g_specularTex" "990120_ZakanArm_col1_S"
 
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
-float "g_f0" "0.25f"
-float "g_roughness" "0.45f"
+float "g_f0" "0.45f"
+float "g_roughness" "0.05f"
 float "g_normalPower" "1.f"
-float "g_specularPower" "0.9f";
+float "g_specularPower" "1.f";
 
 renderQueue "2000"
 

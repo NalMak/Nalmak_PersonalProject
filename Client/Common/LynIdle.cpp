@@ -18,6 +18,7 @@ void LynIdle::Initialize()
 
 void LynIdle::EnterState()
 {
+	m_info->SetBattleState(BATTLE_STATE_WEAK);
 
 	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE)
 	{

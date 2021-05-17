@@ -17,5 +17,7 @@ private:
 	LYN_STATE m_state;
 private:
 	void PlayAnimationByDirection();
+private:
+	float m_soundInterval;
 };
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BnS_Skill.h"
 #include "LynInfo.h"
+#include "UIManager.h"
 
 BnS_Skill::BnS_Skill(Desc * _desc)
 {
@@ -40,18 +41,18 @@ void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot
 
 	if (_minDistance != 0 || _maxDistance != 0)
 	{
-		m_minDistance = _minDistance / BNS_DISTANCE_RATIO;
-		m_maxDistance = _maxDistance / BNS_DISTANCE_RATIO;
+		m_minDistance = _minDistance;
+		m_maxDistance = _maxDistance;
 		m_useableCondition.On(BNS_SKILL_CONDITION_DISTANCE);
 	}
 	m_needInnerForce = _innerForce;
-	if (_innerForce < 0)
+	if (_innerForce > 0)
 	{
 		m_useableCondition.On(BNS_SKILL_CONDITION_INNERFORCE);
 	}
 	m_skillIcon = ResourceManager::GetInstance()->GetResource<Texture>(_skillIcon);
 	m_coolTime = _coolTime;
-	m_actionKey = _actionKey;
+	m_actionKey = _actionKey; 
 	m_activationCondition = _condition;
 }
 
@@ -73,21 +74,26 @@ void BnS_Skill::UpdateAvailableSkill(LynInfo* _info)
 		else
 		{
 			m_isUseable.Off(BNS_SKILL_CONDITION_DISTANCE);
+
 		}
 	}
-	if (m_useableCondition.Check(BNS_SKILL_CONDITION_INNERFORCE))
+ 	if (m_useableCondition.Check(BNS_SKILL_CONDITION_INNERFORCE))
 	{
-		if (_info->GetInnerPower() >= m_needInnerForce)
+		if (_info->GetInnerPower() >= (int)m_needInnerForce)
 		{
 			m_isUseable.On(BNS_SKILL_CONDITION_INNERFORCE);
-		}
+		} 
 		else
 		{
 			m_isUseable.Off(BNS_SKILL_CONDITION_INNERFORCE);
 		}
 	}
-	
-	
+
+	if(m_isUseable.Check(BNS_SKILL_CONDITION_DISTANCE) && m_isUseable.Check(BNS_SKILL_CONDITION_INNERFORCE))
+		UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(1.f,1.f,1.f, 1));
+	else
+		UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(0.2f, 0.2f, 0.2f, 1));
+
 }
 
 bool BnS_Skill::IsValidEvent(LynInfo * _info)

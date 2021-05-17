@@ -20,13 +20,14 @@ void EnemyStateControl::Initialize()
 	m_info = GetComponent<BnS_Enemy>();
 	m_animController = GetComponent<AnimationController>();
 	auto cam = Core::GetInstance()->GetMainCamera()->GetComponent<BnS_MainCamera>();
-
+	auto audio = GetComponent<AudioSource>();
 	for (auto& state : m_stateList)
 	{
 		EnemyState* lynState = (EnemyState*)(state.second);
 		lynState->m_character = m_character;
 		lynState->m_info = m_info;
 		lynState->m_bnsMainCam = cam;
+		lynState->m_audio = audio;
 		lynState->m_animController = m_animController;
 	}
 	StateControl::Initialize();

@@ -407,6 +407,23 @@ void Transform::LookAt(const Vector3 & _dest, Quaternion * _qOut)
 	
 }
 
+void Transform::LookAt_RotYAxis(const Vector3& _dir)
+{
+	auto dir = _dir;
+	dir.y = 0;
+
+	float angle = acosf(Nalmak_Math::Dot(dir, Vector3(0, 0, 1)));
+
+
+	Quaternion rot;
+	if (Nalmak_Math::Cross(dir, Vector3(0, 0, 1)).y > 0)
+		D3DXQuaternionRotationYawPitchRoll(&rot, -angle, 0, 0);
+	else
+		D3DXQuaternionRotationYawPitchRoll(&rot, angle, 0, 0);
+
+	m_transform->rotation = rot;
+}
+
 
 
 

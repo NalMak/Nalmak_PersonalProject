@@ -2,6 +2,7 @@
 #include "BnS_SkillSlot.h"
 #include "BnS_Skill.h"
 BnS_SkillSlot::BnS_SkillSlot(Desc * _desc)
+	:SingleImage(&SingleImage::Desc())
 {
 	if (_desc->_skill)
 	{
@@ -41,6 +42,7 @@ void BnS_SkillSlot::ChangeSkillTex(Texture * _tex)
 	m_nextSkill = _tex;
 	m_skillChangeTimer = BNS_SKILL_TEX_CHANGE_TIME;
 }
+
 
 void BnS_SkillSlot::SetCoolTimeRatio(float _ratio)
 {
@@ -82,9 +84,11 @@ void BnS_SkillSlot::Render(Shader * _shader, Mesh * _mesh)
 			}
 		}
 	}
+	_shader->SetVector("g_mainTexColor", m_color);
 	_shader->SetFloat("g_coolTimeAngle", m_coolTimeRatio * 360);
 	_shader->SetMatrix("g_world", m_transform->GetWorldUIMatrix());
 
 	_shader->CommitChanges();
 	_mesh->Draw();
+
 }

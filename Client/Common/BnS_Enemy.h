@@ -9,7 +9,7 @@ class BnS_Enemy :
 public:
 	struct Desc
 	{
-		UINT hp = 100000;
+		UINT hp = 3000000;
 		float hitRadius = 3.f;
 		UINT power = 1500;
 		float detectionRadius = 10.f;
@@ -22,7 +22,7 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
-
+	
 	void OnTriggerEnter(Collision& _col) override;
 	void OnTriggerExit(Collision& _col) override;
 
@@ -40,10 +40,13 @@ public:
 	void LostTarget();
 	void LookTarget();
 	void GetDamage(AttackInfo* _attackInfo);
+	float GetHpRatio();
+	void Reset();
 private:
 	Vector4 m_volumeRect;
 	RECT m_screenVolumeRect;
-	UINT m_hp;
+	int m_maxHp;
+	int m_hp;
 	UINT m_power;
 	float m_hitRadius;
 	Vector3 m_spawnPos;
@@ -55,6 +58,7 @@ private:
 	float m_distanceToTarget;
 	CharacterController* m_character;
 	EnemyStateControl* m_stateControl;
+	AudioSource* m_audio;
 private:
 	void CalcWorldVolume();
 };

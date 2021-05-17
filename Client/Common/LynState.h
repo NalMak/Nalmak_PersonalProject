@@ -28,6 +28,7 @@ protected:
 	LynInfo* m_info;
 	BnS_MainCamera* m_bnsMainCam;
 	LynSkillController* m_skillController;
+	AudioSource* m_audio;
 	bool m_isUpper;
 
 	void ReduceInnerPower(UINT _innerPower);

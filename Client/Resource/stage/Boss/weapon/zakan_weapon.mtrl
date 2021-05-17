@@ -2,19 +2,19 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_StaticObject_DNSM"
+shader "BnS_StaticObject_DNS"
 
 
 texture "g_mainTex" "990178_Autoscale_col2_D"
 texture "g_normalTex" "990178_Autoscale_col2_N"
 texture "g_specularTex" "990178_Autoscale_col2_S"
-texture "g_maskTex" "990178_Autoscale_col2_M"
+
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
-float "g_f0" "0.1f"
-float "g_roughness" "0.5f"
+float "g_f0" "0.3f"
+float "g_roughness" "0.4f"
 float "g_normalPower" "1.f"
-float "g_specularPower" "1.f"
+float "g_specularPower" "0.5f"
 
 renderQueue "1999"
 

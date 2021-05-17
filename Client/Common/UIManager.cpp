@@ -21,6 +21,37 @@ void UIManager::CreateMainUI()
 {
 	{
 		SingleImage::Desc image;
+		image.textureName = L"bns_bossHP_outLine";
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(450, 18)->SetPosition(HALF_WINCX, 120);
+	}
+	{
+		SingleImage::Desc image;
+		image.textureName = L"bns_bossHp";
+		CanvasRenderer::Desc canvas;
+		canvas.mtrlName = L"UI_BossHp";
+		auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)->AddComponent<SingleImage>(&image)->SetScale(442, 14)->SetPosition(HALF_WINCX, 120);
+		m_bossHpBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
+	}
+	{
+		SingleImage::Desc image;
+		image.textureName = L"bns_bossHp_deco";
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(115, 50)->SetPosition(HALF_WINCX - 253, 112);
+	}
+	{
+		SingleImage::Desc image;
+		image.textureName = L"bns_bossRegistance";
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(40, 10)->SetPosition(HALF_WINCX - 200, 140);
+	}
+	{
+		SingleImage::Desc image;
+		image.textureName = L"bns_bossRegistanceInner";
+		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(38, 8)->SetPosition(HALF_WINCX - 200, 140);
+	}
+
+
+
+	{
+		SingleImage::Desc image;
 		image.textureName = L"GameUI_gauge_outLine";
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(340, 17)->SetPosition(HALF_WINCX , WINCY - 230);
 	}
@@ -63,8 +94,8 @@ void UIManager::CreateMainUI()
 		CanvasRenderer::Desc canvas;
 		canvas.mtrlName = L"UI_Energy";
 		auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)->AddComponent<SingleImage>(&image)->SetScale(336, 13)->SetPosition(HALF_WINCX, WINCY - 180);
-		m_energyBar = obj->GetComponent<CanvasRenderer>()->GetMaterial();
-
+		m_energyBarRenderer = obj->GetComponent<CanvasRenderer>();
+		m_energyBarImage = obj->GetComponent<SingleImage>();
 	}
 
 	//for (int i = 0; i < 10; ++i)
@@ -132,25 +163,27 @@ void UIManager::CreateMainUI()
 	{
 		SingleImage::Desc image;
 		image.color = Vector4(1, 1, 1, 0.5f);
-		image.textureName = L"TargetGuide";
 		Text::Desc text;
 		text.boundary = { 20,0,200,30 };
 		text.option = DT_LEFT;
 		text.color = D3DXCOLOR(1, 1, 1, 0.5f);
-		m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30);
+		image.textureName = L"GameUI_LeftBottom";
+		m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
 		m_targetOutLine[0]->SetActive(false);
 
-		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -90);
+		image.textureName = L"GameUI_LeftTop";
+		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
 		m_targetOutLine[1]->SetActive(false);
 
-		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -180);
+		image.textureName = L"GameUI_RightTop";
+		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
 		m_targetOutLine[2]->SetActive(false);
 
-		m_targetOutLine[3] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -270);
+		image.textureName = L"GameUI_RightBottom";
+		m_targetOutLine[3] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->AddComponent<Text>(&text)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
 		m_targetOutLine[3]->SetActive(false);
 		 
 
-		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(30, 30)->SetRotation(0, 0, -90);
 	}
 }
 
@@ -159,14 +192,24 @@ void UIManager::SetLynInfo(LynInfo * _info)
 	m_lynInfo = _info;
 }
 
-void UIManager::UpdateEnergyUI(float _ratio)
+void UIManager::UpdateEnergyUI(float _ratio, LYN_STATE _state)
 {
-	m_energyBar->SetFloat("g_outputRatio",_ratio);
+	if(_state  == LYN_STATE_PEACE_STANDARD)
+		m_energyBarImage->SetColor(Vector4(1.f,1.f,1.f,1.f));
+	else
+		m_energyBarImage->SetColor(Vector4(0.3f, 0.25f, 0.25f, 1.f));
+
+	m_energyBarRenderer->GetMaterial()->SetFloat("g_outputRatio",_ratio);
 }
 
 void UIManager::UpdateHpUI(float _ratio)
 {
 	m_hpBar->SetFloat("g_outputRatio", _ratio);
+}
+
+void UIManager::UpdateEnemyHpUI(float _ratio)
+{
+	m_bossHpBar->SetFloat("g_outputRatio", _ratio);
 }
 
 void UIManager::UpdateTarget(GameObject * _target)
@@ -341,6 +384,15 @@ void UIManager::ReleaseSkillSlot(BNS_SKILL_SLOT _slot)
 	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(false);
 }
 
+void UIManager::SetSkillSlotColor(BNS_SKILL_SLOT _slot, const Vector4 & _color)
+{
+	auto curSkill = m_skillSlot[_slot];
+	if (!curSkill)
+		return;
+	curSkill->GetComponent<BnS_SkillSlot>()->SetColor(_color);
+}
+
+
 void UIManager::AddBuff(BnS_Buff * _buff, BnS_Skill * _skill, const wstring & _key)
 {
 	size_t index = m_buffSlot.size();
@@ -397,7 +449,7 @@ void UIManager::ReleaseBuff(BnS_Buff * _buff)
 
 }
 
-void UIManager::AddInnerPower(UINT _index)
+void UIManager::AddInnerPower(int _index)
 {
 	m_innerPowerIcon[_index]->GetComponent<BnS_InnerForceAnimation>()->SetTargetRatio(1.f);
 }
@@ -412,7 +464,7 @@ void UIManager::FullInnerPower()
 	}
 }
 
-void UIManager::ReduceInnerPower(UINT _index)
+void UIManager::ReduceInnerPower(int _index)
 {
 	m_innerPowerIcon[_index]->GetComponent<BnS_InnerForceAnimation>()->SetTargetRatio(0.f);
 }

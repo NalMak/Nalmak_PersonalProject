@@ -18,6 +18,7 @@ AttackInfo::AttackInfo(Desc * _desc)
 	assert(L"Please Set Attack host!" && _desc->host);
 
 	m_host = _desc->host;
+	m_radius = _desc->radius;
 	m_width = _desc->width;
 	m_height = _desc->height;
 	m_depth = _desc->depth;

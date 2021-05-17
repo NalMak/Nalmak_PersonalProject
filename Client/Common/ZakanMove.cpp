@@ -22,10 +22,10 @@ void ZakanMove::UpdateState()
 {
 	if (m_info->GetTarget())
 	{
-		if (m_info->GetDistanceToTarget() > 5)
+		if (m_info->GetDistanceToTarget() > 4)
 		{
 			m_info->LookTarget();
-			Vector3 velocity = m_transform->GetForward() * 10;
+			Vector3 velocity = m_transform->GetForward() * 12;
 			m_character->SetVelocityX(velocity.x);
 			m_character->SetVelocityZ(velocity.z);
 		}
@@ -42,7 +42,7 @@ void ZakanMove::UpdateState()
 		m_character->SetVelocityX(velocity.x);
 		m_character->SetVelocityZ(velocity.z);
 
-		if (Nalmak_Math::DistanceSq(m_transform->GetWorldPosition(), m_info->GetSpawnPos()) < 15.f)
+		if (Nalmak_Math::DistanceSq(m_transform->GetWorldPosition(), m_info->GetSpawnPos()) < 20.f)
 		{
 			SetState(L"peace_idle");
 			return;

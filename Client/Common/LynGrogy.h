@@ -12,5 +12,8 @@ public:
 	virtual void EnterState() override;
 	virtual void UpdateState() override;
 	virtual void ExitState() override;
+private:
+	float m_ccTime;
+	float m_backRollTimer = 1.f;
 };
 

@@ -3,10 +3,12 @@
 #include "BnS_DamageFont.h"
 #include "LynInfo.h"
 #include "EnemyStateControl.h"
+#include "UIManager.h"
 
 BnS_Enemy::BnS_Enemy(Desc * _desc)
 {
 	m_hp = _desc->hp;
+	m_maxHp = m_hp;
 	m_power  = _desc->power;
 	m_hitRadius = _desc->hitRadius;
 	m_detectionRadius = _desc->detectionRadius; 
@@ -28,6 +30,7 @@ void BnS_Enemy::Initialize()
 	//m_gameObject->SetTag(OBJECT_TAG_ENEMY);
 	m_character = GetComponent<CharacterController>();
 	m_stateControl = GetComponent<EnemyStateControl>();
+	m_audio = GetComponent<AudioSource>();
 	m_spawnPos = m_transform->GetWorldPosition();
 	m_spawnRot = m_transform->GetWorldRotation();
 }
@@ -80,12 +83,18 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 				case ATTACK_TYPE_DEFAULT:
 					break;
 				case ATTACK_TYPE_DOWN:
+					m_audio->PlayOneShot(L"down_attack");
+
 					m_stateControl->SetFloat(L"down", attackInfo->m_ccTime);
 					m_stateControl->SetState(L"down");
 					break;
 				case ATTACK_TYPE_GROGY:
+					m_audio->PlayOneShot(L"grogy_attack");
+
 					break;
 				case ATTACK_TYPE_STUN:
+					m_audio->PlayOneShot(L"stun_attack");
+
 					break;
 				case ATTACK_TYPE_MAGNETIC:
 					break;
@@ -190,14 +199,38 @@ void BnS_Enemy::LookTarget()
 void BnS_Enemy::GetDamage(AttackInfo * _attackInfo)
 {
 	m_hp -= _attackInfo->m_power;
-
-
-
-
+	
 	BnS_DamageFont::Desc damageFont;
 	damageFont.damage = _attackInfo->m_power;
 	damageFont.isCritical =_attackInfo->m_isCritical;
+	if(_attackInfo->m_isCritical)
+		damageFont.animationType = DAMAGE_FONT_ANIMATION_TYPE_EMPHASIS;
+	else
+		damageFont.animationType = DAMAGE_FONT_ANIMATION_TYPE_FALLING;
+
 	INSTANTIATE()->AddComponent<BnS_DamageFont>(&damageFont)->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 6, 0));
+
+	if (m_hp < 0)
+	{
+		m_hp = 0;
+		UIManager::GetInstance()->UpdateEnemyHpUI((float)m_hp / m_maxHp);
+		m_stateControl->SetState(L"dead");
+		return;
+	}
+	UIManager::GetInstance()->UpdateEnemyHpUI((float)m_hp / m_maxHp);
+}
+
+float BnS_Enemy::GetHpRatio()
+{
+	return  (float)m_hp / m_maxHp;
+}
+
+void BnS_Enemy::Reset()
+{
+	m_target = nullptr;
+
+	m_hp = m_maxHp;
+	UIManager::GetInstance()->UpdateEnemyHpUI(1);
 }
 
 void BnS_Enemy::CalcWorldVolume()

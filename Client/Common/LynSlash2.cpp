@@ -37,11 +37,17 @@ void LynSlash2::EnterState()
 	attack.width = 8;
 	attack.innerPower = 1;
 	CreateAttackInfo(&attack, 3.f, 1.5f, 1.f);
+
+	if (m_isUpper)
+	{
+		//m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash2_1", L"lyn_slash2_2", L"lyn_slash2_3"));
+		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash2_2", L"lyn_slash2_3"));
+	}
 }
 
 void LynSlash2::UpdateState()
 {
-	if (BETWEEN(m_animController->GetPlayRemainTime(), 0.9f, 1.2f))
+	if (BETWEEN(m_animController->GetPlayRemainTime(), 0.8f, 1.2f))
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
 		{
@@ -52,7 +58,7 @@ void LynSlash2::UpdateState()
 
 	if (m_isCombo)
 	{
-		if (m_animController->GetPlayRemainTime() < 0.9f)
+		if (m_animController->GetPlayRemainTime() < 0.8f)
 		{
 			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_LINEAR);
 			SetState(L"slash3");

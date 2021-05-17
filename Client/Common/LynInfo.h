@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
+#include "AttackInfo.h"
 class LynStateControl;
 class LynSkillController;
-
 class LynInfo :
 	public Component
 {
@@ -18,9 +18,9 @@ public:
 		float halfHeight = 3.2f;
 		float jumpHalfHeight = 0.9f;
 
-		UINT power = 500;
+		UINT power = 5000;
 		UINT hp = 54600;
-		float criticalRatio = 0.6f;
+		float criticalRatio = 0.65f;
 	};
 public:
 	LynInfo(Desc* _desc);
@@ -46,6 +46,7 @@ public:
 	void ResetBattleTimer();
 	LYN_STATE GetState();
 	void SetBattleState(BATTLE_STATE _state);
+	void HitByAttackInfo(AttackInfo* _attackInfo);
 	BATTLE_STATE GetBattleState();
 
 	UINT m_power;
@@ -65,7 +66,7 @@ private:
 	UINT m_hp;
 	UINT m_lightningSpirit;
 	float m_energy;
-	UINT m_innerPower;
+	int m_innerPower;
 	float m_resistanceTimer;
 	bool m_resistanceAlways;
 	float m_idleTimer;
@@ -79,7 +80,11 @@ public:
 	float GetEnergy();
 	void AddInnerPower(int _power);
 	void ReduceInnerPower(int _power);
-	UINT GetInnerPower();
+	int GetInnerPower();
+	void PlayMoveAnimation();
+	AnimationController* GetUpperAnimationController();
+	AnimationController* GetLowerAnimationController();
+
 public:
 	void EquipeWeapon(GameObject* _weapon);
 	void UpdateWeapon();
@@ -96,6 +101,7 @@ private:
 	CharacterController* m_characterController;
 	SkinnedMeshRenderer* m_skinRenderer;
 	LynSkillController* m_skillController;
+	AudioSource* m_audio;
 	bool m_followingAnimationPosition;
 	bool m_isProgressSkill;
 	bool m_isMovingBySkill;
@@ -120,6 +126,7 @@ public:
 	void MoveOn();
 	void MoveOff();
 	void SetSpeed(float _speed);
+	bool IsProgressingSkill();
 public:
 	const  Vector3& GetTargetInput();
 private:

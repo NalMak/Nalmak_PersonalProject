@@ -140,6 +140,8 @@ void DebuggingMode::Initialize()
 
 void DebuggingMode::Update()
 {
+
+
 	if (m_input->GetKeyPress(KEY_STATE_ALT))
 		return;
 

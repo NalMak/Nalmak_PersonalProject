@@ -20,6 +20,7 @@ private:
 public:
 	void SetAudioClip(const wstring& _audioClip);
 	void Play();
+	void Play(const wstring& _audioClip);
 	void PlayOneShot(const wstring& _audioClip);
 	bool IsPlay();
 	void Stop();
