@@ -1,3 +1,24 @@
-﻿  AnimationTool.cpp
-  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exe
-  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.pdb (Partial PDB)
+﻿  stdafx.cpp
+  ObjectInstallTool.cpp
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1283): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1292): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1301): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jun\desktop\nalmak_personalproject\engine\maptool\objectinstalltool.cpp(1310): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  NavSelectedPoint.cpp
+  NavPointDraw.cpp
+  NavMeshTool.cpp
+  Nalmak3D_MapToolView.cpp
+  Nalmak3D_MapToolDoc.cpp
+  Nalmak3D_MapTool.cpp
+  MapTool_ObjectState.cpp
+  MapTool_NavMeshState.cpp
+  MapTool_AnimationState.cpp
+  MapToolManager.cpp
+  MainTabFormView.cpp
+  MainFrm.cpp
+  BaseScene.cpp
+  AnimationTool.cpp
+  코드를 생성하고 있습니다...
+     C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.lib 라이브러리 및 C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exp 개체를 생성하고 있습니다.
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.exe
+  Nalmak3D_MapTool.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\x64\Debug\Nalmak3D_MapTool.pdb (Partial PDB)
