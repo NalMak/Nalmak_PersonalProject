@@ -68,6 +68,7 @@ void LynInfo::Update()
 {
 	DEBUG_LOG(L"Battle State", m_battleState);
 	DEBUG_LOG(L"lightning spirit", m_lightningSpirit);
+	//GetComponent<TrailRenderer>()->RecordTrail(m_transform->GetWorldPosition(), m_transform->GetWorldPosition() + Vector3(3, 3, 0));
 
 	//PlayMoveAnimation();
 

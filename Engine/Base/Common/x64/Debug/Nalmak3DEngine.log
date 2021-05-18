@@ -184,6 +184,7 @@
   ..\Bin\SYS_LightDepth.cso
   ..\Bin\SYS_LightDepth_Animation.cso
   ..\Bin\SYS_Line.cso
+  ..\Bin\SYS_NoneNormal.cso
   ..\Bin\SYS_OutLine.cso
   ..\Bin\SYS_Particle.cso
   ..\Bin\SYS_PhysX.cso
@@ -191,8 +192,9 @@
   ..\Bin\SYS_SkyBox.cso
   ..\Bin\SYS_Standard.cso
   ..\Bin\SYS_Standard_NormalMap.cso
+  ..\Bin\SYS_Trail.cso
   ..\Bin\SYS_UI.cso
-  29개 파일이 복사되었습니다.
+  31개 파일이 복사되었습니다.
   ..\Bin\fmodex64.dll
   ..\Bin\fmodexL.dll
   ..\Bin\Nalmak3D_Engine.dll

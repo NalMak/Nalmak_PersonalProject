@@ -38,6 +38,8 @@ void Shader::Initialize(wstring _fp)
 
 	int renderTargetIndex = 0;
 
+	if (m_name == L"SYS_Trail")
+		int a = 5;
 	vector<pair<string, wstring>>inputRenderTargets;
 	while (true)
 	{

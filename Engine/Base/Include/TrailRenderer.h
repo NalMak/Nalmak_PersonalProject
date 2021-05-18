@@ -8,7 +8,7 @@ class NALMAK_DLL TrailRenderer :
 public:
 	struct Desc
 	{
-		wstring mtrlName = L"trail_default";
+		wstring mtrlName = L"SYS_Trail";
 		Material* mtrl = nullptr;
 
 		int trailCountPerSec = 60;

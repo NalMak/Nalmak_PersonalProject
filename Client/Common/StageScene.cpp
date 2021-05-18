@@ -480,6 +480,8 @@ void StageScene::Initialize()
 	lyn->GetComponents<AnimationController>()[1]->SetFixedAnimationBoneName("Bip01", true, false, true);
 	lyn->GetComponents<AnimationController>()[1]->SetRootMotion(true);
 	lyn->AddComponent<AudioSource>();
+	
+
 #pragma endregion Lyn
 #pragma region Lyn Weapon
 	{
@@ -495,7 +497,10 @@ void StageScene::Initialize()
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
-		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->SetScale(0.5f, 0.65f, 0.5f);
+		TrailRenderer::Desc trail;
+		trail.detailCount = 4;
+		trail.maxTrailCount = 100;
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->AddComponent<TrailRenderer>(&trail)->SetScale(0.5f, 0.65f, 0.5f);
 		lyn->GetComponent<LynInfo>()->EquipeWeapon(weapon);
 	}
 #pragma endregion Lyn Weapon
@@ -629,7 +634,8 @@ void StageScene::Initialize()
 		RigidBody::Desc rigid;
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
-		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->SetScale(1.f, 1.f, 1.f);
+		
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh);
 		weapon->SetParents(zakan, "WeaponL");
 	}
 #pragma endregion Zakan Weapon

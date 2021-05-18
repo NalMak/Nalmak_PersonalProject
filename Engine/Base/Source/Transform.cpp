@@ -182,7 +182,7 @@ Matrix Transform::GetNoneScaleWorldMatrix()
 	{
 		if (m_boneParents)
 		{
-			noneScaleWorld = noneScaleWorld * *m_boneParents * m_parents->GetNoneScaleWorldMatrix();
+			noneScaleWorld = noneScaleWorld * *m_boneParents * m_parents->GetWorldMatrix();
 		}
 		else
 		{

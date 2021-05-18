@@ -11,15 +11,15 @@ BnS_DamageFont::BnS_DamageFont(Desc* _desc)
 	switch (m_animationType)
 	{
 	case DAMAGE_FONT_ANIMATION_TYPE_FALLING:
-		m_lifeTime = 1.f;
+		m_totalLifeTime = 1.f;
 		break;
 	case DAMAGE_FONT_ANIMATION_TYPE_EMPHASIS:
-		m_lifeTime = 1.f;
+		m_totalLifeTime = 1.f;
 		break;
 	default:
 		break;
 	}
-	m_totalLifeTime = m_lifeTime;
+	m_lifeTime = 0;
 }
 
 
@@ -93,8 +93,8 @@ void BnS_DamageFont::Initialize()
 void BnS_DamageFont::Update()
 {
 
-	m_lifeTime -= dTime;
-	if (m_lifeTime <= 0.f)
+	m_lifeTime += dTime;
+	if (m_lifeTime >= m_totalLifeTime)
 	{
 		DestroyFont();
 		DESTROY(m_gameObject);
@@ -129,10 +129,10 @@ void BnS_DamageFont::Update()
 		if (ratio < 0.2f)
 		{
 			float curRatio = ((0.2f - ratio) / 0.2f);
-			scale = 40 + (curRatio * 75);
-			alphaValue = curRatio * 0.5f;
+			scale = 40 + (curRatio * 70);
+			alphaValue = curRatio;
 		}
-		else if (ratio < 0.8f)
+		else if (ratio < 0.7f)
 		{
 			scale = 40;
 			alphaValue = 1;
@@ -140,8 +140,8 @@ void BnS_DamageFont::Update()
 		else
 		{
 			
-			float curRatio = ((ratio - 0.8f) / 0.2f);
-			scale = 40 + (curRatio * 75);
+			float curRatio = ((ratio - 0.7f) / 0.3f);
+			scale = 40 + (curRatio * 45);
 			alphaValue = (1 - curRatio)* 0.5f;
 		}
 		break;
@@ -151,12 +151,13 @@ void BnS_DamageFont::Update()
 	}
 
 	size_t size = m_fontData.size();
+	alphaValue = alphaValue * 0.95f;
 	for (size_t i = 0; i < size; ++i)
 	{
 		float index = i - size * 0.5f;
 		m_fontData[i]->SetPosition(m_screenPos.x  + index * scale * 0.9f, m_screenPos.y,0);
 		m_fontData[i]->GetGameObject()->SetScale(scale, scale);
-		m_fontData[i]->SetColor(Vector4(1, 1, 1, alphaValue));
+		m_fontData[i]->SetColor(Vector4(1, 1, 1, alphaValue * 0.9f));
 	}
 
 	

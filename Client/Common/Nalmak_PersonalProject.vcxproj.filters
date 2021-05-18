@@ -145,6 +145,9 @@
     <Filter Include="04.Lyn\UpperSlash">
       <UniqueIdentifier>{325cdeaa-27ac-4c1c-811b-bd97f99a2261}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08.Weapon">
+      <UniqueIdentifier>{daca3fb1-e536-4c50-8930-abaa55b32e05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -406,30 +409,66 @@
     <ClInclude Include="LynUpperSlash.h">
       <Filter>04.Lyn\UpperSlash</Filter>
     </ClInclude>
-    <ClInclude Include="LynWakeUp.h" />
-    <ClInclude Include="ZakanBattleIdle.h" />
     <ClInclude Include="ZakanMove.h">
       <Filter>07.Enemy</Filter>
     </ClInclude>
     <ClInclude Include="ZakanPattern.h">
       <Filter>07.Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="ZakanSmash.h" />
-    <ClInclude Include="ZakanDown.h" />
-    <ClInclude Include="ZakanAir.h" />
-    <ClInclude Include="ZakanRise.h" />
-    <ClInclude Include="LynWeapon.h" />
-    <ClInclude Include="ZakanTeleport.h" />
-    <ClInclude Include="ZakanArea360.h" />
-    <ClInclude Include="BnS_Buff.h" />
-    <ClInclude Include="BnS_RotateSoulBlade.h" />
-    <ClInclude Include="LynEventIdle.h" />
-    <ClInclude Include="ZakanPowerATK.h" />
-    <ClInclude Include="BnS_InnerForceAnimation.h" />
-    <ClInclude Include="BnS_SystemSetting.h" />
-    <ClInclude Include="ZakanSplitBlood.h" />
-    <ClInclude Include="ZakanTeleportCenter.h" />
-    <ClInclude Include="ZakanDead.h" />
+    <ClInclude Include="BnS_InnerForceAnimation.h">
+      <Filter>06.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BnS_RotateSoulBlade.h">
+      <Filter>05.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="BnS_Buff.h">
+      <Filter>02.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BnS_SystemSetting.h">
+      <Filter>02.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanAir.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanArea360.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanBattleIdle.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanDead.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanDown.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanPowerATK.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanRise.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSmash.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanSplitBlood.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanTeleport.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ZakanTeleportCenter.h">
+      <Filter>07.Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="LynEventIdle.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynWakeUp.h">
+      <Filter>04.Lyn</Filter>
+    </ClInclude>
+    <ClInclude Include="LynWeapon.h">
+      <Filter>08.Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -670,30 +709,66 @@
     <ClCompile Include="LynUpperSlash.cpp">
       <Filter>04.Lyn\UpperSlash</Filter>
     </ClCompile>
-    <ClCompile Include="LynWakeUp.cpp" />
-    <ClCompile Include="ZakanBattleIdle.cpp" />
     <ClCompile Include="ZakanMove.cpp">
       <Filter>07.Enemy</Filter>
     </ClCompile>
     <ClCompile Include="ZakanPattern.cpp">
       <Filter>07.Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="ZakanSmash.cpp" />
-    <ClCompile Include="ZakanDown.cpp" />
-    <ClCompile Include="ZakanAir.cpp" />
-    <ClCompile Include="ZakanRise.cpp" />
-    <ClCompile Include="LynWeapon.cpp" />
-    <ClCompile Include="ZakanTeleport.cpp" />
-    <ClCompile Include="ZakanArea360.cpp" />
-    <ClCompile Include="BnS_Buff.cpp" />
-    <ClCompile Include="BnS_RotateSoulBlade.cpp" />
-    <ClCompile Include="LynEventIdle.cpp" />
-    <ClCompile Include="ZakanPowerATK.cpp" />
-    <ClCompile Include="BnS_InnerForceAnimation.cpp" />
-    <ClCompile Include="BnS_SystemSetting.cpp" />
-    <ClCompile Include="ZakanSplitBlood.cpp" />
-    <ClCompile Include="ZakanTeleportCenter.cpp" />
-    <ClCompile Include="ZakanDead.cpp" />
+    <ClCompile Include="BnS_InnerForceAnimation.cpp">
+      <Filter>06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BnS_RotateSoulBlade.cpp">
+      <Filter>05.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="BnS_Buff.cpp">
+      <Filter>02.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BnS_SystemSetting.cpp">
+      <Filter>02.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanAir.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanArea360.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanBattleIdle.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanDead.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanDown.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanPowerATK.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanRise.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSmash.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanSplitBlood.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanTeleport.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ZakanTeleportCenter.cpp">
+      <Filter>07.Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="LynEventIdle.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynWakeUp.cpp">
+      <Filter>04.Lyn</Filter>
+    </ClCompile>
+    <ClCompile Include="LynWeapon.cpp">
+      <Filter>08.Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">

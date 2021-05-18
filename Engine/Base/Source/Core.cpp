@@ -47,13 +47,13 @@ Core::Core()
 Core::~Core()
 {
 	ResourceManager::DestroyInstance();
-	SoundManager::DestroyInstance();
 	InputManager::DestroyInstance();
 	SceneManager::DestroyInstance();
 	RenderManager::DestroyInstance();
 	LineManager::DestroyInstance();
 	PrototypeManager::DestroyInstance();
 	ObjectManager::DestroyInstance();
+	SoundManager::DestroyInstance();
 	DeviceManager::DestroyInstance();
 	TimeManager::DestroyInstance();
 	SystemManager::DestroyInstance();

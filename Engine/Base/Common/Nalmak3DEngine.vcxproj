@@ -292,6 +292,7 @@
     <FxCompile Include="..\..\Resource\Shader\SYS_SkyBox.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_Trail.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_UI.fx" />
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +324,7 @@
     <None Include="..\..\Resource\Shader\SYS_SkyBox.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />
+    <None Include="..\..\Resource\Shader\SYS_Trail.sd" />
     <None Include="..\..\Resource\Shader\SYS_UI.sd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

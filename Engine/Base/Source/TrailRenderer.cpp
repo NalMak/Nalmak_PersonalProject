@@ -102,15 +102,13 @@ void TrailRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _cont
 	if (m_currentTrailCount < 3) 
 		return;
 
-	BindingStreamSource();
+	//BindingStreamSource();
 
-	m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	//_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
+	//m_renderManager->UpdateMaterial(m_material, _cBuffer);
+	//m_renderManager->UpdateRenderTarget();
 	m_renderManager->UpdateRenderTarget();
-
-	Shader* shader = m_material->GetShader();
-	assert("Current Shader is nullptr! " && shader);
-
-	shader->CommitChanges();
+	_shader->CommitChanges();
 
 	ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, 2 * m_currentTrailCount * m_catmullrom_divideCount + 2, 0, m_currentTrailCount * m_catmullrom_divideCount * 2));
 
@@ -220,8 +218,7 @@ void TrailRenderer::RecordTrail(const Vector3 & _startPos, const Vector3 & _endP
 			&m_trailVertexData[(i / m_catmullrom_divideCount + 2) * 4 + 3].position,
 			float(i % m_catmullrom_divideCount) / float(m_catmullrom_divideCount));
 	}
-
-
+	
 }
 
 void TrailRenderer::BindingStreamSource()

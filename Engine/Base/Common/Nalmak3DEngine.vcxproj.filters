@@ -1056,6 +1056,9 @@
     <FxCompile Include="..\..\Resource\Shader\SCR_DownSampling_Pass.fx">
       <Filter>06.Resource\03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\SYS_Trail.fx">
+      <Filter>06.Resource\03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\SYS_Standard.sd">
@@ -1143,6 +1146,9 @@
       <Filter>06.Resource\03.Shader</Filter>
     </None>
     <None Include="..\..\Resource\Shader\SCR_DownSampling_Pass.sd">
+      <Filter>06.Resource\03.Shader</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\SYS_Trail.sd">
       <Filter>06.Resource\03.Shader</Filter>
     </None>
   </ItemGroup>

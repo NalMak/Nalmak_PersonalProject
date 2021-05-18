@@ -24,11 +24,18 @@ public:
 	virtual void Update() override;
 	virtual void OnTriggerEnter(Collision& _col) override;
 public:
+	void DrawTrail();
+public:
 	void ChaseTarget(Vector3 _targetPos);
 	void CreateAttackInfo();
 private:
 	LYN_WEAPON_THROW_STATE m_weaponState;
+	TrailRenderer* m_swordTrail;
 public:
 	LYN_WEAPON_THROW_STATE GetWeaponState();
+
+	GameObject* m_trailStartPos;
+	GameObject* m_trailEndPos;
+
 };
 
