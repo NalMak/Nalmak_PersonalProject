@@ -23,10 +23,12 @@ TrailRenderer::TrailRenderer(Desc * _desc)
 
 	m_secPerTrail = 1.f / _desc->trailCountPerSec;
 	m_timer = 0;
+	m_isPlay = _desc->playOnStart;
 
 	m_type = RENDERER_TYPE_TRAIL;
 
 	CreateDynamicBuffer();
+
 }
 
 void TrailRenderer::CreateDynamicBuffer()
@@ -64,15 +66,7 @@ TrailRenderer::~TrailRenderer()
 
 void TrailRenderer::Initialize()
 {
-	//Vector3 worldPos = m_transform->GetWorldPosition();
-	//for (int i = 0; i < m_maxTrailCount * 4; ++i)
-	//{
-	//	m_trailVertexData[i].position = worldPos;
-	//}
-	//for (int i = 0; i < m_maxCatmullrom_TrailCount * 4; ++i)
-	//{
-	//	m_trailCatmullromVertexData[i].position = worldPos;
-	//}
+	
 }
 
 void TrailRenderer::Update()
@@ -82,11 +76,12 @@ void TrailRenderer::Update()
 
 void TrailRenderer::LateUpdate()
 {
-	if (m_currentTrailCount < 3)
-		return;
 
-	
-	m_instanceBuffer->UpdateInstanceBuffer(m_trailCatmullromVertexData, m_currentTrailCount * m_catmullrom_divideCount);
+}
+
+void TrailRenderer::PreRender()
+{
+	RenderRequest();
 }
 
 void TrailRenderer::Release()
@@ -99,24 +94,33 @@ void TrailRenderer::Release()
 
 void TrailRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
+	if (!m_isPlay)
+		return;
+
 	if (m_currentTrailCount < 3) 
 		return;
 
-	//BindingStreamSource();
 
-	//_shader->SetMatrix("g_world", m_transform->GetWorldMatrix());
-	//m_renderManager->UpdateMaterial(m_material, _cBuffer);
-	//m_renderManager->UpdateRenderTarget();
-	m_renderManager->UpdateRenderTarget();
 	_shader->CommitChanges();
 
-	ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, 2 * m_currentTrailCount * m_catmullrom_divideCount + 2, 0, m_currentTrailCount * m_catmullrom_divideCount * 2));
+	ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, (m_currentTrailCount - 2) * m_catmullrom_divideCount * 4 , 0, (m_currentTrailCount - 2) * m_catmullrom_divideCount * 2));
+	//ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, 2 * m_currentTrailCount * m_catmullrom_divideCount  + 2, 0, 2 * (m_currentTrailCount ) * m_catmullrom_divideCount));
 
+	//ThrowIfFailed(m_device->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 0, 0, 10, 0, 20));
 }
 
 
+void TrailRenderer::ResetTrail()
+{
+	m_currentTrailCount = 0;
+	m_timer = 0;
+}
+
 void TrailRenderer::RecordTrail(const Vector3 & _startPos, const Vector3 & _endPos)
 {
+	if (!m_isPlay)
+		return;
+
 	m_timer += dTime;
 	
 	if (m_timer < m_secPerTrail) 
@@ -163,22 +167,6 @@ void TrailRenderer::RecordTrail(const Vector3 & _startPos, const Vector3 & _endP
 			}
 		}
 	}
-	/*for (int i = m_currentTrailCount; i < m_maxTrailCount; ++i)
-	{
-		int index = i * 4;
-
-		if (i != 0)
-		{
-			
-			m_trailVertexData[index + 1].position = m_trailVertexData[((m_currentTrailCount - 1) * 4) + 1].position;
-			m_trailVertexData[index + 2].position = m_trailVertexData[((m_currentTrailCount - 1) * 4) + 2].position;
-			m_trailVertexData[index + 0].position = m_trailVertexData[((m_currentTrailCount - 1) * 4) + 0].position;
-			m_trailVertexData[index + 3].position = m_trailVertexData[((m_currentTrailCount - 1) * 4) + 3].position;
-
-		}
-	
-	}*/
-
 
 	for (int i = 0; i < m_currentTrailCount * m_catmullrom_divideCount; ++i)
 	{
@@ -223,8 +211,28 @@ void TrailRenderer::RecordTrail(const Vector3 & _startPos, const Vector3 & _endP
 
 void TrailRenderer::BindingStreamSource()
 {
+	if (!m_isPlay)
+		return;
+
+	m_instanceBuffer->UpdateInstanceBuffer(m_trailCatmullromVertexData, m_currentTrailCount * m_catmullrom_divideCount * 4);
+
 	ThrowIfFailed(m_device->SetStreamSource(0, m_instanceBuffer->GetVertexBuffer(), 0, m_material->GetShader()->GetInputLayoutSize()));
 	ThrowIfFailed(m_device->SetIndices(m_instanceBuffer->GetIndexBuffer()));
+}
+
+void TrailRenderer::Play()
+{
+	m_isPlay = true;
+}
+
+void TrailRenderer::Stop()
+{
+	m_isPlay = false;
+}
+
+bool TrailRenderer::IsPlay()
+{
+	return m_isPlay;
 }
 
 int TrailRenderer::GetMaterialCount()

@@ -5,7 +5,7 @@
 #include "AttackInfo.h"
 #include "CameraShake.h"
 #include "BnS_MainCamera.h"
-
+#include "ZakanEffectControl.h"
 class EnemyState :
 	public IState
 {
@@ -25,5 +25,6 @@ protected:
 	CharacterController* m_character;
 	BnS_MainCamera* m_bnsMainCam;
 	AudioSource* m_audio;
+	ZakanEffectControl* m_effect;
 };
 

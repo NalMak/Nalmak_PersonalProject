@@ -469,6 +469,11 @@
     <ClInclude Include="LynWeapon.h">
       <Filter>08.Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="LynEffectControl.h" />
+    <ClInclude Include="BnS_Fire.h" />
+    <ClInclude Include="ZakanEffectControl.h" />
+    <ClInclude Include="ZakanChange.h" />
+    <ClInclude Include="ZakanBackStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -769,6 +774,11 @@
     <ClCompile Include="LynWeapon.cpp">
       <Filter>08.Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="LynEffectControl.cpp" />
+    <ClCompile Include="BnS_Fire.cpp" />
+    <ClCompile Include="ZakanEffectControl.cpp" />
+    <ClCompile Include="ZakanChange.cpp" />
+    <ClCompile Include="ZakanBackStep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -789,73 +799,97 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd">
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Block_DN.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_HpUI.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_InnerForce.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\homework.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_SkillI_UI.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_HpUI.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNE.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.fx">
       <Filter>03.Shader</Filter>
-    </None>
-    <None Include="..\Resource\static\Shader\BnS_InnerForce.sd">
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.fx">
       <Filter>03.Shader</Filter>
-    </None>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_SwordTrail.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx">
+    <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_HpUI.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_InnerForce.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\homework.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_SkillI_UI.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_HpUI.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNE.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_InnerForce.fx">
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.sd">
       <Filter>03.Shader</Filter>
-    </FxCompile>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_SwordTrail.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.sd">
+      <Filter>03.Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -20,7 +20,10 @@ void LynBaldo::EnterState()
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->PlayBlending("Lyn_B_Hide_Baldo0");
+	PlayOneShot(L"SwordMaster_G3_Hit_Small");
+	VoicePlay(L"FemaleChild01_sk_B_ShortShot03");
 
+	
 	if (m_isUpper)
 	{
 		AttackInfo::Desc attack;
@@ -29,7 +32,7 @@ void LynBaldo::EnterState()
 		attack.depth = 6.f;
 		attack.height = 3.f;
 		attack.width = 4.f;
-		
+		attack.soundName = L"Fencer_Batto_Fire_Hit";
 		attack.host = m_gameObject;
 		attack.power = (UINT)(m_info->m_power * 3 * Nalmak_Math::Rand(0.8f, 1.2f));
 		float critical = Nalmak_Math::Rand(0.f, 1.f);
@@ -55,6 +58,11 @@ void LynBaldo::EnterState()
 
 void LynBaldo::UpdateState()
 {
+	if (IsAnyMoveKeyInput())
+	{
+		SetState(L"idle");
+		return;
+	}
 
 	if (m_animController->GetPlayRemainTime() < 0.4f)
 	{

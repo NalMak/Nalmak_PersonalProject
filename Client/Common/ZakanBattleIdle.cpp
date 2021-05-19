@@ -29,7 +29,7 @@ void ZakanBattleIdle::EnterState()
 	switch (m_phaseIndex)
 	{
 	case ZAKAN_PATTERN_DEFAULT1:
-		if (hpRatio < 0.9f)
+		if (hpRatio < 0.95f)
 			m_phaseIndex = ZAKAN_PATTERN_SPECIAL1;
 		break;
 	case ZAKAN_PATTERN_DEFAULT2:
@@ -63,7 +63,9 @@ void ZakanBattleIdle::EnterState()
 	}
 	else if (BETWEEN(m_info->GetDistanceToTarget(), 10, 50))
 	{
-		SetState(L"powerATK");
+		SetInteger(L"IsPattern", 0);
+		SetState(Nalmak_Math::Random<wstring>(L"powerATK", L"teleport"));
+
 		return;
 	}
 	//m_animController->PlayBlending("Zakan_B_None_Mov_Idle");

@@ -105,10 +105,14 @@ private:
 	bool m_followingAnimationPosition;
 	bool m_isProgressSkill;
 	bool m_isMovingBySkill;
+
+public:
+	Matrix* GetRightHandMatrix();
+	Matrix* GetLeftHandMatrix();
 private:
 	Matrix* m_matPeaceStandard;
-	Matrix* m_matBattleStandard;
-	Matrix* m_matBattleHide;
+	Matrix* m_matRightHand;
+	Matrix* m_matLeftHand;
 private:
 	Vector3 m_preAnimPos;
 public:

@@ -17,6 +17,8 @@ void LynDown::Initialize()
 
 void LynDown::EnterState()
 {
+	
+
 	m_info->SetSpeed(0);
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->PlayBlending("Lyn_B_Down_B");

@@ -21,10 +21,44 @@ void LynChamWall::EnterState()
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyn_B_Chamwall");
+
+	PlayOneShot(L"SoulSword_Lightning_Hit04");
 }
 
 void LynChamWall::UpdateState()
 {
+	if (m_animController->IsOverTime(0.1f))
+	{
+		AttackInfo::Desc attack;
+		attack.depth = 8.f;
+		attack.height = 8.f;
+		attack.width = 8.f;
+		CreateAttackInfo(&attack, 4.f, 4.f, 10.f);
+	}
+	if (m_animController->IsOverTime(0.2f))
+	{
+		AttackInfo::Desc attack;
+		attack.depth = 8.f;
+		attack.height = 8.f;
+		attack.width = 8.f;
+		CreateAttackInfo(&attack, 4.f, 4.f, 10.f);
+	}
+	if (m_animController->IsOverTime(0.3f))
+	{
+		AttackInfo::Desc attack;
+		attack.depth = 8.f;
+		attack.height = 8.f;
+		attack.width = 8.f;
+		CreateAttackInfo(&attack, 4.f, 4.f, 10.f);
+	}
+	if (m_animController->IsOverTime(0.4f))
+	{
+		AttackInfo::Desc attack;
+		attack.depth = 8.f;
+		attack.height = 8.f;
+		attack.width = 8.f;
+		CreateAttackInfo(&attack, 4.f, 4.f, 10.f);
+	}
 	if (m_animController->GetPlayRemainTime() < 0.5f)
 	{
 		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);

@@ -58,6 +58,7 @@ void LynFall::UpdateState()
 {
 	if (m_character->IsGround())
 	{
+		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"land");
 		return;
 	}
@@ -65,5 +66,4 @@ void LynFall::UpdateState()
 
 void LynFall::ExitState()
 {
-	m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 }

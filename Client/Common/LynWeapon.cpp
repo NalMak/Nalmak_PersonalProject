@@ -27,6 +27,10 @@ void LynWeapon::Initialize()
 
 void LynWeapon::Update()
 {
+}
+
+void LynWeapon::PreRender()
+{
 	m_swordTrail->RecordTrail(m_trailStartPos->GetTransform()->GetWorldPosition(), m_trailEndPos->GetTransform()->GetWorldPosition());
 }
 
@@ -35,8 +39,16 @@ void LynWeapon::OnTriggerEnter(Collision & _col)
 	m_weaponState = LYN_WEAPON_THROW_STATE_RETURN;
 }
 
-void LynWeapon::DrawTrail()
+void LynWeapon::StartTrail()
 {
+	m_swordTrail->ResetTrail();
+	m_swordTrail->Play();
+}
+
+void LynWeapon::EndTrail()
+{
+	m_swordTrail->ResetTrail();
+	m_swordTrail->Stop();
 }
 
 void LynWeapon::ChaseTarget(Vector3 _targetPos)

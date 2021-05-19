@@ -19,6 +19,8 @@ void ZakanPowerATK::Initialize()
 
 void ZakanPowerATK::EnterState()
 {
+	m_effect->StartSwordTrail();
+
 	m_info->SetBattleState(BATTLE_STATE_RESISTANCE);
 
 	m_info->LookTarget();
@@ -102,6 +104,8 @@ void ZakanPowerATK::UpdateState()
 
 void ZakanPowerATK::ExitState()
 {
+	m_effect->EndSwordTrail();
+
 }
 
 void ZakanPowerATK::CreateAttack()

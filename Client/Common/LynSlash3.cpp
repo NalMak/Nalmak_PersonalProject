@@ -18,7 +18,6 @@ void LynSlash3::Initialize()
 void LynSlash3::EnterState()
 {
 	ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex);
-
 	m_info->StartSkill();
 	m_info->SetSpeed(m_info->m_airSpeed * 0.5f);
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
@@ -26,21 +25,32 @@ void LynSlash3::EnterState()
 
 	m_isCombo = false;
 
-	AttackInfo::Desc attack;
-	attack.height = 5;
-	attack.depth = 5;
-	attack.width = 8;
-	attack.innerPower = 2;
-	CreateAttackInfo(&attack, 3.f, 1.5f, 1.3f);
 
-	if (m_isUpper)
-	{
-		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash3_1", L"lyn_slash3_2", L"lyn_slash3_3"));
-	}
+	PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash3_1", L"lyn_slash3_2", L"lyn_slash3_3"));
+	
 }
 
 void LynSlash3::UpdateState()
 {
+
+	if (m_animController->IsOverTime(0.1f))
+	{
+		AttackInfo::Desc attack;
+		attack.height = 5;
+		attack.depth = 5;
+		attack.width = 8;
+		attack.innerPower = 2;
+		CreateAttackInfo(&attack, 3.f, 1.5f, 1.3f);
+
+		m_effect->StartWeaponTrail();
+	}
+
+	if (m_animController->IsOverTime(0.5f))
+	{
+		m_effect->EndWeaponTrail();
+		m_info->EndSkill();
+	}
+
 	if (m_animController->GetPlayRemainTime() < 0.6f)
 	{
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
@@ -74,6 +84,8 @@ void LynSlash3::ExitState()
 {
 	if (!m_isCombo)
 		ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex);
+
+	m_effect->EndWeaponTrail();
 
 	m_info->EndSkill();
 }

@@ -27,8 +27,9 @@ void LynBackRoll::EnterState()
 		buff.skill = m_skillController->GetSkill(L"backRoll");
 		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
 
-		m_audio->PlayOneShot(L"lyn_backRoll");
+		
 	}
+	PlayOneShot(L"lyn_backRoll");
 
 	m_info->SetSpeed(0);
 	m_info->StartSkill();

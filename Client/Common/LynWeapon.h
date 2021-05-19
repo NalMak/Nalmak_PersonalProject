@@ -22,9 +22,11 @@ public:
 	// Component을(를) 통해 상속됨
 	virtual void Initialize() override;
 	virtual void Update() override;
+	virtual void PreRender() override;
 	virtual void OnTriggerEnter(Collision& _col) override;
 public:
-	void DrawTrail();
+	void StartTrail();
+	void EndTrail();
 public:
 	void ChaseTarget(Vector3 _targetPos);
 	void CreateAttackInfo();

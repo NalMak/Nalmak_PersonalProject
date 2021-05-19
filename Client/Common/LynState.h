@@ -8,6 +8,7 @@
 #include "LynSkillController.h"
 #include "UIManager.h"
 #include "BnS_Buff.h"
+#include "LynEffectControl.h"
 
 class LynState :
 	public IState
@@ -28,14 +29,21 @@ protected:
 	LynInfo* m_info;
 	BnS_MainCamera* m_bnsMainCam;
 	LynSkillController* m_skillController;
-	AudioSource* m_audio;
+	LynEffectControl* m_effect;
+	AudioSource* m_camAudio;
+
 	bool m_isUpper;
 
 	void ReduceInnerPower(UINT _innerPower);
 	void AddInnerPower(UINT _innerPower);
 	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
 	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
+	void PlayOneShot(const wstring& _sound);
+	void PlayOneShotLower(const wstring& _sound);
+	void VoicePlay(const wstring& _sound);
+	bool IsAnyMoveKeyInput();
 private:
+	AudioSource* m_audio;
 
 };
 

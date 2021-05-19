@@ -18,6 +18,10 @@ void ZakanPeaceIdle::Initialize()
 
 void ZakanPeaceIdle::EnterState()
 {
+	auto skin = GetComponent<SkinnedMeshRenderer>();
+	skin->GetMaterial(0)->SetFloat("g_specularPower", 0);;
+	skin->GetMaterial(2)->SetFloat("g_specularPower", 0);;
+
 	m_animController->PlayBlending("Zakan_P_Std_Mov_Idle");
 	m_info->Reset();
 

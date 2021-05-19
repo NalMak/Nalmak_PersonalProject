@@ -21,7 +21,7 @@ Material::~Material()
 
 void Material::Initialize(wstring _fp)
 {
-
+	
 	string path;
 	path.assign(_fp.begin(), _fp.end());
 

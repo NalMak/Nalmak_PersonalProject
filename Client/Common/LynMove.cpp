@@ -18,7 +18,7 @@ void LynMove::Initialize()
 void LynMove::EnterState()
 {
 	m_dirState = LYN_MOVE_DIR_STATE_MAX;
-	PlayAnimationByDirection();
+	//PlayAnimationByDirection();
 	m_soundInterval = 0;
 }
 
@@ -43,7 +43,7 @@ void LynMove::UpdateState()
 		if (m_soundInterval >interval)
 		{
 			wstring source = Nalmak_Math::Random<wstring>(L"lyn_move1", L"lyn_move2", L"lyn_move3", L"lyn_move4", L"lyn_move5", L"lyn_move6");
-			m_audio->PlayOneShot(source);
+			PlayOneShot(source);
 			m_soundInterval -= interval;
 		}
 	}
@@ -82,8 +82,23 @@ void LynMove::ExitState()
 
 void LynMove::PlayAnimationByDirection()
 {
+	
+
 	auto dir = m_info->GetDirectionState();
 	auto state = m_info->GetState();
+
+	if (!m_info->IsProgressingSkill())
+	{
+		if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_A) && !InputManager::GetInstance()->GetKeyPress(KEY_STATE_D) &&
+			!InputManager::GetInstance()->GetKeyPress(KEY_STATE_W) && !InputManager::GetInstance()->GetKeyPress(KEY_STATE_S))
+		{
+			m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_dirState = LYN_MOVE_DIR_STATE_NONE;
+			SetState(L"idle");
+			return;
+		}
+	}
+	
 
 	if (dir != m_dirState || state != m_state)
 	{
@@ -138,26 +153,7 @@ void LynMove::PlayAnimationByDirection()
 			break;
 		case LYN_MOVE_DIR_STATE_NONE:
 		{
-			if (!m_info->IsProgressingSkill())
-			{
-				if (!InputManager::GetInstance()->GetKeyPress(KEY_STATE_A) && !InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
-				{
-					m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
-					SetState(L"idle");
-					m_dirState = dir;
-					return;
-				}
-			}
-			else
-			{
-				/*if (!m_isUpper)
-				{
-					if (m_animController->GetCurrentPlayAnimation() != m_info->GetUpperAnimationController()->GetCurrentPlayAnimation())
-					{
-						SetState()
-					}
-				}*/
-			}
+			
 		}
 		default:
 			break;

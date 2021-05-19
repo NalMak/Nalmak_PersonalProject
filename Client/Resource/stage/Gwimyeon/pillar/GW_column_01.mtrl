@@ -14,7 +14,7 @@ float "g_roughness" "0.6f"
 float "g_normalPower" "0.7f"
 float "g_specularPower" "0.4f"
 
-renderQueue "1000"
+renderQueue "1001"
 
 blendingMode "0"
 

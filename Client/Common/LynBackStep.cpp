@@ -17,6 +17,7 @@ void LynBackStep::Initialize()
 
 void LynBackStep::EnterState()
 {
+	m_effect->StartBodyTrail();
 	m_info->SetResistance(true);
 	AddInnerPower(2);
 
@@ -28,9 +29,9 @@ void LynBackStep::EnterState()
 		buff.skill = m_skillController->GetSkill(L"backStep");
 		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
 
-		m_audio->PlayOneShot(L"lyn_backStep");
 
 	}
+	PlayOneShot(L"Fencer_BackStep_Shot");
 
 
 	m_info->StartSkill();
@@ -61,7 +62,7 @@ void LynBackStep::UpdateState()
 	float ratio = m_animController->GetPlayRatio();
 	if (ratio < 0.7f)
 	{
-		m_character->SetVelocityXZ(-m_transform->GetForward() * 140 * (0.7f - ratio));
+		m_character->SetVelocityXZ(-m_transform->GetForward() * 155 * (0.7f - ratio));
 		//m_character->SetVelcityXZ(Vector3(1, 1, 1));
 	}
 	else
@@ -76,5 +77,6 @@ void LynBackStep::ExitState()
 	m_info->SetResistance(false);
 	m_character->AddVelocity(0, -30 * dTime, 0);
 	m_info->EndSkill();
+	m_effect->EndBodyTrail();
 
 }

@@ -36,5 +36,6 @@ void BnS_SystemSetting::Update()
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_R))
 	{
 		m_rockMouse ^= true;
+		ShowCursor(!m_rockMouse);
 	}
 }

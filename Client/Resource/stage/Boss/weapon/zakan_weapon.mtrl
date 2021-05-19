@@ -11,10 +11,10 @@ texture "g_specularTex" "990178_Autoscale_col2_S"
 
 
 vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
-float "g_f0" "0.3f"
-float "g_roughness" "0.4f"
+float "g_f0" "0.7f"
+float "g_roughness" "0.5f"
 float "g_normalPower" "1.f"
-float "g_specularPower" "0.5f"
+float "g_specularPower" "0.6f"
 
 renderQueue "1999"
 

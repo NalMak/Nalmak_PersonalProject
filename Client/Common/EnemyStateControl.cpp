@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnemyStateControl.h"
 #include "EnemyState.h"
+#include "ZakanEffectControl.h"
 
 
 
@@ -21,6 +22,7 @@ void EnemyStateControl::Initialize()
 	m_animController = GetComponent<AnimationController>();
 	auto cam = Core::GetInstance()->GetMainCamera()->GetComponent<BnS_MainCamera>();
 	auto audio = GetComponent<AudioSource>();
+	auto effect = GetComponent<ZakanEffectControl>();
 	for (auto& state : m_stateList)
 	{
 		EnemyState* lynState = (EnemyState*)(state.second);
@@ -28,6 +30,7 @@ void EnemyStateControl::Initialize()
 		lynState->m_info = m_info;
 		lynState->m_bnsMainCam = cam;
 		lynState->m_audio = audio;
+		lynState->m_effect = effect;
 		lynState->m_animController = m_animController;
 	}
 	StateControl::Initialize();

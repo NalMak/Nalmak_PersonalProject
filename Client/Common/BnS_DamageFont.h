@@ -27,7 +27,8 @@ private:
 	float m_totalLifeTime;
 	Vector2 m_screenPos;
 	Vector2 m_screenVelocity;
-	
+	Vector3 m_worldPos;
+	Transform* m_camTrans;
 	vector<SingleImage*> m_fontData;
 
 };

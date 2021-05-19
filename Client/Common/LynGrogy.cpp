@@ -58,4 +58,5 @@ void LynGrogy::UpdateState()
 
 void LynGrogy::ExitState()
 {
+	m_bnsMainCam->LockTarget();
 }

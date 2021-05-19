@@ -17,8 +17,7 @@ void LynVerticalCut_R0::Initialize()
 
 void LynVerticalCut_R0::EnterState()
 {
-	if (m_isUpper)
-		m_audio->PlayOneShot(L"lyn_vertical1");
+		
 
 	ReduceInnerPower(2);
 	m_info->StartSkill();
@@ -26,6 +25,8 @@ void LynVerticalCut_R0::EnterState()
 	m_animController->Play("Lyb_B_Std_VerticalCul_02_1");
 
 
+	int index = Nalmak_Math::Rand(1, 4);
+	VoicePlay(L"FemaleChild01_PreAtk1_0" + to_wstring(index));
 }
 
 void LynVerticalCut_R0::UpdateState()

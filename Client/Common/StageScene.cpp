@@ -89,6 +89,11 @@
 #include "ZakanSplitBlood.h"
 #include "ZakanTeleportCenter.h"
 #include "ZakanDead.h"
+#include "LynEffectControl.h"
+#include "BnS_Fire.h"
+#include "ZakanEffectControl.h"
+#include "ZakanChange.h"
+#include "ZakanBackStep.h"
 StageScene::StageScene()
 {
 }
@@ -121,7 +126,11 @@ void StageScene::Initialize()
 	
 	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
 
-
+	INSTANTIATE()->AddComponent<BnS_Fire>();
+	
+	MeshRenderer::Desc mesh;
+	mesh.mtrlName = L"SYS_SoftTex";
+	INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetPosition(0,7,0)->SetScale(3,3,3);
 
 #pragma region Navi Mesh
 	NavCollider::Desc navCollider;
@@ -187,8 +196,8 @@ void StageScene::Initialize()
 	upperControl->AddState<LynKnockBackLong>(L"knockBackLong", true);
 	lowerControl->AddState<LynKnockBackMiddle>(L"knockBackMiddle", false);
 	upperControl->AddState<LynKnockBackMiddle>(L"knockBackMiddle", true);
-	lowerControl->AddState<LynIlSum>(L"IlSum", false);
-	upperControl->AddState<LynIlSum>(L"IlSum", true);
+	lowerControl->AddState<LynIlSum>(L"ilsum", false);
+	upperControl->AddState<LynIlSum>(L"ilsum", true);
 	lowerControl->AddState<LynHolded>(L"holded", false);
 	upperControl->AddState<LynHolded>(L"holded", true);
 	lowerControl->AddState<LynGrogy>(L"grogy", false);
@@ -381,14 +390,14 @@ void StageScene::Initialize()
 
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_2", 1.1f, false);
-	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_3", 2.f, false);
+	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_3", 2.05f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_2", 1.1f, false);
-	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.f, false);
+	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.05f, false);
 
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_End", 3.f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Exec", 0.8f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Swing", 0.8f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Swing", 0.5f, false);
 
 
 	controller->AddAnimationClip("Lyn_B_Std_BackStep", 1.3f, false);
@@ -398,13 +407,13 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_E", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_SideMov_Q", 1.f, false);
 
-	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.5f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.5f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo0", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_Hide_Baldo1", 1.4f, false);
 
 
-	controller->AddAnimationClip("Lyn_B_defaultSlash1", 1.3f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash2", 1.3f, false);
-	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.3f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash1", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash2", 1.4f, false);
+	controller->AddAnimationClip("Lyn_B_defaultSlash3", 1.4f, false);
 
 	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_01", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Std_SpinSlash_02", 1.f, false);
@@ -451,7 +460,7 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Holded_ToGrogy", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_upperSlash1", 1.5f, false);
 	controller->AddAnimationClip("Lyn_B_upperSlash2", 1.5f, false);
-	controller->AddAnimationClip("Lyn_B_Hide_Ilsum", 1.f, false); // 테스트 필요
+	controller->AddAnimationClip("Lyn_B_Hide_Ilsum", 2.f, false); // 테스트 필요
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_End", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_Fire", 1.f, false);
 	controller->AddAnimationClip("Lyb_B_Std_Excape_1", 1.f, false);
@@ -480,7 +489,7 @@ void StageScene::Initialize()
 	lyn->GetComponents<AnimationController>()[1]->SetFixedAnimationBoneName("Bip01", true, false, true);
 	lyn->GetComponents<AnimationController>()[1]->SetRootMotion(true);
 	lyn->AddComponent<AudioSource>();
-	
+	lyn->AddComponent<LynEffectControl>();
 
 #pragma endregion Lyn
 #pragma region Lyn Weapon
@@ -498,8 +507,10 @@ void StageScene::Initialize()
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
 		TrailRenderer::Desc trail;
-		trail.detailCount = 4;
+		trail.detailCount = 6;
 		trail.maxTrailCount = 100;
+		trail.mtrlName = L"Lyn_weapon_trail";
+		
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->AddComponent<TrailRenderer>(&trail)->SetScale(0.5f, 0.65f, 0.5f);
 		lyn->GetComponent<LynInfo>()->EquipeWeapon(weapon);
 	}
@@ -512,7 +523,7 @@ void StageScene::Initialize()
 		auto skinRenderer = zakan->GetComponent<SkinnedMeshRenderer>();
 		skinRenderer->SetFrustumCullingState(FRUSTUM_CULLING_STATE_FREE_PASS);
 		skinRenderer->SetMaterial(L"zakan_arm");
-		skinRenderer->AddMaterial(L"zakan_cape");
+		//skinRenderer->AddMaterial(L"zakan_cape");
 		skinRenderer->AddMaterial(L"zakan_head");
 		skinRenderer->AddMaterial(L"zakan_body");
 		CharacterController::Desc character;
@@ -528,7 +539,7 @@ void StageScene::Initialize()
 		anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
 		zakan->AddComponent<AnimationController>(&anim);
 		zakan->AddComponent<AudioSource>();
-
+		zakan->AddComponent<ZakanEffectControl>();
 
 
 		auto stateCtrl = zakan->GetComponent<EnemyStateControl>();
@@ -552,6 +563,10 @@ void StageScene::Initialize()
 		stateCtrl->AddState<ZakanSplitBlood>(L"splitBlood");
 		stateCtrl->AddState<ZakanTeleportCenter>(L"teleportCenter");
 		stateCtrl->AddState<ZakanDead>(L"dead");
+		stateCtrl->AddState<ZakanChange>(L"change");
+		stateCtrl->AddState<ZakanBackStep>(L"backStep");
+
+
 
 
 
@@ -567,14 +582,14 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Std_RunFront", 1.f, true);
 
 
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.1f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Exec", 1.1f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Cast", 1.3f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK1_Exec", 1.2f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Cast", 1.3f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_NATK2_Exec", 1.2f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec1", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec2", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Cast", 1.2f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec1", 1.2f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Smash_Exec2", 1.2f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Start", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Looping", 1.f, true);
@@ -589,17 +604,17 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_upper", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir2_upper", 1.f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Cast", 1.1f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Fire", 0.8f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_End", 0.7f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_End", 0.8f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Cast", 1.1f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Area360_Exec", 1.1f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec1", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec2", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_End", 0.7f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_Cast", 1.1f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec1", 1.1f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Skl_PowerATK_Exec2", 1.1f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_End", 0.8f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_PowerATK_Fire", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Cast", 1.f, false);
@@ -607,13 +622,14 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Exec1", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Explosion_Exec2", 1.f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Cast", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Exec", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Cast", 0.7f, false);
+		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Exec", 0.7f, false);
 
 		animCtrl->AddAnimationClip("Zakan_SplitBlood_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_SplitBlood_Exec", 1.f, false);
 
-
+		animCtrl->AddAnimationClip("zakan_summon_cast", 0.7f, false);
+		animCtrl->AddAnimationClip("zakan_summon_exec", 0.7f, false);
 
 
 
@@ -635,8 +651,13 @@ void StageScene::Initialize()
 		rigid.isKinematic = true;
 		rigid.isGravity = false;
 		
-		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh);
+		TrailRenderer::Desc trail;
+		trail.detailCount = 3;
+		trail.maxTrailCount = 100;
+		trail.mtrlName = L"Zakan_weapon_trail";
+		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<TrailRenderer>(&trail);
 		weapon->SetParents(zakan, "WeaponL");
+		zakan->GetComponent<ZakanEffectControl>()->CreateWeaponTrailEffect(weapon);
 	}
 #pragma endregion Zakan Weapon
 #pragma region BnS Camera

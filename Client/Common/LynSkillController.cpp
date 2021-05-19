@@ -28,9 +28,9 @@ LynSkillController::LynSkillController(Desc * _desc)
 
 
 	CreateSkill(L"baldo", BNS_SKILL_SLOT_LB, L"skill_Icon69", 0.3f, KEY_STATE_LEFT_MOUSE, false, true,0,5,1,[](LynInfo* _info)->bool {
-		if(_info->GetTarget())
-			return true;
-		return false;
+			if(_info->GetTarget())
+				return true;
+			return false;
 	});
 
 	CreateSkill(L"slash1", BNS_SKILL_SLOT_LB, L"skill_Icon00", 0.f, KEY_STATE_LEFT_MOUSE, true,true,0,0,0, [](LynInfo* _info)->bool {
@@ -128,6 +128,10 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 
 	CreateSkill(L"excape", BNS_SKILL_SLOT_TAB, L"skill_Icon10", 15.f, KEY_STATE_TAB, true, true, 0, 0, 0, [](LynInfo* _info)->bool {
+		return true;
+	});
+
+	CreateSkill(L"ilsum", BNS_SKILL_SLOT_RB, L"skill_Icon81", 3.f, KEY_STATE_RIGHT_MOUSE, true, true, 0, 0, 0, [](LynInfo* _info)->bool {
 		return true;
 	});
 }
@@ -248,7 +252,14 @@ void LynSkillController::ActiveSkill()
 				continue;
 
 			if (!m_baseSkill[i]->GetAvailable(BNS_SKILL_CONDITION_INNERFORCE))
+			{
+				if (!m_audio->IsPlay())
+				{
+					m_audio->SetAudioClip(L"sys_notenoughInnerForce");
+					m_audio->Play();
+				}
 				continue;
+			}
 
 			if (!m_baseSkill[i]->GetAvailable(BNS_SKILL_CONDITION_EVENT))
 				continue;

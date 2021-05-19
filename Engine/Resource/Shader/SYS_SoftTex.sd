@@ -1,0 +1,11 @@
+#########################################################
+## Shader Data Setting (sd)
+#########################################################
+
+outputRT "GBuffer_Emission"
+
+inputRT "g_depthTex" "GBuffer_Depth_CookTorrance"
+
+inputLayout "2"
+
+

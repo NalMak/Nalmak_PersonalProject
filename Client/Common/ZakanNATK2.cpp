@@ -17,6 +17,8 @@ void ZakanNATK2::Initialize()
 
 void ZakanNATK2::EnterState()
 {
+	m_effect->StartSwordTrail();
+
 	m_info->SetBattleState(BATTLE_STATE_WEAK);
 	m_info->LookTarget();
 	m_animController->Play("Zakan_B_Std_NATK2_Cast");
@@ -58,4 +60,6 @@ void ZakanNATK2::UpdateState()
 
 void ZakanNATK2::ExitState()
 {
+	m_effect->EndSwordTrail();
+
 }

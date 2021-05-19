@@ -21,6 +21,7 @@ public:
 		float ccTime = 2.f;
 		float lifeTime = 0.1f;
 		UINT innerPower = 0;
+		wstring soundName = L"";
 	};
 public:
 	AttackInfo(Desc* _desc);
@@ -42,6 +43,7 @@ public:
 	float m_ccTime;
 	float m_lifeTime;
 	UINT m_innerPower;
+	wstring m_soundName;
 	HitEvent* m_hitEvent;
 public:
 	void AddHitEvent(HitEvent _hitEvent);

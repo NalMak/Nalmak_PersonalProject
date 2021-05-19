@@ -17,6 +17,8 @@ void LynKnockBackLong::Initialize()
 
 void LynKnockBackLong::EnterState()
 {
+
+
 	m_info->StartSkill();
 	m_info->SetSpeed(0);
 	m_info->MoveOn();

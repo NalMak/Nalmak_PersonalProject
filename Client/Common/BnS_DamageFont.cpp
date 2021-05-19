@@ -29,6 +29,8 @@ BnS_DamageFont::~BnS_DamageFont()
 
 void BnS_DamageFont::Initialize()
 {
+	m_camTrans = Core::GetInstance()->GetMainCamera()->GetTransform();
+
 	vector<UINT> damageNum;
 	
 
@@ -60,7 +62,8 @@ void BnS_DamageFont::Initialize()
 	wstring texName;
 	if (m_isCritical)
 	{
-		m_screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(m_transform->position + Vector3(0,3,0) + Nalmak_Math::RandDirectionXY());
+		m_worldPos = m_transform->position + Vector3(0, 3, 0);
+		m_screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(m_worldPos + Nalmak_Math::RandDirectionXY());
 		for (UINT i = 0; i < numCount; ++i)
 		{
 			SingleImage::Desc image;
@@ -73,7 +76,8 @@ void BnS_DamageFont::Initialize()
 	}
 	else
 	{
-		m_screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(m_transform->position + Nalmak_Math::RandDirectionXY());
+		m_worldPos = m_transform->position;
+		m_screenPos = Core::GetInstance()->GetMainCamera()->WorldToScreenPos(m_worldPos + Nalmak_Math::RandDirectionXY());
 
 		for (UINT i = 0; i < numCount; ++i)
 		{
@@ -92,6 +96,7 @@ void BnS_DamageFont::Initialize()
 
 void BnS_DamageFont::Update()
 {
+	float distanceRatio = Nalmak_Math::Distance(m_camTrans->GetWorldPosition(), m_worldPos);
 
 	m_lifeTime += dTime;
 	if (m_lifeTime >= m_totalLifeTime)
@@ -109,7 +114,7 @@ void BnS_DamageFont::Update()
 	{
 	case DAMAGE_FONT_ANIMATION_TYPE_FALLING:
 	{
-		scale = 15.f;
+		scale = 35.f;
 		if (ratio < 0.2f)
 		{
 			float curRatio = ((0.2f - ratio) / 0.2f);
@@ -129,19 +134,19 @@ void BnS_DamageFont::Update()
 		if (ratio < 0.2f)
 		{
 			float curRatio = ((0.2f - ratio) / 0.2f);
-			scale = 40 + (curRatio * 70);
+			scale = 60 + (curRatio * 70);
 			alphaValue = curRatio;
 		}
 		else if (ratio < 0.7f)
 		{
-			scale = 40;
+			scale = 60;
 			alphaValue = 1;
 		}
 		else
 		{
 			
 			float curRatio = ((ratio - 0.7f) / 0.3f);
-			scale = 40 + (curRatio * 45);
+			scale = 60 + (curRatio * 45);
 			alphaValue = (1 - curRatio)* 0.5f;
 		}
 		break;
@@ -152,6 +157,10 @@ void BnS_DamageFont::Update()
 
 	size_t size = m_fontData.size();
 	alphaValue = alphaValue * 0.95f;
+
+	if (distanceRatio > scale)
+		distanceRatio = scale;
+	scale -= distanceRatio * 0.6f;
 	for (size_t i = 0; i < size; ++i)
 	{
 		float index = i - size * 0.5f;

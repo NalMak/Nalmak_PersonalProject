@@ -51,8 +51,8 @@ void LynInfo::Initialize()
 
 
 	auto skin = GetComponent<SkinnedMeshRenderer>();
-	m_matBattleStandard = skin->GetBoneCombinedMatrix("WeaponR");
-	m_matBattleHide = skin->GetBoneCombinedMatrix("WeaponL");
+	m_matRightHand = skin->GetBoneCombinedMatrix("WeaponR");
+	m_matLeftHand = skin->GetBoneCombinedMatrix("WeaponL");
 	m_matPeaceStandard = skin->GetBoneCombinedMatrix("Bip01Spine2");
 
 
@@ -408,7 +408,7 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 	case LYN_SKILL_STATE_HIDE:
 		m_skillController->ChangeSkillSlotByAnimation(L"spinSlash_start");
 		m_skillController->ChangeSkillSlotByAnimation(L"baldo");
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
+		m_skillController->ChangeSkillSlotByAnimation(L"ilsum");
 		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
 		m_skillController->ChangeSkillSlotByAnimation(L"lowerSlash");
 		m_skillController->ChangeSkillSlotByAnimation(L"hold");
@@ -502,11 +502,12 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 		switch (attackType)
 		{
 		case ATTACK_TYPE_DOWN:
+		{
+			int index = Nalmak_Math::Rand(1, 4);
 			if (!m_audio->IsPlay())
 			{
-				m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+				m_audio->Play(L"FemaleChild01_HDmg0" + to_wstring(index));
 			}
-
 
 			m_stateControl_lower->SetFloat(L"downTime", _attackInfo->m_ccTime);
 			m_stateControl_upper->SetFloat(L"downTime", _attackInfo->m_ccTime);
@@ -514,9 +515,17 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 			m_stateControl_lower->SetState(L"down");
 			m_stateControl_upper->SetState(L"down");
 			break;
+		}
 		case ATTACK_TYPE_GROGY:
 			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
 			{
+	
+				int index = Nalmak_Math::Rand(1, 4);
+				if (!m_audio->IsPlay())
+				{
+					m_audio->Play(L"FemaleChild01_HDmg0" + to_wstring(index));
+				}
+
 				m_stateControl_lower->SetFloat(L"grogyTime", _attackInfo->m_ccTime);
 				m_stateControl_upper->SetFloat(L"grogyTime", _attackInfo->m_ccTime);
 
@@ -531,9 +540,10 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 		case ATTACK_TYPE_KNOCKBACK_MIDDLE:
 			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
 			{
+				int index = Nalmak_Math::Rand(1, 4);
 				if (!m_audio->IsPlay())
 				{
-					m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+					m_audio->Play(L"FemaleChild01_Knockback_Long0" + to_wstring(index));
 				}
 
 				m_stateControl_lower->SetFloat(L"downTime", _attackInfo->m_ccTime);
@@ -554,9 +564,10 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 		case ATTACK_TYPE_KNOCKBACK_LONG:
 			if (m_battleState != BATTLE_STATE_ABNORMALSTATE_RESISTANCE)
 			{
+				int index = Nalmak_Math::Rand(1, 4);
 				if (!m_audio->IsPlay())
 				{
-					m_audio->Play(Nalmak_Math::Random<wstring>(L"lyn_down1", L"lyn_down2"));
+					m_audio->Play(L"FemaleChild01_Knockback_Long0" + to_wstring(index));
 				}
 
 
@@ -566,6 +577,14 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 				m_stateControl_lower->SetState(L"knockBackLong");
 				m_stateControl_upper->SetState(L"knockBackLong");
 			}
+		case ATTACK_TYPE_DEFAULT:
+		{
+			int index = Nalmak_Math::Rand(1, 4);
+			if (!m_audio->IsPlay())
+			{
+				m_audio->Play(L"FemaleChild01_HDmg0" + to_wstring(index));
+			}
+		}
 		default:
 			break;
 		}
@@ -780,12 +799,12 @@ void LynInfo::UpdateWeapon()
 		m_weapon->SetPosition(7, -4.5f, -4.f);
 		break;
 	case LYN_STATE_BATTLE_STANDARD:
-		m_weapon->SetParents(m_transform, m_matBattleStandard);
+		m_weapon->SetParents(m_transform, m_matRightHand);
 		m_weapon->SetRotation(0, 0, 0);
 		m_weapon->SetPosition(0, 0, 0);
 		break;
 	case LYN_STATE_BATTLE_HIDEBLADE:
-		m_weapon->SetParents(m_transform, m_matBattleHide);
+		m_weapon->SetParents(m_transform, m_matLeftHand);
 		m_weapon->SetRotation(0, 0, 0);
 		m_weapon->SetPosition(0.f, 0.f, 0);
 		break;
@@ -805,12 +824,12 @@ void LynInfo::UpdateWeapon(LYN_STATE _state)
 		m_weapon->SetPosition(7, -4.5f, -4.f);
 		break;
 	case LYN_STATE_BATTLE_STANDARD:
-		m_weapon->SetParents(m_transform, m_matBattleStandard);
+		m_weapon->SetParents(m_transform, m_matRightHand);
 		m_weapon->SetRotation(0, 0, 0);
 		m_weapon->SetPosition(0, 0, 0);
 		break;
 	case LYN_STATE_BATTLE_HIDEBLADE:
-		m_weapon->SetParents(m_transform, m_matBattleHide);
+		m_weapon->SetParents(m_transform, m_matLeftHand);
 		m_weapon->SetRotation(0, 0, 0);
 		m_weapon->SetPosition(0.f, 0.f, 0);
 		break;
@@ -824,9 +843,19 @@ GameObject * LynInfo::GetWeapon()
 	return m_weapon;
 }
 
+Matrix * LynInfo::GetRightHandMatrix()
+{
+	return m_matRightHand;
+}
+
+Matrix * LynInfo::GetLeftHandMatrix()
+{
+	return m_matLeftHand;
+}
+
 Vector3 LynInfo::GetRightHandPosition()
 {
-	auto rightHandMat =  m_transform->GetWorldMatrix() * *m_matBattleStandard;
+	auto rightHandMat =  m_transform->GetWorldMatrix() * *m_matRightHand;
 	Vector3 rightHandPos;
 	memcpy(&rightHandPos, &rightHandMat._41, sizeof(Vector3));
 

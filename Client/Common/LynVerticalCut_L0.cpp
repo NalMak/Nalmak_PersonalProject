@@ -17,14 +17,15 @@ void LynVerticalCut_L0::Initialize()
 
 void LynVerticalCut_L0::EnterState()
 {
-	if (m_isUpper)
-		m_audio->PlayOneShot(L"lyn_vertical1");
+
 
 	ReduceInnerPower(2);
 	m_info->StartSkill();
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_animController->Play("Lyb_B_Std_VerticalCul_01_1");
 
+	int index = Nalmak_Math::Rand(1, 4);
+	VoicePlay(L"FemaleChild01_PreAtk1_0" + to_wstring(index));
 
 }
 

@@ -23,7 +23,7 @@ AttackInfo::AttackInfo(Desc * _desc)
 	m_height = _desc->height;
 	m_depth = _desc->depth;
 	m_colliderType = _desc->colliderType;
-
+	m_soundName = _desc->soundName;
 }
 
 AttackInfo::~AttackInfo()

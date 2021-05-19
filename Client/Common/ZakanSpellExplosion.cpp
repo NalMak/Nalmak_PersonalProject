@@ -21,6 +21,8 @@ void ZakanSpellExplosion::EnterState()
 {
 	//m_info->LookTarget();
 	m_animController->Play("Zakan_B_Spell_Explosion_Cast");
+	m_audio->PlayOneShot(L"Zakan_SpellExplosion_Cast1-1");
+
 }
 
 void ZakanSpellExplosion::UpdateState()
@@ -30,9 +32,8 @@ void ZakanSpellExplosion::UpdateState()
 		if (!m_animController->IsPlay())
 		{
 			m_animController->Play("Zakan_B_Spell_Explosion_Exec");
+			m_audio->PlayOneShot(L"Zakan_SpellExplosion_Exec1");
 
-		
-		
 		}
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Explosion_Exec")

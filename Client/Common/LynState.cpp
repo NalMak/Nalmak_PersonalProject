@@ -46,3 +46,39 @@ void LynState::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture * _tex)
 	}
 }
 
+void LynState::PlayOneShotLower(const wstring & _sound)
+{
+	if (!m_isUpper)
+	{
+		m_audio->PlayOneShot(_sound);
+	}
+}
+
+void LynState::VoicePlay(const wstring & _sound)
+{
+	if (m_isUpper)
+	{
+		if(!m_audio->IsPlay())
+			m_audio->Play(_sound);
+	}
+}
+
+bool LynState::IsAnyMoveKeyInput()
+{
+	if (!m_isUpper)
+	{
+		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_W) || InputManager::GetInstance()->GetKeyPress(KEY_STATE_A)
+			|| InputManager::GetInstance()->GetKeyPress(KEY_STATE_S) || InputManager::GetInstance()->GetKeyPress(KEY_STATE_D))
+			return true;
+	}
+	return false;
+}
+
+void LynState::PlayOneShot(const wstring& _sound)
+{
+	if (m_isUpper)
+	{
+		m_audio->PlayOneShot(_sound);
+	}
+}
+

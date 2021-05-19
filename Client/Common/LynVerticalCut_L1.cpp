@@ -22,6 +22,7 @@ void LynVerticalCut_L1::EnterState()
 	m_animController->Play("Lyb_B_Std_VerticalCul_01_2");
 
 
+	PlayOneShot(L"SwordMaster_VerticalCut_Cast");
 
 }
 

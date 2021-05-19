@@ -176,7 +176,7 @@ void AnimationTool::OnLbnSelchangeAnimationList()
 		return;
 	if (animIndex == -1)
 		return;
-
+	
 	CString name;
 	m_animationList.GetText(animIndex, name);
 
@@ -185,7 +185,7 @@ void AnimationTool::OnLbnSelchangeAnimationList()
 	string  animName = Nalmak_String::WStringToString(name.GetString());
 
 	//if(!animCtrl->GetAnimationClip(animName))
-	animCtrl->AddAnimationClip(animName, 1.f, true);
+	animCtrl->AddAnimationClip(animName, 0.3f, true);
 
 	animCtrl->Play(animName);
 

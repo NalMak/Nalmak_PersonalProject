@@ -198,6 +198,16 @@ void BnS_Enemy::LookTarget()
 
 void BnS_Enemy::GetDamage(AttackInfo * _attackInfo)
 {
+	if (_attackInfo->m_soundName != L"")
+		m_audio->PlayOneShot(_attackInfo->m_soundName);
+
+	if(_attackInfo->m_isCritical)
+		m_audio->PlayOneShot(L"bns_critical");
+	else
+		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"bns_hit", L"bns_hit2"));
+
+	
+
 	m_hp -= _attackInfo->m_power;
 	
 	BnS_DamageFont::Desc damageFont;

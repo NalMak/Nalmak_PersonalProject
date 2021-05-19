@@ -18,11 +18,7 @@ void LynJump::Initialize()
 
 void LynJump::EnterState()
 {
-	if (!m_isUpper)
-	{
-		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_jump1", L"lyn_jump2"));
-	}
-
+	PlayOneShotLower(Nalmak_Math::Random<wstring>(L"lyn_jump1", L"lyn_jump2"));
 	m_character->SetVelocityY(m_info->m_jumpPower);
 	m_info->SetSpeed(m_info->m_airSpeed);
 

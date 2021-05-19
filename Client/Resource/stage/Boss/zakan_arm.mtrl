@@ -2,22 +2,22 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_Character_HWSkinning"
+shader "BnS_Zakan_HWSkinning"
 
 
 
 texture "g_mainTex" "990120_ZakanArm_col1_D"
 texture "g_normalTex" "990120_ZakanArm_col1_N"
-texture "g_specularTex" "990120_ZakanArm_col1_S"
+texture "g_specularTex" "990120_ZakanArm_col3_E"
 
 
-vector4 "g_mainTexColor" "1.f,1.f,1.f,1.f"
+vector4 "g_mainTexColor" "3.f,3.f,3.f,1.f"
 float "g_f0" "0.45f"
-float "g_roughness" "0.05f"
+float "g_roughness" "0.57f"
 float "g_normalPower" "1.f"
-float "g_specularPower" "1.f";
+float "g_specularPower" "0.f";
 
-renderQueue "2000"
+renderQueue "1000"
 
 blendingMode "0"
 

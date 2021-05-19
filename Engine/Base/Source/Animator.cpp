@@ -16,7 +16,15 @@ Animator::Animator(Desc * _desc)
 	m_currentIndex = _desc->startIndex;
 	m_time = TimeManager::GetInstance();
 
-
+	if (_desc->mtrlName == L"")
+	{
+		assert(L"Please Set target Material!" && 0);
+	}
+	m_timer = 0;
+	m_mtrl = ResourceManager::GetInstance()->GetResource<Material>(_desc->mtrlName);
+	m_sprite = ResourceManager::GetInstance()->GetResource<Texture>(_desc->spriteName);
+	m_currentIndex = 0;
+	m_maxIndex = m_sprite->GetSpriteCount();
 }
 
 Animator::~Animator()
@@ -32,10 +40,7 @@ void Animator::Update()
 	if (m_isSleep)
 		return;
 
-
-
 	m_timer += m_time->GetdeltaTime();
-
 
 	if (m_timer >= m_interval)
 	{
@@ -60,6 +65,11 @@ void Animator::LateUpdate()
 {
 }
 
+void Animator::EachRender()
+{
+	m_mtrl->SetTexture("g_mainTex", m_sprite->GetTexure(m_currentIndex));
+}
+
 void Animator::Release()
 {
 }
@@ -67,7 +77,6 @@ void Animator::Release()
 void Animator::Play(wstring _spriteName)
 {
 	m_isPlay = true;
-	m_animName = _spriteName;
 	m_sprite = ResourceManager::GetInstance()->GetResource<Texture>(_spriteName);
 
 	m_currentIndex = 0;

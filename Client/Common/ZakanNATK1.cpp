@@ -17,6 +17,7 @@ void ZakanNATK1::Initialize()
 
 void ZakanNATK1::EnterState()
 {
+	m_effect->StartSwordTrail();
 	m_info->SetBattleState(BATTLE_STATE_WEAK);
 
 	m_info->LookTarget();
@@ -50,6 +51,7 @@ void ZakanNATK1::UpdateState()
 
 void ZakanNATK1::ExitState()
 {
+	m_effect->EndSwordTrail();
 }
 
 void ZakanNATK1::CreateAttackArea()

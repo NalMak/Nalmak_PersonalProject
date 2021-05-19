@@ -181,6 +181,7 @@
     <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
+    <ClInclude Include="BnS_Fire.h" />
     <ClInclude Include="BnS_InnerForceAnimation.h" />
     <ClInclude Include="BnS_MainCamera.h" />
     <ClInclude Include="BnS_RotateSoulBlade.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="LynChamWall.h" />
     <ClInclude Include="LynDead.h" />
     <ClInclude Include="LynDown.h" />
+    <ClInclude Include="LynEffectControl.h" />
     <ClInclude Include="LynEventIdle.h" />
     <ClInclude Include="LynExcape.h" />
     <ClInclude Include="LynFall.h" />
@@ -261,10 +263,13 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="ZakanAir.h" />
     <ClInclude Include="ZakanArea360.h" />
+    <ClInclude Include="ZakanBackStep.h" />
     <ClInclude Include="ZakanBattleIdle.h" />
+    <ClInclude Include="ZakanChange.h" />
     <ClInclude Include="ZakanDamageShield.h" />
     <ClInclude Include="ZakanDead.h" />
     <ClInclude Include="ZakanDown.h" />
+    <ClInclude Include="ZakanEffectControl.h" />
     <ClInclude Include="ZakanFireSpellWave.h" />
     <ClInclude Include="ZakanFlyTakeDown.h" />
     <ClInclude Include="ZakanGrab.h" />
@@ -290,6 +295,7 @@
     <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
+    <ClCompile Include="BnS_Fire.cpp" />
     <ClCompile Include="BnS_InnerForceAnimation.cpp" />
     <ClCompile Include="BnS_MainCamera.cpp" />
     <ClCompile Include="BnS_RotateSoulBlade.cpp" />
@@ -309,6 +315,7 @@
     <ClCompile Include="LynChamWall.cpp" />
     <ClCompile Include="LynDead.cpp" />
     <ClCompile Include="LynDown.cpp" />
+    <ClCompile Include="LynEffectControl.cpp" />
     <ClCompile Include="LynEventIdle.cpp" />
     <ClCompile Include="LynExcape.cpp" />
     <ClCompile Include="LynFall.cpp" />
@@ -368,10 +375,13 @@
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="ZakanAir.cpp" />
     <ClCompile Include="ZakanArea360.cpp" />
+    <ClCompile Include="ZakanBackStep.cpp" />
     <ClCompile Include="ZakanBattleIdle.cpp" />
+    <ClCompile Include="ZakanChange.cpp" />
     <ClCompile Include="ZakanDamageShield.cpp" />
     <ClCompile Include="ZakanDead.cpp" />
     <ClCompile Include="ZakanDown.cpp" />
+    <ClCompile Include="ZakanEffectControl.cpp" />
     <ClCompile Include="ZakanFireSpellWave.cpp" />
     <ClCompile Include="ZakanFlyTakeDown.cpp" />
     <ClCompile Include="ZakanGrab.cpp" />
@@ -400,30 +410,38 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resource\static\Shader\BnS_Character_HWSkinning.sd" />
-    <None Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.sd" />
-    <None Include="..\Resource\static\Shader\BnS_Head_HWSkinning.sd" />
-    <None Include="..\Resource\static\Shader\BnS_HpUI.sd" />
-    <None Include="..\Resource\static\Shader\BnS_InnerForce.sd" />
-    <None Include="..\Resource\static\Shader\BnS_SkillI_UI.sd" />
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DN.sd" />
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNE.sd" />
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNS.sd" />
-    <None Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.sd" />
-    <None Include="..\Resource\static\Shader\homework.sd" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Block_DN.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_HpUI.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_InnerForce.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_SkillI_UI.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_SwordTrail.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.fx" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Resource\static\Shader\BnS_Character_HWSkinning.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_Hair_HWSkinning.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_Head_HWSkinning.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_HpUI.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_InnerForce.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_SkillI_UI.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DN.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNE.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNS.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_StaticObject_DNSM.fx" />
-    <FxCompile Include="..\Resource\static\Shader\homework.fx" />
+    <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_HpUI.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_InnerForce.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_SkillI_UI.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_SwordTrail.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.sd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

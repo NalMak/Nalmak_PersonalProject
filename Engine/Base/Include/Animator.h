@@ -18,6 +18,7 @@ public:
 		float interval = 0.05f;
 		float timer = 0;
 		wstring spriteName = L"default";
+		wstring mtrlName = L"";
 
 		bool isNormal = false;
 		bool loop = true;
@@ -30,6 +31,7 @@ private:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
+	virtual void EachRender() override;
 	virtual void Release() override;
 private:
 	size_t m_maxIndex;
@@ -38,8 +40,8 @@ private:
 	float m_timer = 0;
 	bool m_isNormal = false;
 	bool m_loop = true;
-	wstring m_animName;
 	Texture* m_sprite;
+	Material* m_mtrl;
 	bool m_isPlay;
 	bool m_isSleep;
 
@@ -50,7 +52,6 @@ public:
 	void SetInterval(float _interval) { m_interval = _interval; }
 	bool IsPlay() { return m_isPlay; }
 	void SetLoop(bool _loop) { m_loop = _loop; }
-	wstring GetAnimationName()const { return m_animName; }
 	size_t GetAnimationIndex() { return m_currentIndex; }
 private:
 	TimeManager* m_time = nullptr;

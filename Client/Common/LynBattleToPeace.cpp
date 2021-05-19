@@ -25,8 +25,7 @@ void LynBattleToPeace::UpdateState()
 	
 	if (m_animController->IsOverTime(0.35))
 	{
-		if (m_isUpper)
-			m_audio->PlayOneShot(L"lyn_BtoP");
+		PlayOneShot(L"lyn_BtoP");
 		m_info->SetState(LYN_STATE_PEACE_STANDARD);
 	}
 	if (m_animController->GetPlayRemainTime() < 0.45f)

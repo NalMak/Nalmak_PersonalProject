@@ -15,6 +15,7 @@ public:
 		int maxTrailCount = 300;
 		int detailCount = 1;
 		int layer = 0;
+		bool playOnStart = false;
 	};
 public:
 	TrailRenderer(Desc* _desc);
@@ -24,11 +25,16 @@ private:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
+	virtual void PreRender() override;
 	virtual void Release() override;
 	virtual void Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex) override;
 private:
 	virtual void BindingStreamSource() override;
 public:
+	void Play();
+	void Stop();
+	bool IsPlay();
+	void ResetTrail();
 	void RecordTrail(const Vector3& _startPos, const Vector3& _endPos);
 	virtual int GetMaterialCount() override;
 	virtual Material * GetMaterial(UINT _containerIndex = 0, UINT _subsetIndex = 0) override;
@@ -36,6 +42,7 @@ public:
 	virtual void SetMaterial(const wstring & _mtrlName, int _index = 0) override;
 
 private:
+	bool m_isPlay;
 	Material* m_material;
 
 	int m_maxTrailCount;

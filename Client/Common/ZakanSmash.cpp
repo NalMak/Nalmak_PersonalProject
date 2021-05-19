@@ -18,6 +18,7 @@ void ZakanSmash::Initialize()
 
 void ZakanSmash::EnterState()
 {
+	m_effect->StartSwordTrail();
 	m_info->SetBattleState(BATTLE_STATE_WEAK);
 
 	m_info->LookTarget();
@@ -96,4 +97,6 @@ void ZakanSmash::UpdateState()
 
 void ZakanSmash::ExitState()
 {
+	m_effect->EndSwordTrail();
+
 }

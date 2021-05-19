@@ -16,7 +16,7 @@ BnS_MainCamera::BnS_MainCamera(Desc * _desc)
 	m_distance = 25.f;
 	m_targetDisance = 25.f;
 	m_mouseAngle = { 30.f,0 };
-	m_offsetY = 10.f;
+	m_offsetY = 7.f;
 
 	m_triggerOn = false;
 	m_targetVolume = { HALF_WINCX - 50, HALF_WINCY - 50, HALF_WINCX + 50, HALF_WINCY - 50 };
@@ -117,7 +117,7 @@ void BnS_MainCamera::Move()
 	D3DXVec3TransformNormal(&dir, &dir, &rot);
 	D3DXQuaternionRotationMatrix(&qRot, &rot);
 	float offsetY = m_offsetY * (m_distance / m_maxDistance);
-	offsetY = Nalmak_Math::Clamp(offsetY, 1.5f, 10.f);
+	offsetY = Nalmak_Math::Clamp(offsetY, 1.5f, 7.f);
 	m_transform->position = m_player->GetTransform()->GetWorldPosition() - dir * m_distance + Vector3(0, offsetY, 0);
 	m_transform->rotation = qRot;
 

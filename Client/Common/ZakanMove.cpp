@@ -22,10 +22,12 @@ void ZakanMove::UpdateState()
 {
 	if (m_info->GetTarget())
 	{
-		if (m_info->GetDistanceToTarget() > 4)
+		float distance = m_info->GetDistanceToTarget();
+
+		if (BETWEEN(distance, 4,10))
 		{
 			m_info->LookTarget();
-			Vector3 velocity = m_transform->GetForward() * 12;
+			Vector3 velocity = m_transform->GetForward() * 15;
 			m_character->SetVelocityX(velocity.x);
 			m_character->SetVelocityZ(velocity.z);
 		}

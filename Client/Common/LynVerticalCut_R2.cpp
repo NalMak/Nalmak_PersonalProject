@@ -17,8 +17,7 @@ void LynVerticalCut_R2::Initialize()
 
 void LynVerticalCut_R2::EnterState()
 {
-	if (m_isUpper)
-		m_audio->PlayOneShot(L"lyn_vertical3");
+
 
 	ReduceInnerPower(2);
 
@@ -44,13 +43,17 @@ void LynVerticalCut_R2::UpdateState()
 		attack.width = 4;
 		CreateAttackInfo(&attack, 6.f, 1.5f, 3.f);
 	}
+
+	if (m_animController->IsOverTime(0.15f))
+		PlayOneShot(L"SwordMaster_VerticalCut_Wind_Exec");
+
 	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE && !m_isUpper)
 	{
 		SetState(L"move");
 		return;
 	}
 
-	if (m_animController->GetPlayRemainTime() < 0.35f)
+	if (m_animController->GetPlayRemainTime() < 0.5f)
 	{
 		m_animController->SetBlendOption(0.35f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
@@ -59,6 +62,14 @@ void LynVerticalCut_R2::UpdateState()
 			{
 				SetState(L"verticalCut_l2");
 				return;
+			}
+			else
+			{
+				if (!m_camAudio->IsPlay())
+				{
+					m_camAudio->SetAudioClip(L"sys_notenoughInnerForce");
+					m_camAudio->Play();
+				}
 			}
 		}
 		else

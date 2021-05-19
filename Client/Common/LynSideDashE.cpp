@@ -18,7 +18,10 @@ void LynSideDashE::Initialize()
 
 void LynSideDashE::EnterState()
 {
+	m_effect->StartBodyTrail();
+
 	m_info->SetResistance(true);
+	PlayOneShot(L"Fencer_BackStep_Shot");
 
 	if (m_isUpper)
 	{
@@ -102,6 +105,8 @@ void LynSideDashE::UpdateState()
 
 void LynSideDashE::ExitState()
 {
+	m_effect->EndBodyTrail();
+
 	m_info->SetResistanceTimer(1);
 	m_info->SetResistance(false);
 

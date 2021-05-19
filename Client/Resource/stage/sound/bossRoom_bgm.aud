@@ -4,7 +4,7 @@
 
 loop "true"
 
-volume "1.5f"
+volume "1.7f"
 
 minDistance "50"
 

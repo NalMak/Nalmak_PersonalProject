@@ -460,7 +460,7 @@ bool AnimationController::IsPlay(const string & _name)
 {
 	if (m_currentAnimationClip->animationName == _name)
 	{
-		return !m_isStop;;
+		return !m_isStop;
 	}
 	return true;
 }

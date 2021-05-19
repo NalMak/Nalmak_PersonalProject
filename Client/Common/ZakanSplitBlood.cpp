@@ -18,6 +18,8 @@ void ZakanSplitBlood::Initialize()
 
 void ZakanSplitBlood::EnterState()
 {
+	m_effect->StartSwordTrail();
+
 	m_animController->Play("Zakan_SplitBlood_Cast");
 	m_audio->PlayOneShot(L"zakan_splitBlood");
 
@@ -58,4 +60,6 @@ void ZakanSplitBlood::UpdateState()
 
 void ZakanSplitBlood::ExitState()
 {
+	m_effect->EndSwordTrail();
+
 }

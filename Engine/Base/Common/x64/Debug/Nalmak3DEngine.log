@@ -1,4 +1,4 @@
-﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
+﻿  Nalmak3DEngine.vcxproj -> C:\Users\JUN\Desktop\Nalmak3D_Personal\Nalmak_PersonalProject\Engine\Base\Common\../Bin/Nalmak3D_Engine.dll
   Nalmak3DEngine.vcxproj -> ../Bin/Nalmak3D_Engine.pdb (Full PDB)
   ..\Include\AnimationClip.h
   ..\Include\AnimationController.h
@@ -184,12 +184,12 @@
   ..\Bin\SYS_LightDepth.cso
   ..\Bin\SYS_LightDepth_Animation.cso
   ..\Bin\SYS_Line.cso
-  ..\Bin\SYS_NoneNormal.cso
   ..\Bin\SYS_OutLine.cso
   ..\Bin\SYS_Particle.cso
   ..\Bin\SYS_PhysX.cso
   ..\Bin\SYS_PickingDebug.cso
   ..\Bin\SYS_SkyBox.cso
+  ..\Bin\SYS_SoftTex.cso
   ..\Bin\SYS_Standard.cso
   ..\Bin\SYS_Standard_NormalMap.cso
   ..\Bin\SYS_Trail.cso
