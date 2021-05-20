@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BaseScene.h"
+#include "StaticObjectInfo.h"
 
 
 BaseScene::BaseScene()
@@ -13,7 +14,11 @@ BaseScene::~BaseScene()
 
 void BaseScene::Initialize()
 {
-
+	wstring path = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+	wstring sceneName = L"stage";
+	path += (L"/" + sceneName);
+	//ResourceManager::GetInstance()->ReleaseSceneResouce();
+	ResourceManager::GetInstance()->LoadAllResources(L"../../Client/Resource/", false);
 
 	DirectionalLight::Desc light;
 	light.diffuseIntensity = 0.6f;
@@ -25,20 +30,9 @@ void BaseScene::Initialize()
 
 	INSTANTIATE()->AddComponent<SystemInfo>()->SetPosition(350, 350, 0);
 
-	//{
-	//	VIBufferRenderer::Desc vibuffer;
-	//	vibuffer.meshName = L"screenQuad";
-	//	vibuffer.mtrlName = L"particleDistortion";
-	//	INSTANTIATE()->AddComponent<VIBufferRenderer>(&vibuffer);
-	//}
+	
 
-
-	//ParticleRenderer::Desc particle;
-	//particle.startMinScale = 1;
-	//particle.startMaxScale = 1;
-	//particle.endColor = Vector4(1, 0, 0, 1);
-	//particle.endMaxScale = 3;
-	//particle.shape = PARTICLE_EMIT_SHAPE_CIRCLE;
-	//particle.radius = 2.f;
-	//INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
+	for (auto& obj : staticObj)
+		MAKE_STATIC(obj.first);
 }

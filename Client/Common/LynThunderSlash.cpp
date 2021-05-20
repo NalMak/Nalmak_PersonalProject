@@ -25,8 +25,13 @@ void LynThunderSlash::EnterState()
 	dir.y = 0;
 	m_direction = Nalmak_Math::Normalize(dir);
 
-	m_targetPosition = m_info->GetTarget()->GetTransform()->GetWorldPosition() - m_direction * 3.5f / BNS_DISTANCE_RATIO;
-	m_targetPosition.y = 0;
+	Vector3 tempTarget = m_info->GetTarget()->GetTransform()->GetWorldPosition() - m_direction * 3.5f / BNS_DISTANCE_RATIO;
+	dir = Nalmak_Math::Normalize(tempTarget - m_transform->GetWorldPosition());
+	if (Nalmak_Math::Dot(dir, m_transform->GetForward()) < 0)
+		m_targetPosition = m_transform->GetWorldPosition();
+	else
+		m_targetPosition = tempTarget;
+	m_targetPosition.y = m_transform->GetWorldPosition().y;
 
 	m_targetDistance = Nalmak_Math::Distance(m_transform->GetWorldPosition(), m_targetPosition);
 

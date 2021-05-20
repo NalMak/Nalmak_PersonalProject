@@ -109,6 +109,10 @@ BOOL ObjectInstallTool::OnInitDialog()
 		struct _wfinddata_t fd;
 		intptr_t handle;
 
+
+
+
+
 		//fd 구조체 초기화.
 		if ((handle = _wfindfirst(path.c_str(), &fd)) == -1L)
 		{

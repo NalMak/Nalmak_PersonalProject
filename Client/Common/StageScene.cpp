@@ -94,6 +94,8 @@
 #include "ZakanEffectControl.h"
 #include "ZakanChange.h"
 #include "ZakanBackStep.h"
+#include "ZakanFireSpellWave.h"
+#include "ZakanSpellSuction.h"
 StageScene::StageScene()
 {
 }
@@ -565,6 +567,10 @@ void StageScene::Initialize()
 		stateCtrl->AddState<ZakanDead>(L"dead");
 		stateCtrl->AddState<ZakanChange>(L"change");
 		stateCtrl->AddState<ZakanBackStep>(L"backStep");
+		stateCtrl->AddState<ZakanFireSpellWave>(L"fireSpellWave");
+		stateCtrl->AddState<ZakanSpellSuction>(L"spellSuction");
+
+
 
 
 
@@ -630,6 +636,15 @@ void StageScene::Initialize()
 
 		animCtrl->AddAnimationClip("zakan_summon_cast", 0.7f, false);
 		animCtrl->AddAnimationClip("zakan_summon_exec", 0.7f, false);
+
+		animCtrl->AddAnimationClip("Zakan_FireSpellWave_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_FireSpellWave_Exec", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_SpellSuction_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_SpellSuction_Exec_End", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_SpellSuction_Exec_Loop", 1.f, false);
+
+
 
 
 

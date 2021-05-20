@@ -16,6 +16,10 @@ void ZakanPattern::Initialize()
 	m_phaseIndex = 0;
 	SetInteger(L"IsPattern", 1);
 
+	//m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"fireSpellWave");
+	//m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"spellSuction");
+	//m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"NATK1");
+	//m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"spellSuction"); ->장판 패턴
 	m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"NATK1");
 	m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"NATK2");
 	m_patternList[ZAKAN_PATTERN_DEFAULT1].emplace_back(L"smash");

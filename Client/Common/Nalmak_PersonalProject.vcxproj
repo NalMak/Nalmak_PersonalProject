@@ -271,6 +271,7 @@
     <ClInclude Include="ZakanDown.h" />
     <ClInclude Include="ZakanEffectControl.h" />
     <ClInclude Include="ZakanFireSpellWave.h" />
+    <ClInclude Include="ZakanFloorAttack.h" />
     <ClInclude Include="ZakanFlyTakeDown.h" />
     <ClInclude Include="ZakanGrab.h" />
     <ClInclude Include="ZakanHolded.h" />
@@ -383,6 +384,7 @@
     <ClCompile Include="ZakanDown.cpp" />
     <ClCompile Include="ZakanEffectControl.cpp" />
     <ClCompile Include="ZakanFireSpellWave.cpp" />
+    <ClCompile Include="ZakanFloorAttack.cpp" />
     <ClCompile Include="ZakanFlyTakeDown.cpp" />
     <ClCompile Include="ZakanGrab.cpp" />
     <ClCompile Include="ZakanHolded.cpp" />

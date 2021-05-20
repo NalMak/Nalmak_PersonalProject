@@ -147,7 +147,9 @@ GameObject* BnS_MainCamera::CheckTarget()
 			continue;
 		}
 
-		Vector3 dir1 = Nalmak_Math::Normalize((*iter)->GetTransform()->GetWorldPosition()- m_player->GetTransform()->GetWorldPosition());
+		//Vector3 dir1 = Nalmak_Math::Normalize((*iter)->GetTransform()->GetWorldPosition()- (m_player->GetTransform()->GetWorldPosition() + m_player->GetTransform()->GetForward() * 2.f));
+		Vector3 dir1 = Nalmak_Math::Normalize((*iter)->GetTransform()->GetWorldPosition() - (m_player->GetTransform()->GetWorldPosition()));
+
 		if (Nalmak_Math::Dot(dir1, m_player->GetTransform()->GetForward()) > 0)
 		{
 			++iter;

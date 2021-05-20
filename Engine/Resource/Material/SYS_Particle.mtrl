@@ -8,7 +8,7 @@ texture "g_mainTex" "particleDefault"
 
 renderQueue "3000"
 
-blendingMode "1"
+blendingMode "0"
 
 fillMode "0"
 

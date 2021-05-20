@@ -474,6 +474,7 @@
     <ClInclude Include="ZakanEffectControl.h" />
     <ClInclude Include="ZakanChange.h" />
     <ClInclude Include="ZakanBackStep.h" />
+    <ClInclude Include="ZakanFloorAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -779,6 +780,7 @@
     <ClCompile Include="ZakanEffectControl.cpp" />
     <ClCompile Include="ZakanChange.cpp" />
     <ClCompile Include="ZakanBackStep.cpp" />
+    <ClCompile Include="ZakanFloorAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
