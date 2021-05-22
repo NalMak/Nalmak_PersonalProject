@@ -46,10 +46,3 @@ void ZakanSpellSuction::ExitState()
 {
 }
 
-void ZakanSpellSuction::CreateFloorAttack(const Vector3 & _pos)
-{
-	INSTANTIATE()->SetPosition(_pos);
-
-
-
-}

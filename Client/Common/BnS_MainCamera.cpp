@@ -49,7 +49,29 @@ void BnS_MainCamera::Update()
 
 void BnS_MainCamera::LateUpdate()
 {
-	m_player->SetTarget(CheckTarget());
+	auto target = CheckTarget();
+	 
+	if (target == nullptr)
+	{
+		m_targetTimer -= dTime;
+		if (m_targetTimer < 0)
+		{
+			m_target = target;
+			m_player->SetTarget(target);
+		}
+		else
+		{
+			m_player->SetTarget(m_target);
+		}
+
+	}
+	else
+	{
+		m_targetTimer = 1.f;
+		m_target = target;
+		m_player->SetTarget(m_target);
+	}
+	
 }
 
 void BnS_MainCamera::OnTriggerEnter(Collision & _col)

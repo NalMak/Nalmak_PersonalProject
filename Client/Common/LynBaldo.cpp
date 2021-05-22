@@ -29,7 +29,7 @@ void LynBaldo::EnterState()
 		AttackInfo::Desc attack;
 		attack.attackType = ATTACK_TYPE_DEFAULT;
 		attack.colliderType = COLLIDER_TYPE_BOX;
-		attack.depth = 6.f;
+		attack.depth = 10.f;
 		attack.height = 3.f;
 		attack.width = 4.f;
 		attack.soundName = L"Fencer_Batto_Fire_Hit";
@@ -40,7 +40,7 @@ void LynBaldo::EnterState()
 		
 		auto hitBox = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
 			->AddComponent<AttackInfo>(&attack)
-			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 4 + Vector3(0, 2, 0))
+			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 5 + Vector3(0, 2, 0))
 			->SetRotation(m_transform->GetWorldRotation());
 
 		if (attack.isCritical)
@@ -48,6 +48,14 @@ void LynBaldo::EnterState()
 			hitBox->GetComponent<AttackInfo>()->AddHitEvent([=]()
 			{
 				m_info->AddLightningSpirit();
+				m_effect->PlayBaldoEffect();
+			});
+		}
+		else
+		{
+			hitBox->GetComponent<AttackInfo>()->AddHitEvent([=]()
+			{
+				m_effect->PlayBaldoEffect();
 			});
 		}
 

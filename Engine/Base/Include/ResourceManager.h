@@ -136,7 +136,7 @@ public:
 		return m_resoucreContainers[typeid(T).name()];
 	}
 public:
-	const wstring& GetResourceDirectoryPath() { return m_clientDirectoryPath; }
+	wstring GetResourceDirectoryPath();
 };
 END
 #endif

@@ -19,7 +19,6 @@ void ZakanPowerATK::Initialize()
 
 void ZakanPowerATK::EnterState()
 {
-	m_effect->StartSwordTrail();
 
 	m_info->SetBattleState(BATTLE_STATE_RESISTANCE);
 
@@ -33,9 +32,12 @@ void ZakanPowerATK::UpdateState()
 	{
 		if (!m_animController->IsPlay())
 		{
+			m_effect->StartSwordTrail();
+
 			m_jumpTargetPos = m_info->GetTarget()->GetTransform()->GetWorldPosition() + Vector3(0, 10, 0);
 			m_landingTargetPos = m_jumpTargetPos + Nalmak_Math::Normalize(m_info->GetTarget()->GetTransform()->GetWorldPosition() - m_transform->GetWorldPosition()) * 10.f;
 
+			m_audio->PlayOneShot(L"zakan_powerATK_fire");
 			m_animController->Play("Zakan_B_Spell_Skl_PowerATK_Fire");
 		}
 	}
@@ -80,7 +82,7 @@ void ZakanPowerATK::UpdateState()
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Skl_PowerATK_Exec2")
 	{
-	
+
 		Vector3 velocity = m_landingTargetPos - m_transform->GetWorldPosition();
 		if (Nalmak_Math::Length(velocity) > 1)
 			m_character->SetVelocityXZ(velocity * 5);
@@ -88,6 +90,7 @@ void ZakanPowerATK::UpdateState()
 
 		if (!m_animController->IsPlay())
 		{
+			m_audio->PlayOneShot(L"zakan_powerATK_end");
 			m_animController->Play("Zakan_B_Spell_Skl_PowerATK_End");
 		}
 	}

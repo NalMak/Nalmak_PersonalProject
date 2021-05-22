@@ -17,7 +17,7 @@ void LynSlash3::Initialize()
 
 void LynSlash3::EnterState()
 {
-	ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex);
+	ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex,L"ÁúÇ³");
 	m_info->StartSkill();
 	m_info->SetSpeed(m_info->m_airSpeed * 0.5f);
 	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
@@ -37,19 +37,14 @@ void LynSlash3::UpdateState()
 	{
 		AttackInfo::Desc attack;
 		attack.height = 5;
-		attack.depth = 5;
+		attack.depth = 10;
 		attack.width = 8;
 		attack.innerPower = 2;
-		CreateAttackInfo(&attack, 3.f, 1.5f, 1.3f);
+		CreateAttackInfo(&attack, 5.f, 1.5f, 1.3f);
 
 		m_effect->StartWeaponTrail();
 	}
 
-	if (m_animController->IsOverTime(0.5f))
-	{
-		m_effect->EndWeaponTrail();
-		m_info->EndSkill();
-	}
 
 	if (m_animController->GetPlayRemainTime() < 0.6f)
 	{
@@ -83,7 +78,7 @@ void LynSlash3::UpdateState()
 void LynSlash3::ExitState()
 {
 	if (!m_isCombo)
-		ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex);
+		ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex,L"ÁúÇ³");
 
 	m_effect->EndWeaponTrail();
 

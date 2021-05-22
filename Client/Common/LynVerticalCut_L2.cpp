@@ -45,7 +45,7 @@ void LynVerticalCut_L2::UpdateState()
 		attack.width = 4;
 		CreateAttackInfo(&attack, 6.f, 1.5f, 3.f);
 	}
-	if(m_animController->IsOverTime(0.15f))
+	if(m_animController->IsOverTime(0.05f))
 		PlayOneShot(L"SwordMaster_VerticalCut_Wind_Exec");
 
 	if (m_info->GetDirectionState() != LYN_MOVE_DIR_STATE_NONE && !m_isUpper)

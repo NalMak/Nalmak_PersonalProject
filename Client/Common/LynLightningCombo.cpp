@@ -24,17 +24,17 @@ void LynLightningCombo::EnterState()
 
 	AttackInfo::Desc attack;
 	attack.height = 5;
-	attack.depth = 6;
+	attack.depth = 10;
 	attack.width = 6;
 	attack.innerPower = 1;
 	attack.soundName = L"SwordMaster_Sword_Lightning_TwicePierce_ExecHit";
-	CreateAttackInfo(&attack, 3.f, 1.5f, 3.5f);
+	CreateAttackInfo(&attack, 3.f, 1.5f, 3.f);
+
 
 	PlayOneShot(L"SwordMaster_Sword_Lightning_TwicePierce_Fire");
 	VoicePlay(Nalmak_Math::Random<wstring>(L"FemaleChild01_Atk1_03", L"FemaleChild01_Atk1_04", L"FemaleChild01_Atk1_06"));
 
-	
-
+	m_effect->StartWeaponTrail();
 }
 
 void LynLightningCombo::UpdateState()
@@ -52,26 +52,21 @@ void LynLightningCombo::UpdateState()
 		attack.height = 5;
 		attack.depth = 5;
 		attack.width = 8;
-		attack.innerPower = 1;
-		CreateAttackInfo(&attack, 3.f, 1.5f, 3.f);
+		CreateAttackInfo(&attack, 5.f, 1.5f, 3.5f, [=]()
+		{
+			m_effect->PlayLightningComboEffect();
+		});
 	}
 
-	if (m_animController->GetPlayRemainTime() < 1.1f)
+	if (m_animController->GetPlayRemainTime() < 1.f)
 	{
 		m_info->EndSkill();
-
-		/*if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
-		{
-			if (m_info->GetInnerPower() > 0)
-			{
-				m_info->ReduceInnerPower(1);
-				SetState(L"baldo");
-				return;
-			}
-		
-		}*/
 	}
 
+	if (m_animController->IsOverTime(0.6f))
+	{
+		m_effect->EndWeaponTrail();
+	}
 	if (m_animController->GetPlayRemainTime() < 0.4f)
 	{
 		m_animController->SetBlendOption(0.4f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
@@ -84,5 +79,7 @@ void LynLightningCombo::UpdateState()
 
 void LynLightningCombo::ExitState()
 {
+	m_effect->EndWeaponTrail();
+
 	m_info->EndSkill();
 }

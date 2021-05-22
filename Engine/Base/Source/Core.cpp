@@ -201,7 +201,7 @@ HWND  Core::GetHWND()
 	return m_deviceManager->GetHWND();
 }
 
-const wstring & Core::GetResourceDirectoryPath()
+wstring  Core::GetResourceDirectoryPath()
 {
 	return m_resourceManager->GetResourceDirectoryPath();
 }

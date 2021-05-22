@@ -30,17 +30,20 @@ void ZakanNATK2::UpdateState()
 	{
 		if (!m_animController->IsPlay())
 		{
+			m_effect->PlayDust();
+			m_effect->PlayNATK();
+
 			AttackInfo::Desc info;
 			info.attackType = ATTACK_TYPE_DOWN;
 			info.colliderType = COLLIDER_TYPE_BOX;
-			info.depth = 15.f;
+			info.depth = 16.f;
 			info.height = 6.f;
-			info.width = 6.f;
+			info.width = 8.f;
 			info.power = 3000;
 			info.host = m_gameObject;
 			auto hitBox = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_ENEMY_HITBOX)->AddComponent<AttackInfo>(&info);
 
-			hitBox->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 7.f);
+			hitBox->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 8.f);
 			hitBox->SetRotation(m_transform->GetWorldRotation());
 			m_animController->Play("Zakan_B_Std_NATK2_Exec");
 
@@ -49,6 +52,11 @@ void ZakanNATK2::UpdateState()
 	}
 	else
 	{
+		if (m_animController->IsOverTime(0.4f))
+		{
+			m_effect->EndSwordTrail();
+		}
+
 		if (m_animController->GetPlayRemainTime() < 0.1f)
 		{
 			m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);

@@ -31,13 +31,14 @@ void BnS_Skill::Update()
 	}
 }
 
-void BnS_Skill::CreateSkill(const wstring& _stateName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime,
+void BnS_Skill::CreateSkill(const wstring& _stateName,const wstring& _skillName, BNS_SKILL_SLOT _skillSlot, const wstring & _skillIcon, float _coolTime,
 	__int64 _actionKey, bool _isCombined, activationCondition _condition, bool _isRenderSlot, float _minDistance, float _maxDistance, UINT _innerForce)
 {
 	m_stateName = _stateName;
 	m_skillSlot = _skillSlot;
 	m_isCombined = _isCombined;
 	m_isRenderSlot = _isRenderSlot;
+	m_skillName = _skillName;
 
 	if (_minDistance != 0 || _maxDistance != 0)
 	{
@@ -114,6 +115,8 @@ void BnS_Skill::ActiveSkill(LynInfo* _info)
 		_info->ReduceInnerPower(m_needInnerForce);
 }
 
+
+
 Texture * BnS_Skill::GetSkillIconTexture()
 {
 	return m_skillIcon;
@@ -132,6 +135,11 @@ float BnS_Skill::GetCoolTime()
 int BnS_Skill::GetNeedInnerPower()
 {
 	return m_needInnerForce;
+}
+
+const wstring & BnS_Skill::GetSkillName()
+{
+	return m_skillName;
 }
 
 

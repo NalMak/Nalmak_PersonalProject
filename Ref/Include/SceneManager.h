@@ -27,6 +27,7 @@ public:
 	void AddScene(const wstring& _name, Scene*);
 	bool CompareCurrentScene(const wstring& _name);
 	Scene* Find_Scene_Name(const wstring& _name);
+	const wstring& GetCurrentSceneName();
 private:
 	void CleanUpScene();
 	void LoadResource();

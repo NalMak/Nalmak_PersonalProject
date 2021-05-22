@@ -57,9 +57,13 @@ void LynLayDown::UpdateState()
 
 void LynLayDown::ExitState()
 {
-	m_info->SetSpeed(m_info->m_runForwardSpeed);
-	m_bnsMainCam->LockTarget();
+	if (m_isUpper)
+	{
+		m_info->SetSpeed(m_info->m_runForwardSpeed);
+		m_bnsMainCam->LockTarget();
 
-	m_skillController->ReleaseSkill(BNS_SKILL_SLOT_F);
+		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_F);
+		m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+	}
 
 }

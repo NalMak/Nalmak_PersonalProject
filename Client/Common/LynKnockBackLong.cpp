@@ -24,9 +24,10 @@ void LynKnockBackLong::EnterState()
 	m_info->MoveOn();
 	m_bnsMainCam->UnLockTarget();
 	m_info->ChangeSkillByState(LYN_SKILL_STATE_CC);
+	m_info->SetBattleState(BATTLE_STATE_KNOCKBACK);
 
 	m_character->SetVelocity(0, 20, 0);
-	m_animController->PlayBlending("Lyn_B_KnockBack_Long_B");
+	m_animController->Play("Lyn_B_KnockBack_Long_B");
 }
 
 void LynKnockBackLong::UpdateState()

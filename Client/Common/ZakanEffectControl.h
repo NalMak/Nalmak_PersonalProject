@@ -19,11 +19,17 @@ public:
 	void CreateWeaponTrailEffect(GameObject* _weapon);
 	void StartSwordTrail();
 	void EndSwordTrail();
-
+	void PlayDust();
+	void PlayNATK();
+	
 private:
 	GameObject* m_swordTrailStart;
 	GameObject* m_swordTrailEnd;
 	TrailRenderer* m_swordTrail;
+	ParticleRenderer* m_dustParticle;
+	ParticleRenderer* m_natkParticle;
+	ParticleRenderer* m_splitParticle;
+
 
 };
 

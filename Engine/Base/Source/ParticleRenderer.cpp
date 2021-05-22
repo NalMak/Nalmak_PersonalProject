@@ -167,8 +167,8 @@ void ParticleRenderer::Release()
 void ParticleRenderer::Render(Shader* _shader, ConstantBuffer& _cBuffer, UINT _containerIndex, UINT _subsetIndex)
 {
 	_shader->CommitChanges();
-
-	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_viBuffer->GetPrimitiveType(), 0, 0, 4 * m_currentCount, 0, m_viBuffer->GetFigureCount()));
+	//m_viBuffer->GetFigureCount()
+	ThrowIfFailed(m_device->DrawIndexedPrimitive(m_viBuffer->GetPrimitiveType(), 0, 0, 4 * m_currentCount, 0, 2 * m_currentCount ));
 
 	ThrowIfFailed(m_device->SetStreamSourceFreq(0, 1));
 	ThrowIfFailed(m_device->SetStreamSourceFreq(1, 1));
@@ -659,6 +659,13 @@ void ParticleRenderer::Play()
 	}
 	m_activedParticles.clear();
 	m_currentCount = 0;
+	m_playTime = 0.f;
+	m_awakeTime = Nalmak_Math::Rand(m_info.minAwakeTime, m_info.maxAwakeTime);
+}
+
+void ParticleRenderer::Resume()
+{
+	m_info.isPlay = true;
 	m_playTime = 0.f;
 	m_awakeTime = Nalmak_Math::Rand(m_info.minAwakeTime, m_info.maxAwakeTime);
 }

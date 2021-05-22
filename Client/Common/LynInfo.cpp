@@ -25,6 +25,7 @@ LynInfo::LynInfo(Desc * _desc)
 
 	m_hp = _desc->hp;
 	m_maxHp	 = _desc->hp;
+	m_skillState = LYN_SKILL_STATE_MAX;
 }
 
 LynInfo::~LynInfo()
@@ -35,7 +36,6 @@ void LynInfo::Initialize()
 {
 	m_lightningSpirit = 0;
 	m_energy = 100;
-	m_sKeyTimer = 0.f;
 	m_battleToPeaceTimer = 0.f;
 	m_resistanceTimer = 0.f;
 	m_animController_lower = GetComponents<AnimationController>()[0];
@@ -66,10 +66,8 @@ void LynInfo::Initialize()
 
 void LynInfo::Update()
 {
-	DEBUG_LOG(L"Battle State", m_battleState);
-	DEBUG_LOG(L"lightning spirit", m_lightningSpirit);
 	//GetComponent<TrailRenderer>()->RecordTrail(m_transform->GetWorldPosition(), m_transform->GetWorldPosition() + Vector3(3, 3, 0));
-
+	//m_battleState = BATTLE_STATE_RESISTANCE;
 	//PlayMoveAnimation();
 
 	if (m_target)
@@ -115,14 +113,14 @@ void LynInfo::Update()
 			m_skillController->SetSkillSlot(fSlotName);
 	}
 
-	if (m_distanceToTarget > 3.f)
-	{
-		m_skillController->SetSkillSlot(L"throwSoulBlade");
-	}
-	else
-	{
-		m_skillController->SetSkillSlot(L"frontKick");
-	}
+	//if (m_distanceToTarget > 3.f)
+	//{
+	//	m_skillController->SetSkillSlot(L"throwSoulBlade");
+	//}
+	//else
+	//{
+	//	m_skillController->SetSkillSlot(L"frontKick");
+	//}
 
 	if (m_stateControl_lower->GetCurStateString() == L"idle" && m_stateControl_upper->GetCurStateString() == L"idle")
 	{
@@ -260,11 +258,7 @@ void LynInfo::Update()
 
 void LynInfo::LateUpdate()
 {
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_S))
-	{
-		m_sKeyTimer = 0.3f;
-	}
-	m_sKeyTimer -= dTime;
+	
 }
 
 void LynInfo::OnTriggerEnter(Collision & _col)
@@ -390,9 +384,15 @@ void LynInfo::SetState(LYN_STATE _state)
 
 void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 {
+	if (m_skillState == _state)
+	{
+		return;
+	}
+	m_skillState = _state;
 	switch (_state)
 	{
 	case LYN_SKILL_STATE_STANDARD:
+		m_skillController->ChangeSkillSlotByAnimation(L"frontKick");
 		m_skillController->ChangeSkillSlotByAnimation(L"spinSlash_start");
 		m_skillController->ChangeSkillSlotByAnimation(L"verticalCut_l0");
 		m_skillController->ChangeSkillSlotByAnimation(L"slash1");
@@ -409,6 +409,7 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 		m_skillController->ChangeSkillSlotByAnimation(L"spinSlash_start");
 		m_skillController->ChangeSkillSlotByAnimation(L"baldo");
 		m_skillController->ChangeSkillSlotByAnimation(L"ilsum");
+		m_skillController->ChangeSkillSlotByAnimation(L"frontKick");
 		m_skillController->ChangeSkillSlotByAnimation(L"frontDash");
 		m_skillController->ChangeSkillSlotByAnimation(L"lowerSlash");
 		m_skillController->ChangeSkillSlotByAnimation(L"hold");
@@ -421,19 +422,20 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 	case LYN_SKILL_STATE_AIR:
 		break;
 	case LYN_SKILL_STATE_CC:
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_1);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_2);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_3);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_4);
+	case LYN_SKILL_STATE_GROGY:
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_1);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_2);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_3);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_4);
 
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_Z);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_X);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_C);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_V);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_Z);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_X);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_C);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_V);
 
 
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_LB);
-		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_RB);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_LB);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_RB);
 
 		m_skillController->ChangeSkillSlotByAnimation(L"backRoll");
 		m_skillController->ChangeSkillSlotByAnimation(L"excape");
@@ -441,27 +443,27 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 	case LYN_SKILL_STATE_MAGNETIC:
 		break;
 	case LYN_SKILL_STATE_LAY:
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_1);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_2);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_3);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_4);
+
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_Z);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_X);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_C);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_V);
+
+
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_LB);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_RB);
+
 		m_skillController->ChangeSkillSlotByAnimation(L"backRoll");
 		m_skillController->ChangeSkillSlotByAnimation(L"excape");
 		break;
 	default:
 		break;
 	}
-	if (!GetTarget())
-	{
-		m_skillController->ChangeSkillSlot(L"frontKick");
-	}
-	else
-	{
-		if (GetDistanceToTarget() > 3)
-		{
-			m_skillController->ChangeSkillSlot(L"throwSoulBlade");
-		}
-		else
-		{
-			m_skillController->ChangeSkillSlot(L"frontKick");
-		}
-	}
+	
 }
 
 
@@ -485,7 +487,7 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 	auto attackType = _attackInfo->m_attackType;
 	ResetBattleTimer();
 
-	if (m_battleState == BATTLE_STATE_RESISTANCE)
+	if (m_battleState == BATTLE_STATE_RESISTANCE || m_resistanceAlways || m_resistanceTimer > 0)
 	{
 		m_sysAudio->PlayOneShot(L"lyn_resistance");
 		return;

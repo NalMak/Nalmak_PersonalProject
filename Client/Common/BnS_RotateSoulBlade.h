@@ -16,6 +16,8 @@ public:
 	virtual void Update() override;
 	virtual void Release()override;
 private:
-	GameObject* m_soulBlade[2];
+	TrailRenderer* m_soulBlade[2];
+
+	GameObject* m_trailFollowObj[2];
 };
 

@@ -29,8 +29,13 @@ void LynState::CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, f
 	{
 		_attackInfo->host = m_gameObject;
 		_attackInfo->power =(UINT)( m_info->m_power * _powerMultiply * Nalmak_Math::Rand(0.8f,1.2f));
-		float critical =  Nalmak_Math::Rand(0.f, 1.f);
-		_attackInfo->isCritical = m_info->m_criticalRatio > critical;
+		if (_attackInfo->isCritical)
+			_attackInfo->isCritical = true;
+		else
+		{
+			float critical = Nalmak_Math::Rand(0.f, 1.f);
+			_attackInfo->isCritical = m_info->m_criticalRatio > critical;
+		}
 		INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
 			->AddComponent<AttackInfo>(_attackInfo)
 			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * _forward + Vector3(0, _height, 0))
@@ -38,11 +43,28 @@ void LynState::CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, f
 	}
 }
 
-void LynState::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture * _tex)
+void LynState::CreateAttackInfo(AttackInfo::Desc * _attackInfo, float _forward, float _height, float _powerMultiply, AttackInfo::HitEvent _hitEvent)
 {
 	if (m_isUpper)
 	{
-		UIManager::GetInstance()->ChangeSkillSlotTexture(_slot, _tex);
+		_attackInfo->host = m_gameObject;
+		_attackInfo->power = (UINT)(m_info->m_power * _powerMultiply * Nalmak_Math::Rand(0.8f, 1.2f));
+		float critical = Nalmak_Math::Rand(0.f, 1.f);
+		_attackInfo->isCritical = m_info->m_criticalRatio > critical;
+		auto attack = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_PLAYER_HITBOX, L"vertical")
+			->AddComponent<AttackInfo>(_attackInfo)
+			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * _forward + Vector3(0, _height, 0))
+			->SetRotation(m_transform->GetWorldRotation());
+
+		attack->GetComponent<AttackInfo>()->AddHitEvent(_hitEvent);
+	}
+}
+
+void LynState::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture * _tex, wstring _skillName)
+{
+	if (m_isUpper)
+	{
+		UIManager::GetInstance()->ChangeSkillSlotTexture(_slot, _tex, _skillName);
 	}
 }
 

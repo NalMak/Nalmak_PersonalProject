@@ -3,7 +3,7 @@
 
 texture g_mainTex;
 float4 g_mainTexColor;
-
+float g_emissionPower;
 sampler mainSampler = sampler_state
 {
 	texture = g_mainTex;
@@ -48,8 +48,8 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 {
 	PS_OUTPUT o = (PS_OUTPUT)0;
 	float4 diffuse = tex2D(mainSampler, _input.uv);
-	o.diffuse = diffuse * g_mainTexColor;
-
+	o.diffuse = diffuse * g_mainTexColor * g_emissionPower;
+	o.diffuse.w = 1;
 	return o;
 }
 

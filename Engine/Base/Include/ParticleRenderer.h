@@ -63,6 +63,7 @@ public:
 	void Stop();
 	void StopEmit();
 	void Play();
+	void Resume();
 	bool IsPlaying();
 
 public:

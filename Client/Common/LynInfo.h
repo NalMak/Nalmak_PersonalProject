@@ -136,6 +136,7 @@ public:
 private:
 	LYN_STATE m_state;
 	BATTLE_STATE m_battleState;
+	LYN_SKILL_STATE m_skillState;
 
 	Vector3 m_inputDir;
 	Vector3 m_targetInput;
@@ -154,7 +155,6 @@ private:
 		{ 0,0,0 }
 	};
 
-private:
-	float m_sKeyTimer;
+
 };
 

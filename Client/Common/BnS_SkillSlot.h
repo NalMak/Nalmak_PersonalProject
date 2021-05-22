@@ -22,7 +22,10 @@ public:
 	virtual void Render(Shader * _shader, Mesh * _mesh) override;
 public:
 	void SetSkill(BnS_Skill* _skill);
+	void SetSkill(Texture* _skill);
 	void ChangeSkillTex(Texture* _tex);
+	void RockSkillSlot();
+	void UnRockSkillSlot();
 	void SetCoolTimeRatio(float _ratio);
 private:
 	bool m_isChange;

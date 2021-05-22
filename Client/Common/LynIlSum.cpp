@@ -18,7 +18,7 @@ void LynIlSum::Initialize()
 void LynIlSum::EnterState()
 {
 	m_info->StartSkill();
-	m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
+	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
 	m_animController->PlayBlending("Lyn_B_Hide_Ilsum");
 	PlayOneShot(L"Fencer_Stab_Hit");
 
@@ -29,6 +29,14 @@ void LynIlSum::EnterState()
 	attack.innerPower = 1;
 	CreateAttackInfo(&attack, 8.f, 2.f, 5.f);
 
+	if (m_isUpper)
+	{
+		BnS_Buff::Desc buff;
+		buff.buffTimer = 12.f;
+		buff.key = L"RB";
+		buff.skill = m_skillController->GetSkill(L"ilsum");
+		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+	}
 }
 
 void LynIlSum::UpdateState()
@@ -40,11 +48,11 @@ void LynIlSum::UpdateState()
 	}
 	else
 	{
-		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
+		/*if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
 			SetState(L"ilsum");
 			return;
-		}
+		}*/
 
 		m_character->SetVelocityXZ({ 0,0,0 });
 	}
@@ -64,6 +72,8 @@ void LynIlSum::UpdateState()
 
 void LynIlSum::ExitState()
 {
+	m_info->UpdateWeapon(LYN_STATE_BATTLE_HIDEBLADE);
+
 	m_info->EndSkill();
 
 }

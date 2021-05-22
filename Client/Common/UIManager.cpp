@@ -261,6 +261,7 @@ void UIManager::SetSkillSlot(BnS_Skill* _skill)
 	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
 	curSkill->GetComponent<CanvasRenderer>()->SetActive(true);
 	curSkill->GetComponent<BnS_SkillSlot>()->SetSkill(_skill);
+	curSkill->GetComponent<Text>()->SetText(_skill->GetSkillName());
 }
 
 void UIManager::UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio)
@@ -280,6 +281,19 @@ void UIManager::SetDamageFont()
 GameObject* UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT _y)
 {
 	Text::Desc text;
+	text.boundary = { -30,30,30,100 };
+	text.option = DT_CENTER;
+	text.height = 15;
+	text.weight = 500;
+	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.8f);
+	text.text = L"test";
+	CanvasRenderer::Desc canvas;
+	canvas.mtrlName = L"UI_Skill";
+	auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
+		->AddComponent<BnS_SkillSlot>()->AddComponent<Text>(&text)
+		->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
+	obj->GetComponent<CanvasRenderer>()->SetActive(false);
+
 	switch (_skillSlot)
 	{
 	case BNS_SKILL_SLOT_Q:
@@ -330,18 +344,12 @@ GameObject* UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT 
 	default:
 		break;
 	}
-	text.boundary = { -20,-23,200,200 };
 	text.option = DT_LEFT;
-	text.height = 18;
+	text.boundary = { -20,-23,10,-70 };
+	text.height = 17;
 	text.weight = 700;
 	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
-	CanvasRenderer::Desc canvas;
-	canvas.mtrlName = L"UI_Skill";
-	auto obj = INSTANTIATE()->AddComponent<CanvasRenderer>(&canvas)
-		->AddComponent<BnS_SkillSlot>()->AddComponent<Text>(&text)
-		->SetScale(46, 46)->SetPosition((float)_x, (float)_y);
-	obj->GetComponent<CanvasRenderer>()->SetActive(false);
-
+	obj->AddComponent<Text>(&text);
 	SingleImage::Desc image;
 	image.textureName = L"GameUI_IconOutLine";
 	auto frame = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(50, 50);
@@ -358,6 +366,15 @@ void UIManager::ChangeSkillSlot(BnS_Skill* _skill)
 	curSkill->GetTransform()->GetChild(0)->GetGameObject()->SetActive(true);
 	curSkill->GetComponent<CanvasRenderer>()->SetActive(true);
 	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_skill->GetSkillIconTexture());
+	curSkill->GetComponent<Text>()->SetText(_skill->GetSkillName());
+}
+
+void UIManager::RockSkillSlot(BNS_SKILL_SLOT _slot, Texture* _tex, wstring _skillName)
+{
+	auto curSkill = m_skillSlot[_slot];
+	curSkill->GetComponent<BnS_SkillSlot>()->SetSkill(_tex);
+	curSkill->GetComponent<Text>()->SetText(_skillName);
+	curSkill->GetComponent<BnS_SkillSlot>()->RockSkillSlot();
 }
 
 void UIManager::ChangeSkillSlotByAnimation(BnS_Skill * _skill)
@@ -368,10 +385,12 @@ void UIManager::ChangeSkillSlotByAnimation(BnS_Skill * _skill)
 	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_skill->GetSkillIconTexture());
 }
 
-void UIManager::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex)
+void UIManager::ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex, wstring _skillName)
 {
 	auto curSkill = m_skillSlot[_slot];
 	curSkill->GetComponent<BnS_SkillSlot>()->ChangeSkillTex(_tex);
+	curSkill->GetComponent<Text>()->SetText(_skillName);
+	curSkill->GetComponent<BnS_SkillSlot>()->RockSkillSlot();
 }
 
 

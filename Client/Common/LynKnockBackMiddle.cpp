@@ -26,6 +26,7 @@ void LynKnockBackMiddle::EnterState()
 	m_info->MoveOn();
 	m_bnsMainCam->UnLockTarget();
 	m_info->ChangeSkillByState(LYN_SKILL_STATE_CC);
+	m_info->SetBattleState(BATTLE_STATE_KNOCKBACK);
 
 
 	Vector3 dir = GetVector3(L"knockBackDir");

@@ -140,7 +140,7 @@ public:
 public:
 	HWND GetHWND();
 public:
-	const wstring& GetResourceDirectoryPath();
+	wstring GetResourceDirectoryPath();
 
 
 	// Environment Setting

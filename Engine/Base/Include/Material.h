@@ -46,6 +46,7 @@ public:
 	void SetVector(const string& _parameter, const Vector2& _vector);
 	void SetValue(const string& _parameter, void* _address, UINT _size);
 
+	float GetFloat(const string& _parameter);
 private:
 	vector<pair<string, bool>> m_boolValues;
 	vector<pair<string, float>> m_floatValues;

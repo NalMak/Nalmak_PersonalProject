@@ -290,6 +290,7 @@
     <FxCompile Include="..\..\Resource\Shader\SYS_PhysX.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_PickingDebug.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_SkyBox.fx" />
+    <FxCompile Include="..\..\Resource\Shader\SYS_SoftParticle.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_SoftTex.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard.fx" />
     <FxCompile Include="..\..\Resource\Shader\SYS_Standard_NormalMap.fx" />
@@ -323,6 +324,7 @@
     <None Include="..\..\Resource\Shader\SYS_PhysX.sd" />
     <None Include="..\..\Resource\Shader\SYS_PickingDebug.sd" />
     <None Include="..\..\Resource\Shader\SYS_SkyBox.sd" />
+    <None Include="..\..\Resource\Shader\SYS_SoftParticle.sd" />
     <None Include="..\..\Resource\Shader\SYS_SoftTex.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard.sd" />
     <None Include="..\..\Resource\Shader\SYS_Standard_NormalMap.sd" />

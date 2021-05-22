@@ -31,8 +31,10 @@ public:
 	void SetSkillSlot(BnS_Skill* _skill);
 	void UpdateSkillCoolTime(BNS_SKILL_SLOT _slot, float _ratio);
 	void ChangeSkillSlot(BnS_Skill* _skill);
+	void RockSkillSlot(BNS_SKILL_SLOT _slot, Texture* _tex, wstring _skillName);
+
 	void ChangeSkillSlotByAnimation(BnS_Skill* _skill);
-	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
+	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex, wstring _skillName);
 	void ReleaseSkillSlot(BNS_SKILL_SLOT _slot);
 	void SetSkillSlotColor(BNS_SKILL_SLOT _slot, const Vector4& _color);
 

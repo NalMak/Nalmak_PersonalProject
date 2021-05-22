@@ -28,6 +28,7 @@ private:
 	wstring m_directoryPath;
 	Event m_event;
 	bool m_isThreadDone;
+	bool m_isChange;
 private:
 	void UpdateMaterial();
 private:

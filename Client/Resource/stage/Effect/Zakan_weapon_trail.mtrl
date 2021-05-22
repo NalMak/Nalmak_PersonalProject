@@ -2,10 +2,11 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_SwordTrail"
+shader "BnS_ZakanSwordTrail"
 
-texture "g_mainTex" "Gradient_Trail003"
-vector4 "g_mainTexColor" "1,1,1,0.5f"
+texture "g_mainTex" "Gradient_Light_Line_000"
+vector4 "g_mainTexColor" "5,1.f,0.5f,0.5f"
+float "g_thick" "5.f"
 
 renderQueue "3000"
 

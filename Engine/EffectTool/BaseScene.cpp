@@ -25,12 +25,13 @@ void BaseScene::Initialize()
 	light.ambientIntensity = 0.02f;
 	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(60, 180, 0);
 
-	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f)->AddComponent<FreeMove>();
-	INSTANTIATE()->AddComponent<Grid>();
+	auto cam = INSTANTIATE()->AddComponent<Camera>()->SetPosition(2, 1, -10.f);
 
-	INSTANTIATE()->AddComponent<SystemInfo>()->SetPosition(350, 350, 0);
-
-	
+	DebuggingMode::Desc debug;
+	debug.createDirectoryMonitor = false;
+	debug.freeCamera = true;
+	debug.directoryMonitorPath = L"../../Client/Resource/stage/";
+	INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
 
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
 	for (auto& obj : staticObj)

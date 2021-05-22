@@ -96,15 +96,17 @@ void LynSideDashQ::UpdateState()
 
 void LynSideDashQ::ExitState()
 {
-	if (m_info->GetState() == LYN_STATE_PEACE_STANDARD)
+	if (m_info->GetState() != LYN_STATE_BATTLE_HIDEBLADE)
 	{
 		m_info->SetState(LYN_STATE_BATTLE_STANDARD);
+		m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+
 	}
 
 	m_effect->EndBodyTrail();
 
 	m_info->SetResistance(false);
-	m_info->SetResistanceTimer(1.f);
+	m_info->SetResistanceTimer(0.5f);
 
 
 	m_bnsMainCam->LockTarget();

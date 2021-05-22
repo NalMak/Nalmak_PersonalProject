@@ -169,3 +169,8 @@ Scene * SceneManager::Find_Scene_Name(const wstring & _name)
 {
 	return nullptr;
 }
+
+const wstring & SceneManager::GetCurrentSceneName()
+{
+	return m_currentScene->GetSceneName();
+}

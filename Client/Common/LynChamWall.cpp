@@ -17,6 +17,16 @@ void LynChamWall::Initialize()
 
 void LynChamWall::EnterState()
 {
+	if (m_isUpper)
+	{
+		BnS_Buff::Desc buff;
+		buff.buffTimer = 8.f;
+		buff.key = L"";
+		buff.skill = m_skillController->GetSkill(L"atkBuff");
+		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
+
+	}
+
 	m_info->SetSpeed(0);
 	m_info->StartSkill();
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);

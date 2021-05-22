@@ -18,7 +18,8 @@ void LynThunderSlash::Initialize()
 
 void LynThunderSlash::EnterState()
 {
-	m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
+	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
+
 	m_animController->Play("Lyn_B_Hide_SwordFlash_Swing");
 
 	Vector3 dir = m_info->GetTarget()->GetTransform()->GetWorldPosition() - m_transform->GetWorldPosition();
@@ -69,9 +70,9 @@ void LynThunderSlash::UpdateState()
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Hide_SwordFlash_Exec")
 	{
-		if (m_animController->GetPlayRemainTime() < 0.1f)
+		if (m_animController->GetPlayRemainTime() < 0.05f)
 		{
-			m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			m_animController->SetBlendOption(0.05f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 			SetState(L"idle");
 			return;
 		}
@@ -81,6 +82,8 @@ void LynThunderSlash::UpdateState()
 
 void LynThunderSlash::ExitState()
 {
+	m_info->SetState(LYN_STATE_BATTLE_HIDEBLADE);
+
 	m_bnsMainCam->LockTarget();
 
 	m_character->SetVelocity(0, 0, 0);

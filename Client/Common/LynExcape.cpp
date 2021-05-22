@@ -79,7 +79,7 @@ void LynExcape::ExitState()
 	m_info->SetResistance(false);
 	m_info->SetResistanceTimer(1.f);
 	m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
-
+	m_info->SetBattleState(BATTLE_STATE_RESISTANCE);
 
 	m_info->EndSkill();
 }

@@ -24,7 +24,7 @@ void LynBackStep::EnterState()
 	if (m_isUpper)
 	{
 		BnS_Buff::Desc buff;
-		buff.buffTimer = 2.f;
+		buff.buffTimer = 9.f;
 		buff.key = L"SS";
 		buff.skill = m_skillController->GetSkill(L"backStep");
 		INSTANTIATE()->AddComponent<BnS_Buff>(&buff);
@@ -35,7 +35,7 @@ void LynBackStep::EnterState()
 
 
 	m_info->StartSkill();
-
+	m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
 	if (m_info->GetState() == LYN_STATE_BATTLE_HIDEBLADE)
 	{
 		m_animController->PlayBlending("Lyn_B_Hide_BackStep");
@@ -53,6 +53,11 @@ void LynBackStep::EnterState()
 
 void LynBackStep::UpdateState()
 {
+	if (m_animController->IsOverTime(0.3f))
+	{
+		m_info->EndSkill();
+	}
+
 	if (m_animController->GetPlayRemainTime() < 0.1f)
 	{
 		m_animController->SetBlendOption(0.1f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
@@ -73,6 +78,8 @@ void LynBackStep::UpdateState()
 void LynBackStep::ExitState()
 {
 	//m_animController->SetRootMotion(false);
+	m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+
 	m_info->SetResistanceTimer(1.f);
 	m_info->SetResistance(false);
 	m_character->AddVelocity(0, -30 * dTime, 0);

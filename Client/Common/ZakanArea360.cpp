@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ZakanArea360.h"
+#include "MeshEffect_Slash.h"
 
 
 
@@ -19,9 +20,11 @@ void ZakanArea360::Initialize()
 void ZakanArea360::EnterState()
 {
 	m_info->LookTarget();
-	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);	
+	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_animController->Play("Zakan_B_Spell_Skl_Area360_Cast");
 	m_effect->StartSwordTrail();
+
+
 }
 
 void ZakanArea360::UpdateState()
@@ -43,13 +46,25 @@ void ZakanArea360::UpdateState()
 			RigidBody::Desc rigid;
 			rigid.isGravity = false;
 			rigid.velocity = m_transform->GetForward() * 300;
-			auto attack = INSTANTIATE(OBJECT_TAG_ATTACKINFO,OBJECT_LAYER_ENEMY_HITBOX)->AddComponent<AttackInfo>(&info)->AddComponent<RigidBody>(&rigid);
-			attack->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 4);
-			attack->GetTransform()->rotation = m_transform->GetWorldRotation();
+			MeshRenderer::Desc mesh;
+			mesh.mtrlName = L"zakan_360area";
+			mesh.meshName = L"zakan_em_projectile";
+			MeshEffect_Slash::Desc effect;
+			effect.emissionChange = -0.5f;
+			effect.scaleChange = { 0,2.f,0.f };
+			auto attack = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_ENEMY_HITBOX)->AddComponent<MeshEffect_Slash>(&effect)
+				->AddComponent<AttackInfo>(&info)->AddComponent<RigidBody>(&rigid)->AddComponent<MeshRenderer>(&mesh)->SetScale(0.05f, 0.5f, 0.05f);
+			attack->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 3.f + Vector3(0, 1.f, 0));
+			attack->GetTransform()->rotation = m_transform->GetWorldRotation() * BNS_ROT_YAXIS_90;
+
 		}
 	}
 	else
 	{
+		if (m_animController->IsOverTime(0.3f))
+		{
+			m_effect->EndSwordTrail();
+		}
 		if (!m_animController->IsPlay())
 		{
 			SetState(L"battle_idle");

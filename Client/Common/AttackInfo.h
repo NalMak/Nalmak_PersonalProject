@@ -3,6 +3,8 @@
 class AttackInfo :
 	public Component
 {
+
+public:
 	using HitEvent = function<void(void)>;
 public:
 	struct Desc

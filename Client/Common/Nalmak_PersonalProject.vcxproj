@@ -237,6 +237,7 @@
     <ClInclude Include="LynSpinSlash_Start.h" />
     <ClInclude Include="LynState.h" />
     <ClInclude Include="LynStateControl.h" />
+    <ClInclude Include="LynStateThunderbolt.h" />
     <ClInclude Include="LynThrowSoulBlade.h" />
     <ClInclude Include="LynThunderSlash.h" />
     <ClInclude Include="LynUpperSlash.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="LynWeapon.h" />
     <ClInclude Include="LynWindyMoonSlash.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MeshEffect_Slash.h" />
     <ClInclude Include="Nalmak_PersonalProject.h" />
     <ClInclude Include="PublicData.h" />
     <ClInclude Include="Resource.h" />
@@ -349,6 +351,7 @@
     <ClCompile Include="LynSpinSlash_Start.cpp" />
     <ClCompile Include="LynState.cpp" />
     <ClCompile Include="LynStateControl.cpp" />
+    <ClCompile Include="LynStateThunderbolt.cpp" />
     <ClCompile Include="LynThrowSoulBlade.cpp" />
     <ClCompile Include="LynThunderSlash.cpp" />
     <ClCompile Include="LynUpperSlash.cpp" />
@@ -363,6 +366,7 @@
     <ClCompile Include="LynWeapon.cpp" />
     <ClCompile Include="LynWindyMoonSlash.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MeshEffect_Slash.cpp" />
     <ClCompile Include="Nalmak_PersonalProject.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -418,6 +422,7 @@
     <FxCompile Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_HpUI.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_InnerForce.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_Particle.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_SkillI_UI.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.fx" />
@@ -425,8 +430,10 @@
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_SwordTrail.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.fx" />
+    <FxCompile Include="..\Resource\static\Shader\BnS_MeshEffect.fx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd" />
@@ -435,6 +442,7 @@
     <None Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_HpUI.sd" />
     <None Include="..\Resource\stage\Shader\BnS_InnerForce.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_Particle.sd" />
     <None Include="..\Resource\stage\Shader\BnS_SkillI_UI.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.sd" />
@@ -442,8 +450,10 @@
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.sd" />
     <None Include="..\Resource\stage\Shader\BnS_SwordTrail.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.sd" />
+    <None Include="..\Resource\static\Shader\BnS_MeshEffect.sd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

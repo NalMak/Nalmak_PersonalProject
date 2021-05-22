@@ -25,6 +25,11 @@ BnS_Enemy::~BnS_Enemy()
 
 void BnS_Enemy::Initialize()
 {
+	ParticleRenderer::Desc particle;
+	particle.particleDataName = L"hitSpark_default";
+	particle.PlayOnAwake = false;
+	auto obj = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+	m_defaultParticle = obj->GetComponent<ParticleRenderer>();
 	//m_controller = GetComponent<CharacterController>();
 	//m_gameObject->SetLayer(OBJECT_LAYER_ENEMY);
 	//m_gameObject->SetTag(OBJECT_TAG_ENEMY);
@@ -75,7 +80,22 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 			if (attackInfo->m_innerPower > 0)
 				attackInfo->GetHost()->GetComponent<LynInfo>()->AddInnerPower(attackInfo->m_innerPower);
 
-			if (m_battleState == BATTLE_STATE_WEAK)
+			if (m_battleState == BATTLE_STATE_DOWN)
+			{
+				auto type = attackInfo->m_attackType;
+				switch (type)
+				{
+					case ATTACK_TYPE_DOWN:
+					{
+						m_stateControl->SetInteger(L"downExtension", 1);
+						m_stateControl->SetFloat(L"down", attackInfo->m_ccTime);
+						m_stateControl->SetState(L"down");
+						break;
+					}
+					
+				}
+			}
+			else if (m_battleState == BATTLE_STATE_WEAK)
 			{
 				auto type = attackInfo->m_attackType;
 				switch (type)
@@ -84,7 +104,7 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 					break;
 				case ATTACK_TYPE_DOWN:
 					m_audio->PlayOneShot(L"down_attack");
-
+					m_stateControl->SetInteger(L"downExtension", 0);
 					m_stateControl->SetFloat(L"down", attackInfo->m_ccTime);
 					m_stateControl->SetState(L"down");
 					break;
@@ -105,7 +125,6 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 				default:
 					break;
 				}
-				
 			}
 			if (attackInfo->m_attackType == ATTACK_TYPE_AIR)
 			{
@@ -206,7 +225,8 @@ void BnS_Enemy::GetDamage(AttackInfo * _attackInfo)
 	else
 		m_audio->PlayOneShot(Nalmak_Math::Random<wstring>(L"bns_hit", L"bns_hit2"));
 
-	
+	//m_defaultParticle->SetPosition(m_transform->GetWorldPosition() + Vector3(0,-3.5f,0));
+	//m_defaultParticle->Resume();
 
 	m_hp -= _attackInfo->m_power;
 	

@@ -84,13 +84,15 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	{
 		float4 diffuse = tex2D(mainSampler, _input.uv);
 		final = diffuse * g_mainTexColor;
+
 	}
 	else
 	{
 		float4 nextDiffuse = tex2D(nextSampler, _input.uv);
 		final = nextDiffuse * g_mainTexColor;
+
 	}
-	
+
 	if (g_coolTimeAngle > 0)
 	{
 		float2 uv = _input.uv - float2(0.5f, 0.5f);
@@ -101,6 +103,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 			final.xyz *= 0.3f;
 		}
 	}
+	
 	o.diffuse = final;
 
 	return o;

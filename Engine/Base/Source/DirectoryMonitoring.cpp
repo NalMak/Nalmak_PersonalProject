@@ -17,6 +17,7 @@ DirectoryMonitoring::~DirectoryMonitoring()
 
 void DirectoryMonitoring::Initialize()
 {
+	m_isChange = false;
 	m_isThreadDone = false;
 
 	m_eventHandle = FindFirstChangeNotification(m_directoryPath.c_str(), true, FILE_NOTIFY_CHANGE_LAST_WRITE);
@@ -30,7 +31,12 @@ void DirectoryMonitoring::Initialize()
 
 void DirectoryMonitoring::Update()
 {
-
+	if (m_isChange)
+	{
+		ResourceManager::GetInstance()->UpdateMaterial(m_directoryPath, false);
+		UpdateMaterial();
+		m_isChange = false;
+	}
 }
 
 void DirectoryMonitoring::Release()
@@ -53,6 +59,7 @@ void DirectoryMonitoring::StopMonitoring()
 
 void DirectoryMonitoring::ResumeMonitorion()
 {
+
 	Initialize();
 }
 
@@ -62,6 +69,8 @@ void DirectoryMonitoring::UpdateMaterial()
 	{
 		m_event.DoEvent(0);
 	}
+
+	
 }
 
 unsigned DirectoryMonitoring::DoThreadFunc(LPVOID pArg)
@@ -79,8 +88,7 @@ unsigned DirectoryMonitoring::DoThreadFunc(LPVOID pArg)
 
 		if (status == WAIT_OBJECT_0)
 		{
-			ResourceManager::GetInstance()->UpdateMaterial(instance->m_directoryPath,false);
-			instance->UpdateMaterial();
+			instance->m_isChange = true;
 		}
 		FindNextChangeNotification(instance->m_eventHandle);
 	}

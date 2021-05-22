@@ -677,6 +677,18 @@ void Material::SetValue(const string& _parameter, void* _address, UINT _size)
 
 }
 
+float Material::GetFloat(const string & _parameter)
+{
+	for (auto& value : m_floatValues)
+	{
+		if (value.first == _parameter)
+		{
+			return value.second;
+		}
+	}
+	assert(L"Can't find float value" && 0);
+}
+
 void Material::SetRenderQueue(_RENDER_QUEUE _renderQueue)
 {
 	RENDERING_MODE mode = (RENDERING_MODE)(_renderQueue / 1000);

@@ -87,6 +87,10 @@ void ZakanSmash::UpdateState()
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Skl_Smash_Exec2")
 	{
+		if (m_animController->IsOverTime(0.4f))
+		{
+			m_effect->EndSwordTrail();
+		}
 		if (!m_animController->IsPlay())
 		{
 			SetState(L"battle_idle");

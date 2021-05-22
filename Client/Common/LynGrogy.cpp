@@ -18,8 +18,12 @@ void LynGrogy::Initialize()
 void LynGrogy::EnterState()
 {
 	m_info->SetSpeed(0);
+	m_info->SetBattleState(BATTLE_STATE_GROGY);
+	m_info->ChangeSkillByState(LYN_SKILL_STATE_GROGY);
+
+
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
-	m_animController->PlayBlending("Lyn_B_Stun_Start");
+	m_animController->PlayBlending("Lyn_B_Grogy_Start");
 	m_bnsMainCam->UnLockTarget();
 	m_backRollTimer = 1.f;
 
@@ -36,12 +40,17 @@ void LynGrogy::UpdateState()
 	{
 		m_skillController->ReleaseSkill(BNS_SKILL_SLOT_F);
 	}
-
-	if (!m_animController->IsPlay("Lyn_B_Stun_Start"))
+	
+	if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Grogy_End")
 	{
-		m_animController->Play("Lyn_B_Stun_Looping");
+		if (m_animController->GetPlayRemainTime() < 0.2f)
+		{
+			m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+			SetState(L"idle");
+			return;
+		}
 	}
-	if (m_animController->GetCurrentPlayAnimationName() == "Lyn_B_Stun_Looping")
+	else
 	{
 		if (m_ccTime > 0)
 		{
@@ -49,14 +58,19 @@ void LynGrogy::UpdateState()
 		}
 		else
 		{
-			SetState(L"idle");
-			return;
+			m_animController->PlayBlending("Lyn_B_Grogy_End");
 		}
 	}
-
 }
 
 void LynGrogy::ExitState()
 {
-	m_bnsMainCam->LockTarget();
+	if (m_isUpper)
+	{
+		m_info->ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+		m_info->SetBattleState(BATTLE_STATE_WEAK);
+
+		m_bnsMainCam->LockTarget();
+	}
+
 }

@@ -96,6 +96,8 @@
 #include "ZakanBackStep.h"
 #include "ZakanFireSpellWave.h"
 #include "ZakanSpellSuction.h"
+#include "MeshEffect_Slash.h"
+#include "LynStateThunderbolt.h"
 StageScene::StageScene()
 {
 }
@@ -108,7 +110,18 @@ StageScene::~StageScene()
 
 void StageScene::Initialize()
 {
-
+	{
+		MeshRenderer::Desc mesh;
+		mesh.mtrlName = L"zakan_floorAttack";
+		mesh.meshName = L"em_trail_test2";
+		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 30, 30);
+	}
+	{
+		MeshRenderer::Desc mesh;
+		mesh.mtrlName = L"zakan_floorAttack2";
+		mesh.meshName = L"Lyn_em_slash";
+		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 10, 30);
+	}
 #pragma region Debug
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
@@ -130,9 +143,6 @@ void StageScene::Initialize()
 
 	INSTANTIATE()->AddComponent<BnS_Fire>();
 	
-	MeshRenderer::Desc mesh;
-	mesh.mtrlName = L"SYS_SoftTex";
-	INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->SetPosition(0,7,0)->SetScale(3,3,3);
 
 #pragma region Navi Mesh
 	NavCollider::Desc navCollider;
@@ -212,6 +222,8 @@ void StageScene::Initialize()
 	upperControl->AddState<LynDead>(L"dead", true);
 	lowerControl->AddState<LynBackRoll>(L"backRoll", false);
 	upperControl->AddState<LynBackRoll>(L"backRoll", true);
+	lowerControl->AddState<LynStateThunderbolt>(L"thunderbolt", false);
+	upperControl->AddState<LynStateThunderbolt>(L"thunderbolt", true);
 
 	upperControl->InitState(L"idle");
 	lowerControl->InitState(L"idle");
@@ -392,10 +404,10 @@ void StageScene::Initialize()
 
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_2", 1.1f, false);
-	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_3", 2.05f, false);
+	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_01_3", 2.25f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_1", 1.1f, false);
 	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_2", 1.1f, false);
-	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.05f, false);
+	controller->AddAnimationClip("Lyb_B_Std_VerticalCul_02_3", 2.25f, false);
 
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_End", 3.f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_SwordFlash_Exec", 0.8f, false);
@@ -423,6 +435,10 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Std_ThunderCut", 1.f, false);
 
 	controller->AddAnimationClip("Lyn_B_Chamwall", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_CripplingCut_Exec", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_CripplingCut_Fire", 1.f, false);
+
 
 	controller->AddAnimationClip("Lyn_B_FrontKick", 1.2f, false);
 
@@ -479,6 +495,8 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_B", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_KnockBack_Mid_F", 1.f, false);
 
+	controller->AddAnimationClip("Lyn_B_Grogy_Start", 1.f, false);
+	controller->AddAnimationClip("Lyn_B_Grogy_End", 1.f, false);
 
 
 
@@ -510,7 +528,7 @@ void StageScene::Initialize()
 		rigid.isGravity = false;
 		TrailRenderer::Desc trail;
 		trail.detailCount = 6;
-		trail.maxTrailCount = 100;
+		trail.maxTrailCount = 50;
 		trail.mtrlName = L"Lyn_weapon_trail";
 		
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->AddComponent<TrailRenderer>(&trail)->SetScale(0.5f, 0.65f, 0.5f);
@@ -539,10 +557,11 @@ void StageScene::Initialize()
 		anim.meshName = L"zakan";
 		Matrix rotMat;
 		anim.rootMatrix = *D3DXMatrixRotationY(&rotMat, -90 * Deg2Rad);
+
 		zakan->AddComponent<AnimationController>(&anim);
 		zakan->AddComponent<AudioSource>();
 		zakan->AddComponent<ZakanEffectControl>();
-
+	
 
 		auto stateCtrl = zakan->GetComponent<EnemyStateControl>();
 		stateCtrl->AddState<ZakanSpawn>(L"spawn");
@@ -667,8 +686,8 @@ void StageScene::Initialize()
 		rigid.isGravity = false;
 		
 		TrailRenderer::Desc trail;
-		trail.detailCount = 3;
-		trail.maxTrailCount = 100;
+		trail.detailCount = 5;
+		trail.maxTrailCount = 50;
 		trail.mtrlName = L"Zakan_weapon_trail";
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<TrailRenderer>(&trail);
 		weapon->SetParents(zakan, "WeaponL");

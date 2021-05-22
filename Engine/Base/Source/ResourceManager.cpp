@@ -13,6 +13,7 @@
 #include "StaticObjectInfo.h"
 #include "XFileMesh.h"
 #include "NavMeshData.h"
+#include "..\..\..\Ref\Include\SceneManager.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -239,25 +240,37 @@ void ResourceManager::LoadTextures(const TCHAR * _extention, bool _isStatic)
 		targetNum = fileName.find_last_of(L"_");
 		if (targetNum != -1)
 		{
-			wstring fileIndex = fileName.substr(targetNum + 1, fileName.length());
-
-			int texIndex = 0;
-			if (Nalmak_String::IsDigitString(&texIndex, fileIndex))
+			bool isSprite = false;
+			if (targetNum + 4 < fileName.length())
 			{
-				fileName = fileName.substr(0, targetNum);
-
-				Texture* tex = (Texture*)m_resoucreContainers[typeid(Texture).name()][fileName];
-				if (!tex)
+				wstring sprite = fileName.substr(targetNum + 1, 3);
+				if (sprite == L"spr")
 				{
-					tex = new Texture;
-					tex->m_isStatic = _isStatic;
-					tex->m_name = fileName;
-					m_resoucreContainers[typeid(Texture).name()][fileName] = tex;
+					wstring fileIndex = fileName.substr(targetNum + 4, fileName.length());
+
+					int texIndex = 0;
+					if (Nalmak_String::IsDigitString(&texIndex, fileIndex))
+					{
+						isSprite = true;
+
+						fileName = fileName.substr(0, targetNum);
+
+						Texture* tex = (Texture*)m_resoucreContainers[typeid(Texture).name()][fileName];
+						if (!tex)
+						{
+							tex = new Texture;
+							tex->m_isStatic = _isStatic;
+							tex->m_name = fileName;
+							m_resoucreContainers[typeid(Texture).name()][fileName] = tex;
+						}
+						tex->Initialize(filePath.c_str());
+
+					}
 				}
-				tex->Initialize(filePath.c_str());
 
 			}
-			else
+
+			if(!isSprite)
 			{
 				if (m_resoucreContainers[typeid(Texture).name()][fileName])
 				{
@@ -287,5 +300,10 @@ void ResourceManager::LoadTextures(const TCHAR * _extention, bool _isStatic)
 
 
 	}
+}
+
+wstring ResourceManager::GetResourceDirectoryPath()
+{
+	return m_clientDirectoryPath;
 }
 

@@ -37,7 +37,9 @@ protected:
 	void ReduceInnerPower(UINT _innerPower);
 	void AddInnerPower(UINT _innerPower);
 	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
-	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex);
+	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply, AttackInfo::HitEvent _hitEvent);
+
+	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex,wstring _skillName);
 	void PlayOneShot(const wstring& _sound);
 	void PlayOneShotLower(const wstring& _sound);
 	void VoicePlay(const wstring& _sound);

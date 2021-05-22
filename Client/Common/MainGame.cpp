@@ -48,6 +48,7 @@ void MainGame::SystemSetting()
 	m_engine->AddScene(L"title", Scene::Instantiate<TitleScene>());
 	m_engine->AddScene(L"stage", Scene::Instantiate<StageScene>());
 
+
 	m_engine->SetStartScene(L"title");
 }
 

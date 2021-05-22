@@ -37,7 +37,9 @@ private:
 private:
 	LynInfo* m_player;
 	GameObject* m_targetOutline;
+	GameObject* m_target;
 	Camera* m_cam;
+	float m_targetTimer;
 private:
 	float m_turnTimer;
 	float m_turnAngle;

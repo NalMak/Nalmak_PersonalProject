@@ -4,12 +4,12 @@
 
 shader "BnS_SwordTrail"
 
-texture "g_mainTex" "default"
-vector4 "g_mainTexColor" "1,1,1,0.5f"
-
+texture "g_mainTex" "Glow_Trail_001"
+vector4 "g_mainTexColor" "1.f,1.f,1.5f,0.2f"
+float "g_emissionPower" "1.f"
 renderQueue "3000"
 
-blendingMode "0"
+blendingMode "1"
 
 fillMode "0"
 

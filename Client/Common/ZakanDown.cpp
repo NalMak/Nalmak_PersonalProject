@@ -14,13 +14,20 @@ ZakanDown::~ZakanDown()
 
 void ZakanDown::Initialize()
 {
+	m_stateControl->SetInteger(L"downExtension", 0);
 }
 
 void ZakanDown::EnterState()
 {
 	m_info->SetBattleState(BATTLE_STATE_DOWN);
+
 	m_downTimer = GetFloat(L"down");
-	m_animController->Play("Zakan_B_Std_Down_Front_Start");
+
+
+	if (GetInteger(L"downExtension") == 0)
+	{
+		m_animController->Play("Zakan_B_Std_Down_Front_Start");
+	}
 }
 
 void ZakanDown::UpdateState()
@@ -48,5 +55,4 @@ void ZakanDown::UpdateState()
 
 void ZakanDown::ExitState()
 {
-	m_info->SetBattleState(BATTLE_STATE_WEAK);
 }

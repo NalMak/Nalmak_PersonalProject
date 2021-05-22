@@ -72,7 +72,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float4 glow = tex2D(glowSampler, _input.uv);
 
 	diffuse = diffuse * g_changeRatio;
-	glow = glow * (g_glowRatio);
+	glow = glow * (g_glowRatio) * 2;
 
 	o.diffuse = diffuse + glow;
 

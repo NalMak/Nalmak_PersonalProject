@@ -24,6 +24,8 @@ public:
 	void StartBodyTrail();
 	void EndBodyTrail();
 
+	void PlayBaldoEffect();
+	void PlayLightningComboEffect();
 private:
 	LynInfo* m_info;
 	LynWeapon* m_weaponTrail;
@@ -34,5 +36,8 @@ private:
 
 	TrailRenderer* m_leftHandTrail;
 	TrailRenderer* m_rightHandTrail;
+
+	ParticleRenderer* m_baldoParticle;
+	ParticleRenderer* m_lightningComboParticle;
 };
 

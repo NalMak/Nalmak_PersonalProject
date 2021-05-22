@@ -13,6 +13,30 @@ ZakanEffectControl::~ZakanEffectControl()
 
 void ZakanEffectControl::Initialize()
 {
+
+
+	ParticleRenderer::Desc particle;
+	particle.particleDataName = L"fx_zakanDust";
+	particle.PlayOnAwake = false;
+	auto obj = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+
+	m_dustParticle = obj->GetComponent<ParticleRenderer>();
+
+	particle.particleDataName = L"fx_zakan_natk";
+	particle.PlayOnAwake = false;
+	auto obj2 = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+
+	particle.particleDataName = L"fx_zakan_slash";
+	particle.PlayOnAwake = false;
+	auto obj3 = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle)->AddComponent<MeshRenderer>()->SetScale(10.f,10.f,10.f);
+
+
+	m_dustParticle = obj->GetComponent<ParticleRenderer>();
+	m_natkParticle = obj2->GetComponent<ParticleRenderer>();
+	//m_splitParticle = obj3->GetComponent<ParticleRenderer>();
+	//m_splitParticle->GetTransform()->SetParents(m_transform, "WeaponL");
+	//m_splitParticle->SetPosition(0,0,0);
+
 }
 
 void ZakanEffectControl::Update()
@@ -47,3 +71,16 @@ void ZakanEffectControl::EndSwordTrail()
 	m_swordTrail->ResetTrail();
 	m_swordTrail->Stop();
 }
+
+void ZakanEffectControl::PlayDust()
+{
+	m_dustParticle->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 12.f);
+	m_dustParticle->Play();
+}
+
+void ZakanEffectControl::PlayNATK()
+{
+	m_natkParticle->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 12.f);
+	m_natkParticle->Play();
+}
+

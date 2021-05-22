@@ -36,11 +36,25 @@ void BnS_SkillSlot::SetSkill(BnS_Skill * _skill)
 	m_curSkill = _skill->GetSkillIconTexture();
 }
 
+void BnS_SkillSlot::SetSkill(Texture * _skill)
+{
+	m_curSkill = _skill;
+}
+
 void BnS_SkillSlot::ChangeSkillTex(Texture * _tex)
 {
 	m_isChange = true;
 	m_nextSkill = _tex;
 	m_skillChangeTimer = BNS_SKILL_TEX_CHANGE_TIME;
+}
+
+void BnS_SkillSlot::RockSkillSlot()
+{
+	m_coolTimeRatio = 1;
+}
+
+void BnS_SkillSlot::UnRockSkillSlot()
+{
 }
 
 

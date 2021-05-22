@@ -9,9 +9,12 @@
 #include "Text.h"
 #include "Number.h"
 #include "InputManager.h"
+
 CanvasRenderer::CanvasRenderer()
 {
+
 }
+
 CanvasRenderer::CanvasRenderer(Desc * _desc)
 {
 	m_mesh = ResourceManager::GetInstance()->GetResource<Mesh>(L"quadNoneNormal");
@@ -42,21 +45,12 @@ void CanvasRenderer::Initialize()
 
 void CanvasRenderer::Update()
 {
-	/*UpdateBoundary();
-	if (m_observedPosition != m_transform->position)
-	{
-		UpdateBoundary();
-		m_observedPosition = m_transform->position;
-	}
-	if (m_observedScale != m_transform->scale)
-	{
-		UpdateBoundary();
-		m_observedScale = m_transform->scale;
-	}*/
+	
 }
 
 void CanvasRenderer::LateUpdate()
 {
+
 }
 
 void CanvasRenderer::Release()

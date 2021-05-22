@@ -23,6 +23,7 @@ void ZakanSplitBlood::EnterState()
 	m_animController->Play("Zakan_SplitBlood_Cast");
 	m_audio->PlayOneShot(L"zakan_splitBlood");
 
+
 	m_info->LookTarget();
 }
 
@@ -30,8 +31,10 @@ void ZakanSplitBlood::UpdateState()
 {
 	if (m_animController->GetCurrentPlayAnimationName() == "Zakan_SplitBlood_Cast")
 	{
+
 		if (!m_animController->IsPlay())
 		{
+
 			m_animController->Play("Zakan_SplitBlood_Exec");
 
 			AttackInfo::Desc info;

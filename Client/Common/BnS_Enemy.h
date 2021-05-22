@@ -59,6 +59,7 @@ private:
 	CharacterController* m_character;
 	EnemyStateControl* m_stateControl;
 	AudioSource* m_audio;
+	ParticleRenderer* m_defaultParticle;
 private:
 	void CalcWorldVolume();
 };

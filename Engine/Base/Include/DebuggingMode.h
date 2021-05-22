@@ -13,6 +13,7 @@ public:
 	{
 		bool createDirectoryMonitor = false;
 		bool freeCamera = false;
+		wstring directoryMonitorPath = L"";
 	};
 	
 

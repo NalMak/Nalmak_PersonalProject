@@ -21,7 +21,7 @@ void LynEffectControl::Initialize()
 	TrailRenderer::Desc trail;
 	trail.maxTrailCount = 50;
 	trail.detailCount = 7;
-	trail.mtrlName = L"Lyn_weapon_trail";
+	trail.mtrlName = L"Lyn_bodyTrail";
 	auto lhand = INSTANTIATE()->AddComponent<TrailRenderer>(&trail);
 	m_leftHandTrail = lhand->GetComponent<TrailRenderer>();
 	auto rhand = INSTANTIATE()->AddComponent<TrailRenderer>(&trail);
@@ -35,6 +35,15 @@ void LynEffectControl::Initialize()
 
 
 	m_bodyTrail = false;
+	ParticleRenderer::Desc particle;
+	particle.particleDataName = L"fx_baldo";
+	auto baldo = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+	particle.particleDataName = L"fx_lightningCombo";
+	auto lightningCombo = INSTANTIATE()->AddComponent<ParticleRenderer>(&particle);
+
+	m_baldoParticle = baldo->GetComponent<ParticleRenderer>();
+	m_lightningComboParticle = lightningCombo->GetComponent<ParticleRenderer>();
+
 }
 
 void LynEffectControl::Update()
@@ -77,4 +86,31 @@ void LynEffectControl::EndBodyTrail()
 	m_rightHandTrail->Stop();
 	m_bodyTrail = false;
 
+}
+
+void LynEffectControl::PlayBaldoEffect()
+{
+	auto target = m_info->GetTarget();
+	if (target)
+	{
+		m_baldoParticle->SetPosition(target->GetTransform()->GetWorldPosition() - Vector3(0, 3.f, 0) - m_transform->GetRight() * 6);
+		Quaternion rot;
+		D3DXQuaternionRotationAxis(&rot, &m_transform->GetForward(), -55 * Deg2Rad);
+		m_baldoParticle->GetTransform()->rotation = rot;
+
+		m_baldoParticle->Play();
+	}
+}
+
+void LynEffectControl::PlayLightningComboEffect()
+{
+	auto target = m_info->GetTarget();
+	if (target)
+	{
+		m_lightningComboParticle->SetPosition(target->GetTransform()->GetWorldPosition() - Vector3(0,5.f,0) + m_transform->GetRight() * 6);
+		Quaternion rot;
+		D3DXQuaternionRotationAxis(&rot, &m_transform->GetForward(), 45 * Deg2Rad);
+		m_lightningComboParticle->GetTransform()->rotation = rot;
+		m_lightningComboParticle->Play();
+	}
 }

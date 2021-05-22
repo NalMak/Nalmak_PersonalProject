@@ -29,7 +29,11 @@ DebuggingMode::DebuggingMode(Desc * _desc)
 	if (_desc->createDirectoryMonitor)
 	{
 		DirectoryMonitoring::Desc directory;
-		directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath();
+		if(_desc->directoryMonitorPath == L"")
+			directory.directoryPath = ResourceManager::GetInstance()->GetResourceDirectoryPath() + L"/" + SceneManager::GetInstance()->GetCurrentSceneName();
+		else
+			directory.directoryPath = _desc->directoryMonitorPath;
+
 		m_directoryMonitor = INSTANTIATE()->AddComponent<DirectoryMonitoring>(&directory);
 	}
 

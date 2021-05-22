@@ -23,7 +23,7 @@ void ZakanTeleport::EnterState()
 {
 	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_animController->Play("Zakan_B_Spell_Skl_Teleport_Cast");
-
+	m_audio->PlayOneShot(L"zakan_teleport");
 }
 
 void ZakanTeleport::UpdateState()

@@ -290,10 +290,10 @@ void AnimationController::Play(AnimationClip * _clip, double _startTime)
 	m_isStop = false;
 
 	m_currentAnimationClip = _clip;
-	m_animController->SetTrackEnable(m_nextTrack, false);
+	//m_animController->SetTrackEnable(m_nextTrack, false);
 
 	m_animController->UnkeyAllTrackEvents(m_currentTrack);
-	m_animController->UnkeyAllTrackEvents(m_nextTrack);
+	//m_animController->UnkeyAllTrackEvents(m_nextTrack);
 
 	m_animController->SetTrackAnimationSet(m_currentTrack, anim);
 
