@@ -46,6 +46,7 @@ void LynSideDashE::EnterState()
 	m_transform->rotation = m_transform->GetWorldRotation() * yRot;
 
 	Vector3 targetPos = m_info->GetTarget()->GetTransform()->GetWorldPosition();
+	targetPos.y = m_transform->position.y;
 	Vector3 targetDir = Nalmak_Math::Normalize(targetPos - m_transform->GetWorldPosition());
 
 	Vector3 curPos = m_transform->GetWorldPosition();

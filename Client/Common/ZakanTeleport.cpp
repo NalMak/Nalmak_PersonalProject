@@ -24,6 +24,7 @@ void ZakanTeleport::EnterState()
 	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_animController->Play("Zakan_B_Spell_Skl_Teleport_Cast");
 	m_audio->PlayOneShot(L"zakan_teleport");
+	m_exceptTime = 0;
 }
 
 void ZakanTeleport::UpdateState()
@@ -44,14 +45,13 @@ void ZakanTeleport::UpdateState()
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Skl_Teleport_Fire")
 	{
-
+		m_exceptTime += dTime;
 		m_character->SetVelocityXZ(m_flyVelocity * Nalmak_Math::Clamp(2.3f - m_animController->GetPlayRatio(), 0.5f, 0.9f));
 		Vector3 worldPos = m_transform->GetWorldPosition();
-		if (Nalmak_Math::Distance(Vector3(worldPos.x, m_landingTarget.y, worldPos.z), m_jumpPos) > m_flyLength)
+		if (Nalmak_Math::Distance(Vector3(worldPos.x, m_landingTarget.y, worldPos.z), m_jumpPos) > m_flyLength || m_exceptTime > 0.6f)
 		{
 			m_animController->Play("Zakan_B_Spell_Skl_Teleport_End");
 			m_character->SetVelocity(Vector3(0, 0, 0));
-
 		}
 	}
 	else if (m_animController->GetCurrentPlayAnimationName() == "Zakan_B_Spell_Skl_Teleport_End")

@@ -75,7 +75,7 @@ public:
 	void SetFixedAnimationBoneName(string _boneName,bool _xAxis, bool _yAxis, bool _zAxis);
 	void SetRootMotion(bool _isFixed);
 	const string& GetCurrentPlayAnimationName();
-	AnimationClip* GetCurrentPlayAnimation();
+	AnimationClip* GetCurrentAnimationClip();
 
 	void SetBlendOption(float _blendTime, float _weight, D3DXTRANSITION_TYPE _type);
 	void SeparateBone(const string& _refBone);
@@ -107,8 +107,9 @@ private:
 	AnimationController* m_otherController;
 public:
 	void AddAnimationClip(const string& _animName, float _speed = 1, bool _loop = true);
-	AnimationClip* GetAnimationClip(const string& _clipName);
+	void AddAnimationClip(AnimationClip* _clip);
 
+	AnimationClip* GetAnimationClip(const string& _clipName);
 private:
 	float m_transitionTime;
 	float m_blendWeight;

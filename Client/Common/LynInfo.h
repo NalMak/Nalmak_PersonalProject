@@ -12,6 +12,7 @@ public:
 	{
 		float runForwardSpeed = 14.5f;
 		float runBackwardSpeed = 8.f;
+		float sprintSpeed = 20.f;
 		float airSpeed = 10.5f;
 		float jumpPower = 25.f;
 		float turningSpeed = 7.f;
@@ -53,6 +54,8 @@ public:
 	float m_criticalRatio;
 	float m_battleToPeaceTimer;
 
+	float m_gravityPower;
+	float m_sprintSpeed;
 	float m_runForwardSpeed;
 	float m_airSpeed;
 	float m_runBackwardSpeed;

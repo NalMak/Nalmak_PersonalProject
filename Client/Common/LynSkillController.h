@@ -53,5 +53,6 @@ private:
 	LynInfo* m_info;
 private:
 	float m_sKeyTimer;
+
 };
 

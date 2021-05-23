@@ -59,6 +59,8 @@ void BnS_Skill::CreateSkill(const wstring& _stateName,const wstring& _skillName,
 
 void BnS_Skill::UpdateAvailableSkill(LynInfo* _info)
 {
+
+
 	if (m_useableCondition.Check(BNS_SKILL_CONDITION_DISTANCE))
 	{
 		if (_info->GetTarget())
@@ -90,10 +92,14 @@ void BnS_Skill::UpdateAvailableSkill(LynInfo* _info)
 		}
 	}
 
-	if(m_isUseable.Check(BNS_SKILL_CONDITION_DISTANCE) && m_isUseable.Check(BNS_SKILL_CONDITION_INNERFORCE))
-		UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(1.f,1.f,1.f, 1));
-	else
-		UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(0.2f, 0.2f, 0.2f, 1));
+	if (m_isRenderSlot)
+	{
+		if (m_isUseable.Check(BNS_SKILL_CONDITION_DISTANCE) && m_isUseable.Check(BNS_SKILL_CONDITION_INNERFORCE))
+			UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(1.f, 1.f, 1.f, 1));
+		else
+			UIManager::GetInstance()->SetSkillSlotColor(m_skillSlot, Vector4(0.2f, 0.2f, 0.2f, 1));
+	}
+
 
 }
 

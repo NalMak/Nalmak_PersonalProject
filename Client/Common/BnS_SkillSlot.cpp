@@ -34,6 +34,7 @@ void BnS_SkillSlot::Update()
 void BnS_SkillSlot::SetSkill(BnS_Skill * _skill)
 {
 	m_curSkill = _skill->GetSkillIconTexture();
+	m_isChange = false;
 }
 
 void BnS_SkillSlot::SetSkill(Texture * _skill)

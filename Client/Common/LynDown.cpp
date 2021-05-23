@@ -49,6 +49,5 @@ void LynDown::UpdateState()
 
 void LynDown::ExitState()
 {
-	m_info->SetState(LYN_STATE_BATTLE_STANDARD);
 	m_bnsMainCam->LockTarget();
 }

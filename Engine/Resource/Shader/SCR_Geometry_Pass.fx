@@ -84,7 +84,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	{
 		float3 light = tex2D(LightSampler, uv).xyz;
 		float3 shadow = tex2D(ShadowSampler, uv).xyz;
-		shadow = saturate(shadow + 0.2f);
+		shadow = saturate(shadow + 0.3f);
 		//shadow = light + shadow;
 		final =  diffuse * shadow * light;
 	}

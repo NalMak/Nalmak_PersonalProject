@@ -39,7 +39,7 @@ void LynExcape::EnterState()
 
 
 		AttackInfo::Desc attack;
-		attack.attackType = ATTACK_TYPE_DEFAULT;
+		attack.attackType = ATTACK_TYPE_GROGY;
 		attack.colliderType = COLLIDER_TYPE_SPHERE;
 		attack.radius = 6.f;
 		attack.soundName = L"Fencer_EscapeSkill_Hit";

@@ -41,13 +41,13 @@ private:
 	class Text* m_debugModeDescObject;
 	GameObject* m_pickingObj;
 	MeshRenderer* m_pickingOutLine;
-
-
+	vector<MeshRenderer*> m_pickingList;
 	bool m_startOn_freeCamera;
 	DrawGizmo* m_pickingGizmoBase;
 	PICKING_TYPE m_pickingType;
 	GIZMO_TYPE m_gizmoType;
 	Event m_event;
+	bool m_pickSelectedMode;
 private:
 	void CheckPicking();
 	void CheckFreeCamera();
@@ -63,12 +63,15 @@ private:
 	void DeletePicking();
 	void UpdateOutLine();
 	void UpdatePickingObject();
+
+
 public:
 	void AddUpdateMaterialEvent(EventHandler _e);
 	void PickObject(GameObject* _obj);
 	void AddEvent(EventHandler _e);
 	GameObject* GetPickingObject();
 	void SetDebugModeActive(DEBUGGING_MODE _mode, bool _active);
-
+	void SetPickSelectedMode(vector<MeshRenderer*> _renderers);
+	void SetPickSelectedMode(bool _enable);
 };
 

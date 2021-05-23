@@ -39,7 +39,7 @@ void DirectionalLight::PreRender()
 	m_info.direction = m_transform->GetForward();
 	m_info.lightViewProj = m_lightCam->GetViewMatrix() * m_lightCam->GetProjMatrix();
 
-	m_transform->position = -m_info.direction * 100;
+	//m_transform->position = -m_info.direction * 70;
 	m_info.base.position = m_transform->position;
 
 }
@@ -57,7 +57,7 @@ const DirectionalLightInfo& DirectionalLight::GetDirectionalLightInfo()
 void DirectionalLight::CreateLightCam()
 {
 	Camera::Desc camDesc;
-	camDesc.fovY = D3DX_PI * 0.3f;
+	camDesc.fovY = D3DX_PI * 0.8f;
 	camDesc.zNear = 1.f;
 	camDesc.zFar = 400.f;
 	camDesc.aspect = 1;
@@ -65,7 +65,7 @@ void DirectionalLight::CreateLightCam()
 	m_lightCam = GetComponent<Camera>();
 	m_lightCam->SetActive(false);
 
-	m_transform->position = { 0,100,0 };
+	m_transform->position = { 0,90,0 };
 	m_info.base.position = m_transform->position;
 }
 

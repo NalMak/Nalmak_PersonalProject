@@ -13,6 +13,7 @@ public:
 	virtual void UpdateState() override;
 	virtual void ExitState() override;
 private:
-	AttackInfo::Desc attack;
+	AttackInfo::Desc m_attack;
+	GameObject* m_effect;
 };
 

@@ -20,7 +20,7 @@ void LynLayDown::EnterState()
 {
 	m_info->SetSpeed(0);
 	m_info->UpdateWeapon(LYN_STATE_BATTLE_STANDARD);
-	m_info->SetBattleState(BATTLE_STATE_WEAK);
+	m_info->SetBattleState(BATTLE_STATE_DOWN);
 	m_info->ChangeSkillByState(LYN_SKILL_STATE_LAY);
 
 

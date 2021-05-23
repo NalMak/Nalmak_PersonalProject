@@ -98,6 +98,11 @@
 #include "ZakanSpellSuction.h"
 #include "MeshEffect_Slash.h"
 #include "LynStateThunderbolt.h"
+#include "LynSprint.h"
+#include "LynFly.h"
+#include "ZakanStun.h"
+#include "LynStarAttack.h"
+#include "LynCrash.h"
 StageScene::StageScene()
 {
 }
@@ -128,17 +133,19 @@ void StageScene::Initialize()
 	INSTANTIATE()->AddComponent<DebuggingMode>(&debug);
 #pragma endregion Debug
 
-	INSTANTIATE()->AddComponent<BnS_SystemSetting>();
 
 	UIManager::GetInstance()->CreateMainUI();
 	auto staticObj = ResourceManager::GetInstance()->GetAllResource<StaticObjectInfo>();
 	for (auto& obj : staticObj)
 		MAKE_STATIC(obj.first);
 
-	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(-5, 10, -5)->SetRotation(0,-90,0);
-	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(30, 30, 10)->SetScale(0.7f,0.7f,0.7f);
+	auto zakan = INSTANTIATE(OBJECT_TAG_ENEMY, OBJECT_LAYER_ENEMY)->SetScale(0.05f, 0.05f, 0.05f)->SetPosition(-5, 10, -5)->SetRotation(0,90,0);
+	auto lyn = INSTANTIATE(OBJECT_TAG_PLAYER, OBJECT_LAYER_PLAYER, L"Player")->SetPosition(-130, 46, -7)->SetScale(0.5f,0.5f,0.5f);
 	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
 	
+	INSTANTIATE()->AddComponent<BnS_SystemSetting>();
+
+
 	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
 
 	INSTANTIATE()->AddComponent<BnS_Fire>();
@@ -146,7 +153,10 @@ void StageScene::Initialize()
 
 #pragma region Navi Mesh
 	NavCollider::Desc navCollider;
-	navCollider.navName = L"GW_navi";
+	navCollider.navName = L"stage1";
+	INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
+
+	navCollider.navName = L"stage1_floor2";
 	INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
 #pragma endregion Navi Mesh
 #pragma region Lyn
@@ -159,6 +169,7 @@ void StageScene::Initialize()
 	lyn->GetComponent<SkinnedMeshRenderer>()->SetMaterial(L"lyn_body", 0);
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_face");
 	lyn->GetComponent<SkinnedMeshRenderer>()->AddMaterial(L"lyn_hair2");
+
 	lyn->AddComponent<LynInfo>();
 	UIManager::GetInstance()->SetLynInfo(lyn->GetComponent<LynInfo>());
 	AnimationController::Desc anim;
@@ -246,6 +257,9 @@ void StageScene::Initialize()
 	lowerControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2", false);
 	upperControl->AddState<LynVerticalCut_R2>(L"verticalCut_r2", true);
 
+	lowerControl->AddState<LynStarAttack>(L"starAttack", false);
+	upperControl->AddState<LynStarAttack>(L"starAttack", true);
+
 	upperControl->AddState<LynBackStep>(L"backStep", true);
 	lowerControl->AddState<LynBackStep>(L"backStep", false);
 
@@ -298,10 +312,16 @@ void StageScene::Initialize()
 	upperControl->AddState<LynHold>(L"hold", true);
 	lowerControl->AddState<LynHold>(L"hold", false);
 
+	upperControl->AddState<LynFly>(L"fly", true);
+	lowerControl->AddState<LynFly>(L"fly", false);
+
+	upperControl->AddState<LynCrash>(L"crash", true);
+	lowerControl->AddState<LynCrash>(L"crash", false);
 
 	CharacterController::Desc character;
-	character.center = { 0,1.8f,0 };
+	character.center = { 0,2.f,0 };
 	character.height = 1.6f;
+	character.stepOffset = 0.3f;
 	lyn->AddComponent<CharacterController>(&character);
 
 	AnimationController* controller = lyn->GetComponent<AnimationController>();
@@ -476,7 +496,6 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Holded_Looping", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Holded_ToGrogy", 1.f, false);
-	controller->AddAnimationClip("Lyn_B_upperSlash1", 1.5f, false);
 	controller->AddAnimationClip("Lyn_B_upperSlash2", 1.5f, false);
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum", 2.f, false); // 테스트 필요
 	controller->AddAnimationClip("Lyn_B_Hide_Ilsum_End", 1.f, false);
@@ -498,7 +517,16 @@ void StageScene::Initialize()
 	controller->AddAnimationClip("Lyn_B_Grogy_Start", 1.f, false);
 	controller->AddAnimationClip("Lyn_B_Grogy_End", 1.f, false);
 
+	controller->AddAnimationClip("Lyn_B_Crash", 1.f, false);
 
+
+	controller->AddAnimationClip("Lyn_P_Std_Mov_Sprint_JumpFront", 1.5f, true);
+
+	controller->AddAnimationClip("Lyn_P_Std_Mov_Glide_Front_Start", 1.f, false);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_Glide_Front_Boost_Looping", 1.f, true);
+	controller->AddAnimationClip("Lyn_P_Std_Mov_Glide_Front_Boost", 1.f, false);
+
+	controller->AddAnimationClip("Lyn_B_takeWing", 1.5f, false);
 
 
 	controller->SeparateBone("Bip01Spine");
@@ -588,6 +616,7 @@ void StageScene::Initialize()
 		stateCtrl->AddState<ZakanBackStep>(L"backStep");
 		stateCtrl->AddState<ZakanFireSpellWave>(L"fireSpellWave");
 		stateCtrl->AddState<ZakanSpellSuction>(L"spellSuction");
+		stateCtrl->AddState<ZakanStun>(L"stun");
 
 
 
@@ -620,13 +649,13 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_Looping", 1.f, true);
 		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Front_End", 1.f, false);
 
-		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Start", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Looping", 1.f, true);
-		animCtrl->AddAnimationClip("Zakan_B_Std_Down", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Start", 0.5f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down_Looping", 1.5f, true);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Down", 0.5f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_idle", 1.f, true);
-		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_lower", 1.f, false);
-		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_upper", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_lower", 1.5f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir1_upper", 1.5f, false);
 		animCtrl->AddAnimationClip("Zakan_B_Std_MidAir2_upper", 1.f, false);
 
 		animCtrl->AddAnimationClip("Zakan_B_Spell_Skl_Teleport_Cast", 1.1f, false);
@@ -662,6 +691,10 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_SpellSuction_Cast", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_SpellSuction_Exec_End", 1.f, false);
 		animCtrl->AddAnimationClip("Zakan_SpellSuction_Exec_Loop", 1.f, false);
+
+		animCtrl->AddAnimationClip("Zakan_B_Std_Stun_Start", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_B_Std_Stun_Looping", 1.f, true);
+
 
 
 

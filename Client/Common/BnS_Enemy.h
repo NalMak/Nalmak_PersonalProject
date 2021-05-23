@@ -25,7 +25,9 @@ public:
 	
 	void OnTriggerEnter(Collision& _col) override;
 	void OnTriggerExit(Collision& _col) override;
-
+public:
+	void HitByAttackInfo(AttackInfo* _attack);
+	
 public:
 	BATTLE_STATE GetBattleState();
 	void SetBattleState(BATTLE_STATE _state);

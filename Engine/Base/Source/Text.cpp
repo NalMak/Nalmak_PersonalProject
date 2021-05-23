@@ -13,7 +13,7 @@ Text::Text(Desc * _desc)
 	m_option = _desc->option;
 	m_text = _desc->text;
 	m_color = _desc->color;
-	m_Hangul = _desc->Hangul;
+	m_isKorean = _desc->isKorean;
 	m_boundary = _desc->boundary;
 }
 
@@ -29,7 +29,7 @@ void Text::Initialize()
 	fontDesc.Width = m_width;
 	fontDesc.Height = m_height;
 	fontDesc.Weight = m_weight;
-	if(m_Hangul)
+	if(m_isKorean)
 	{fontDesc.CharSet = HANGUL_CHARSET;}
 	lstrcpy(fontDesc.FaceName, m_fontName);
 	ThrowIfFailed(D3DXCreateFontIndirect(m_device, &fontDesc, &m_font));

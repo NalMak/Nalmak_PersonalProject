@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackInfo.h" />
+    <ClInclude Include="BnS_AfterImageEffect.h" />
     <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
@@ -188,26 +189,31 @@
     <ClInclude Include="BnS_Skill.h" />
     <ClInclude Include="BnS_SkillSlot.h" />
     <ClInclude Include="BnS_SystemSetting.h" />
+    <ClInclude Include="BnS_SystemUI.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="EnemyStateControl.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
+    <ClInclude Include="FollowXZPos.h" />
     <ClInclude Include="homeworkScene.h" />
     <ClInclude Include="homework_enemy.h" />
     <ClInclude Include="Homework_Player.h" />
+    <ClInclude Include="LynAttachedEffect.h" />
     <ClInclude Include="LynBackRoll.h" />
     <ClInclude Include="LynBackStep.h" />
     <ClInclude Include="LynBaldo.h" />
     <ClInclude Include="LynBattleToPeace.h" />
     <ClInclude Include="LynChamWall.h" />
+    <ClInclude Include="LynCrash.h" />
     <ClInclude Include="LynDead.h" />
     <ClInclude Include="LynDown.h" />
     <ClInclude Include="LynEffectControl.h" />
     <ClInclude Include="LynEventIdle.h" />
     <ClInclude Include="LynExcape.h" />
     <ClInclude Include="LynFall.h" />
+    <ClInclude Include="LynFly.h" />
     <ClInclude Include="LynFrontDash.h" />
     <ClInclude Include="LynFrontKick.h" />
     <ClInclude Include="LynGrogy.h" />
@@ -233,8 +239,11 @@
     <ClInclude Include="LynSlash1.h" />
     <ClInclude Include="LynSlash2.h" />
     <ClInclude Include="LynSlash3.h" />
+    <ClInclude Include="LynSpinSlashEffect.h" />
     <ClInclude Include="LynSpinSlash_End.h" />
     <ClInclude Include="LynSpinSlash_Start.h" />
+    <ClInclude Include="LynSprint.h" />
+    <ClInclude Include="LynStarAttack.h" />
     <ClInclude Include="LynState.h" />
     <ClInclude Include="LynStateControl.h" />
     <ClInclude Include="LynStateThunderbolt.h" />
@@ -260,6 +269,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestEffectMesh.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleToStage.h" />
     <ClInclude Include="UIManager.h" />
@@ -290,11 +300,13 @@
     <ClInclude Include="ZakanSpellStance.h" />
     <ClInclude Include="ZakanSpellSuction.h" />
     <ClInclude Include="ZakanSplitBlood.h" />
+    <ClInclude Include="ZakanStun.h" />
     <ClInclude Include="ZakanTeleport.h" />
     <ClInclude Include="ZakanTeleportCenter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
+    <ClCompile Include="BnS_AfterImageEffect.cpp" />
     <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
@@ -305,23 +317,28 @@
     <ClCompile Include="BnS_Skill.cpp" />
     <ClCompile Include="BnS_SkillSlot.cpp" />
     <ClCompile Include="BnS_SystemSetting.cpp" />
+    <ClCompile Include="BnS_SystemUI.cpp" />
     <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="EnemyStateControl.cpp" />
+    <ClCompile Include="FollowXZPos.cpp" />
     <ClCompile Include="homeworkScene.cpp" />
     <ClCompile Include="homework_enemy.cpp" />
     <ClCompile Include="Homework_Player.cpp" />
+    <ClCompile Include="LynAttachedEffect.cpp" />
     <ClCompile Include="LynBackRoll.cpp" />
     <ClCompile Include="LynBackStep.cpp" />
     <ClCompile Include="LynBaldo.cpp" />
     <ClCompile Include="LynBattleToPeace.cpp" />
     <ClCompile Include="LynChamWall.cpp" />
+    <ClCompile Include="LynCrash.cpp" />
     <ClCompile Include="LynDead.cpp" />
     <ClCompile Include="LynDown.cpp" />
     <ClCompile Include="LynEffectControl.cpp" />
     <ClCompile Include="LynEventIdle.cpp" />
     <ClCompile Include="LynExcape.cpp" />
     <ClCompile Include="LynFall.cpp" />
+    <ClCompile Include="LynFly.cpp" />
     <ClCompile Include="LynFrontDash.cpp" />
     <ClCompile Include="LynFrontKick.cpp" />
     <ClCompile Include="LynGrogy.cpp" />
@@ -347,8 +364,11 @@
     <ClCompile Include="LynSlash1.cpp" />
     <ClCompile Include="LynSlash2.cpp" />
     <ClCompile Include="LynSlash3.cpp" />
+    <ClCompile Include="LynSpinSlashEffect.cpp" />
     <ClCompile Include="LynSpinSlash_End.cpp" />
     <ClCompile Include="LynSpinSlash_Start.cpp" />
+    <ClCompile Include="LynSprint.cpp" />
+    <ClCompile Include="LynStarAttack.cpp" />
     <ClCompile Include="LynState.cpp" />
     <ClCompile Include="LynStateControl.cpp" />
     <ClCompile Include="LynStateThunderbolt.cpp" />
@@ -375,6 +395,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestEffectMesh.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleToStage.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -405,6 +426,7 @@
     <ClCompile Include="ZakanSpellStance.cpp" />
     <ClCompile Include="ZakanSpellSuction.cpp" />
     <ClCompile Include="ZakanSplitBlood.cpp" />
+    <ClCompile Include="ZakanStun.cpp" />
     <ClCompile Include="ZakanTeleport.cpp" />
     <ClCompile Include="ZakanTeleportCenter.cpp" />
   </ItemGroup>
@@ -416,44 +438,52 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Block_DN.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_HpUI.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_InnerForce.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_MeshEffect.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_MeshEffect_Soft.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Particle.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_SkillI_UI.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE_doubleSided.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN_doubleSided.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_SwordTrail.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.fx" />
-    <FxCompile Include="..\Resource\static\Shader\BnS_MeshEffect.fx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Head_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_HpUI.sd" />
     <None Include="..\Resource\stage\Shader\BnS_InnerForce.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_MeshEffect.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_MeshEffect_Soft.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Particle.sd" />
     <None Include="..\Resource\stage\Shader\BnS_SkillI_UI.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE_doubleSided.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNSM.sd" />
     <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNS_rev.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN_doubleSided.sd" />
     <None Include="..\Resource\stage\Shader\BnS_SwordTrail.sd" />
     <None Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.sd" />
-    <None Include="..\Resource\static\Shader\BnS_MeshEffect.sd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BnS_SystemSetting.h"
+#include "FollowXZPos.h"
 
 
 
@@ -21,7 +22,7 @@ void BnS_SystemSetting::Initialize()
 	light.diffuseIntensity = 0.35f;
 	light.ambientIntensity = 0.1f;
 	light.color = { 1.f,0.9f,0.88f };
-	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0);
+	INSTANTIATE()->AddComponent<DirectionalLight>(&light)->SetRotation(90, 0, 0)->AddComponent<FollowXZPos>();
 #pragma endregion Light Setting
 
 

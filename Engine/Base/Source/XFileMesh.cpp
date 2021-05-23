@@ -232,10 +232,11 @@ void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
 
 	if (meshContainer)
 	{
+		int size = (int)m_meshContainerList.size();
 		for (UINT i = 0; i < meshContainer->boneCount; ++i)
 		{
 			const char* boneName = meshContainer->pSkinInfo->GetBoneName(i);
-
+			m_boneIndex.emplace(boneName, pair<int,int>(size, i));
 			Nalmak_Frame* frame = (Nalmak_Frame*)D3DXFrameFind(m_root, boneName);
 			if (!frame)
 				continue;
@@ -253,6 +254,11 @@ void XFileMesh::TraverseBone(Nalmak_Frame * _frame)
 }
 
 
+
+const pair<int, int>& XFileMesh::GetBoneIndex(const string & _boneName)
+{
+	return m_boneIndex[_boneName];
+}
 
 LPD3DXANIMATIONCONTROLLER  XFileMesh::GetAnimationController()
 {

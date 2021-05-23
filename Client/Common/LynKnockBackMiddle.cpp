@@ -30,7 +30,7 @@ void LynKnockBackMiddle::EnterState()
 
 
 	Vector3 dir = GetVector3(L"knockBackDir");
-	m_character->SetVelocity(dir.x * 20, 20, dir.z * 20);
+	m_character->SetVelocity(dir.x * 27, 20, dir.z * 27);
 	m_transform->LookAt_RotYAxis(-dir);
 	m_animController->Play("Lyn_B_KnockBack_Long_B");
 }

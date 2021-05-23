@@ -352,6 +352,13 @@ Matrix * SkinnedMeshRenderer::GetBoneCombinedMatrix(const string & _boneName)
 	return &((Nalmak_Frame*)frame)->boneCombinedMatrix;
 }
 
+Matrix * SkinnedMeshRenderer::GetBoneWorldMatrix(const string & _boneName)
+{
+	auto index = m_mesh->GetBoneIndex(_boneName);
+
+	return &m_boneWorldMatrices[index.first][index.second];
+}
+
 Matrix * SkinnedMeshRenderer::GetRootWorldMatrix()
 {
 	return m_boneWorldMatrices[0];

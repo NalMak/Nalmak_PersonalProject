@@ -4,6 +4,7 @@
 #include "LynSkillController.h"
 #include "UIManager.h"
 #include "BnS_Enemy.h"
+#include "BnS_AfterImageEffect.h"
 
 LynInfo::LynInfo(Desc * _desc)
 {
@@ -16,6 +17,8 @@ LynInfo::LynInfo(Desc * _desc)
 	m_turningSpeed = _desc->turningSpeed;
 	m_criticalRatio = _desc->criticalRatio;
 	m_power = _desc->power;
+	m_sprintSpeed = _desc->sprintSpeed;
+
 
 	m_currentSpeed = 0;
 	m_innerPowerTimer = 0;
@@ -34,6 +37,7 @@ LynInfo::~LynInfo()
 
 void LynInfo::Initialize()
 {
+	m_gravityPower = 55;
 	m_lightningSpirit = 0;
 	m_energy = 100;
 	m_battleToPeaceTimer = 0.f;
@@ -95,12 +99,19 @@ void LynInfo::Update()
 			fSlotName = L"thunderbolt";
 			break;
 		case BATTLE_STATE_AIR:
-			m_skillController->SetSkillSlot(L"airShot");
+			m_skillController->SetSkillSlot(L"starAttack");
 			break;
 		default:
-			
 			break;
 		}
+
+		/*if (m_skillState == LYN_SKILL_STATE_AIR || m_skillState == LYN_SKILL_STATE_AIR_COMBO)
+		{
+			if (enemy != BATTLE_STATE_AIR)
+			{
+				ChangeSkillByState(LYN_SKILL_STATE_STANDARD);
+			}
+		}*/
 
 		if (m_battleState == BATTLE_STATE_STUN || m_battleState == BATTLE_STATE_GROGY || m_battleState == BATTLE_STATE_DOWN)
 		{
@@ -233,8 +244,12 @@ void LynInfo::Update()
 	}
 	
 	if (!m_characterController->IsGround())
-	{
-		m_characterController->AddVelocity(0, -60 * dTime, 0);
+	{//
+		m_characterController->AddVelocity(0, -m_gravityPower * dTime, 0);
+		if (m_characterController->GetVelocity().y < -50)
+		{
+			m_characterController->SetVelocityY(-50.f);
+		}
 	}
 
 	if (m_state != LYN_STATE_PEACE_STANDARD)
@@ -420,7 +435,34 @@ void LynInfo::ChangeSkillByState(LYN_SKILL_STATE _state)
 
 		break;
 	case LYN_SKILL_STATE_AIR:
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_1);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_2);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_3);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_4);
+
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_Z);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_X);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_C);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_V);
+
+		m_skillController->ChangeSkillSlotByAnimation(L"starAttack");
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_RB);
+
 		break;
+	case LYN_SKILL_STATE_AIR_COMBO:
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_1);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_2);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_3);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_4);
+
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_Z);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_X);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_C);
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_V);
+
+		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_LB);
+		m_skillController->ChangeSkillSlotByAnimation(L"crash");
+
 	case LYN_SKILL_STATE_CC:
 	case LYN_SKILL_STATE_GROGY:
 		m_skillController->RockSkillSlot(BNS_SKILL_SLOT_1);
@@ -489,6 +531,10 @@ void LynInfo::HitByAttackInfo(AttackInfo* _attackInfo)
 
 	if (m_battleState == BATTLE_STATE_RESISTANCE || m_resistanceAlways || m_resistanceTimer > 0)
 	{
+		BnS_AfterImageEffect::Desc effect;
+		effect.lifeTime = 1.f;
+		effect.object = m_gameObject;
+		INSTANTIATE()->AddComponent<BnS_AfterImageEffect>(&effect);
 		m_sysAudio->PlayOneShot(L"lyn_resistance");
 		return;
 	}

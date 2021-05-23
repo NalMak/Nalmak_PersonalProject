@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ZakanFireSpellWave.h"
 #include "ZakanFloorAttack.h"
+#include "UIManager.h"
 
 
 ZakanFireSpellWave::ZakanFireSpellWave()
@@ -19,8 +20,6 @@ void ZakanFireSpellWave::Initialize()
 
 void ZakanFireSpellWave::EnterState()
 {
-	
-
 	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 
 	m_animController->Play("Zakan_FireSpellWave_Cast");

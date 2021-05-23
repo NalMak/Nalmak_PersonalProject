@@ -19,11 +19,11 @@ public:
 		UINT height = 21;
 		UINT weight = 500; // 0 ~ 1000
 		DWORD option = DT_CENTER | DT_WORDBREAK;
-		const TCHAR* fontName = L"NanumGothicBold";
+		const TCHAR* fontName = L"";
 		wstring text = L"default";
 		RECT boundary = { 0,0,200,50 };
 		D3DCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255);
-		bool	Hangul = false;
+		bool	isKorean = true;
 	};
 	Text(Desc* _desc);
 private:
@@ -55,7 +55,7 @@ private:
 	D3DXCOLOR m_color;
 	const TCHAR* m_fontName;
 	wstring m_text;
-	bool	m_Hangul;
+	bool	m_isKorean;
 
 
 };

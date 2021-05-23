@@ -57,7 +57,10 @@ void LynRotateSoulBlade::EnterState()
 	if(m_info->GetState() == LYN_STATE_BATTLE_HIDEBLADE)
 		m_animController->PlayBlending("Lyn_B_Hide_RotateSoulBlade");
 	else
+	{
 		m_animController->PlayBlending("Lyn_B_Std_RotateSoulBlade");
+		m_info->SetState(LYN_STATE_BATTLE_STANDARD);
+	}
 
 }
 

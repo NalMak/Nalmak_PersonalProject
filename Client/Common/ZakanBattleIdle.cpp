@@ -15,10 +15,21 @@ void ZakanBattleIdle::Initialize()
 {
 	m_phaseIndex = ZAKAN_PATTERN_DEFAULT1;
 	SetInteger(L"phaseChange", 0);
+
+
+	
+	//m_navCollider->SetActive(false);
 }
 
 void ZakanBattleIdle::EnterState()
 {
+	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
+
+	NavCollider::Desc navCollider;
+	navCollider.navName = L"stage1_battleStart";
+	m_navCollider = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_NAVIMESH)->AddComponent<NavCollider>(&navCollider);
+
+
 	m_phaseIndex = (ZAKAN_PATTERN)GetInteger(L"phaseChange");
 
 	m_character->SetVelocityX(0);
@@ -29,7 +40,7 @@ void ZakanBattleIdle::EnterState()
 	switch (m_phaseIndex)
 	{
 	case ZAKAN_PATTERN_DEFAULT1:
-		if (hpRatio < 0.95f)
+		if (hpRatio < 0.55f)
 			m_phaseIndex = ZAKAN_PATTERN_SPECIAL1;
 		break;
 	case ZAKAN_PATTERN_DEFAULT2:

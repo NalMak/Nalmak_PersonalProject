@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ZakanNATK1.h"
+#include "UIManager.h"
 
 
 ZakanNATK1::ZakanNATK1()
@@ -17,6 +18,7 @@ void ZakanNATK1::Initialize()
 
 void ZakanNATK1::EnterState()
 {
+
 	m_effect->StartSwordTrail();
 	m_info->SetBattleState(BATTLE_STATE_WEAK);
 

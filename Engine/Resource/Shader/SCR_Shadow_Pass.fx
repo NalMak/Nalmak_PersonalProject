@@ -77,7 +77,7 @@ PS_OUTPUT PS_Main_Default(PS_INPUT  _input)
 	float adjust = 0;// shadowDistance / 10;
 
 	float3 color = 1.f;
-	if (lightDistance > objDistance * 0.99f)
+	if (lightDistance > objDistance * 0.995f)
 		color = 1;
 	else
 		color = 0;

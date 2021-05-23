@@ -14,6 +14,9 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 
 	CreateSkill(L"backStep", L"백스텝", BNS_SKILL_SLOT_SS, L"skill_Icon46", 9.f, KEY_STATE_S, true,false, 0, 0, 0, [=](LynInfo* _info)->bool {
+		if (_info->GetBattleState() == BATTLE_STATE_DOWN || _info->GetBattleState() == BATTLE_STATE_KNOCKBACK || _info->GetBattleState() == BATTLE_STATE_GROGY)
+			return false;
+
 		if (m_sKeyTimer > 0)
 		{
 			m_sKeyTimer = 0;
@@ -21,6 +24,7 @@ LynSkillController::LynSkillController(Desc * _desc)
 		}
 		return false;
 	});
+
 
 	CreateSkill(L"backRoll", L"뒤구르기", BNS_SKILL_SLOT_F, L"skill_Icon64", 9.f, KEY_STATE_F, true, true,0,0,0, [](LynInfo* _info)->bool {
 		return true;
@@ -46,12 +50,18 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 	
 	CreateSkill(L"sideDashQ", L"횡이동", BNS_SKILL_SLOT_Q, L"skill_Icon76", 6.f, KEY_STATE_Q, true,false, 0,3,0,[](LynInfo* _info)->bool {
+		if (_info->GetBattleState() == BATTLE_STATE_DOWN || _info->GetBattleState() == BATTLE_STATE_KNOCKBACK || _info->GetBattleState() == BATTLE_STATE_GROGY)
+			return false;
+
 		if (_info->GetTarget())
 			return true;
 		return false;
 	});
 
 	CreateSkill(L"sideDashE", L"횡이동", BNS_SKILL_SLOT_E, L"skill_Icon27", 6.f, KEY_STATE_E, true,false,0,3,0, [](LynInfo* _info)->bool {
+		if (_info->GetBattleState() == BATTLE_STATE_DOWN || _info->GetBattleState() == BATTLE_STATE_KNOCKBACK || _info->GetBattleState() == BATTLE_STATE_GROGY)
+			return false;
+
 		if (_info->GetTarget())
 			return true;
 		return false;
@@ -107,7 +117,7 @@ LynSkillController::LynSkillController(Desc * _desc)
 		return false;
 	});
 
-	CreateSkill(L"upperSlash", L"올려베기", BNS_SKILL_SLOT_F, L"skill_Icon09", 12.f, KEY_STATE_F, true, true, 0, 3, 0, [](LynInfo* _info)->bool {
+	CreateSkill(L"upperSlash", L"올려베기", BNS_SKILL_SLOT_F, L"skill_Icon09", 16.f, KEY_STATE_F, true, true, 0, 5, 0, [](LynInfo* _info)->bool {
 		if (_info->GetTarget())
 			return true;
 		return false;
@@ -119,8 +129,10 @@ LynSkillController::LynSkillController(Desc * _desc)
 		return false;
 	});
 
-	CreateSkill(L"airShot",L"비상", BNS_SKILL_SLOT_LB, L"skill_Icon16", 8.f, KEY_STATE_LEFT_MOUSE, true, true, 0, 0, 0, [](LynInfo* _info)->bool {
+	CreateSkill(L"starAttack",L"비상", BNS_SKILL_SLOT_LB, L"skill_Icon16", 0.f, KEY_STATE_LEFT_MOUSE, true, true, 0, 5, 1, [](LynInfo* _info)->bool {
+		if (_info->GetTarget())
 			return true;
+		return false;
 	});
 
 	CreateSkill(L"lightningCombo", L"뇌연섬", BNS_SKILL_SLOT_F, L"skill_Icon80", 0.2f, KEY_STATE_F, false, true, 0, 4, 0, [](LynInfo* _info)->bool {
@@ -138,6 +150,13 @@ LynSkillController::LynSkillController(Desc * _desc)
 	CreateSkill(L"atkBuff", L"공버프", BNS_SKILL_SLOT_BUFF, L"skill_Icon97", 0.f, KEY_STATE_RIGHT_MOUSE, true, true, 0, 0, 0, [](LynInfo* _info)->bool {
 		return true;
 	});
+
+	CreateSkill(L"crash", L"추락", BNS_SKILL_SLOT_RB, L"skill_Icon17", 0.f, KEY_STATE_RIGHT_MOUSE, true, true, 0, 0, 0, [](LynInfo* _info)->bool {
+		if (_info->GetTarget())
+			return true;
+		return false;
+	});
+
 }
 
 LynSkillController::~LynSkillController()
@@ -196,6 +215,7 @@ void LynSkillController::PreRender()
 		m_sKeyTimer = 0.3f;
 	}
 	m_sKeyTimer -= dTime;
+
 }
 
 void LynSkillController::UpdateSkill()
@@ -205,13 +225,11 @@ void LynSkillController::UpdateSkill()
 	{
 		if (!skill)
 			continue;
-		if (!skill->m_isRenderSlot)
-			continue;
-
-	
-		float coolTimeRatio = skill->m_remainCoolTime / skill->m_coolTime;
-		uiMgr->UpdateSkillCoolTime(skill->m_skillSlot, coolTimeRatio);
-
+		if (skill->m_isRenderSlot)
+		{
+			float coolTimeRatio = skill->m_remainCoolTime / skill->m_coolTime;
+			uiMgr->UpdateSkillCoolTime(skill->m_skillSlot, coolTimeRatio);
+		}
 		
 		skill->UpdateAvailableSkill(m_info);
 

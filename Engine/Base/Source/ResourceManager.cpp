@@ -13,7 +13,7 @@
 #include "StaticObjectInfo.h"
 #include "XFileMesh.h"
 #include "NavMeshData.h"
-#include "..\..\..\Ref\Include\SceneManager.h"
+#include "SceneManager.h"
 
 USING(Nalmak)
 IMPLEMENT_SINGLETON(ResourceManager)
@@ -30,7 +30,11 @@ ResourceManager::~ResourceManager()
 HRESULT ResourceManager::Initialize(bool _allLoad, const wstring & _path)
 {
 
-	AddFontResource(L"../../Engine/Resource/Client/NanumGothicBold.ttf");
+	AddFontResource(L"../../Engine/Resource/NanumGothicBold.ttf");
+	AddFontResource(L"../../Engine/Resource/MaruBuri-Regular.ttf");
+	AddFontResource(L"../../../../Engine/Resource/NanumGothicBold.ttf");
+	AddFontResource(L"../../../../Engine/Resource/MaruBuri-Regular.ttf");
+
 	// Font
 	m_clientDirectoryPath = _path;
 
@@ -73,8 +77,10 @@ HRESULT ResourceManager::Release()
 
 
 	// Font
-	RemoveFontResource(L"../../Engine/Resource/Client/NanumGothicBold.ttf");
-	
+	RemoveFontResource(L"../../Engine/Resource/NanumGothicBold.ttf");
+	RemoveFontResource(L"../../Engine/Resource/MaruBuri-Regular.ttf");
+	RemoveFontResource(L"../../../../Engine/Resource/NanumGothicBold.ttf");
+	RemoveFontResource(L"../../../../Engine/Resource/MaruBuri-Regular.ttf");
 
 	return S_OK;
 }

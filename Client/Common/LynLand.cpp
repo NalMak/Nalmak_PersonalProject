@@ -47,9 +47,9 @@ void LynLand::EnterState()
 		anim = "Mov_JumpToMove_Left";
 		break;
 	case LYN_MOVE_DIR_STATE_NONE:
+	default:
 		anim = "Mov_JumpToIdle";
 		break;
-	default:
 		break;
 	}
 
@@ -75,9 +75,9 @@ void LynLand::EnterState()
 void LynLand::UpdateState()
 {
 	
-	if (m_animController->GetPlayRemainTime() < 0.15f)
+	if (m_animController->GetPlayRemainTime() < 0.3f)
 	{
-		m_animController->SetBlendOption(0.15f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
+		m_animController->SetBlendOption(0.3f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		SetState(L"idle");
 		return;
 	}

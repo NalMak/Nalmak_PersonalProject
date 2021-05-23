@@ -1,4 +1,5 @@
 #pragma once
+#include "BnS_SystemUI.h"
 class BnS_Skill;
 class LynInfo;
 class BnS_Buff;
@@ -20,6 +21,7 @@ private:
 
 	Material* m_enduranceBar;
 public:
+	void NotifySystemUI(const wstring& _text);
 	void SetLynInfo(LynInfo* _info);
 	void UpdateEnergyUI(float _ratio, LYN_STATE _state);
 	void UpdateHpUI(float _ratio);
@@ -60,5 +62,7 @@ private:
 	
 	Texture* m_damageFont[10];
 	Texture* m_criticalDamageFont[10];
+
+	BnS_SystemUI* m_systemUI;
 };
 

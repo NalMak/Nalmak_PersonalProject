@@ -14,6 +14,7 @@
 
 DebuggingMode::DebuggingMode(Desc * _desc)
 {
+	m_pickSelectedMode = false;
 	m_input = nullptr;
 	m_render = nullptr;
 	m_debugLog = nullptr;
@@ -432,10 +433,16 @@ void DebuggingMode::UpdateDesc()
 
 void DebuggingMode::PickObject()
 {
-
+	GameObject* pickObj = nullptr;
 	
-
-	GameObject* pickObj = Core::GetInstance()->PickObjectByMouse(&Vector3());
+	if (m_pickSelectedMode)
+	{
+		pickObj = Core::GetInstance()->PickObjectByMouse(&Vector3(), m_pickingList);
+	}
+	else
+	{
+		pickObj = Core::GetInstance()->PickObjectByMouse(&Vector3());
+	}
 
 	if (pickObj)
 	{
@@ -577,6 +584,15 @@ void DebuggingMode::UpdatePickingObject()
 }
 
 
+void DebuggingMode::SetPickSelectedMode(vector<MeshRenderer*> _renderers)
+{
+	m_pickSelectedMode = true;
+	m_pickingList = _renderers;
+}
+void DebuggingMode::SetPickSelectedMode(bool _enable)
+{
+	m_pickSelectedMode = _enable;
+}
 
 
 void DebuggingMode::AddUpdateMaterialEvent(EventHandler _e)
@@ -649,6 +665,7 @@ GameObject * DebuggingMode::GetPickingObject()
 
 void DebuggingMode::SetDebugModeActive(DEBUGGING_MODE _mode, bool _active)
 {
+	
 	if (_active)
 		m_debuggingMode.On(_mode);
 	else

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LynBaldo.h"
+#include "LynAttachedEffect.h"
 
 
 LynBaldo::LynBaldo()
@@ -61,6 +62,27 @@ void LynBaldo::EnterState()
 
 		
 
+		// Effect
+		MeshRenderer::Desc meshRenderer;
+		meshRenderer.meshName = L"Tornado02";
+		meshRenderer.mtrlName = L"Lyn_Baldo";
+		LynAttachedEffect::Desc effectDesc;
+		effectDesc.emissionPower = 8.5f;
+		effectDesc.lifeTime = 0.15f;
+		effectDesc.yAxisAngle = 90;
+		effectDesc.emissionBezier = Bezier({0.f, 0.0f}, {0.5f, 0.0588235f }, {1.f, 1.f}, {1.f, 0.f});
+
+		auto effect = INSTANTIATE()->AddComponent<MeshRenderer>(&meshRenderer)->AddComponent<LynAttachedEffect>(&effectDesc)
+			->SetScale(0.065f, 0.065f, 0.07f)->SetRotation(0.f, 150.f, 0.f)->SetPosition(0.f, 1.4f, 0.8f);
+	
+		Quaternion rot;
+		Vector3 axis = { 0,0,1 };
+		axis = Nalmak_Math::Normalize(axis);
+		D3DXQuaternionRotationAxis(&rot, &axis, 30 * Deg2Rad);
+		effect->GetTransform()->rotation *= rot;
+
+		effect->SetParents(m_gameObject);
+		
 	}
 }
 

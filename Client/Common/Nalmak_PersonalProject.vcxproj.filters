@@ -477,6 +477,17 @@
     <ClInclude Include="ZakanFloorAttack.h" />
     <ClInclude Include="MeshEffect_Slash.h" />
     <ClInclude Include="LynStateThunderbolt.h" />
+    <ClInclude Include="FollowXZPos.h" />
+    <ClInclude Include="LynSprint.h" />
+    <ClInclude Include="LynFly.h" />
+    <ClInclude Include="BnS_SystemUI.h" />
+    <ClInclude Include="ZakanStun.h" />
+    <ClInclude Include="LynStarAttack.h" />
+    <ClInclude Include="LynCrash.h" />
+    <ClInclude Include="BnS_AfterImageEffect.h" />
+    <ClInclude Include="LynAttachedEffect.h" />
+    <ClInclude Include="LynSpinSlashEffect.h" />
+    <ClInclude Include="TestEffectMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -785,6 +796,17 @@
     <ClCompile Include="ZakanFloorAttack.cpp" />
     <ClCompile Include="MeshEffect_Slash.cpp" />
     <ClCompile Include="LynStateThunderbolt.cpp" />
+    <ClCompile Include="FollowXZPos.cpp" />
+    <ClCompile Include="LynSprint.cpp" />
+    <ClCompile Include="LynFly.cpp" />
+    <ClCompile Include="BnS_SystemUI.cpp" />
+    <ClCompile Include="ZakanStun.cpp" />
+    <ClCompile Include="LynStarAttack.cpp" />
+    <ClCompile Include="LynCrash.cpp" />
+    <ClCompile Include="BnS_AfterImageEffect.cpp" />
+    <ClCompile Include="LynAttachedEffect.cpp" />
+    <ClCompile Include="LynSpinSlashEffect.cpp" />
+    <ClCompile Include="TestEffectMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -850,13 +872,25 @@
     <FxCompile Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Resource\static\Shader\BnS_MeshEffect.fx">
-      <Filter>03.Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resource\stage\Shader\BnS_Particle.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DN_doubleSided.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_StaticObject_DNE_doubleSided.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_MeshEffect.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_MeshEffect_Soft.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
   </ItemGroup>
@@ -906,13 +940,25 @@
     <None Include="..\Resource\stage\Shader\BnS_Zakan_HWSkinningMask.sd">
       <Filter>03.Shader</Filter>
     </None>
-    <None Include="..\Resource\static\Shader\BnS_MeshEffect.sd">
-      <Filter>03.Shader</Filter>
-    </None>
     <None Include="..\Resource\stage\Shader\BnS_ZakanSwordTrail.sd">
       <Filter>03.Shader</Filter>
     </None>
     <None Include="..\Resource\stage\Shader\BnS_Particle.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DN_doubleSided.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_StaticObject_DNE_doubleSided.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_MeshEffect.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_MeshEffect_Soft.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.sd">
       <Filter>03.Shader</Filter>
     </None>
   </ItemGroup>

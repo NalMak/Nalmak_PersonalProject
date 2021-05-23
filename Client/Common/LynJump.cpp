@@ -60,6 +60,7 @@ void LynJump::UpdateState()
 {
 	if (m_animController->GetPlayRemainTime() < 0.05f)
 	{
+		SetInteger(L"isBlend", 0);
 		m_animController->SetBlendOption(0.05f, 1.f, D3DXTRANSITION_LINEAR);
 		SetInteger(L"JumpDirection", m_jumpDir);
 		SetState(L"fall");

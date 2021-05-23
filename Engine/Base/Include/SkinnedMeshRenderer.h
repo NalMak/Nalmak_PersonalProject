@@ -46,6 +46,7 @@ public:
 	XFileMesh* GetMesh();
 	void SetMesh(const wstring& _meshName);
 	Matrix* GetBoneCombinedMatrix(const string& _boneName);
+	Matrix* GetBoneWorldMatrix(const string& _boneName);
 	Matrix* GetRootWorldMatrix();
 private:
 	vector<Material*> m_materials;

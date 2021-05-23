@@ -24,6 +24,7 @@ void MapTool_NavMeshState::Initialize()
 	{
 		m_pickingPointsForDebug[i] = INSTANTIATE()->AddComponent<MeshRenderer>(&render)->SetScale(0.22f,0.22f,0.22f)->AddComponent<NavSelectedPoint>();
 		m_pickingPointsForDebug[i]->SetActive(false);
+		m_pickingPointsForDebug[i]->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 	}
 
 	m_currentSelectAddPoints[0] = nullptr;
@@ -36,17 +37,23 @@ void MapTool_NavMeshState::Initialize()
 	m_startPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 	m_endPoint->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 
-	m_pickModeGizmo = true;
+	m_pickModeGizmo = false;
 }
 
 void MapTool_NavMeshState::EnterState()
 {
 	//GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, false);
-
 }
 
 void MapTool_NavMeshState::UpdateState()
 {
+	//GetComponent<DebuggingMode>()->SetDebugModeActive(DEBUGGING_MODE::DEBUGGING_MODE_PICKING, false);
+	vector<MeshRenderer*> pickList;
+	for (auto& point : m_pointDebug) //모든 점 
+		pickList.emplace_back(point->GetComponent<MeshRenderer>());
+	GetComponent<DebuggingMode>()->SetPickSelectedMode(pickList);
+
+
 	Vector2 mousePos = InputManager::GetInstance()->GetMousePosition();
 	Vector3 pickingPoint = { 0,0,0 };
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_SPACE))
@@ -56,18 +63,13 @@ void MapTool_NavMeshState::UpdateState()
 		if (m_pickModeGizmo)
 		{
 			for (auto& point : m_pointDebug)
-				point->GetComponent<MeshRenderer>()->SetPickingEnable(false);
+				point->GetComponent<MeshRenderer>()->SetPickingEnable(true);
 		}
 		else
 		{
 			for (auto& point : m_pointDebug)
-				point->GetComponent<MeshRenderer>()->SetPickingEnable(true);
+				point->GetComponent<MeshRenderer>()->SetPickingEnable(false);
 		}
-	}
-
-	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_X))
-	{
-
 	}
 
 	if (InputManager::GetInstance()->GetKeyDown(KEY_STATE_LEFT_MOUSE))
@@ -79,22 +81,15 @@ void MapTool_NavMeshState::UpdateState()
 		m_pickingPointsForDebug[0]->SetActive(false);
 		m_pickingPointsForDebug[1]->SetActive(false);
 
-		if (m_pickModeGizmo)
-		{
-			vector<MeshRenderer*> pointRenderer;
-			for (auto& point : m_pointDebug)
-				pointRenderer.emplace_back(point->GetComponent<MeshRenderer>());
-			GameObject* pickPoint = Core::GetInstance()->PickObjectByMouse(nullptr, pointRenderer);
-			if (pickPoint)
-				m_currentSelectMovePoint = pickPoint;
-		}
+		
+		vector<MeshRenderer*> pointRenderer;
+		for (auto& point : m_pointDebug) //모든 점 
+			pointRenderer.emplace_back(point->GetComponent<MeshRenderer>());
+		GameObject* pickPoint = Core::GetInstance()->PickObjectByMouse(nullptr, pointRenderer);
+		if (pickPoint)
+			m_currentSelectMovePoint = pickPoint;
 
-		vector<MeshRenderer*> centerRenderer;
-		for (auto& cell : m_cellCenterDebug)
-			centerRenderer.emplace_back(cell->GetComponent<MeshRenderer>());
-		GameObject* pickCenter = Core::GetInstance()->PickObjectByMouse(nullptr, centerRenderer);
-		if (pickCenter)
-			pickCenter->GetComponent<NavPointDraw>()->ReverseCell();
+		
 		
 	}
 	if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_LEFT_MOUSE))
@@ -117,8 +112,21 @@ void MapTool_NavMeshState::UpdateState()
 	{
 		m_currentSelectMovePoint = nullptr;
 
+		vector<MeshRenderer*> centerRenderer;
+		for (auto& cell : m_cellCenterDebug)
+			centerRenderer.emplace_back(cell->GetComponent<MeshRenderer>());
+		GameObject* pickCenter = Core::GetInstance()->PickObjectByMouse(nullptr, centerRenderer);
+		if (pickCenter)
+		{
+			pickCenter->GetComponent<NavPointDraw>()->ReverseCell();
+			return;
+		}
+
+
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_ALT))
 			return;
+
+		
 
 		if (Core::GetInstance()->PickObjectByMouse(&pickingPoint))
 		{
@@ -229,6 +237,7 @@ void MapTool_NavMeshState::UpdateState()
 
 void MapTool_NavMeshState::ExitState()
 {
+	GetComponent<DebuggingMode>()->SetPickSelectedMode(false);
 }
 
 bool MapTool_NavMeshState::IsPickingSuccessNavPoint(Vector3  _point)

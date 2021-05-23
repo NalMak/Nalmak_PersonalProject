@@ -2,20 +2,14 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_MeshEffect"
+shader "BnS_AfterImage_Effect"
 
-texture "g_mainTex" "Gradient_Slash_000"
-vector4 "g_mainTexColor" "3.1f,1.3f,1.1f,1.f"
-float "g_emissionPower" "0.2f"
-
-float "g_uvAnimX" "1.f"
-float "g_uvAnimY" "0.f"
-
-renderQueue "3000"
+renderQueue "4000"
 
 blendingMode "1"
 
 fillMode "0"
+
 #########################################################
 ##   1. Shander
 ##  ---------------------------------------------------------------------------------------
@@ -52,3 +46,6 @@ fillMode "0"
 ##    FILL_MODE_WIREFRAME     : 1
 ##    FILL_MODE_POINT             : 2
 #########################################################
+
+
+

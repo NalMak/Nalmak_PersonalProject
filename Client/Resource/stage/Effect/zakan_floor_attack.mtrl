@@ -5,15 +5,15 @@
 shader "BnS_MeshEffect"
 
 texture "g_mainTex" "Gradient_Slash_000"
-vector4 "g_mainTexColor" "3.1f,1.3f,1.1f,1.f"
-float "g_emissionPower" "0.2f"
+vector4 "g_mainTexColor" "1.1f,1.1f,1.1f,1.f"
+float "g_emissionPower" "10.2f"
 
 float "g_uvAnimX" "0.f"
 float "g_uvAnimY" "0.f"
 
 renderQueue "3000"
 
-blendingMode "1"
+blendingMode "2"
 
 fillMode "0"
 #########################################################

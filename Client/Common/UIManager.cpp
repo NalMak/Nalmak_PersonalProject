@@ -20,6 +20,15 @@ UIManager::~UIManager()
 void UIManager::CreateMainUI()
 {
 	{
+		Text::Desc text;
+		text.boundary = { -300,0,300,30 };
+		text.option = DT_CENTER;
+		text.weight = 700;
+		text.fontName = L"MaruBuri-Regular";
+		auto ui = INSTANTIATE()->AddComponent<BnS_SystemUI>()->AddComponent<Text>(&text)->AddComponent<CanvasRenderer>();
+		m_systemUI = ui->GetComponent<BnS_SystemUI>();
+	}
+	{
 		SingleImage::Desc image;
 		image.textureName = L"bns_bossHP_outLine";
 		INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetScale(450, 18)->SetPosition(HALF_WINCX, 120);
@@ -166,17 +175,18 @@ void UIManager::CreateMainUI()
 		Text::Desc text;
 		text.boundary = { 20,0,200,30 };
 		text.option = DT_LEFT;
-		text.color = D3DXCOLOR(1, 1, 1, 0.5f);
+		text.weight = 700;
+		text.color = D3DXCOLOR(1, 1, 1, 0.6f);
 		image.textureName = L"GameUI_LeftBottom";
-		m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
+		m_targetOutLine[0] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(11, 11);
 		m_targetOutLine[0]->SetActive(false);
 
 		image.textureName = L"GameUI_LeftTop";
-		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
+		m_targetOutLine[1] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(11, 11);
 		m_targetOutLine[1]->SetActive(false);
 
 		image.textureName = L"GameUI_RightTop";
-		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(10, 10);
+		m_targetOutLine[2] = INSTANTIATE()->AddComponent<CanvasRenderer>()->AddComponent<SingleImage>(&image)->SetPosition(HALF_WINCX, HALF_WINCY)->SetScale(11, 11);
 		m_targetOutLine[2]->SetActive(false);
 
 		image.textureName = L"GameUI_RightBottom";
@@ -185,6 +195,12 @@ void UIManager::CreateMainUI()
 		 
 
 	}
+}
+
+void UIManager::NotifySystemUI(const wstring & _text)
+{
+	m_systemUI->GetGameObject()->SetActive(true);
+	m_systemUI->Notify(_text);
 }
 
 void UIManager::SetLynInfo(LynInfo * _info)
@@ -283,8 +299,9 @@ GameObject* UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT 
 	Text::Desc text;
 	text.boundary = { -30,30,30,100 };
 	text.option = DT_CENTER;
-	text.height = 15;
-	text.weight = 500;
+	text.height = 11;
+	text.weight = 600;
+	
 	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.8f);
 	text.text = L"test";
 	CanvasRenderer::Desc canvas;
@@ -346,8 +363,8 @@ GameObject* UIManager::CreateSkillIcon(BNS_SKILL_SLOT _skillSlot, UINT _x, UINT 
 	}
 	text.option = DT_LEFT;
 	text.boundary = { -20,-23,10,-70 };
-	text.height = 17;
-	text.weight = 700;
+	text.height = 11;
+	text.weight = 650;
 	text.color = D3DXCOLOR(0.95f, 0.95f, 0.95f, 0.9f);
 	obj->AddComponent<Text>(&text);
 	SingleImage::Desc image;

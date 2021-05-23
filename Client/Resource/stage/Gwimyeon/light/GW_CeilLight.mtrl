@@ -2,7 +2,7 @@
 ##  Material Data Setting
 #########################################################
 
-shader "BnS_StaticObject_DNE"
+shader "BnS_StaticObject_DNE_doubleSided"
 
 texture "g_mainTex" "AmSijang_Flag_01_D"
 texture "g_normalTex" "GW_GwimyeonGeukDan_Light_01_N"

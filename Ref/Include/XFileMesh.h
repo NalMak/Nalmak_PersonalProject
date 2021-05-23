@@ -27,9 +27,11 @@ private:
 	LPD3DXANIMATIONCONTROLLER m_animController;
 	LPD3DXFRAME m_root;
 	vector<Nalmak_MeshContainer*>		m_meshContainerList;
+	map<string, pair<int, int>> m_boneIndex;
 private:
 	void TraverseBone(Nalmak_Frame* _frame);
 public:
+	const pair<int, int>& GetBoneIndex(const string& _boneName);
 	LPD3DXANIMATIONCONTROLLER  GetAnimationController();
 	LPD3DXFRAME GetRoot();
 

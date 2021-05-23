@@ -14,5 +14,6 @@ public:
 	virtual void ExitState() override;
 private:
 	ZAKAN_PATTERN m_phaseIndex;
+	GameObject* m_navCollider;
 };
 

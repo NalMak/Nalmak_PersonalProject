@@ -4,6 +4,7 @@
 #include "LynInfo.h"
 #include "EnemyStateControl.h"
 #include "UIManager.h"
+#include "BnS_AfterImageEffect.h"
 
 BnS_Enemy::BnS_Enemy(Desc * _desc)
 {
@@ -17,6 +18,7 @@ BnS_Enemy::BnS_Enemy(Desc * _desc)
 	m_target = nullptr;
 
 	m_volumeRect = _desc->volumeRect;
+	D3DXQuaternionRotationYawPitchRoll(&m_spawnRot, -90 * Deg2Rad, 0, 0);
 }
 
 BnS_Enemy::~BnS_Enemy()
@@ -37,12 +39,11 @@ void BnS_Enemy::Initialize()
 	m_stateControl = GetComponent<EnemyStateControl>();
 	m_audio = GetComponent<AudioSource>();
 	m_spawnPos = m_transform->GetWorldPosition();
-	m_spawnRot = m_transform->GetWorldRotation();
 }
 
 void BnS_Enemy::Update()
 {
-	DEBUG_LOG(L"enemy hp", m_hp);
+	DEBUG_LOG(L"enemy hp", m_transform);
 
 	CalcWorldVolume();
 	m_character->AddVelocity(0, -50.f * dTime, 0);
@@ -87,12 +88,43 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 				{
 					case ATTACK_TYPE_DOWN:
 					{
-						m_stateControl->SetInteger(L"downExtension", 1);
+						m_stateControl->SetInteger(L"extension", 1);
 						m_stateControl->SetFloat(L"down", attackInfo->m_ccTime);
 						m_stateControl->SetState(L"down");
 						break;
 					}
 					
+				}
+			}
+			else if (m_battleState == BATTLE_STATE_STUN || m_battleState == BATTLE_STATE_GROGY)
+			{
+				auto type = attackInfo->m_attackType;
+				switch (type)
+				{
+				case ATTACK_TYPE_AIR:
+				{
+					m_stateControl->SetInteger(L"extension", 0);
+					m_stateControl->SetFloat(L"ccTime", attackInfo->m_ccTime);
+					m_stateControl->SetState(L"air");
+					return;
+				}
+				}
+				
+			}
+			else if (m_battleState == BATTLE_STATE_AIR)
+			{
+				auto type = attackInfo->m_attackType;
+				switch (type)
+				{
+				case ATTACK_TYPE_AIR:
+				{
+					m_stateControl->SetInteger(L"extension", 1);
+					m_stateControl->SetFloat(L"ccTime", attackInfo->m_ccTime);
+					m_stateControl->SetState(L"air");
+					GetDamage(attackInfo);
+
+					return;
+				}
 				}
 			}
 			else if (m_battleState == BATTLE_STATE_WEAK)
@@ -103,19 +135,43 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 				case ATTACK_TYPE_DEFAULT:
 					break;
 				case ATTACK_TYPE_DOWN:
+				{
+					BnS_AfterImageEffect::Desc effect;
+					effect.lifeTime = 2.f;
+					effect.object = m_gameObject;
+					effect.color = { 0.15f,0.35f,0.15f,1 };
+					INSTANTIATE()->AddComponent<BnS_AfterImageEffect>(&effect);
+
 					m_audio->PlayOneShot(L"down_attack");
 					m_stateControl->SetInteger(L"downExtension", 0);
-					m_stateControl->SetFloat(L"down", attackInfo->m_ccTime);
+					m_stateControl->SetFloat(L"ccTime", attackInfo->m_ccTime);
 					m_stateControl->SetState(L"down");
 					break;
+				}
 				case ATTACK_TYPE_GROGY:
+				{
+					BnS_AfterImageEffect::Desc effect;
+					effect.lifeTime = 2.f;
+					effect.object = m_gameObject;
+					effect.color = { 0.5f,0.25f,0.25f,1 };
+					INSTANTIATE()->AddComponent<BnS_AfterImageEffect>(&effect);
+
 					m_audio->PlayOneShot(L"grogy_attack");
-
 					break;
+				}
 				case ATTACK_TYPE_STUN:
-					m_audio->PlayOneShot(L"stun_attack");
+				{
+					BnS_AfterImageEffect::Desc effect;
+					effect.lifeTime = 2.f;
+					effect.object = m_gameObject;
+					effect.color = { 0.35f,0.35f,0.5f,1 };
+					INSTANTIATE()->AddComponent<BnS_AfterImageEffect>(&effect);
 
+					m_audio->PlayOneShot(L"stun_attack");
+					m_stateControl->SetFloat(L"ccTime", attackInfo->m_ccTime);
+					m_stateControl->SetState(L"stun");
 					break;
+				}
 				case ATTACK_TYPE_MAGNETIC:
 					break;
 				case ATTACK_TYPE_AIR:
@@ -126,10 +182,7 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 					break;
 				}
 			}
-			if (attackInfo->m_attackType == ATTACK_TYPE_AIR)
-			{
-				m_stateControl->SetState(L"air");
-			}
+			
 			GetDamage(attackInfo);
 			
 		}
@@ -138,6 +191,11 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 
 void BnS_Enemy::OnTriggerExit(Collision & _col)
 {
+}
+
+void BnS_Enemy::HitByAttackInfo(AttackInfo * _attack)
+{
+	GetDamage(_attack);
 }
 
 BATTLE_STATE BnS_Enemy::GetBattleState()

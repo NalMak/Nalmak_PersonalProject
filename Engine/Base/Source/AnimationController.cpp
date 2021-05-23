@@ -133,14 +133,24 @@ void AnimationController::Update()
 
 void AnimationController::EachRender()
 {
-	if (m_isStop)
-		return;
+	
 	if (!m_currentAnimationClip)
 		return;
+
 	m_prePlayTime = m_currentPlayTime;
 	D3DXTRACK_DESC desc;
 	m_animController->GetTrackDesc(m_currentTrack, &desc);
 	m_currentPlayTime = desc.Position;
+
+	if (m_isStop)
+	{
+		m_animController->AdvanceTime(0, NULL);
+		m_animController->SetTrackPosition(m_currentTrack, m_totalPlayTime - 0.0001);
+		m_animController->ResetTime();
+		m_currentPlayTime = m_totalPlayTime - 0.0001;
+		UpdateBoneMatrix();
+		return;
+	}
 
 	double time = (double)TimeManager::GetInstance()->GetdeltaTime() * m_currentAnimationClip->speed;
 
@@ -230,6 +240,66 @@ void AnimationController::AddAnimationClip(const string & _animName, float _spee
 		clip->animationName = animSet->GetName();
 		clip->speed = _speed;
 		clip->loop = _loop;
+
+		clip->animationSet = animSet;
+
+		m_animationClips[animSet->GetName()] = clip;
+
+		animSet->Release();
+
+	}
+}
+
+void AnimationController::AddAnimationClip(AnimationClip * _clip)
+{
+	assert(L"Please Add Animation Controller Component!" && this);
+
+	Mesh* mesh = ResourceManager::GetInstance()->GetResource<Mesh>(Nalmak_String::StringToWString(_clip->animationName));
+	if (mesh->GetMeshType() != MESH_TYPE_ANIMATION)
+		assert(L"No animation data in mesh File! " && 0);
+	XFileMesh* xMesh = (XFileMesh*)mesh;
+
+	LPD3DXANIMATIONCONTROLLER mixedAnimController;
+	LPD3DXANIMATIONCONTROLLER animController = xMesh->GetAnimationController();
+	UINT newAnimationCount = animController->GetNumAnimationSets();
+
+	if (m_animController)
+	{
+		ThrowIfFailed(m_animController->CloneAnimationController(
+			m_animController->GetMaxNumAnimationOutputs(),
+			m_animController->GetMaxNumAnimationSets() + newAnimationCount,
+			m_animController->GetMaxNumTracks(),
+			m_animController->GetMaxNumEvents(),
+			&mixedAnimController));
+
+		m_animController->Release();
+	}
+	else
+	{
+		ThrowIfFailed(animController->CloneAnimationController(
+			animController->GetMaxNumAnimationOutputs(),
+			animController->GetMaxNumAnimationSets(),
+			animController->GetMaxNumTracks(),
+			animController->GetMaxNumEvents(),
+			&mixedAnimController));
+	}
+
+
+	m_animController = mixedAnimController;
+	LPD3DXANIMATIONSET animSet;
+	for (UINT animCount = 0; animCount < newAnimationCount; ++animCount)
+	{
+		animController->GetAnimationSet(animCount, &animSet);
+		m_animController->RegisterAnimationSet(animSet);
+
+		wstring animName = Nalmak_String::StringToWString(animSet->GetName());
+
+		AnimationClip* clip = ResourceManager::GetInstance()->GetResourceIfExist<AnimationClip>(animName);
+		if (!clip)
+			clip = ResourceManager::GetInstance()->AddResource<AnimationClip, AnimationClip>(animName);
+		clip->animationName = animSet->GetName();
+		clip->speed = _clip->speed;
+		clip->loop = _clip->loop;
 
 		clip->animationSet = animSet;
 
@@ -522,7 +592,7 @@ const string & AnimationController::GetCurrentPlayAnimationName()
 	return m_currentAnimationClip->animationName;
 }
 
-AnimationClip * AnimationController::GetCurrentPlayAnimation()
+AnimationClip * AnimationController::GetCurrentAnimationClip()
 {
 	return m_currentAnimationClip;
 }
@@ -718,7 +788,7 @@ const Matrix & AnimationController::GetRootMatrix()
 
 void AnimationController::PlayBlending(AnimationController * _otherController)
 {
-	PlayBlending(_otherController->GetCurrentPlayAnimation(), _otherController->m_currentPlayTime);
+	PlayBlending(_otherController->GetCurrentAnimationClip(), _otherController->m_currentPlayTime);
 }
 
 void AnimationController::Release()

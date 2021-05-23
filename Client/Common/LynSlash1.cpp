@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LynSlash1.h"
+#include "LynAttachedEffect.h"
 
 
 LynSlash1::LynSlash1()
@@ -31,7 +32,26 @@ void LynSlash1::EnterState()
 
 	PlayOneShot(Nalmak_Math::Random<wstring>(L"lyn_slash1_1", L"lyn_slash1_2", L"lyn_slash1_3"));
 
+	if (m_isUpper)
+	{
 
+		// Effect
+		MeshRenderer::Desc meshRenderer;
+		meshRenderer.meshName = L"MeshTrail002";
+		meshRenderer.mtrlName = L"Lyn_Slash1";
+		LynAttachedEffect::Desc effectDesc;
+		effectDesc.emissionPower = 0.3f;
+		effectDesc.lifeTime = 0.35f;
+
+		effectDesc.emissionBezier = Bezier({ 0.f, 0.0f }, { 0.3f, 1.0f }, { 0.7f, 1.0f }, { 1.f, 0.0f });
+
+		effectDesc.rotateSpeed = -600.f;
+		auto effect = INSTANTIATE()->AddComponent<MeshRenderer>(&meshRenderer)->AddComponent<LynAttachedEffect>(&effectDesc)
+			->SetScale(0.25f, 0.8f, 0.25f)->SetRotation(0.f, 120.f, 180.f)->SetPosition(0.f, 2.5f, 0.f);
+
+		effect->SetParents(m_gameObject);
+
+	}
 }
 
 void LynSlash1::UpdateState()

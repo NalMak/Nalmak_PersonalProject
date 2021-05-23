@@ -4,12 +4,14 @@
 
 shader "BnS_MeshEffect"
 
-texture "g_mainTex" "Gradient_Light_Line_000"
-vector4 "g_mainTexColor" "1.f,1.f,1.5f,1.f"
-float "g_emissionPower" "1.f"
+texture "g_mainTex" "Glow_ShockWave_008"
+vector4 "g_mainTexColor" "0.9f, 0.9f, 1.5f, 1.f"
+float "g_emissionPower" "1.0f"
 
-float "g_uvAnimX" "1.f"
-float "g_uvAnimY" "0.f"
+float "g_uvAnimX" "0.f"
+float "g_uvAnimY" "15.f"
+int "g_uvRepeatX" "3"
+int "g_uvRepeatY" "1"
 
 renderQueue "3000"
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ZakanChange.h"
+#include "UIManager.h"
 
 
 ZakanChange::ZakanChange()
@@ -24,6 +25,8 @@ void ZakanChange::EnterState()
 	m_info->SetBattleState(BATTLE_STATE_ABNORMALSTATE_RESISTANCE);
 	m_animController->Play("zakan_summon_cast");
 	m_emissioinPower = 0.f;
+
+	UIManager::GetInstance()->NotifySystemUI(L"자칸이 본 모습을 드러냅니다");
 }
 
 void ZakanChange::UpdateState()

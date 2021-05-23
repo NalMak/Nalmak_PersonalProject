@@ -18,4 +18,6 @@ private:
 	Vector3 m_flyVelocity;
 	float m_flyLength;
 	float m_flyTime;
+
+	float m_exceptTime;
 };

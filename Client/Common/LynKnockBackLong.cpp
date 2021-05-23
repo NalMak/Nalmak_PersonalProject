@@ -26,7 +26,7 @@ void LynKnockBackLong::EnterState()
 	m_info->ChangeSkillByState(LYN_SKILL_STATE_CC);
 	m_info->SetBattleState(BATTLE_STATE_KNOCKBACK);
 
-	m_character->SetVelocity(0, 20, 0);
+	m_character->SetVelocity(0, 22, 0);
 	m_animController->Play("Lyn_B_KnockBack_Long_B");
 }
 
