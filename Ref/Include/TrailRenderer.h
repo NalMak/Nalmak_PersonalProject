@@ -15,7 +15,7 @@ public:
 		int maxTrailCount = 300;
 		int detailCount = 1;
 		int layer = 0;
-		bool playOnStart = false;
+		bool playOnStart = true;
 	};
 public:
 	TrailRenderer(Desc* _desc);

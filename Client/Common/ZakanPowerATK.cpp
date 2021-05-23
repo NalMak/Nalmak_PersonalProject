@@ -115,8 +115,10 @@ void ZakanPowerATK::CreateAttack()
 {
 	AttackInfo::Desc info;
 	info.attackType = ATTACK_TYPE_GROGY;
-	info.colliderType = COLLIDER_TYPE_SPHERE;
-	info.radius = 10.f;
+	info.colliderType = COLLIDER_TYPE_BOX;
+	info.width = 7.f;
+	info.depth = 14.f;
+	info.height = 14.f;
 	info.power = 2000;
 	info.host = m_gameObject;
 	auto hitBox = INSTANTIATE(OBJECT_TAG_ATTACKINFO, OBJECT_LAYER_ENEMY_HITBOX)->AddComponent<AttackInfo>(&info);

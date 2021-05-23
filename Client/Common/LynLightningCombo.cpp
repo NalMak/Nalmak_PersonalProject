@@ -28,7 +28,17 @@ void LynLightningCombo::EnterState()
 	attack.width = 6;
 	attack.innerPower = 1;
 	attack.soundName = L"SwordMaster_Sword_Lightning_TwicePierce_ExecHit";
-	CreateAttackInfo(&attack, 3.f, 1.5f, 3.f);
+	auto effect = CreateAttackInfo(&attack, 3.f, 1.5f, 3.f);
+
+	if (effect)
+	{
+		PointLight::Desc point;
+		point.color = Vector3(0.85f, 0.9f, 1.f);
+		point.radius = 10.f;
+		point.diffuseIntensity = 3.5f;
+		effect->AddComponent<PointLight>(&point);
+	}
+
 
 
 	PlayOneShot(L"SwordMaster_Sword_Lightning_TwicePierce_Fire");
@@ -52,10 +62,19 @@ void LynLightningCombo::UpdateState()
 		attack.height = 5;
 		attack.depth = 5;
 		attack.width = 8;
-		CreateAttackInfo(&attack, 5.f, 1.5f, 3.5f, [=]()
+		auto effect =  CreateAttackInfo(&attack, 5.f, 1.5f, 3.5f, [=]()
 		{
 			m_effect->PlayLightningComboEffect();
 		});
+
+		if (effect)
+		{
+			PointLight::Desc point;
+			point.color = Vector3(0.85f, 0.9f, 1.f);
+			point.radius = 10.f;
+			point.diffuseIntensity = 3.5f;
+			effect->AddComponent<PointLight>(&point);
+		}
 	}
 
 	if (m_animController->GetPlayRemainTime() < 1.f)

@@ -153,7 +153,7 @@ void BnS_Enemy::OnTriggerEnter(Collision & _col)
 					BnS_AfterImageEffect::Desc effect;
 					effect.lifeTime = 2.f;
 					effect.object = m_gameObject;
-					effect.color = { 0.5f,0.25f,0.25f,1 };
+					effect.color = { 0.5f,0.2f,0.2f,1 };
 					INSTANTIATE()->AddComponent<BnS_AfterImageEffect>(&effect);
 
 					m_audio->PlayOneShot(L"grogy_attack");

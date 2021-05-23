@@ -428,6 +428,12 @@ void RenderManager::PointLightPass(Camera* _cam, ConstantBuffer & _cBuffer)
 	{
 		auto pointLight = m_lightManager->GetPointLight(i);
 
+		if(!pointLight->GetGameObject()->IsActive())
+			continue;
+
+		if (!pointLight->IsActive())
+			continue;
+
 		Vector3 pos = pointLight->GetTransform()->GetWorldPosition();
 		float scale = pointLight->GetRadius() * 2;
 		pointLight->SetLightPosition(pos);

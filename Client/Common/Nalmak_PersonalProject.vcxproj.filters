@@ -488,6 +488,9 @@
     <ClInclude Include="LynAttachedEffect.h" />
     <ClInclude Include="LynSpinSlashEffect.h" />
     <ClInclude Include="TestEffectMesh.h" />
+    <ClInclude Include="BnS_AttackArea.h" />
+    <ClInclude Include="BnS_AttackArea_ScaleAnim.h" />
+    <ClInclude Include="EffectMove.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -807,6 +810,9 @@
     <ClCompile Include="LynAttachedEffect.cpp" />
     <ClCompile Include="LynSpinSlashEffect.cpp" />
     <ClCompile Include="TestEffectMesh.cpp" />
+    <ClCompile Include="BnS_AttackArea.cpp" />
+    <ClCompile Include="BnS_AttackArea_ScaleAnim.cpp" />
+    <ClCompile Include="EffectMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Nalmak_PersonalProject.ico">
@@ -893,6 +899,18 @@
     <FxCompile Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.fx">
       <Filter>03.Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Circle.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect2.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect1.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect3.fx">
+      <Filter>03.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd">
@@ -959,6 +977,18 @@
       <Filter>03.Shader</Filter>
     </None>
     <None Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Circle.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect2.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect1.sd">
+      <Filter>03.Shader</Filter>
+    </None>
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect3.sd">
       <Filter>03.Shader</Filter>
     </None>
   </ItemGroup>

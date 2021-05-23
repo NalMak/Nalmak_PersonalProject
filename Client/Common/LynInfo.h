@@ -10,7 +10,7 @@ class LynInfo :
 public:
 	struct Desc
 	{
-		float runForwardSpeed = 14.5f;
+		float runForwardSpeed = 12.5f;
 		float runBackwardSpeed = 8.f;
 		float sprintSpeed = 20.f;
 		float airSpeed = 10.5f;

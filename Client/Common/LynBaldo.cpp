@@ -44,6 +44,8 @@ void LynBaldo::EnterState()
 			->SetPosition(m_transform->GetWorldPosition() + m_transform->GetForward() * 5 + Vector3(0, 2, 0))
 			->SetRotation(m_transform->GetWorldRotation());
 
+	
+
 		if (attack.isCritical)
 		{
 			hitBox->GetComponent<AttackInfo>()->AddHitEvent([=]()
@@ -67,7 +69,7 @@ void LynBaldo::EnterState()
 		meshRenderer.meshName = L"Tornado02";
 		meshRenderer.mtrlName = L"Lyn_Baldo";
 		LynAttachedEffect::Desc effectDesc;
-		effectDesc.emissionPower = 8.5f;
+		effectDesc.emissionPower = 13.5f;
 		effectDesc.lifeTime = 0.15f;
 		effectDesc.yAxisAngle = 90;
 		effectDesc.emissionBezier = Bezier({0.f, 0.0f}, {0.5f, 0.0588235f }, {1.f, 1.f}, {1.f, 0.f});

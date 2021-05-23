@@ -5,7 +5,7 @@
 shader "BnS_MeshEffect_Soft"
 
 texture "g_mainTex" "Sparkle_Ink_013"
-vector4 "g_mainTexColor" "1.1f, 0.6f, 1.1f, 1.f"
+vector4 "g_mainTexColor" "1.0f, 0.8f, 1.1f, 1.f"
 float "g_emissionPower" "1.0f"
 
 float "g_uvAnimX" "0.f"

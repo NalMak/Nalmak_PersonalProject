@@ -115,18 +115,18 @@ StageScene::~StageScene()
 
 void StageScene::Initialize()
 {
-	{
-		MeshRenderer::Desc mesh;
-		mesh.mtrlName = L"zakan_floorAttack";
-		mesh.meshName = L"em_trail_test2";
-		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 30, 30);
-	}
-	{
-		MeshRenderer::Desc mesh;
-		mesh.mtrlName = L"zakan_floorAttack2";
-		mesh.meshName = L"Lyn_em_slash";
-		INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 10, 30);
-	}
+	//{
+	//	MeshRenderer::Desc mesh;
+	//	mesh.mtrlName = L"zakan_floorAttack";
+	//	mesh.meshName = L"em_trail_test2";
+	//	INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 30, 30);
+	//}
+	//{
+	//	MeshRenderer::Desc mesh;
+	//	mesh.mtrlName = L"zakan_floorAttack2";
+	//	mesh.meshName = L"Lyn_em_slash";
+	//	INSTANTIATE()->AddComponent<MeshRenderer>(&mesh)->AddComponent<MeshEffect_Slash>()->SetScale(0.1f, 0.1f, 0.1f)->SetPosition(30, 10, 30);
+	//}
 #pragma region Debug
 	DebuggingMode::Desc debug;
 	debug.createDirectoryMonitor = true;
@@ -144,7 +144,6 @@ void StageScene::Initialize()
 	auto cam = INSTANTIATE(OBJECT_TAG_DEFAULT, OBJECT_LAYER_CAMERA);
 	
 	INSTANTIATE()->AddComponent<BnS_SystemSetting>();
-
 
 	INSTANTIATE()->AddComponent<MeshRenderer>()->AddComponent<BoxCollider>()->SetPosition(-10,10,0);
 
@@ -558,7 +557,7 @@ void StageScene::Initialize()
 		trail.detailCount = 6;
 		trail.maxTrailCount = 50;
 		trail.mtrlName = L"Lyn_weapon_trail";
-		
+		trail.playOnStart = false;
 		auto weapon = INSTANTIATE(L"weapon")->AddComponent<MeshRenderer>(&mesh)->AddComponent<LynWeapon>()->AddComponent<TrailRenderer>(&trail)->SetScale(0.5f, 0.65f, 0.5f);
 		lyn->GetComponent<LynInfo>()->EquipeWeapon(weapon);
 	}
@@ -679,7 +678,7 @@ void StageScene::Initialize()
 		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Cast", 0.7f, false);
 		animCtrl->AddAnimationClip("Zakan_B_DamageShield_Exec", 0.7f, false);
 
-		animCtrl->AddAnimationClip("Zakan_SplitBlood_Cast", 1.f, false);
+		animCtrl->AddAnimationClip("Zakan_SplitBlood_Cast", 1.3f, false);
 		animCtrl->AddAnimationClip("Zakan_SplitBlood_Exec", 1.f, false);
 
 		animCtrl->AddAnimationClip("zakan_summon_cast", 0.7f, false);

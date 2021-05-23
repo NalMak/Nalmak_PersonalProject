@@ -36,8 +36,8 @@ protected:
 
 	void ReduceInnerPower(UINT _innerPower);
 	void AddInnerPower(UINT _innerPower);
-	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
-	void CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply, AttackInfo::HitEvent _hitEvent);
+	GameObject*  CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply);
+	GameObject*  CreateAttackInfo(AttackInfo::Desc* _attackInfo, float _forward, float _height, float _powerMultiply, AttackInfo::HitEvent _hitEvent);
 
 	void ChangeSkillSlotTexture(BNS_SKILL_SLOT _slot, Texture* _tex,wstring _skillName);
 	void PlayOneShot(const wstring& _sound);
@@ -46,6 +46,9 @@ protected:
 	bool IsAnyMoveKeyInput();
 private:
 	AudioSource* m_audio;
+
+protected:
+	void CreateVerticalSlashEffect(bool _dir);
 
 };
 

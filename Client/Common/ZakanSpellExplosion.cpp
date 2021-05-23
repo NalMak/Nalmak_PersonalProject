@@ -2,6 +2,7 @@
 #include "ZakanSpellExplosion.h"
 #include "EnemyState.h"
 #include "LynInfo.h"
+#include "UIManager.h"
 
 
 ZakanSpellExplosion::ZakanSpellExplosion()
@@ -20,6 +21,9 @@ void ZakanSpellExplosion::Initialize()
 void ZakanSpellExplosion::EnterState()
 {
 	//m_info->LookTarget();
+
+	UIManager::GetInstance()->NotifySystemUI(L"자칸이 천공파열을 사용합니다");
+
 	m_animController->Play("Zakan_B_Spell_Explosion_Cast");
 	m_audio->PlayOneShot(L"Zakan_SpellExplosion_Cast1-1");
 

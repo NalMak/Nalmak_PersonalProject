@@ -13,6 +13,7 @@ LynWeapon::~LynWeapon()
 void LynWeapon::Initialize()
 {
 	m_weaponState = LYN_WEAPON_THROW_STATE_NONE;
+
 	m_swordTrail = GetComponent<TrailRenderer>();
 
 	m_trailStartPos = INSTANTIATE()->AddComponent<MeshRenderer>();

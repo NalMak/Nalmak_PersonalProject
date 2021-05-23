@@ -42,7 +42,7 @@ LynSkillController::LynSkillController(Desc * _desc)
 	});
 
 	
-	CreateSkill(L"verticalCut_l0", L"가르기", BNS_SKILL_SLOT_RB, L"skill_Icon83", 0.3f, KEY_STATE_RIGHT_MOUSE, false, true, 0,0,0,[](LynInfo* _info)->bool {
+	CreateSkill(L"verticalCut_l0", L"가르기", BNS_SKILL_SLOT_RB, L"skill_Icon83", 0.3f, KEY_STATE_RIGHT_MOUSE, false, true, 0,0,1,[](LynInfo* _info)->bool {
 		if (_info->GetInnerPower() > 1)
 			return true;
 		else
@@ -106,7 +106,7 @@ LynSkillController::LynSkillController(Desc * _desc)
 		return false;
 	});
 
-	CreateSkill(L"rotateSoulBlade", L"귀검령", BNS_SKILL_SLOT_Z, L"skill_Icon75", 16.f, KEY_STATE_Z, true,true,0,0,0, [](LynInfo* _info)->bool {
+	CreateSkill(L"rotateSoulBlade", L"귀검령", BNS_SKILL_SLOT_Z, L"skill_Icon75", 24.f, KEY_STATE_Z, true,true,0,0,0, [](LynInfo* _info)->bool {
 		return true;
 	});
 

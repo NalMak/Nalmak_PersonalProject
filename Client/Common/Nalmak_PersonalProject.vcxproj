@@ -179,6 +179,8 @@
   <ItemGroup>
     <ClInclude Include="AttackInfo.h" />
     <ClInclude Include="BnS_AfterImageEffect.h" />
+    <ClInclude Include="BnS_AttackArea.h" />
+    <ClInclude Include="BnS_AttackArea_ScaleAnim.h" />
     <ClInclude Include="BnS_Buff.h" />
     <ClInclude Include="BnS_DamageFont.h" />
     <ClInclude Include="BnS_Enemy.h" />
@@ -192,6 +194,7 @@
     <ClInclude Include="BnS_SystemUI.h" />
     <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="EffectMove.h" />
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="EnemyStateControl.h" />
     <ClInclude Include="Enum.h" />
@@ -307,6 +310,8 @@
   <ItemGroup>
     <ClCompile Include="AttackInfo.cpp" />
     <ClCompile Include="BnS_AfterImageEffect.cpp" />
+    <ClCompile Include="BnS_AttackArea.cpp" />
+    <ClCompile Include="BnS_AttackArea_ScaleAnim.cpp" />
     <ClCompile Include="BnS_Buff.cpp" />
     <ClCompile Include="BnS_DamageFont.cpp" />
     <ClCompile Include="BnS_Enemy.cpp" />
@@ -319,6 +324,7 @@
     <ClCompile Include="BnS_SystemSetting.cpp" />
     <ClCompile Include="BnS_SystemUI.cpp" />
     <ClCompile Include="CameraShake.cpp" />
+    <ClCompile Include="EffectMove.cpp" />
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="EnemyStateControl.cpp" />
     <ClCompile Include="FollowXZPos.cpp" />
@@ -439,6 +445,10 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Circle.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect1.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect2.fx" />
+    <FxCompile Include="..\Resource\stage\Shader\BnS_AttackArea_Rect3.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Block_DN.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.fx" />
     <FxCompile Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.fx" />
@@ -463,6 +473,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\stage\Shader\BnS_AfterImage_Effect.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Circle.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect1.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect2.sd" />
+    <None Include="..\Resource\stage\Shader\BnS_AttackArea_Rect3.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Block_DN.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Character_HWSkinning.sd" />
     <None Include="..\Resource\stage\Shader\BnS_Hair_HWSkinning.sd" />

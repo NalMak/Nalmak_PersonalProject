@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ZakanSmash.h"
 #include "LynInfo.h"
+#include "BnS_AttackArea.h"
 
 
 ZakanSmash::ZakanSmash()
@@ -23,6 +24,14 @@ void ZakanSmash::EnterState()
 
 	m_info->LookTarget();
 	m_animController->Play("Zakan_B_Spell_Skl_Smash_Cast");
+
+	m_transform->UpdateMatrix();
+	BnS_AttackArea::Desc areaDesc;
+	areaDesc.timer = 0.4f;
+	areaDesc.mtrlName = L"zakan_attackAreaHalf";
+	auto area = INSTANTIATE()->AddComponent<BnS_AttackArea>(&areaDesc);
+	area->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 0.01f, 0))->SetScale(34.f, 1.5f, 34.f);
+	area->SetRotation(m_transform->GetWorldRotation());
 }
 
 void ZakanSmash::UpdateState()
@@ -52,6 +61,8 @@ void ZakanSmash::UpdateState()
 				}
 			}
 
+			
+
 			return;
 		}
 	}
@@ -59,6 +70,14 @@ void ZakanSmash::UpdateState()
 	{
 		if (!m_animController->IsPlay())
 		{
+			BnS_AttackArea::Desc areaDesc;
+			areaDesc.timer = 0.4f;
+			areaDesc.mtrlName = L"zakan_attackAreaHalf";
+			auto area = INSTANTIATE()->AddComponent<BnS_AttackArea>(&areaDesc);
+			area->SetPosition(m_transform->GetWorldPosition() + Vector3(0, 0.01f, 0))->SetScale(34.f, 1.5f, 34.f);
+			area->SetRotation(m_transform->GetWorldRotation());
+
+
 			m_audio->PlayOneShot(L"zakan_smash2");
 
 			m_animController->Play("Zakan_B_Spell_Skl_Smash_Exec2");

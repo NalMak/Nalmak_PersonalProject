@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "LynVerticalCut_L1.h"
+#include "LynAttachedEffect.h"
+#include "EffectMove.h"
 
 
 LynVerticalCut_L1::LynVerticalCut_L1()
@@ -24,6 +26,29 @@ void LynVerticalCut_L1::EnterState()
 
 	PlayOneShot(L"SwordMaster_VerticalCut_Cast");
 
+	if (m_isUpper)
+	{
+		// Effect
+		MeshRenderer::Desc meshRenderer;
+		meshRenderer.meshName = L"SwordTrail_Expand";
+		meshRenderer.mtrlName = L"Lyn_VerticalCut";
+		LynAttachedEffect::Desc effectDesc;
+		effectDesc.emissionPower = 1.5f;
+		effectDesc.lifeTime = 0.3f;
+		//effectDesc.emissionBezier = Bezier({ 0.f, 1.f }, { 0.5f, 0.0588235f }, { 1.f, 1.f }, { 1.f, 0.f });
+
+		EffectMove::Desc effectMove;
+		effectMove.speed = 50.f;
+		effectMove.direction = m_transform->GetForward();
+		Quaternion rot;
+		D3DXQuaternionRotationYawPitchRoll(&rot, 90.f * Deg2Rad, -30.f* Deg2Rad, 0.f);
+		auto effect = INSTANTIATE()->AddComponent<MeshRenderer>(&meshRenderer)->AddComponent<LynAttachedEffect>(&effectDesc)
+			->AddComponent<EffectMove>(&effectMove)
+			->SetScale(0.1f, 0.1f, 0.1f)->SetRotation(rot * m_transform->GetWorldRotation())
+			->SetPosition(m_transform->position.x, m_transform->position.y + 2.f, m_transform->position.z);
+
+		CreateVerticalSlashEffect(false);
+	}
 }
 
 void LynVerticalCut_L1::UpdateState()
@@ -38,7 +63,7 @@ void LynVerticalCut_L1::UpdateState()
 		m_animController->SetBlendOption(0.2f, 1.f, D3DXTRANSITION_TYPE::D3DXTRANSITION_LINEAR);
 		if (InputManager::GetInstance()->GetKeyPress(KEY_STATE_RIGHT_MOUSE))
 		{
-			if (m_info->GetInnerPower() >= 2)
+			if (m_info->GetInnerPower() >=1)
 			{
 				SetState(L"verticalCut_r2");
 				return;

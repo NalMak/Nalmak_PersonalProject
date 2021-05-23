@@ -9,9 +9,9 @@ class BnS_Enemy :
 public:
 	struct Desc
 	{
-		UINT hp = 3000000;
+		UINT hp = 6000000;
 		float hitRadius = 3.f;
-		UINT power = 1500;
+		UINT power = 1800;
 		float detectionRadius = 10.f;
 		Vector4 volumeRect = { 6,9,6,4.5f};
 	};

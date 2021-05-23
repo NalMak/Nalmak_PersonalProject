@@ -40,7 +40,7 @@ void ZakanBattleIdle::EnterState()
 	switch (m_phaseIndex)
 	{
 	case ZAKAN_PATTERN_DEFAULT1:
-		if (hpRatio < 0.55f)
+		if (hpRatio < 0.85f)
 			m_phaseIndex = ZAKAN_PATTERN_SPECIAL1;
 		break;
 	case ZAKAN_PATTERN_DEFAULT2:
@@ -67,9 +67,14 @@ void ZakanBattleIdle::EnterState()
 		SetState(L"pattern");
 		return;
 	}
-	else if (BETWEEN(m_info->GetDistanceToTarget(),4,10))
+	else if (BETWEEN(m_info->GetDistanceToTarget(),4,7))
 	{
 		SetState(L"move");
+		return;
+	}
+	else if (BETWEEN(m_info->GetDistanceToTarget(), 7, 10))
+	{
+		SetState(L"area360");
 		return;
 	}
 	else if (BETWEEN(m_info->GetDistanceToTarget(), 10, 50))

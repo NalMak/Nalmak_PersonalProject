@@ -40,17 +40,33 @@ void LynSlash1::EnterState()
 		meshRenderer.meshName = L"MeshTrail002";
 		meshRenderer.mtrlName = L"Lyn_Slash1";
 		LynAttachedEffect::Desc effectDesc;
-		effectDesc.emissionPower = 0.3f;
+		effectDesc.emissionPower = 0.5f;
 		effectDesc.lifeTime = 0.35f;
 
 		effectDesc.emissionBezier = Bezier({ 0.f, 0.0f }, { 0.3f, 1.0f }, { 0.7f, 1.0f }, { 1.f, 0.0f });
 
-		effectDesc.rotateSpeed = -600.f;
+		effectDesc.rotateSpeed = -1000.f;
 		auto effect = INSTANTIATE()->AddComponent<MeshRenderer>(&meshRenderer)->AddComponent<LynAttachedEffect>(&effectDesc)
-			->SetScale(0.25f, 0.8f, 0.25f)->SetRotation(0.f, 120.f, 180.f)->SetPosition(0.f, 2.5f, 0.f);
+			->SetScale(0.1f, 0.5f, 0.1f)->SetRotation(0.f, 120.f, 180.f)->SetPosition(0.f, 1.5f, 0.f);
 
 		effect->SetParents(m_gameObject);
 
+
+		// 2
+		// Effect
+		MeshRenderer::Desc meshRenderer2;
+		meshRenderer2.meshName = L"Lyn_Attack_Vertical";
+		meshRenderer2.mtrlName = L"Lyn_Slash2";
+		LynAttachedEffect::Desc effectDesc2;
+		effectDesc2.emissionPower = 5.f;
+		effectDesc2.lifeTime = 0.35f;
+
+		effectDesc2.emissionBezier = Bezier({ 0.f, 1.0f }, { 0.5f, 1.0f }, { 1.f, 1.0f }, { 1.f, 0.0f });
+
+		auto effect2 = INSTANTIATE()->AddComponent<MeshRenderer>(&meshRenderer2)->AddComponent<LynAttachedEffect>(&effectDesc2)
+			->SetScale(0.03f, 0.03f, 0.02f)->SetRotation(-90.f, 180.f, 90.f)->SetPosition(0.f, 2.5f, 1.5f);
+
+		effect2->SetParents(m_gameObject);
 	}
 }
 
@@ -66,12 +82,12 @@ void LynSlash1::UpdateState()
 		attack.innerPower = 1;
 		CreateAttackInfo(&attack, 5.f, 1.5f, 1.f);
 
-		m_effect->StartWeaponTrail();
+		//m_effect->StartWeaponTrail();
 	}
 
 	if (m_animController->IsOverTime(0.4f))
 	{
-		m_effect->EndWeaponTrail();
+		//m_effect->EndWeaponTrail();
 
 	}
 
@@ -108,6 +124,6 @@ void LynSlash1::ExitState()
 	if (!m_isCombo)
 		ChangeSkillSlotTexture(BNS_SKILL_SLOT_LB, m_slash1Tex, L"ÁúÇ³");
 
-	m_effect->EndWeaponTrail();
+	//m_effect->EndWeaponTrail();
 	m_info->EndSkill();
 }

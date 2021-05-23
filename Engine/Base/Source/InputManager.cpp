@@ -38,6 +38,9 @@ void InputManager::Initialize(HINSTANCE _hinstance, HWND _hwnd)
 
 void InputManager::Update()
 {
+	if (WA_INACTIVE == GetActiveWindow())
+		return;
+
 	m_keyBoard->GetDeviceState(256, m_keyState);
 	m_mouse->GetDeviceState(sizeof(m_mouseState), &m_mouseState);
 
